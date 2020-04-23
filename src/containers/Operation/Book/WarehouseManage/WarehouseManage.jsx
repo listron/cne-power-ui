@@ -39,14 +39,14 @@ class WarehouseManage extends Component {
     sideTransform: 0,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { tableParams } = this.props;
     this.props.getWarehouses();
     this.props.getManufactures();
     this.props.getWarehouseManageList({ ...tableParams });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.resetStore();
   }
 
@@ -67,14 +67,14 @@ class WarehouseManage extends Component {
       selectedMode: undefined,
       pageSize: 10,
       pageNum: 1,
-      sortField: '',
-      sortMethod: '',
+      sortField: 'warehouse_name',
+      sortMethod: 'asc',
     };
     const tabName = tabInfo[innerHTML];
     if (tabName) {
       this.props.changeStore({
         tabName: tabInfo[innerHTML],
-        tableParams: {...newTableParams},
+        tableParams: { ...newTableParams },
       });
       this.props.getWarehouseManageList({ ...newTableParams });
     }
@@ -90,7 +90,7 @@ class WarehouseManage extends Component {
     this.props.changeStore({ sideKey: 'list' });
   }
 
-  render(){
+  render() {
     const { sideTransform } = this.state;
     const { tabName, sideKey } = this.props;
     return (
@@ -109,7 +109,7 @@ class WarehouseManage extends Component {
             </div>
             <Footer />
           </div>
-          <div className={styles.sidePage} style={{'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)`}}>
+          <div className={styles.sidePage} style={{ 'transition': 'all 500ms ease', transform: `translateX(-${sideTransform}%)` }}>
             {{
               spares: {
                 insert: <SpareInsert {...this.props} backList={this.backList} />,

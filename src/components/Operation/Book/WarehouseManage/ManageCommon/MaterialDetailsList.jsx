@@ -5,6 +5,7 @@ import moment from 'moment';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './manageCommon.scss';
+import CneTable from '../../../../Common/Power/CneTable';
 
 export default class MaterialDetailsList extends Component {
 
@@ -21,7 +22,7 @@ export default class MaterialDetailsList extends Component {
     getMaterialDetailsList: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       modalShow: false,
@@ -29,7 +30,7 @@ export default class MaterialDetailsList extends Component {
     };
   }
 
-  componentWillUnmount(){ // 卸载组件时, 清空缓存的信息。
+  componentWillUnmount() { // 卸载组件时, 清空缓存的信息。
     this.props.changeStore({
       materialListParams: {
         sortField: '', // 'price'
@@ -53,30 +54,39 @@ export default class MaterialDetailsList extends Component {
     {
       title: '物资编码',
       dataIndex: 'materialCode',
-      width: 140,
+      width: '15%',
+      textAlign: 'left',
     }, {
       title: '供货商',
       dataIndex: 'supplierName',
-      render: (text) => <span className={styles.supplierName} title={text}>{text || '--'}</span>,
+      width: '17%',
+      textAlign: 'left',
+      render: (text) => <div className={styles.supplierName} title={text}>{text || '--'}</div>,
     }, {
       title: '入库时间',
       dataIndex: 'entryTime',
-      width: 170,
-      render: (text) => <span>{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>,
+      width: '19%',
+      textAlign: 'center',
+      render: (text) => <div>{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--'}</div>,
     }, {
       title: '单价/元',
       dataIndex: 'price',
-      width: 100,
+      width: '10%',
       sorter: true,
-      render: (text) => <span>{dataFormats(text, '--', 2, true)}</span>,
+      textAlign: 'right',
+      render: (text) => <div>{dataFormats(text, '--', 2, true)}</div>,
     }, {
       title: '入库人',
-      dataIndex: 'goodsName',
-      render: (text) => <span title={text} className={styles.goodsName} >{text || '--'}</span>,
+      dataIndex: 'user',
+      width: '15%',
+      textAlign: 'left',
+      render: (text) => <div title={text} className={styles.userText} >{text || '--'}</div>,
     }, {
       title: '备注',
+      width: '19%',
       dataIndex: 'remarks',
-      render: (text) => <span title={text} className={styles.remarks} >{text || '--'}</span>,
+      textAlign: 'left',
+      render: (text) => <div title={text} className={styles.remarks} >{text || '--'}</div>,
     },
   ]
 
@@ -104,7 +114,7 @@ export default class MaterialDetailsList extends Component {
       pageNum: currentPage,
       pageSize,
     };
-    changeStore({ materialListParams: {...newParams} });
+    changeStore({ materialListParams: { ...newParams } });
     getMaterialDetailsList({ inventoryId, ...newParams });
   }
 
@@ -122,10 +132,10 @@ export default class MaterialDetailsList extends Component {
     getMaterialDetailsList({ inventoryId, ...newParams });
   }
 
-  render(){
+  render() {
     const { modalShow, checkedMaterial } = this.state;
     const { value = [], materialDetailsList, total, materialListParams, materialListTotal, materialListLoading } = this.props;
-    const { pageSize, pageNum } = materialListParams;
+    const { pageSize, pageNum, sortField, sortMethod } = materialListParams;
     return (
       <div className={styles.materialDetailsList}>
         <p className={styles.title}>
@@ -154,7 +164,7 @@ export default class MaterialDetailsList extends Component {
           footer={null}
           onCancel={this.hideModal}
           maskClosable={false}
-          width={950}
+          width={1050}
           wrapClassName={styles.materialListModal}
         >
           <div>
@@ -166,17 +176,20 @@ export default class MaterialDetailsList extends Component {
                 onPaginationChange={this.paginationChange}
               />
             </div>
-            <Table
+            <CneTable
               columns={this.createColumn()}
               dataSource={materialDetailsList.map(e => ({ ...e, key: e.materialCode }))}
               pagination={false}
               loading={materialListLoading}
-              scroll={{y: 280}}
+              scroll={{ y: 280 }}
               onChange={this.tableChange}
               rowSelection={{
                 selectedRowKeys: checkedMaterial.map(e => e.materialCode),
                 onChange: this.selectMaterial,
               }}
+              // dataError={diagnoseListError}
+              sortField={sortField}
+              sortMethod={{ 'desc': 'descend', 'asc': 'ascend' }[sortMethod]}
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
             />
             <div className={styles.handle}>

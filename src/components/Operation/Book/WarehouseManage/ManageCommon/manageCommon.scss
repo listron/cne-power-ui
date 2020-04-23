@@ -313,43 +313,13 @@
       margin-right: 40px;
     }
   }
-  .supplierName, .goodsName, .remarks{
-    display: inline-block;
-    word-break: break-all;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    vertical-align: middle;
+  table{
+    table-layout: 'fixed';
   }
-  .supplierName{
-    width: 100px;
+  .supplierName, .goodsName, .remarks,.userText{
+    @include overflowText()
   }
-  .goodsName{
-    width: 90px;
-  }
-  .remarks{
-    width: 110px;
-  }
-  :global{
-    .ant-modal-body{
-      padding: 0;
-    }
-    .ant-table-wrapper{
-      margin: 0 24px;
-      .ant-table .ant-table-body{
-        @include scrollBar(6px);
-      }
-      .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
-        padding-top: 0px;
-        padding-bottom: 0px;
-      }
-      .ant-table .ant-table-tbody > tr > td{
-        border-bottom: none;
-        line-height: 32px;
-        height: 32px;
-      }
-    }
-  }
+
 }
 
 .reserveDetail{

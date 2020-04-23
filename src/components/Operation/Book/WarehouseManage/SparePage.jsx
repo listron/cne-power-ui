@@ -5,6 +5,7 @@ import { Table, Popover } from 'antd';
 import PropTypes from 'prop-types';
 import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseManageComp.scss';
+import CneTable from '../../../Common/Power/CneTable';
 
 class SparePage extends Component {
 
@@ -21,6 +22,16 @@ class SparePage extends Component {
     getWarehouseManageList: PropTypes.func,
   }
 
+  sortTemplete = {
+    'goods_name': 'goodsName',
+    'mode_name': 'modeName',
+    'warehouse_name': 'warehouseName',
+    'inventory_num': 'inventoryNum',
+    'threshold': 'threshold',
+    'desc': 'descend',
+    'asc': 'ascend',
+  };
+
   onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
     this.props.changeStore({ checkedStocks });
   }
@@ -29,7 +40,7 @@ class SparePage extends Component {
     const { showSide, getReserveDetail, getReserveList, reserveParams, changeStore } = this.props;
     const { inventoryId } = record;
     showSide('reserve');
-    changeStore({ reserveInventoryId: inventoryId })
+    changeStore({ reserveInventoryId: inventoryId });
     getReserveDetail({ inventoryId: `${inventoryId}` }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
   }
@@ -46,13 +57,18 @@ class SparePage extends Component {
       descend: 'desc',
       ascend: 'asc',
     };
-    const sortField = field ? sortTemplete[field] : '';
-    const sortMethod = order ? sortTemplete[order] : '';
+    const { sortField, sortMethod } = tableParams;
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || sortTemplete[field] === sortField) {
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else {
+      newSortField = sortTemplete[field];
+    }
     const newParam = {
       ...tableParams,
-      sortField,
-      sortMethod,
-    }
+      sortField: newSortField,
+      sortMethod: newSortMethod,
+    };
     changeStore({ tableParams: newParam });
     getWarehouseManageList({ ...newParam });
   }
@@ -70,79 +86,68 @@ class SparePage extends Component {
   }
 
   spareColumn = () => {
-    const spareRef = this.spareRef;
-    const selectWidth = 60; // 选框宽度
-    const fiexedWidth = 95; // 库存数量 = 最低阈值 = 更多信息
-    const handleWidth = 140; // 操作
-    let calcNormalWidth = 100, calcLongWidth = 200;
     const spareHandleRight = handleRight('book_operateSpare');
-    if (spareRef) { // 样式对齐，防止文字过多错行。
-      const { clientWidth } = spareRef;
-      const restWidth = (clientWidth - selectWidth - fiexedWidth * 3 - handleWidth);
-      calcNormalWidth = restWidth / 5; // 物品名称, 型号, 所属仓库
-      calcLongWidth = restWidth / 5 * 2; // 资产类型
-    }
-    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
-      <div
-        title={text || '--'}
-        className={styles[styleText]}
-        style={{maxWidth: `${widthParam - 16}px`}}
-      >{text || '--'}</div>
-    );
     return [
       {
         title: '物品名称',
         dataIndex: 'goodsName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('goodsName', calcNormalWidth),
         sorter: true,
+        width: '10%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.goodsName} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '型号',
         dataIndex: 'modeName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('modeName', calcNormalWidth),
+        width: '14%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.modeName} title={text || '--'}>{text || '--'}</div>,
         sorter: true,
       }, {
         title: '所属仓库',
         dataIndex: 'warehouseName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('warehouseName', calcNormalWidth),
+        width: '11%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.warehouseName} title={text || '--'}>{text || '--'}</div>,
         sorter: true,
       }, {
         title: '库存数量',
         dataIndex: 'inventoryNum',
         sorter: true,
-        width: fiexedWidth,
+        width: '8%',
+        textAlign: 'left',
         render: (text, record) => {
           const { inventoryNum, goodsUnit, threshold } = record;
           let StockNum = <span />;
           if (!inventoryNum && inventoryNum !== 0 && inventoryNum !== '0') { // 库存不存在
-            StockNum = <span>--{goodsUnit || ''}</span>
+            StockNum = <span>--{goodsUnit || ''}</span>;
           } else if (inventoryNum < threshold) { // 库存紧张
             StockNum = (<span className={styles.shortage}>
               <span>{inventoryNum}{goodsUnit || ''}</span>
               <span className={styles.config}>紧张</span>
-            </span>)
+            </span>);
           } else {
-            StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>
+            StockNum = <span>{inventoryNum}{goodsUnit || ''}</span>;
           }
           return StockNum;
-        }
+        },
       }, {
         title: '对应资产类型',
         dataIndex: 'assetsPath',
-        width: calcLongWidth,
-        render: TextOverflowDOM('assetsPath', calcLongWidth),
+        width: '25%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.assetsPath} title={text || '--'}>{text || '--'}</div>,
       }, {
         title: '最低阈值',
         dataIndex: 'threshold',
-        width: fiexedWidth,
         sorter: true,
+        width: '7%',
+        textAlign: 'right',
       }, {
         title: '更多信息',
         className: styles.moreInfo,
-        width: fiexedWidth,
         dataIndex: 'moreInfo',
+        width: '7%',
+        textAlign: 'center',
         render: (text, record) => {
           const InfoContent = (
             <div className={styles.infoContent}>
@@ -159,7 +164,7 @@ class SparePage extends Component {
                 <span className={styles.info}>{record.manufactorName || '--'}</span>
               </div>
             </div>
-          )
+          );
           return (
             <Popover
               content={InfoContent}
@@ -168,12 +173,12 @@ class SparePage extends Component {
             >
               <button className={styles.trigButton}>查看</button>
             </Popover>
-          )
-        }
+          );
+        },
       }, {
         title: '操作',
         dataIndex: 'handle',
-        width: handleWidth,
+        width: '12%',
         render: (text, record) => (
           <div className={styles.stockHandle}>
             {spareHandleRight && <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>}
@@ -185,13 +190,14 @@ class SparePage extends Component {
     ];
   }
 
-  render(){
-    const { checkedStocks, stocksList, stocksListLoading } = this.props;
+  render() {
+    const { checkedStocks, stocksList, stocksListLoading, tableParams } = this.props;
+    const { sortField, sortMethod } = tableParams;
     return (
       <div className={styles.sparePage} ref={(ref) => { this.spareRef = ref; }}>
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
-        <Table
+        <CneTable
           loading={stocksListLoading}
           onChange={this.tableChange}
           rowSelection={{
@@ -201,7 +207,10 @@ class SparePage extends Component {
           columns={this.spareColumn()}
           dataSource={stocksList.map(e => ({ key: e.inventoryId, ...e }))}
           pagination={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          // dataError={diagnoseListError}
+          sortField={this.sortTemplete[sortField]}
+          sortMethod={this.sortTemplete[sortMethod]}
+          onChange={this.tableChange}
         />
       </div>
     );

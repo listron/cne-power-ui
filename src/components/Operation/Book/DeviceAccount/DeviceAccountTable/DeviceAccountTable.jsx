@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
 import DeviceDetailsTable from './DeviceDetailsTable/DeviceDetailsTable';
-
+import CneTable from '../../../../Common/Power/CneTable';
 import styles from './deviceAccountTable.scss';
 
 export default class DeviceAccountTable extends React.Component {
@@ -19,7 +19,7 @@ export default class DeviceAccountTable extends React.Component {
     getDeviceAttachments: PropTypes.func,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       detailsFlag: false,
@@ -40,7 +40,7 @@ export default class DeviceAccountTable extends React.Component {
     // 参数
     const params = {
       modeId,
-      assetsId,
+      assetsId: '0,52,53,519822824199680',
       orderField: '',
       orderMethod: '',
       pageNum: 1,
@@ -90,56 +90,71 @@ export default class DeviceAccountTable extends React.Component {
 
   render() {
     const { detailsFlag } = this.state;
+    const { orderField, orderMethod } = this.props;
     const {
       loading,
       deviceAccountList: {
         dataList,
-      }} = this.props;
+      } } = this.props;
     const columns = [{
       title: '资产名称',
       dataIndex: 'assetsName',
       sorter: true,
+      width: '14%',
+      textAlign: 'left',
+      render: (assetsName) => <div className={styles.assetsName} title={assetsName}>{assetsName}</div>,
     }, {
       title: '设备型号',
       dataIndex: 'deviceModeName',
       sorter: true,
+      textAlign: 'left',
+      width: '16%',
+      render: (deviceModeName) => <div className={styles.deviceModeName} title={deviceModeName}>{deviceModeName}</div>,
     }, {
       title: '设备数量',
       dataIndex: 'num',
       sorter: true,
+      textAlign: 'right',
+      width: '9%',
     }, {
       title: '厂家',
       dataIndex: 'manufactorName',
       sorter: true,
-      render: (manufactorName) => <span className={styles.manufactorName} title={manufactorName}>{manufactorName}</span>,
+      textAlign: 'left',
+      width: '20%',
+      render: (manufactorName) => <div className={styles.manufactorName} title={manufactorName}>{manufactorName}</div>,
     }, {
       title: '制造商',
       sorter: true,
       dataIndex: 'madeNames',
-      render: (madeNames) => <span className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</span>,
+      textAlign: 'left',
+      width: '16%',
+      render: (madeNames) => <div className={styles.madeNames} title={madeNames}>{madeNames && madeNames.length > 0 ? madeNames.join(',') : '--'}</div>,
     }, {
       title: '供货商',
       dataIndex: 'supplierNames',
-      render: (supplierNames) => <span className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</span>,
+      textAlign: 'left',
+      width: '16%',
+      render: (supplierNames) => <div className={styles.supplierNames} title={supplierNames}>{supplierNames && supplierNames.length > 0 ? supplierNames.join(',') : '--'}</div>,
     }, {
       title: '查看备品备件',
       align: 'center',
-      render: (text, record) => (
-        <span style={{cursor: 'pointer'}}>
-          <i className="iconfont icon-look" onClick={() => {this.onShowDetail(record);}} />
-        </span>
-      ),
+      textAlign: 'left',
+      width: '10%',
+      render: (text, record) => <i className={`iconfont icon-look ${styles.look}`} onClick={() => { this.onShowDetail(record); }} />,
     }];
     return (
       <div className={styles.DeviceAccountTable}>
-        <Table
-          pagination={false}
-          dataSource={dataList}
-          loading={loading}
-          onChange={this.tableChange}
-          rowKey={(record, index) => (record.modeId + index) || 'key'}
+        <CneTable
           columns={columns}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+          dataSource={dataList}
+          rowKey={(record, index) => (record.modeId + index) || 'key'}
+          pagination={false}
+          loading={loading}
+          // dataError={diagnoseListError}
+          sortField={['assetsName', 'deviceModeName', 'num', 'manufactorName', 'madeNames'][orderField - 1]}
+          sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderMethod]}
+          onChange={this.tableChange}
         />
         <DeviceDetailsTable onCancelFunc={this.onCancelFunc} detailsFlag={detailsFlag} {...this.props} />
       </div>

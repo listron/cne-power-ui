@@ -1,6 +1,4 @@
-@mixin omit($w) {
-  width: $w;
-  display: block;
+@mixin omit() {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -9,25 +7,19 @@
 
 
 .DeviceAccountTable {
-  width: 100%;
-
-  .madeNames {
-    @include omit(180px);
+  // width: 100%;
+  table{
+    table-layout: fixed;
   }
-
-  .manufactorName {
-    @include omit(180px);
+  .madeNames,.manufactorName,.supplierNames,.deviceModeName,.assetsName{
+     @include omit();
   }
-
-  .supplierNames{
-    @include omit(180px);
-  }
-
-  .noData {
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    background-color: #fff;
-    margin-top: 48px;
+  .look{
+    font-size: 20px;
+    color: var(--themeColor);
+    cursor: pointer;
+    &:hover{
+          color: #ff9900;
+    }
   }
 }

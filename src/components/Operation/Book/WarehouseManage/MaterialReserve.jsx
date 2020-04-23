@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Icon, Table } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { ReserveDetail } from './ManageCommon/ReserveDetail';
@@ -8,6 +7,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 import styles from './warehouseManageComp.scss';
 import { dataFormat } from '../../../../utils/utilFunc';
 import { handleRight } from '@utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 export default class MaterialReserve extends Component {
 
@@ -33,6 +33,16 @@ export default class MaterialReserve extends Component {
     confirmRemind: () => { },
   }
 
+  sortTemplete = {
+    'price': 'price',
+    'username': 'user',
+    'entry_time': 'enteryTime',
+    'we_entry_time': 'outTime',
+    'is_entry': 'isEntry',
+    'desc': 'descend',
+    'asc': 'ascend',
+  };
+
   onPaginationChange = ({ pageSize, currentPage }) => { // 翻页
     const { reserveParams } = this.props;
     this.queryReserveList({
@@ -43,8 +53,9 @@ export default class MaterialReserve extends Component {
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序
-    const { field, order } = sorter;
+    const { field } = sorter;
     const { reserveParams } = this.props;
+    const { sortField, sortMethod } = reserveParams;
     const sortTemplete = {
       price: 'price',
       user: 'username',
@@ -54,12 +65,16 @@ export default class MaterialReserve extends Component {
       descend: 'desc',
       ascend: 'asc',
     };
-    const sortField = field ? sortTemplete[field] : 'entry_time';
-    const sortMethod = order ? sortTemplete[order] : 'desc';
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || sortTemplete[field] === sortField) {
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else {
+      newSortField = sortTemplete[field];
+    }
     this.queryReserveList({
       ...reserveParams,
-      sortField,
-      sortMethod,
+      sortField: newSortField,
+      sortMethod: newSortMethod,
     });
   }
 
@@ -94,51 +109,61 @@ export default class MaterialReserve extends Component {
       {
         title: '物资编码',
         dataIndex: 'materialCode',
-        width: codeWidth,
+        width: '10%',
+        textAlign: 'left',
         className: styles.materialCode,
       }, {
         title: '供货商',
         dataIndex: 'supplierName',
-        width: textWidth,
-        render: TextOverflowDOM('supplierName', textWidth),
+        width: '14%',
+        textAlign: 'left',
+        render: (supplierName) => <div className={styles.supplierName} title={supplierName || '--'}>{supplierName || '--'}</div>,
       }, {
         title: '制造商',
         dataIndex: 'manufactorName',
-        width: textWidth,
-        render: TextOverflowDOM('manufactorName', textWidth),
+        width: '14%',
+        textAlign: 'left',
+        render: (manufactorName) => <div className={styles.manufactorName} title={manufactorName || '--'}>{manufactorName || '--'}</div>,
       }, {
         title: '单价/元',
         dataIndex: 'price',
         sorter: true,
-        width: pricePersonWidth,
+        width: '7.5%',
+        textAlign: 'right',
         render: (text) => dataFormat(text),
       }, {
         title: '入库人',
         dataIndex: 'user',
-        width: pricePersonWidth,
+        width: '7.5%',
         sorter: true,
+        textAlign: 'left',
+        render: (user) => <div className={styles.user} title={user}>{user}</div>,
       }, {
         title: '入库时间',
         dataIndex: 'enteryTime',
-        width: timeWidth,
+        width: '13%',
         sorter: true,
+        textAlign: 'center',
         render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--',
       }, {
         title: '出库时间',
         dataIndex: 'outTime',
-        width: timeWidth,
+        width: '13%',
         sorter: true,
+        textAlign: 'center',
         render: (text) => text ? moment(text).format('YYYY/MM/DD HH:mm:ss') : '--',
       }, {
         title: '备注',
         dataIndex: 'remarks',
-        width: textWidth,
-        render: TextOverflowDOM('remarks', textWidth),
+        width: '10%',
+        textAlign: 'left',
+        render: (remarks) => <div className={styles.remarks} title={remarks}>{remarks}</div>,
       }, {
         title: '状态',
         dataIndex: 'isEntry',
         sorter: true,
-        width: statusWidth,
+        textAlign: 'center',
+        width: '5%',
         render: (text) => (
           text > 0 ? <span className={styles.inWarehouse}>在库中</span> : <span className={styles.outWarehouse}>已出库</span>
         ),
@@ -147,7 +172,8 @@ export default class MaterialReserve extends Component {
     return materialHandleRight ? column.concat({
       title: '操作',
       dataIndex: 'handle',
-      width: handleWidth,
+      width: '8%',
+      textAlign: 'center',
       render: (text, record) => {
         const { isEntry } = record;
         return (
@@ -215,11 +241,11 @@ export default class MaterialReserve extends Component {
   render() {
     const { remindShow, remindText, confirmRemind } = this.state;
     const { reserveDetail, reserveListInfo, tabName, reserveParams, reserveListLoading } = this.props;
-    const { pageSize, pageNum } = reserveParams;
+    const { pageSize, pageNum, sortField, sortMethod } = reserveParams;
     const { pageCount = 0 } = reserveListInfo;
     const dataList = reserveListInfo.dataList || [];
     return (
-      <section className={styles.reserve} ref={(ref) => this.reserveBox = ref}>
+      <section className={styles.reserve}>
         <h3 className={styles.title}>
           <span className={styles.text}>物资 - 库存</span>
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
@@ -233,13 +259,14 @@ export default class MaterialReserve extends Component {
             onPaginationChange={this.onPaginationChange}
           />
         </div>
-        <Table
+        <CneTable
           loading={reserveListLoading}
           onChange={this.tableChange}
           columns={this.reserveColumn()}
           dataSource={dataList.map(e => ({ key: e.materialCode, ...e }))}
           pagination={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          sortField={this.sortTemplete[sortField]}
+          sortMethod={this.sortTemplete[sortMethod]}
         />
         {remindShow && <WarningTip onOK={confirmRemind} onCancel={this.hideRemindModal} value={remindText} />}
       </section>

@@ -1,5 +1,4 @@
-@mixin omit($w) {
-  width: $w;
+@mixin omit() {
   display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -10,23 +9,12 @@
 .deviceDetailsTable {
   width: 100%;
   min-height: 510px;
-
-  .goodsModeName {
-    @include omit(180px);
+  table{
+    table-layout: fixed;
   }
-
-  .madeNames {
-    @include omit(180px);
+  .goodsModeName,.warehouseName,.madeNames,.supplierNames,.assetsName {
+    @include omit();
   }
-
-  .supplierNames {
-    @include omit(180px);
-  }
-
-  .assetsName{
-    @include omit(180px);
-  }
-
   .deviceDetailsTop {
     width: 100%;
     display: flex;

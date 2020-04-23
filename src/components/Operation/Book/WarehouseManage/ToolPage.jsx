@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styles from './warehouseManageComp.scss';
 import { handleRight } from '@utils/utilFunc';
 import { dataFormat } from '../../../../utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 class ToolPage extends Component {
 
@@ -26,6 +27,19 @@ class ToolPage extends Component {
     highlightId: null,
   }
 
+  sortTemplete = {
+    'goods_name': 'goodsName',
+    'mode_name': 'modeName',
+    'goods_type': 'goodsType',
+    'warehouse_name': 'warehouseName',
+    'inventory_num': 'inventoryNum',
+    'devManufactorName': 'devManufactorName',
+    'supplier_name': 'supplierName',
+    'manufactor_name': 'manufactorName',
+    'desc': 'descend',
+    'asc': 'ascend',
+  };
+
   onTableRowSelect = (selectedRowKeys, checkedStocks) => { // 选中条目
     this.props.changeStore({ checkedStocks });
   }
@@ -34,7 +48,7 @@ class ToolPage extends Component {
     const { showSide, getReserveDetail, getReserveList, reserveParams, changeStore } = this.props;
     const { inventoryId } = record;
     showSide('reserve');
-    changeStore({ reserveInventoryId: inventoryId })
+    changeStore({ reserveInventoryId: inventoryId });
     getReserveDetail({ inventoryId }); // 库存详情
     getReserveList({ ...reserveParams, inventoryId }); // 库存物品列表
   }
@@ -42,6 +56,7 @@ class ToolPage extends Component {
   tableChange = (pagination, filter, sorter) => {
     const { field, order } = sorter;
     const { tableParams, getWarehouseManageList, changeStore } = this.props;
+    const { sortField, sortMethod } = tableParams;
     const sortTemplete = {
       goodsName: 'goods_name',
       modeName: 'mode_name',
@@ -54,13 +69,17 @@ class ToolPage extends Component {
       descend: 'desc',
       ascend: 'asc',
     };
-    const sortField = field ? sortTemplete[field] : '';
-    const sortMethod = order ? sortTemplete[order] : '';
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || sortTemplete[field] === sortField) {
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else {
+      newSortField = sortTemplete[field];
+    }
     const newParam = {
       ...tableParams,
-      sortField,
-      sortMethod,
-    }
+      sortField: newSortField,
+      sortMethod: newSortMethod,
+    };
     changeStore({ tableParams: newParam });
     getWarehouseManageList({ ...newParam });
   }
@@ -78,23 +97,6 @@ class ToolPage extends Component {
   }
 
   spareColumn = () => {
-    const toolRef = this.toolRef;
-    const selectWidth = 60; // 选框宽度
-    const fiexedWidth = 95; // 物品类型 = 库存数量
-    const handleWidth = 140; // 操作
-    let calcNormalWidth = 100; // 物品名 + 型号 + 所属仓库 + 厂家 + 供货 + 制造
-    if (toolRef) { // 样式对齐，防止文字过多错行。
-      const { clientWidth } = toolRef;
-      const restWidth = (clientWidth - selectWidth - fiexedWidth * 2 - handleWidth);
-      calcNormalWidth = restWidth / 6; // 物品名称, 型号, 所属仓库
-    }
-    const TextOverflowDOM = (styleText, widthParam) => (text) => ( // 控制指定长度表格字符串的溢出样式。(2 * 8padding值需去除)
-      <div
-        title={text || '--'}
-        className={styles[styleText]}
-        style={{maxWidth: `${widthParam - 16}px`}}
-      >{text || '--'}</div>
-    )
     const goodsInitTypes = {
       201: '安全工器具',
       202: '检修工器具',
@@ -105,95 +107,101 @@ class ToolPage extends Component {
       {
         title: '物品名称',
         dataIndex: 'goodsName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('goodsName', calcNormalWidth),
+        width: '10%',
+        textAlign: 'left',
+        render: (goodsName) => <div className={styles.goodsName} title={goodsName || '--'}>{goodsName || '--'}</div>,
         sorter: true,
       }, {
         title: '型号',
         dataIndex: 'modeName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('modeName', calcNormalWidth),
+        width: '10%',
+        textAlign: 'left',
+        render: (modeName) => <div className={styles.modeName} title={modeName || '--'}>{modeName || '--'}</div>,
         sorter: true,
       }, {
         title: '物品类型',
         dataIndex: 'goodsType',
         sorter: true,
-        width: fiexedWidth,
-        render: (text) => (
-          <div
-            title={goodsInitTypes[text] || '--'}
-            className={styles.goodsType}
-            style={{maxWidth: `${fiexedWidth - 16}px`}}
-          >{goodsInitTypes[text] || '--'}</div>
-        )
+        width: '10%',
+        textAlign: 'left',
+        render: (text) => <div title={goodsInitTypes[text] || '--'} className={styles.goodsType} >{goodsInitTypes[text] || '--'}</div>,
       }, {
         title: '所属仓库',
         dataIndex: 'warehouseName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('warehouseName', calcNormalWidth),
+        width: '10%',
+        textAlign: 'left',
+        render: (modeName) => <div className={styles.modeName} title={modeName || '--'}>{modeName || '--'}</div>,
         sorter: true,
       }, {
         title: '库存数量',
         dataIndex: 'inventoryNum',
         sorter: true,
-        width: fiexedWidth,
+        width: '8%',
+        textAlign: 'right',
         render: (text, record) => {
           const { inventoryNum, goodsUnit } = record;
           return <span>{dataFormat(inventoryNum)}{goodsUnit || ''}</span>;
-        }
+        },
       }, {
         title: '厂家',
         dataIndex: 'devManufactorName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('devManufactorName', calcNormalWidth),
+        width: '13%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.devManufactorName} title={text || '--'}>{text || '--'}</div>,
         sorter: true,
       }, {
         title: '供货商',
         dataIndex: 'supplierName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('supplierName', calcNormalWidth),
+        width: '12%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.supplierName} title={text || '--'}>{text || '--'}</div>,
         sorter: true,
       }, {
         title: '制造商',
         dataIndex: 'manufactorName',
-        width: calcNormalWidth,
-        render: TextOverflowDOM('manufactorName', calcNormalWidth),
+        width: '12%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.manufactorName} title={text || '--'}>{text || '--'}</div>,
         sorter: true,
       }, {
         title: '操作',
         dataIndex: 'handle',
-        width: handleWidth,
+        width: '12%',
         render: (text, record) => (
           <div className={styles.stockHandle}>
             {toolHandleRight && <span className={styles.text} onClick={() => this.toInsert(record)}>入库</span>}
             {toolHandleRight && <span className={styles.text} onClick={() => this.toTakeout(record)}>损耗</span>}
             <span className={styles.text} onClick={() => this.getReserveDetail(record)}>库存</span>
           </div>
-        )
-      }
-    ]
+        ),
+      },
+    ];
   }
 
-  render(){
-    const { checkedStocks, stocksList, stocksListLoading } = this.props;
+  render() {
+    const { checkedStocks, stocksList, stocksListLoading, tableParams } = this.props;
+    const { sortField, sortMethod } = tableParams;
     return (
-      <div className={styles.toolPage} ref={(ref) => this.toolRef = ref}>
+      <div className={styles.toolPage} >
         <ConditionSearch {...this.props} />
         <HandleComponent {...this.props} />
-        <Table
+        <CneTable
           loading={stocksListLoading}
           onChange={this.tableChange}
           rowSelection={{
             selectedRowKeys: checkedStocks.map(e => e.key),
-            onChange: this.onTableRowSelect
+            onChange: this.onTableRowSelect,
           }}
           columns={this.spareColumn()}
           dataSource={stocksList.map(e => ({ key: e.inventoryId, ...e }))}
           pagination={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          // dataError={diagnoseListError}
+          sortField={this.sortTemplete[sortField]}
+          sortMethod={this.sortTemplete[sortMethod]}
+          onChange={this.tableChange}
         />
       </div>
-    )
+    );
   }
 }
 

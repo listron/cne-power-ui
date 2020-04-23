@@ -2,7 +2,8 @@
 
 .sparePage, .toolPage, .materialPage{ // 备品备件 工器具 物资主页面公用样式
   table{
-    .goodsName, .modeName, .warehouseName, .assetsPath, .goodsType, .warehouseName, .devManufactorName, .supplierName, .manufactorName{
+    table-layout: fixed;
+    .goodsName, .modeName, .warehouseName, .assetsPath, .goodsType, .warehouseName, .devManufactorName, .supplierName, .manufactorNamem{
       @include overflowText();
     }
     .threshold{
@@ -13,9 +14,13 @@
         border: none;
         cursor: pointer;
         background-color: transparent;
-        &:focus{
+        outline: none;
+        color: $themeColor;
+        &:focus,
+        &:hover
+        {
           outline: none;
-          color:#e08031;
+          color:#f9b600;
         }
       }
     }
@@ -35,9 +40,10 @@
         height: 18px;
         line-height: 16px;
         text-align: center;
-        border:1px solid #199475;
-        border-radius:2px;
-        flex-basis: 32px;
+        color: $themeColor;
+        &:hover{
+          color: #f9b600;
+        }
         &:last-child{
           margin-right: 12px;
         }
@@ -168,7 +174,8 @@
     }
   }
   table{
-    .supplierName, .manufactorName, .remarks{
+    table-layout: fixed;
+    .supplierName, .manufactorName, .remarks,.user{
       @include overflowText();
     }
     .inWarehouse, .outWarehouse{
@@ -182,18 +189,9 @@
     }
     .handle{
       cursor: pointer;
-      padding-right: 24px;
-    }
-  }
-  :global{
-    .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
-      padding: 0 8px;
-    }
-    .ant-table .ant-table-thead, .ant-table .ant-table-tbody{
-      :local{
-        .materialCode{
-          padding-left: 24px;
-        }
+      color: var(--themeColor);
+      &:hover{
+         color: #f9b600;
       }
     }
   }
