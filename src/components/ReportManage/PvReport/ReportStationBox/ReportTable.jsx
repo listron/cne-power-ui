@@ -207,7 +207,7 @@ class ReportTable extends React.Component {
             key: 'topSunshineHours',
             width: 140,
             textAlign: 'left',
-            render: (text) => (<div className={styles.rightText} title={text}>{text ? text : '--'}</div>),
+            render: (text) => (<div className={styles.rightText} title={dataFormat(text, '--', 2)}>{dataFormat(text, '--', 2)}</div>),
           },
         ],
       }, {
@@ -245,10 +245,10 @@ class ReportTable extends React.Component {
         ...sportArr,
         ],
       },
-      {
-        title: '损失电量',
-        children: this.tableChildren(losePowerCols),
-      },
+      // {
+      //   title: '损失电量',
+      //   children: this.tableChildren(losePowerCols),
+      // },
       {
         title: '减排量',
         children: this.tableChildren(jianpai),
@@ -292,7 +292,7 @@ class ReportTable extends React.Component {
             onChange={this.tableChange}
             dataSource={datalist}
             bordered
-            scroll={scroll}
+            scroll={{ x: 'max-content', y: 450 }}
             pagination={false}
             sortField={{ 'station_name': 'stationName', 'report_time': 'date' }[orderFiled]}
             sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[orderType]}
@@ -304,4 +304,5 @@ class ReportTable extends React.Component {
   }
 }
 export default (ReportTable);
+
 
