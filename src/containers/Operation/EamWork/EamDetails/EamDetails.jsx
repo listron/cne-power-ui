@@ -662,7 +662,7 @@ class EamDetails extends React.Component {
                 </div>
               </div>}
             </div>
-            <div className={styles.explainInfoBox}>
+            {workOrderType === '缺陷工单' && <div className={styles.explainInfoBox}>
               <div className={styles.tableBar}>
                 <div className={styles.barProcess}>
                   检修交代
@@ -810,8 +810,8 @@ class EamDetails extends React.Component {
                   </div>
                 </div>
               </div>}
-            </div>
-            <div className={styles.explainInfoBox}>
+            </div>}
+            {workOrderType === '故障工单' && <div className={styles.explainInfoBox}>
               <div className={styles.tableBar}>
                 <div className={styles.barProcess}>
                   检修交代
@@ -976,7 +976,7 @@ class EamDetails extends React.Component {
                   </div>}
                 </div>
               </div>}
-            </div>
+            </div>}
             <div className={styles.commonInfoBox}>
               <div className={styles.tableBar}>
                 <div className={styles.barProcess}>
