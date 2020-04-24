@@ -10,6 +10,7 @@ class ChartBar extends PureComponent {
   static propTypes = {
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
+    filterLoading: PropTypes.bool,
   };
 
   componentDidMount(){
@@ -22,8 +23,13 @@ class ChartBar extends PureComponent {
   componentWillReceiveProps(nextProps){
     const { analysisEvent } = this.props;
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const { eventAnalysisInfo } = nextProps;
+    const preLoading = this.props.filterLoading;
+    const { eventAnalysisInfo, filterLoading } = nextProps;
     const { eventCode } = analysisEvent;
+    const barChart = echarts.init(this.barRef);
+    if (filterLoading && !preLoading) {
+      barChart.showLoading('default', { text: '', color: '#199475' });
+    }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { data = [], dataDays } = eventAnalysisInfo || {};
       this.drawChart(data, eventCode, dataDays);
@@ -35,6 +41,7 @@ class ChartBar extends PureComponent {
     //   1: '100',
     //   30: '75',
     // };
+    echarts.dispose(this.barRef); // 重绘图形前需销毁实例。否则重绘失败。
     const barChart = echarts.init(this.barRef);
     const xNames = [], baseData = [], theoryData = [], lineData = [], pointData = data;
     // const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件

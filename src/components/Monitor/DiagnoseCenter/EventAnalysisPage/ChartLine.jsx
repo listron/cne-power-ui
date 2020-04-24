@@ -60,7 +60,7 @@ class ChartLine extends PureComponent {
 
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
     const { pageKey } = this.props;
-    echarts.dispose(this.lineRef); // 重绘图形前需销毁实例。否则重绘失败。
+    // echarts.dispose(this.lineRef);
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
@@ -195,8 +195,12 @@ class ChartLine extends PureComponent {
         smooth: true,
       });
     });
-
-    const legendHeight = (noDeviceName || seriesInefficient) ? (Math.ceil(legends.length / 8) * 30) : ((delPointIndex !== -1 && pageKey === 'alarm') ? Math.ceil((legends.length + 1) / 4) * 30 : Math.ceil(legends.length / 4) * 30);
+    const clientWidth = document.body.clientWidth;
+    const lengendColType = (noDeviceName || seriesInefficient) ? 8 : 4; // lengend一行排布模式: 诊断事件零电流、固定物遮挡、组串低效情况下8列，其余情况下4个。
+    const legendNum = (delPointIndex !== -1 && pageKey === 'alarm') ? legends.length + 1 : legends.length; // 告警事件和有脉冲信号的情况下, 额外添加一个lengend；
+    const legnedRows = Math.ceil(legendNum / lengendColType);
+    const legendHeight = legnedRows * 30;
+    const originGridHeight = (clientWidth > 1680 ? 300 : 200) + (3 - (legnedRows > 3 ? 3 : legnedRows)) * 30; // 大于1680屏幕分辨率的grid高度最小为300，小于1680屏幕分辨率的grid高度最小为200
     const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       // name: '其他测点',
       gridIndex: 0,
@@ -244,7 +248,6 @@ class ChartLine extends PureComponent {
         show: false,
       },
     }];
-    const clientWidth = document.body.clientWidth;
     const grid = [{
       show: true,
       borderColor: '#d4d4d4',
@@ -252,7 +255,7 @@ class ChartLine extends PureComponent {
       top: legendHeight,
       left: '7%',
       right: '7%',
-      height: (delPointIndex !== -1 && pageKey === 'alarm') ? (clientWidth === 1440 ? 198 : 259) : (clientWidth === 1440 ? 220 : 280),
+      height: originGridHeight,
     }];
     if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
       pointData.push(pulseSignalInfo);
@@ -309,11 +312,12 @@ class ChartLine extends PureComponent {
           show: false,
         },
       });
+      grid[0].height = originGridHeight - 57;
       grid.push({
         show: true,
         borderColor: '#d4d4d4',
         bottom: 100,
-        top: '63%',
+        top: legendHeight + originGridHeight - 57,
         left: '7%',
         right: '7%',
         height: 57,
@@ -489,14 +493,9 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const { eventAnalysisInfo, analysisEvent, pageKey } = this.props;
-    const { data = {} } = eventAnalysisInfo || {};
-    const { pointData } = data;
-    const { eventCode } = analysisEvent;
-    const noDeviceName = ['NB1035', 'NB1037', 'NB1036'].includes(eventCode); // 一行8个
     const clientWidth = document.body.clientWidth;
-    const calcHeight = (pageKey === 'alarm' ? (clientWidth === 1440 ? 335 : 428) : (clientWidth === 1440 ? 335 : 372)) + (noDeviceName ? Math.ceil(pointData.length / 8) * 30 : Math.ceil(pointData.length / 4) * 30);
-
+    const clientHeight = document.body.clientHeight;
+    const calcHeight = clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381);
     return (
       <div className={styles.analysisChart}>
         {/* <div className={styles.legends}>

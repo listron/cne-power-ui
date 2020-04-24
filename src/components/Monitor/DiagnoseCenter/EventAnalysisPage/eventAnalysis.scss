@@ -399,14 +399,19 @@
         @include overflowText();
       }
       .opreateText{
-        .lookIcon, .suspendIcon{
-          margin-right: 38px;
+        .suspendIcon{
+          margin: 0 38px;
         }
         .hideIcon{
           visibility: hidden;
         }
         i{
           font-size: 20px;
+        }
+      }
+      :global{
+        .ant-table-placeholder{
+          padding: 0 16px;
         }
       }
     }

@@ -208,10 +208,10 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const resValue = pointData.filter(e => { // 请求的value数据是否都为空
         return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
       });
-      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据的时弹出提示语
+      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据时弹出提示语
         yield call(easyPut, 'changeStore', { isNoDataTip: true });
       }
-      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会请求去请求10分钟数据
+      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会去请求10分钟数据
         const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
         const resValue = pointData.filter(e => { // 请求的value数据是否都为空
           return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
@@ -265,8 +265,8 @@ function * getLinkageList({payload = {}}){ // 诊断分析-线型图-联动决�
   const diagWarningId = payload.diagWarningId;
   const url = `${APIBasePath}${monitor.getLinkageList}/${diagWarningId}`;
   try{
-    const response = yield call(request.get, url);
     yield call(easyPut, 'changeStore', { linkageListLoading: true });
+    const response = yield call(request.get, url);
     if (response.code === '10000') {
       yield call(easyPut, 'fetchSuccess', {
         linkageListData: response.data || [],

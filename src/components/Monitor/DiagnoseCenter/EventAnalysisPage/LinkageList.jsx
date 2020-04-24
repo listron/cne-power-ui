@@ -191,7 +191,7 @@ class LinkageList extends Component {
           scroll={JSON.stringify(eventAnalysisInfo) === '{}' ? { y: 675 } : { y: 165 }}
           dataError={linkageListError}
           noMoreDataPic={linkageListError && linkageTableData.length > 0}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" alt="" /> }}
+          locale={{ emptyText: <img width="178" height="134" src="/img/nodata.png" alt="" /> }}
         />
         {tipType !== 0 && <CneTips
           visible
