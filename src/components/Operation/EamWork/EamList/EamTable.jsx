@@ -155,6 +155,8 @@ export default class EamTable extends React.Component {
       {
         title: '属于子工单',
         dataIndex: 'isChild',
+        align: 'center',
+        className: styles.noPaddingBox,
         render: (text) => (<div className={styles.childName} title={text === null ? '' : (text === '1' ? '是' : '否')} >{text === null ? '' : (text === '1' ? '是' : '否')}</div>),
       },
       {

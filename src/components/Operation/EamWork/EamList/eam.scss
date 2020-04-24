@@ -161,6 +161,10 @@
     @include maxWidth();
   }
 
+  .childName{
+    padding: 0 10px;
+  }
+
   .stationName {
     word-break: break-all;
     min-width: 130px;
