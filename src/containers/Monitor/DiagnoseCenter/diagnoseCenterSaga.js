@@ -129,11 +129,12 @@ function* stopCircleQueryList(){ // 停止10s周期调用列表
 
 function * editEventsStatus({ payload }) { // 忽略 删除事件
   const url = `${APIBasePath}${monitor.editEventsStatus}`;
-  // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
+      // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
   try {
-    const response = yield call(request.delete, url, { ...payload });
+    const { diagWarningIds, diagWarningId, isLinkage, type } = payload || {};
+    const params = { diagWarningIds, type};
+    const response = yield call(request.delete, url, { ...params });
     if (response.code === '10000') {
-      const { diagWarningIds } = payload || {};
       const statusChangeNum = parseInt(response.data, 10) || 0;
       let statusChangeText = '';
       if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功;
@@ -148,7 +149,11 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
         statusChangeText,
       });
       const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
-      yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+      if(isLinkage){ // 联动决策-操作
+        yield fork(getLinkageList, { payload: { diagWarningId }});
+      }else{
+        yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+      }
     } else { throw response.message; }
   } catch (error) {
     message.error(`操作失败, ${error}`);
@@ -158,11 +163,15 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, isCycleTip, isDataTip, fromPath } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, isCycleTip, isDataTip, fromPath, isChartLoading } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true});
+    if(isCycleTip || isDataTip || isChartLoading){
+      yield call(easyPut, 'changeStore', { eventAnalysisLoading: false, filterLoading: true, showAnalysisPage: true}); // 时间间隔或者日期改变时echarts图单独加载loading
+    } else{
+      yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, filterLoading: false, showAnalysisPage: true});
+    }
     // 1. 外部路径直接跳转分析 => 路径(diagWarningId,deviceFullcode), 将返回结果(response.data.warning)初始化reducer;
     const params = { diagWarningId, deviceFullcode };
     if (!fromPath) { // 2. 正常诊断中心点击分析请求
@@ -175,6 +184,8 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     if (response.code === '10000') {
       const tmpStoreInfo = {
         eventAnalysisLoading: false,
+        filterLoading: false,
+        isChartLoading: false,
         analysisEvent: payload,
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       };
@@ -197,10 +208,10 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const resValue = pointData.filter(e => { // 请求的value数据是否都为空
         return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
       });
-      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据的时弹出提示语
+      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据时弹出提示语
         yield call(easyPut, 'changeStore', { isNoDataTip: true });
       }
-      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会请求去请求10分钟数据
+      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会去请求10分钟数据
         const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
         const resValue = pointData.filter(e => { // 请求的value数据是否都为空
           return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
@@ -244,6 +255,30 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     yield call(easyPut, 'changeStore', {
       eventAnalysisInfo: {},
       eventAnalysisLoading: false,
+      filterLoading: false,
+      isChartLoading: false,
+    });
+  }
+}
+
+function * getLinkageList({payload = {}}){ // 诊断分析-线型图-联动决策
+  const diagWarningId = payload.diagWarningId;
+  const url = `${APIBasePath}${monitor.getLinkageList}/${diagWarningId}`;
+  try{
+    yield call(easyPut, 'changeStore', { linkageListLoading: true });
+    const response = yield call(request.get, url);
+    if (response.code === '10000') {
+      yield call(easyPut, 'fetchSuccess', {
+        linkageListData: response.data || [],
+        linkageListLoading: false,
+        linkageListError: true,
+      });
+    } else { throw response.message; }
+  } catch(error){
+    message.error(`事件列表获取失败, ${error}`);
+    yield call(easyPut, 'changeStore', {
+      linkageListLoading: false,
+      linkageListError: false,
     });
   }
 }
@@ -256,5 +291,6 @@ export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.stopCircleQueryList, stopCircleQueryList);
   yield takeLatest(diagnoseCenterAction.getEventsAnalysis, getEventsAnalysis);
   yield takeLatest(diagnoseCenterAction.editEventsStatus, editEventsStatus);
+  yield takeLatest(diagnoseCenterAction.getLinkageList, getLinkageList);
 }
 

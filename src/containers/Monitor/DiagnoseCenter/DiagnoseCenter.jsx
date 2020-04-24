@@ -107,6 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
   circlingQueryList: payload => dispatch({ type: diagnoseCenterAction.circlingQueryList, payload }),
   stopCircleQueryList: payload => dispatch({ type: diagnoseCenterAction.stopCircleQueryList, payload }),
   getEventsAnalysis: payload => dispatch({ type: diagnoseCenterAction.getEventsAnalysis, payload }),
+  getLinkageList: payload => dispatch({ type: diagnoseCenterAction.getLinkageList, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
     payload: {

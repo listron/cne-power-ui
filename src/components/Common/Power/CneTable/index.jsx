@@ -10,7 +10,8 @@ import styles from './index.scss';
  * sortField手动指定得排序字段:string, 与dataIndex对应
  * sortMethod手动指定排序方式:string: ascend descend
  * dataError 数据错误时, 占位图片为数据错误; 无数据时，占位图片为无数据;
- * column内参数textAlign: left /middle / right / none;
+ * column内参数textAlign: left /middle或center / right / none;
+ * noMoreDataPic: bool, 是否展示"没有更多数据"图片提示用户
  */
 
 class CneTable extends PureComponent {
@@ -28,16 +29,17 @@ class CneTable extends PureComponent {
 
   state = {
     showHeaderShadow: false,
+    isScrollBarShow: false,
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { scroll } = this.props;
     if (scroll && scroll.y) { // 顶部冻结
       this.tableScrollWatching();
     }
   }
 
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const scroll = this.props.scroll || {};
     const preScroll = prevProps.scroll || {};
     if (!preScroll.y && scroll.y > 0) {
@@ -45,6 +47,17 @@ class CneTable extends PureComponent {
     }
     if (preScroll.y > 0 && !scroll.y) {
       this.tableUnWatching();
+    }
+    if (scroll.y > 0) { // 滚动模式
+      const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body .ant-table-tbody');
+      const { isScrollBarShow } = this.state;
+      const tbodyHeight = tableScrollBody ? tableScrollBody.clientHeight : 0;
+      if (tbodyHeight > scroll.y && !isScrollBarShow) { // 数据长度大于表格长度 => 需要滚动
+        this.showScrollbar(); // 展示滚动
+      }
+      if (tbodyHeight <= scroll.y && isScrollBarShow) { // 隐藏滚动
+        this.hideScrollbar();
+      }
     }
   }
 
@@ -54,13 +67,17 @@ class CneTable extends PureComponent {
 
   tableScrollWatching = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
-      tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
+    tableScrollBody && tableScrollBody.addEventListener('scroll', this.shadowFixed);
   }
 
   tableUnWatching = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
     tableScrollBody && tableScrollBody.removeEventListener('scroll', this.shadowFixed);
   }
+
+  showScrollbar = () => this.setState({ isScrollBarShow: true })
+
+  hideScrollbar = () => this.setState({ isScrollBarShow: false })
 
   shadowFixed = () => {
     const tableScrollBody = this.tableRef && this.tableRef.querySelector('.ant-table-scroll .ant-table-body');
@@ -73,33 +90,34 @@ class CneTable extends PureComponent {
     }
   }
 
-  render(){
+  render() {
     const {
       theme = 'light',
       className, sortField, sortMethod, columns, dataError, noMoreDataPic,
       ...rest
     } = this.props;
-    const { showHeaderShadow } = this.state;
-    let tableColumn = [...columns];
-    if (sortField && sortMethod) {
-      tableColumn = columns.map(e => {
-        const { sorter, dataIndex, textAlign, className } = e || {};
-        if (sorter && sortField === dataIndex) {
-          e.sortOrder = sortMethod;
-        }
-        // textAlign: 默认=left(左padding10px 居左), middle(无padding居中), right(右padding10px居右), none(无padding且居左)
-        if (textAlign) {
-          e.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
-        }
-        return { ...e };
-      });
-    }
+    const { showHeaderShadow, isScrollBarShow } = this.state;
+    const tableColumn = columns.map(e => {
+      const newCol = e ? { ...e } : {};
+      const { sorter, dataIndex, textAlign, className } = newCol;
+      if (sortField && sortMethod && sorter && sortField === dataIndex) { // 添加指定排序
+        newCol.sortOrder = sortMethod;
+      }
+      // textAlign: 默认=left(左padding10px 居左), middle或center(无padding居中), right(右padding10px居右), none(无padding且居左)
+      if (textAlign) {
+        newCol.className = className ? `${className} ${textAlign}Content` : `${textAlign}Content`;
+      }
+      return { ...newCol };
+    });
     let totalClassName = `${styles.cneTable} ${className || ''} ${styles[theme] || ''}`;
     if (noMoreDataPic) { // 需展示 - 没有更多数据 图片
       totalClassName = `${totalClassName} ${styles.nomore}`;
     }
     if (showHeaderShadow) { // 滚动后 - 冻结顶部
       totalClassName = `${totalClassName} ${styles.headShadow}`;
+    }
+    if (isScrollBarShow) { // 是否滚动模式
+      totalClassName = `${totalClassName} ${styles.scrollingBar}`;
     }
     if (rest.scroll && rest.scroll.y) {
       return (<div ref={ref => { this.tableRef = ref; }}>
@@ -110,7 +128,7 @@ class CneTable extends PureComponent {
             emptyText: dataError ? <img
               width="84" height="77" src="/img/datawrong.png"
             /> : <img width="223" height="164" src="/img/nodata.png"
-            />,
+              />,
           }}
           pagination={false}
           {...rest}
@@ -125,7 +143,7 @@ class CneTable extends PureComponent {
           emptyText: dataError ? <img
             width="84" height="77" src="/img/datawrong.png"
           /> : <img width="223" height="164" src="/img/nodata.png"
-          />,
+            />,
         }}
         pagination={false}
         {...rest}
