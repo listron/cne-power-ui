@@ -91,8 +91,8 @@ class Boosterstation extends Component {
                   </div>
                   <div className={styles.deviceValue}>
                     <span className={styles.eachValue}>P : {dataFormat(e.highPressureP, '--', 2)} MW</span>
-                    <span className={styles.eachValue}>Cos : {dataFormat(e.highPressureQ, '--', 2)}</span>
-                    <span className={styles.eachValue}>Q : {dataFormat(e.highPressureCos, '--', 2)} MVar</span>
+                    <span className={styles.eachValue}>Cos : {dataFormat(e.highPressureCos, '--', 2)}</span>
+                    <span className={styles.eachValue}>Q : {dataFormat(e.highPressureQ, '--', 2)} MVar</span>
                     <span className={styles.eachValue}>Uab : {dataFormat(e.highPressureUab, '--', 2)} kV</span>
                   </div>
                 </Link>
