@@ -2,18 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CommonPagination from '@components/Common/CommonPagination';
 import CneTable from '@components/Common/Power/CneTable';
+import moment from 'moment';
 
 import styles from './eam.scss';
 
 export default class EamTable extends React.Component {
   static propTypes = {
-    eamListData: PropTypes.array,
     theme: PropTypes.string,
-    pageSize: PropTypes.number,
-    pageNum: PropTypes.number,
-    pageCount: PropTypes.number,
     tableLoading: PropTypes.bool,
     history: PropTypes.object,
+    eamTableData: PropTypes.object,
+    getEamList: PropTypes.func,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+    workOrderType: PropTypes.string,
+    changeStore: PropTypes.func,
+    selectedStation: PropTypes.array,
   };
 
   constructor(props) {
@@ -50,23 +56,40 @@ export default class EamTable extends React.Component {
   };
 
   // 分页
-  onPaginationChange = () => {};
+  onPaginationChange = ({ currentPage, pageSize }) => {
+    const { changeStore, getEamList, startTime, endTime, workOrderType, selectedStation } = this.props;
+    changeStore({
+      pageNum: currentPage,
+      pageSize,
+    });
+    // 获取EAM列表
+    getEamList({
+      workOrderType,
+      startTime,
+      endTime,
+      pageNum: currentPage,
+      pageSize,
+      stationNames: selectedStation.map(cur => cur.stationCode),
+    });
+  };
 
   // 详情
-  detailsFunc = (code) => {
+  detailsFunc = (workOrderNo) => {
     const { history } = this.props;
-    code && history.push('/operation/eamDetails');
+    workOrderNo && history.push(`/operation/eamDetails?workOrderNo=${workOrderNo}`);
   };
 
   render() {
     const { scrollFlag } = this.state;
     const {
-      eamListData,
       pageSize,
       pageNum,
-      pageCount,
       theme,
       tableLoading,
+      eamTableData: {
+        pageCount,
+        dataList,
+      },
     } = this.props;
 
     const { clientHeight, clientWidth } = document.body;
@@ -77,100 +100,99 @@ export default class EamTable extends React.Component {
     const listColumn = [
       {
         title: '项目公司',
-        dataIndex: '1',
+        dataIndex: 'companyName',
         render: (text) => (<div className={styles.projectCompany} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '电场（站）名称',
-        dataIndex: '2',
+        dataIndex: 'stationName',
         render: (text) => (<div className={styles.stationName} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单编号',
-        dataIndex: '3',
+        dataIndex: 'workOrderNo',
         render: (text) => (<div className={styles.workCode} onClick={() => this.detailsFunc(text)} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单描述',
-        dataIndex: '4',
+        dataIndex: 'workOrderDesc',
         render: (text) => (<div className={styles.workDesc} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '设备编码',
-        dataIndex: '5',
+        dataIndex: 'assertNum',
         render: (text) => (<div className={styles.deviceCode} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '设备资产名称',
-        dataIndex: '6',
+        dataIndex: 'assertName',
         render: (text) => (<div className={styles.deviceName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '工单类型',
-        dataIndex: '7',
+        dataIndex: 'workOrderType',
         render: (text) => (<div className={styles.workProcessType} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '创建人',
-        dataIndex: '8',
+        dataIndex: 'createName',
         render: (text) => (<div className={styles.creatName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '创建时间',
-        dataIndex: '9',
+        dataIndex: 'createTime',
         align: 'center',
         className: styles.noPaddingBox,
-        render: (text) => (<div className={styles.creatTimeName} title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div className={styles.creatTimeName} title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
       },
       {
         title: '状态',
-        dataIndex: '10',
+        dataIndex: 'status',
         render: (text) => (<div className={styles.statusName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '工作负责人',
-        dataIndex: '11',
+        dataIndex: 'operName',
         render: (text) => (<div className={styles.dutyName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '属于子工单',
-        dataIndex: '12',
+        dataIndex: 'IsChild',
         render: (text) => (<div className={styles.childName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '主工单编号',
-        dataIndex: '13',
+        dataIndex: 'masterWorkOrderNo',
         render: (text) => (<div className={styles.mainName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '工单专业',
-        dataIndex: '14',
+        dataIndex: 'woprofess',
         render: (text) => (<div className={styles.workMajor} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '是否领料',
-        dataIndex: '15',
+        dataIndex: 'isPick',
         align: 'center',
         className: styles.noPaddingBox,
         render: (text) => (<div className={styles.isGetName} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '工单关闭时间',
-        dataIndex: '16',
+        dataIndex: 'closeTime',
         align: 'center',
-        width: 150,
         className: styles.noPaddingBox,
-        render: (text) => (<div className={styles.closeTime} title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div className={styles.closeTime} title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
       },
     ];
     return (
       <div className={styles.searchTable}>
         <div className={styles.searchPage}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} theme={theme} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={Number(pageCount)} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <div id="eamTable" style={{width: tableWidth, height: tableHeight, position: 'relative', overflow: 'auto'}}>
           <CneTable
             loading={tableLoading}
             columns={listColumn}
             className={scrollFlag ? styles.tableScrollStyles : styles.tableStyles}
-            dataSource={eamListData}
+            dataSource={dataList}
             rowKey={(record, index) => index || 'key'}
             pagination={false}
             locale={{ emptyText: tableLoading ? <div style={{width: 223, height: 164}} /> : <img width="223" height="164" src="/img/nodata.png" alt="" /> }}

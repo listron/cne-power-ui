@@ -11,7 +11,30 @@ class EamList extends Component {
 
   static propTypes = {
     theme: PropTypes.string,
+    getEamStationList: PropTypes.func,
+    getEamList: PropTypes.func,
+    selectedStation: PropTypes.array,
+    pageNum: PropTypes.number,
+    pageSize: PropTypes.number,
+    workOrderType: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
   };
+
+  componentDidMount() {
+    const { getEamList, getEamStationList, workOrderType, startTime, endTime, pageSize, pageNum, selectedStation } = this.props;
+    // 获取EAM电站列表
+    getEamStationList();
+    // 获取EAMl列表
+    getEamList({
+      workOrderType,
+      startTime,
+      endTime,
+      pageSize,
+      pageNum,
+      stationNames: selectedStation.map(cur => cur.stationCode),
+    });
+  }
 
   render() {
     const { theme = 'light' } = this.props;
@@ -37,6 +60,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: eamListAction.resetStore }),
   changeStore: payload => dispatch({ type: eamListAction.changeStore, payload }),
+  getEamStationList: () => dispatch({ type: eamListAction.getEamStationList }),
+  getEamList: payload => dispatch({ type: eamListAction.getEamList, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EamList);

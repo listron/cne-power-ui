@@ -80,6 +80,12 @@ export default {
       operationInfo: '/v3/monitor/largescreen/worklistcount', // 运维情况
       singleStation: '/v3/monitor/largescreen/stationdetail', // 单电站详情
     },
+
+    eamTicket: {
+      getEamList: '/v4/eam/workorder/page', // 获取EAM列表
+      getEamStationList: '/v4/eam/station/list', // 获取EAM电站列表
+      getEamDetails: '/v4/eam/workorder/detail', // 获取EAM详情
+    },
     ticket: {
       // 工单
       getDefectList: '/v3/defect/worklist/pc', // 3.12
