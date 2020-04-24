@@ -4,6 +4,7 @@ import { Table, Radio, Popover, Icon } from 'antd';
 import moment from 'moment';
 import styles from './record.scss';
 import CommonPagination from '../../../Common/CommonPagination';
+import CneTable from '../../../Common/Power/CneTable';
 
 class StockList extends Component {
   static propTypes = {
@@ -27,10 +28,23 @@ class StockList extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { getInRecordList, listParams } = this.props;
     getInRecordList(listParams);
   }
+
+  sortInfo = {
+    'material_code': 'materialCode',
+    'goods_name': 'goodsName',
+    'goods_type': 'goodsTypeName',
+    'manufactor': 'modeName',
+    'goods_unit': 'price',
+    'warehouse_name': 'warehouseName',
+    'create_time': 'entryTime',
+    'username': 'user',
+    'asc': 'ascend',
+    'desc': 'descend',
+  };
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams, tableType } = this.props;
@@ -50,272 +64,138 @@ class StockList extends Component {
     });
   }
 
-  inColumns = () => { // 展示入库列表
+  columns = () => {
+    const { tableType } = this.props;
     const columns = [{
       title: '资产编码',
       dataIndex: 'materialCode',
-      className: 'materialCode',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.materialCode} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      width: '10%',
+      render: (text) => <div className={styles.materialCode} title={text}>{text}</div>,
     }, {
       title: '物品名称',
       dataIndex: 'goodsName',
-      className: 'goodsName',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.goodsName} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      width: '12%',
+      render: (text) => <div className={styles.goodsName} title={text}>{text || '--'}</div>,
     }, {
       title: '库存类型',
       dataIndex: 'goodsTypeName',
-      className: 'goodsTypeName',
+      width: '12%',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.goodsTypeName} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      render: (text) => <div className={styles.goodsTypeName} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '设备型号',
       dataIndex: 'modeName',
-      className: 'modeName',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.modeName} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      width: '12%',
+      render: (text) => <div className={styles.modeName} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '单价/元',
       dataIndex: 'price',
-      className: 'price',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.price} title={text}>{text}</div>
-      }
+      textAlign: 'right',
+      width: '11%',
+      render: (text) => <div className={styles.price} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '仓库名称',
       dataIndex: 'warehouseName',
-      className: 'warehouseName',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.warehouseName} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      width: '14%',
+      render: (text) => <div className={styles.warehouseName} title={text || '--'}>{text || '--'}</div>,
     }, {
-      title: '入库时间',
+      title: tableType === 'inRecord' && '入库时间' || '出库时间',
       dataIndex: 'entryTime',
-      className: 'entryTime',
       sorter: true,
+      textAlign: 'center',
+      width: '10%',
       render: (text, record) => moment(text).format('YYYY-MM-DD'),
     }, {
-      title: '入库人',
+      title: tableType === 'inRecord' && '入库人' || '出库人',
       dataIndex: 'user',
-      className: 'user',
       sorter: true,
-      render: (text) => {
-        return <div className={styles.user} title={text}>{text}</div>
-      }
+      textAlign: 'left',
+      width: '10%',
+      render: (text) => <div className={styles.user} title={text || '--'}>{text || '--'}</div>,
     }, {
       title: '更多信息',
       dataIndex: 'moreInformation',
-      className: 'moreInformation',
+      textAlign: 'center',
+      width: '9%',
       render: (text, record, index) => (
-        <Popover 
-          content={this.inCheckedPopover(record)} 
+        <Popover
+          content={this.inCheckedPopover(record)}
           trigger="click"
           arrowPointAtCenter
           visible={this.state.visible === index}
-          onVisibleChange={() => {return this.handleVisibleChange(index)}}
+          onVisibleChange={() => { return this.handleVisibleChange(index); }}
         >
           <span className={styles.moreInformation}>查看</span>
         </Popover>
-      )
+      ),
     }];
     return columns;
   }
 
-  outColumns = () => { // 展示出库列表
-    const columns = [{
-      title: '资产编码',
-      dataIndex: 'materialCode',
-      className: 'materialCode',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.materialCode} title={text}>{text}</div>
-      }
-    }, {
-      title: '物品名称',
-      dataIndex: 'goodsName',
-      className: 'goodsName',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.goodsName} title={text}>{text}</div>
-      }
-    }, {
-      title: '库存类型',
-      dataIndex: 'goodsTypeName',
-      className: 'goodsTypeName',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.goodsTypeName} title={text}>{text}</div>
-      }
-    }, {
-      title: '设备型号',
-      dataIndex: 'modeName',
-      className: 'modeName',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.modeName} title={text}>{text}</div>
-      }
-    }, {
-      title: '单价/元',
-      dataIndex: 'price',
-      className: 'price',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.price} title={text}>{text}</div>
-      }
-    }, {
-      title: '仓库名称',
-      dataIndex: 'warehouseName',
-      className: 'warehouseName',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.warehouseName} title={text}>{text}</div>
-      }
-    }, {
-      title: '出库时间',
-      dataIndex: 'entryTime',
-      className: 'entryTime',
-      sorter: true,
-      render: (text, record) => moment(text).format('YYYY-MM-DD'),
-    }, {
-      title: '出库人',
-      dataIndex: 'user',
-      className: 'user',
-      sorter: true,
-      render: (text) => {
-        return <div className={styles.user} title={text}>{text}</div>
-      }
-    }, {
-      title: '更多信息',
-      dataIndex: 'moreInformation',
-      className: 'moreInformation',
-      render: (text, record, index) => (
-        <Popover 
-          content={this.inCheckedPopover(record)} 
-          trigger="click"
-          arrowPointAtCenter
-          visible={this.state.visible === index}
-          onVisibleChange={() => {return this.handleVisibleChange(index)}}
-        >
-          <span className={styles.moreInformation}>查看</span>
-        </Popover>
-      )
-    }];
-    return columns;
-  }
 
-  handleVisibleChange = (index) => { 
+  handleVisibleChange = (index) => {
     this.setState({ visible: index });
   };
 
   hidePopover = () => { // 气泡框内部关闭
     this.setState({
-      visible: "",
+      visible: '',
     });
   };
 
   tableChange = (pagination, filter, sorter) => { // 表格排序
-    const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
+    const { tableType, getInRecordList, getOutRecordList, listParams } = this.props;
     const { field, order } = sorter;
+    const { sortField, sortMethod } = listParams;
     const sortInfo = {
-      materialCode: "material_code",
-      goodsName: "goods_name",
-      goodsTypeName: "goods_type",
-      modeName: "manufactor",
-      price: "goods_unit",
-      warehouseName: "warehouse_name",
-      entryTime: "create_time",
-      user: "username",
+      materialCode: 'material_code',
+      goodsName: 'goods_name',
+      goodsTypeName: 'goods_type',
+      modeName: 'manufactor',
+      price: 'goods_unit',
+      warehouseName: 'warehouse_name',
+      entryTime: 'create_time',
+      user: 'username',
+    };
+    let newSortField = sortField, newSortMethod = 'desc';
+    if (!field || sortInfo[field] === sortField) {
+      newSortMethod = sortMethod === 'desc' ? 'asc' : 'desc';
+    } else {
+      newSortField = sortInfo[field];
     }
-    const sortField = sortInfo[field] ? sortInfo[field] : '';
-    const orderCommand = order ? (sorter.order === 'ascend' ? 'asc' : 'desc') : '';
     const newParams = {
       ...listParams,
-      sortField,
-      sortMethod: orderCommand
-    }
-    stockRecordsStore({
-      ...newParams
-    })
-    getInRecordList({
-      ...newParams
-    })
-    getOutRecordList({
-      ...newParams
-    })
+      sortField: newSortField,
+      sortMethod: newSortMethod,
+    };
+
+
+    tableType === 'inRecord' && getInRecordList(newParams);
+    tableType === 'outRecord' && getOutRecordList(newParams);
   }
 
-  sortField(sortField) {
-    let result = "";
-    switch (sortField) {
-      case 'materialCode': result = 'material_code'; break;
-      case 'goodsName': result = 'goods_name'; break;
-      case 'goodsType': result = 'goods_type'; break;
-      case 'modeName': result = 'manufactor'; break;
-      case 'price': result = 'goods_unit'; break;
-      case 'warehouseName': result = 'warehouse_name'; break;
-      case 'entryTime': result = 'create_time'; break;
-      case 'username': result = 'username'; break;
-      default: result = ""; break;
-    }
-    return result;
-  }
 
   changeRadio = (e) => { // 切换按钮
     const { stockRecordsStore, getInRecordList, getOutRecordList, listParams } = this.props;
     const tableType = e.target.value;
-    stockRecordsStore({tableType});
-    const newParams = {
-      ...listParams,
-    };
-    tableType === 'inRecord' && getInRecordList({
-      ...newParams,
-    });
-    tableType === 'outRecord' && getOutRecordList({
-      ...newParams,
-    });
-  }
-  
-  inCheckedPopover = (record) => { // 入库查看详情
-    const { manufactor, supplierName , manufactorName } = record;
-    return(
-      <div className={styles.inRecordInfo}>
-        <div className={styles.title}>
-          <span className={styles.text}>更多信息</span>
-          <Icon type="close" onClick={this.hidePopover} />
-        </div>
-        <div className={styles.content}>
-          <div className={styles.manufactor}>
-            <span className={styles.text}>厂家</span>
-            <span>{manufactor}</span>
-          </div>
-          <div className={styles.supplierName}>
-            <span className={styles.text}>供货商</span>
-            <span>{supplierName}</span>
-          </div>
-          <div className={styles.manufactorName}>
-            <span className={styles.text}>制造商</span>
-            <span>{manufactorName}</span>
-          </div>
-        </div>
-      </div>
-      
-    )
+    stockRecordsStore({ tableType });
+    tableType === 'inRecord' && getInRecordList(listParams);
+    tableType === 'outRecord' && getOutRecordList(listParams);
   }
 
-  outCheckedPopover = (record) => { // 出库查看详情
+  inCheckedPopover = (record) => { // 查看详情
     const { manufactor, supplierName, manufactorName } = record;
-    return(
+    return (
       <div className={styles.inRecordInfo}>
         <div className={styles.title}>
           <span className={styles.text}>更多信息</span>
@@ -324,26 +204,26 @@ class StockList extends Component {
         <div className={styles.content}>
           <div className={styles.manufactor}>
             <span className={styles.text}>厂家</span>
-            <span>{manufactor}</span>
+            <span>{manufactor || '--'}</span>
           </div>
           <div className={styles.supplierName}>
             <span className={styles.text}>供货商</span>
-            <span>{supplierName}</span>
+            <span>{supplierName || '--'}</span>
           </div>
           <div className={styles.manufactorName}>
             <span className={styles.text}>制造商</span>
-            <span>{manufactorName}</span>
+            <span>{manufactorName || '--'}</span>
           </div>
         </div>
       </div>
-    )
+
+    );
   }
 
   render() {
-    const { listParams, tableLoading, inRecordListData, outRecordListData, tableType , pageCount } = this.props;
-    const { pageNum, pageSize } = listParams;
-    const dataSource = tableType === 'inRecord' ? inRecordListData.map((e, i) => ({...e, key: i,})) : outRecordListData.map((e, i) => ({...e, key: i,}));
-    const columns = tableType === 'inRecord' ? this.inColumns() : this.outColumns(); 
+    const { listParams, tableLoading, inRecordListData, outRecordListData, tableType, pageCount } = this.props;
+    const { pageNum, pageSize, sortField, sortMethod } = listParams;
+    const dataSource = tableType === 'inRecord' ? inRecordListData.map((e, i) => ({ ...e, key: i })) : outRecordListData.map((e, i) => ({ ...e, key: i }));
 
     return (
       <div className={styles.stockList}>
@@ -361,18 +241,20 @@ class StockList extends Component {
             onPaginationChange={this.onPaginationChange}
           />
         </div>
-        <Table
+        <CneTable
           loading={tableLoading}
           className={styles.inRecordList}
           dataSource={dataSource}
-          columns={columns}
+          columns={this.columns()}
           onChange={this.tableChange}
           pagination={false}
-          locale={{emptyText:<img width="223" height="164" src="/img/nodata.png" />}}
+          // dataError={diagnoseListError}
+          sortField={this.sortInfo[sortField]}
+          sortMethod={this.sortInfo[sortMethod]}
         />
       </div>
-      )
-    }
+    );
   }
-  
-  export default StockList;
+}
+
+export default StockList;

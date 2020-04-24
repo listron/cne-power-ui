@@ -140,7 +140,7 @@ class SparePage extends Component {
         title: '最低阈值',
         dataIndex: 'threshold',
         sorter: true,
-        width: '7%',
+        width: '8%',
         textAlign: 'right',
       }, {
         title: '更多信息',

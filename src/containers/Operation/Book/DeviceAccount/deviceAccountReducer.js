@@ -11,13 +11,13 @@ const initState = Immutable.fromJS({
   modeId: '', // 设备编号
   deviceTypeCode: '', //设备类型
   assetIds: [], // 资产
-  orderField: '',
-  orderMethod: '',
+  orderField: '1',
+  orderMethod: 'asc',
   attachmentsList: {}, // 台账备件列表
   modeIdDetails: '', // 详情里面的字段
   assetsIdDetails: '', // 详情里面的字段
-  orderFieldDetails: '', // 详情里面的字段
-  orderMethodDetails: '', // 详情里面的字段
+  orderFieldDetails: '3', // 详情里面的字段
+  orderMethodDetails: 'asc', // 详情里面的字段
   pageNumDetails: 1,
   pageSizeDetails: 10,
   deviceAccountListLoading: false, // 设备台账列表loading

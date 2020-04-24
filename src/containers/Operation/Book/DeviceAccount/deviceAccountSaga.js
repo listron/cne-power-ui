@@ -1,4 +1,4 @@
-import {put, takeLatest, call} from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import { deviceAccountAction } from './deviceAccountAction';
 import Path from '../../../../constants/path';
 import axios from 'axios';
@@ -45,7 +45,7 @@ function* getDeviceAccountList(action) { // 设备台账列表
           deviceAccountListLoading: false,
         },
       });
-    }else {
+    } else {
       throw response.data;
     }
   } catch (e) {
@@ -79,7 +79,7 @@ function* getStationsManufactorsList(action) { // 获取电站下的厂家列表
           loading: false,
         },
       });
-    }else {
+    } else {
       throw response.data;
     }
   } catch (e) {
@@ -112,7 +112,7 @@ function* getDeviceModeList(action) { // 获取厂家下的设备型号列表
           loading: false,
         },
       });
-    }else {
+    } else {
       throw response.data;
     }
   } catch (e) {
@@ -151,7 +151,7 @@ function* getDeviceAttachments(action) { // 台账备件列表
           loading: false,
         },
       });
-    }else {
+    } else {
       throw response.data;
     }
   } catch (e) {
@@ -183,7 +183,7 @@ function* getRegionStation() { // 获取权限下的区域
           loading: false,
         },
       });
-    }else {
+    } else {
       throw response.data;
     }
   } catch (e) {

@@ -31,9 +31,7 @@
     justify-content: space-between;
     margin:0 0 15px 34px;
   }
-  .moreInformation{
-    cursor: pointer;
-  }
+  
 }
 
 .inRecordInfo{
@@ -51,5 +49,21 @@
       display: inline-block;
       width: 60px;
     }
+  }
+}
+
+.inRecordList{
+  table{
+    table-layout: fixed;
+  }
+  .materialCode,.goodsName,.goodsTypeName,.modeName,.warehouseName,.user{
+    @include overflowText()
+  }
+  .moreInformation{
+    cursor: pointer;
+      color: var(--themeColor);
+      &:hover{
+         color: #f9b600;
+      }
   }
 }

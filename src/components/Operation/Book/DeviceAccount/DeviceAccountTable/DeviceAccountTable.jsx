@@ -17,6 +17,8 @@ export default class DeviceAccountTable extends React.Component {
     manufactorId: PropTypes.string,
     modeId: PropTypes.string,
     getDeviceAttachments: PropTypes.func,
+    orderField: PropTypes.string,
+    orderMethod: PropTypes.string,
   };
 
   constructor(props) {
@@ -40,9 +42,9 @@ export default class DeviceAccountTable extends React.Component {
     // 参数
     const params = {
       modeId,
-      assetsId: '0,52,53,519822824199680',
-      orderField: '',
-      orderMethod: '',
+      assetsId,
+      orderField: '3',
+      orderMethod: 'asc',
       pageNum: 1,
       pageSize: 10,
     };
@@ -66,6 +68,7 @@ export default class DeviceAccountTable extends React.Component {
       pageSize,
     } = this.props;
     const { field, order } = sorter;
+    const { orderField, orderMethod } = this.props;
     // 匹配排序字段
     const sortField = {
       assetsName: '1',
@@ -74,13 +77,19 @@ export default class DeviceAccountTable extends React.Component {
       manufactorName: '4',
       madeNames: '5',
     };
+    let newSortField = orderField, newOrderMethod = 'asc';
+    if (!field || sortField[field] === orderField) {
+      newOrderMethod = orderMethod === 'asc' ? 'desc' : 'asc';
+    } else {
+      newSortField = sortField[field];
+    }
     const params = {
       regionName,
       stationCodes,
       manufactorId,
       modeId,
-      orderField: field ? sortField[field] : '',
-      orderMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
+      orderField: newSortField,
+      orderMethod: newOrderMethod,
       pageNum,
       pageSize,
     };
