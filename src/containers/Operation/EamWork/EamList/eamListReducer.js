@@ -4,13 +4,7 @@ import {eamListAction} from './eamListAction';
 
 const initState = immutable.fromJS({
   tableLoading: false,
-  selectedStation: [{
-    provinceCode: '云南省',
-    provinceName: '云南省',
-    stationCode: '洱源光伏电站',
-    stationName: '洱源光伏电站',
-    stationType: 0,
-  }],
+  selectedStation: [],
   eamStationList: [],
   eamTableData: {
     dataList: [],
