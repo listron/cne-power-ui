@@ -157,8 +157,8 @@ export default class EamSearch extends React.Component {
           <span>工单类型</span>
           <Select value={workOrderType} style={{ width: 200 }} onChange={this.handleTypeChange}>
             <Option value="">全部</Option>
-            <Option value="缺陷">缺陷工单</Option>
-            <Option value="故障">故障工单</Option>
+            <Option value="缺陷工单">缺陷工单</Option>
+            <Option value="故障工单">故障工单</Option>
           </Select>
         </div>
         <div className={styles.creatTime}>

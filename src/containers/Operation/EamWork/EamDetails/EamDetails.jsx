@@ -218,6 +218,7 @@ class EamDetails extends React.Component {
           faultCode1,
           faultCode2,
           faultSource,
+          overRhaulby,
         },
         jcx,
         assets,
@@ -249,7 +250,7 @@ class EamDetails extends React.Component {
         dataIndex: 'isFaultMainReason',
         width: '14%',
         className: styles.textAlignName,
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div title={text === null ? '' : (text === '1' ? '是' : '否')} >{text === null ? '' : (text === '1' ? '是' : '否')}</div>),
       },
       {
         title: '异常原因分析',
@@ -343,7 +344,7 @@ class EamDetails extends React.Component {
       {
         title: '编号',
         width: '8%',
-        dataIndex: 'sId',
+        dataIndex: 'sid',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '操作票编号',
@@ -899,7 +900,7 @@ class EamDetails extends React.Component {
                       备品备件更换记录
                     </div>
                     <div className={styles.typeCode}>
-                      - -
+                      {overRhaulby || '- -'}
                     </div>
                     <div className={styles.faultName}>
                       工作结束时间

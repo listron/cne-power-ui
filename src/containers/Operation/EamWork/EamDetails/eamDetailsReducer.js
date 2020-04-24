@@ -50,6 +50,7 @@ const initState = immutable.fromJS({
       faultCode1: '',
       faultCode2: '',
       faultSource: '',
+      overRhaulby: '',
     },
     jcx: [],
     assets: [],

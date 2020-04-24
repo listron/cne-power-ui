@@ -154,8 +154,8 @@ export default class EamTable extends React.Component {
       },
       {
         title: '属于子工单',
-        dataIndex: 'IsChild',
-        render: (text) => (<div className={styles.childName} title={text || ''} >{text || '- -'}</div>),
+        dataIndex: 'isChild',
+        render: (text) => (<div className={styles.childName} title={text === null ? '' : (text === '1' ? '是' : '否')} >{text === null ? '' : (text === '1' ? '是' : '否')}</div>),
       },
       {
         title: '主工单编号',
