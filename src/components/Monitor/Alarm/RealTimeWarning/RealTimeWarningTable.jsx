@@ -192,7 +192,7 @@ class RealTimeWarningTable extends Component {
     const nameSortArr = ['stationName', 'deviceName', 'deviceTypeName', 'warningCheckDesc'];//同种排序
     const tableSource = realtimeWarning.map((e, i) => ({
       ...e,
-      key: i,
+      key: e.warningLogId,
     })).sort((a, b) => { // 手动排序
       const sortType = sortMethod === 'descend' ? -1 : 1;
       if (sortName === 'warningLevel') {
