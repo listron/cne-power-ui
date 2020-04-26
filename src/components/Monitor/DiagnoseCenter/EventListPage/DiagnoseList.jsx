@@ -256,6 +256,7 @@ class DiagnoseList extends Component {
         />}
         {statusChangeText && <CneTips
           visible
+          confirmText="确认"
           mode="warning"
           onConfirm={this.confirmStatusChange}
           tipText={statusChangeText}
