@@ -1,18 +1,40 @@
-@mixin omit($w) {
-  width: $w;
-  display: block;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  word-break: keep-all;
-}
 
 .warehouseWrapTable {
   width: 100%;
   padding-bottom: 20px;
   background-color: #fff;
 
-  .stationName {
-    @include omit(180px);
+  table{
+    table-layout: fixed;
+    .opearte{
+      display: flex;
+      justify-content: space-evenly;
+      icon{
+        font-size: 18px;
+      }
+    }
+  
+    .edit,.save,.del{
+      color: var(--themeColor);
+      cursor: pointer;
+      padding: 0 10px;
+      &:hover{
+        color:#f9b600
+      }
+    }
+
+    .disabled{
+      pointer-events: none;
+      cursor: not-allowed;
+      color: #999;
+    }
+
+    .warehouseName,.stationName,.user{
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: keep-all;
+    }
   }
 }

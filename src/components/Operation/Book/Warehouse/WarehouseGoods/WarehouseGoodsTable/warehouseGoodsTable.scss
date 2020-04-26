@@ -1,4 +1,35 @@
 .warehouseGoodsTable{
   width: 100%;
   margin-top: 12px;
+  table{
+    table-layout: fixed;
+  }
+  .goodsName,.goodsTypeName,.goodsUnit,.user,.goodsType{
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .opearte{
+    display: flex;
+    justify-content:space-evenly;
+    icon{
+        font-size: 18px;
+    }
+  }
+   .edit,.save,.del{
+      color: var(--themeColor);
+      cursor: pointer;
+      padding: 0 10px;
+      &:hover{
+        color:#f9b600
+      }
+    }
+
+    .disabled{
+      pointer-events: none;
+      cursor: not-allowed;
+      padding: 0 10px;
+      color: #999;
+    }
 }

@@ -41,8 +41,8 @@ class WarehouseGoods extends Component {
       goodsName: '',
       pageNum: 1,
       pageSize: 10,
-      sortField: '',
-      sortMethod: '',
+      sortField: 'goods_type',
+      sortMethod: 'asc',
     };
     getGoodsList(params);
   }
@@ -57,8 +57,8 @@ class WarehouseGoods extends Component {
         goodsName: '',
         pageNum: 1,
         pageSize: 10,
-        sortField: '',
-        sortMethod: '',
+        sortField: 'goods_type',
+        sortMethod: 'asc',
       };
       getGoodsList(params);
     }

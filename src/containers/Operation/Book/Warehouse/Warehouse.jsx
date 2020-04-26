@@ -48,13 +48,13 @@ class Warehouse extends Component {
             <div className={styles.warehouseDiv}>
               <div className={styles.warehouseTabs}>
                 <button
-                  onClick={() => {return this.warehouseFunc();}}
+                  onClick={() => { return this.warehouseFunc(); }}
                   className={type === 1 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   仓库
                 </button>
                 <button
-                  onClick={() => {return this.goodsFunc();}}
+                  onClick={() => { return this.goodsFunc(); }}
                   className={type === 2 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   物品

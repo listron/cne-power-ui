@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Form, Table} from 'antd';
+import { Form, Table } from 'antd';
 import moment from 'moment';
 import EditableCell from './EditableCell/EditableCell';
 import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseWrapTable.scss';
+import CneTable from '../../../../../Common/Power/CneTable';
 
 const defaultTime = 'YYYY-MM-DD HH:mm:ss';
 const EditableContext = React.createContext();
@@ -54,6 +55,7 @@ class WarehouseWrapTable extends Component {
 
   tableChange = (pagination, filter, sorter) => {// 点击表头 排序
     const { field, order } = sorter;
+    const { sortField, sortMethod } = this.props;
     const {
       getWarehouseList,
       warehouseName,
@@ -66,13 +68,21 @@ class WarehouseWrapTable extends Component {
       createTime: 'create_time',
       user: 'username',
     };
+
+    let newSortField = sortField, newSortMethod = 'asc';
+    if (!field || fieldData[field] === sortField) {
+      newSortMethod = sortMethod === 'asc' ? 'desc' : 'asc';
+    } else {
+      newSortField = fieldData[field];
+    }
+
     // 参数
     const params = {
       warehouseName,
       pageNum,
       pageSize,
-      sortField: field ? fieldData[field] : '',
-      sortMethod: order === 'ascend' ? (field ? 'asc' : '') : (field ? 'desc' : ''),
+      sortField: newSortField,
+      sortMethod: newSortMethod,
     };
     getWarehouseList(params);
   };
@@ -139,6 +149,8 @@ class WarehouseWrapTable extends Component {
         dataList: data,
       },
       warehouseListLoading,
+      sortField,
+      sortMethod,
     } = this.props;
     const { selectedRowKeys } = this.state;
     const components = {
@@ -164,48 +176,48 @@ class WarehouseWrapTable extends Component {
         dataIndex: 'warehouseName',
         sorter: true,
         editable: true,
-        render: (text) => <span title={text}>{text}</span>,
+        width: '24%',
+        render: (text) => <div title={text} className={styles.warehouseName}>{text}</div>,
       }, {
         title: '电站名称',
         dataIndex: 'stationName',
         editable: true,
-        render: (text) => <span className={styles.stationName} title={text}>{text}</span>,
+        width: '24%',
+        render: (text) => <div className={styles.stationName} title={text}>{text}</div>,
       }, {
         title: '创建时间',
         dataIndex: 'createTime',
         sorter: true,
-        render: (text) => <span title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</span>,
+        width: '20%',
+        textAlign: 'center',
+        render: (text) => <div title={moment(text).format(defaultTime)}>{moment(text).format(defaultTime)}</div>,
       }, {
         title: '创建人',
         dataIndex: 'user',
         sorter: true,
-        render: (text) => <span title={text}>{text}</span>,
+        width: '20%',
+        render: (text) => <div title={text} className={styles.user}>{text}</div>,
       },
     ];
     const totalColumns = warehouseHandleRight ? baseColumn.concat({
       title: '操作',
+      width: '12%',
       render: (text, record) => {
         const { editingKey } = this.state;
         const editable = this.isEditing(record);
         return (
-          <div>
+          <div className={styles.opearte}>
             {editable ?
               (<EditableContext.Consumer>
                 {form => {
-                  return (
-                    <a
-                      onClick={() => this.save(form, record.warehouseId)}
-                      style={{ marginRight: 8 }}>
-                      <span style={{marginRight: '4px'}} title="保存" className={'iconfont icon-doned'} />
-                    </a>
-                  );
+                  return <span title="保存" className={`iconfont icon-doned ${styles.save}`} onClick={() => this.save(form, record.warehouseId)} />;
                 }}
               </EditableContext.Consumer>)
-              : <a disabled={editingKey !== ''} onClick={() => this.edit(record.warehouseId)} ><span style={{ marginRight: '4px' }} title="编辑" className={'iconfont icon-edit'} /></a>
+              : <span title="编辑" className={`iconfont icon-edit ${editingKey !== '' && styles.disabled || styles.edit}`} onClick={() => this.edit(record.warehouseId)} />
             }
-            <span style={{cursor: 'pointer'}} title="删除" className="iconfont icon-del" onClick={() => this.deleteMode(record)} />
-        </div>
-      );
+            <span title="删除" className={`iconfont icon-del ${styles.del}`} onClick={() => this.deleteMode(record)} />
+          </div>
+        );
       },
     }) : baseColumn;
     const columns = totalColumns.map((col) => {
@@ -226,7 +238,7 @@ class WarehouseWrapTable extends Component {
     return (
       <div className={styles.warehouseWrapTable}>
         <EditableContext.Provider value={form}>
-          <Table
+          <CneTable
             loading={warehouseListLoading}
             dataSource={data}
             components={components}
@@ -235,7 +247,8 @@ class WarehouseWrapTable extends Component {
             pagination={false}
             rowKey={(record) => record.warehouseId || 'key'}
             onChange={this.tableChange}
-            locale={{emptyText: <img width="223" height="164" src="/img/nodata.png" alt="" />}}
+            sortField={{ 'warehouse_name': 'warehouseName', 'create_time': 'createTime', 'username': 'user' }[sortField]}
+            sortMethod={{ 'asc': 'ascend', 'desc': 'descend' }[sortMethod]}
           />
         </EditableContext.Provider>
       </div>

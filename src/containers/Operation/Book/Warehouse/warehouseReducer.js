@@ -9,8 +9,8 @@ const initState = Immutable.fromJS({
   },
   pageSize: 10,
   pageNum: 1,
-  sortField: '',
-  sortMethod: '',
+  sortField: 'create_time',
+  sortMethod: 'desc',
   goodsListLoading: true, // 物品列表loading
   warehouseListLoading: true, // 仓库列表loading
   warehouseAddLoading: false, // 仓库添加loading
