@@ -10,6 +10,7 @@ class ChartBar extends PureComponent {
   static propTypes = {
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
+    filterLoading: PropTypes.bool,
   };
 
   componentDidMount(){
@@ -22,8 +23,13 @@ class ChartBar extends PureComponent {
   componentWillReceiveProps(nextProps){
     const { analysisEvent } = this.props;
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const { eventAnalysisInfo } = nextProps;
+    const preLoading = this.props.filterLoading;
+    const { eventAnalysisInfo, filterLoading } = nextProps;
     const { eventCode } = analysisEvent;
+    const barChart = echarts.init(this.barRef);
+    if (filterLoading && !preLoading) {
+      barChart.showLoading('default', { text: '', color: '#199475' });
+    }
     if (eventAnalysisInfo !== preAnalysiInfo) {
       const { data = [], dataDays } = eventAnalysisInfo || {};
       this.drawChart(data, eventCode, dataDays);
@@ -31,18 +37,19 @@ class ChartBar extends PureComponent {
   }
 
   drawChart = (data = [], eventCode, dataDays) => {
-    const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
-      1: '100',
-      30: '75',
-    };
+    // const dataDay = { // 诊断事件阵列损耗、转换效率偏低事件默认展示7天数据，向前滚动30天
+    //   1: '100',
+    //   30: '75',
+    // };
+    echarts.dispose(this.barRef); // 重绘图形前需销毁实例。否则重绘失败。
     const barChart = echarts.init(this.barRef);
-    const xNames = [], baseData = [], theoryData = [], lineData = [];
-    const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
+    const xNames = [], baseData = [], theoryData = [], lineData = [], pointData = data;
+    // const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     data.forEach((e) => {
       xNames.push(moment(e.time).format('YYYY-MM-DD'));
       baseData.push(e.gen);
-      theoryData.push(e.theory_gen);
+      theoryData.push(e.theoryGen);
       lineData.push(e.diff);
     });
     const option = {
@@ -50,7 +57,7 @@ class ChartBar extends PureComponent {
         show: true,
         borderColor: '#d4d4d4',
         top: 0,
-        bottom: 104,
+        bottom: 80,
         left: '7%',
         right: '7%',
       },
@@ -170,23 +177,19 @@ class ChartBar extends PureComponent {
           type: 'bar',
           barWidth: 34,
           barGap: '-100%',
-          itemStyle: {
-            color: 'transparent',
-            borderWidth: 1,
-            borderColor: '#199475',
-            barBorderRadius: [2, 2, 0, 0],
-          },
-          emphasis: {
-            itemStyle: {
-              borderColor: '#ffc581',
-              borderWidth: 3,
-              shadowColor: '#f8e71c',
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowOffsetY: -4,
-            },
-          },
-          data: theoryData,
+          data: pointData.map(e => ({
+              value: e.theoryGen,
+              itemStyle: {
+                color: 'transparent',
+                borderWidth: e.isWarned ? 3 : 1,
+                borderColor: e.isWarned ? '#ffc581' : '#199475',
+                barBorderRadius: [2, 2, 0, 0],
+                shadowColor: e.isWarned ? '#f8e71c' :'#ffc581',
+                shadowBlur: e.isWarned ? 10 : 0,
+                shadowOffsetX: 0,
+                shadowOffsetY: e.isWarned ? -4 : 0,
+              },
+            })),
         }, {
           name: conversionEfficiency ? '转换效率(%)' : '方阵损耗(%)',
           type: 'line',
@@ -198,32 +201,31 @@ class ChartBar extends PureComponent {
         },
       ],
     };
-    if (data.length > 10) {
-      const handlerInfo = {
-        start: dataEvent ? dataDay[dataDays] : 0,
-        end: 100,
-        // zoomLock: true,
-      };
-      option.dataZoom = [
-        {
-          show: true,
-          height: 20,
-          bottom: 16,
-          ...handlerInfo,
-        }, {
-          type: 'inside',
-          ...handlerInfo,
-        },
-      ];
-    }
+
+    const handlerInfo = {
+      start: (data.length > 7) ? (100 - Math.floor(7 / data.length * 100)) : 0, // 页面默认显示7条数据，其他数据滑动显示
+      end: 100,
+    };
+    option.dataZoom = [
+      {
+        show: true,
+        height: 20,
+        bottom: 16,
+        ...handlerInfo,
+      }, {
+        type: 'inside',
+        ...handlerInfo,
+      },
+    ];
     barChart.clear();
     barChart.setOption(option);
   }
 
   render(){
+    const clientWidth = document.body.clientWidth;
     return (
       <div className={styles.analysisChart}>
-        <div style={{width: '100%', height: '560px'}} ref={(ref) => { this.barRef = ref; } } />
+        <div style={{width: '100%', height: clientWidth === 1440 ? '300px' : '400px'}} ref={(ref) => { this.barRef = ref; } } />
       </div>
     );
   }

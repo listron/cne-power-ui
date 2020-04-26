@@ -81,9 +81,12 @@
       }
     }
   }
+  // .detailContent{
+  //   min-height: 760px;
+  // }
   .spin{
     display: flex;
-    height: 655px;
+    min-height: 577px;
     justify-content: center;
     align-items: center;
   }
@@ -91,8 +94,9 @@
     padding: 0 30px;
     .searchText{ // 标题
       font-size:18px;
+      font-weight: bold;
     }
-    .searchParts{ // 日期
+    .searchParts, .dateCheck{ // 日期
       .forbidDay{
         cursor: not-allowed;
       }
@@ -165,6 +169,7 @@
     .searchText{
       height: 60px;
       line-height: 60px;
+      font-weight: bold;
     }
     .searchParts{
       height: 30px;
@@ -342,6 +347,75 @@
       }
     }
   }
+  .linkageContent{ // 表格
+    // margin-top: 9px;
+    .linkageTop{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      .titleLeft{
+        display: flex;
+        .titleText{
+          font-size:18px;
+          font-weight: bold;
+          margin: 0 23px 0 30px;
+        }
+      }
+      .titleRight{
+        display: flex;
+        margin-right: 16px;
+        .backBtn{
+          margin-right: 9px;
+          width: 162px;
+          height: 30px;
+          line-height: 26px;
+          border-radius:2px;
+          padding: 0 7px;
+          cursor: pointer;
+          i{
+            margin-right: 27px;
+          }
+        }
+      }
+      .titleLeft, .titleRight{
+        align-items: center;
+      }
+      :global{
+        .ant-radio-button-wrapper{
+          padding: 0 0px;
+          width: 66px;
+          text-align: center;
+          color: $themeColor;
+          border: 1px solid $themeColor;
+        }
+      }
+    }
+    .diagnoseTable{
+      .eventType, .pointValueDesc, .deviceTypeName, .beginTime, .statusName{
+        width: calc((100vw - 230px) * 0.166);
+      }
+      .eventTypeText, .pointValueDescText, .deviceTypeNameText, .beginTimeText, .statusNameText{
+        width: calc((100vw - 230px) * 0.166 - 20px);
+        @include overflowText();
+      }
+      .opreateText{
+        .suspendIcon{
+          margin: 0 38px;
+        }
+        .hideIcon{
+          visibility: hidden;
+        }
+        i{
+          font-size: 20px;
+        }
+      }
+      :global{
+        .ant-table-placeholder{
+          padding: 0 16px;
+        }
+      }
+    }
+  }
 }
 
 // 颜色部分。
@@ -388,7 +462,7 @@
     .searchText{
       color: #000;
     }
-    .searchParts{
+    .searchParts, .dateCheck{
       color: #353535;
       .forbidDay, .forbidDay:hover{
         background-color:#f1f1f1;
@@ -481,6 +555,32 @@
         .legendIcon{
           .legendRound{
             border: 1px solid #fff;
+          }
+        }
+      }
+    }
+  }
+  .linkageContent{
+    .linkageTop{
+      .titleRight{
+        .backBtn{
+          background:rgba(255,218,175,0.30);
+          border:1px solid #ff9900;
+          color: #ff9900;
+        }
+      }
+      :global{
+        .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+          color: #fff;
+        }
+      }
+    }
+    .diagnoseTable{
+      .opreateText{
+        i{
+          color: $themeColor;
+          &:hover{
+            color: #f9b600;
           }
         }
       }

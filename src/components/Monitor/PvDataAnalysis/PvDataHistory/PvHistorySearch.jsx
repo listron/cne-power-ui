@@ -191,6 +191,7 @@ class PvHistorySearch extends Component {
   selectTimeSpace = (interval) => { // 间隔时间选择
     const { queryParam, changeHistoryStore, recordedMinuteStart, recordedMinuteEnd, listParam, getChartHistory, getListHistory } = this.props;
     const { timeInterval, deviceFullCodes, startTime, endTime } = queryParam;
+    const startData = moment(startTime);
     const tmpQueryParam = {
       ...queryParam,
       deviceFullCodes: deviceFullCodes.slice(0, 2),
@@ -198,7 +199,7 @@ class PvHistorySearch extends Component {
     };
     if (interval === 10) { // 由秒级数据切换至10min数据
       const tmpEndTime = moment(endTime).subtract(1, 'M');
-      if (startTime.isBefore(tmpEndTime, 's')) {
+      if (startData.isBefore(tmpEndTime, 's')) {
         message.error('时间选择范围不可超过一个月');
         return;
       }
@@ -227,7 +228,7 @@ class PvHistorySearch extends Component {
     } else if (timeInterval === 2) { //由1min数据切换至秒级数据
       if (interval === 5) {
         const tmpEndTime = moment(endTime).subtract(1, 'd');
-        if (startTime.isBefore(tmpEndTime, 's')) {
+        if (startData.isBefore(tmpEndTime, 's')) {
           message.error('时间选择范围不可超过1天');
           return;
         }
@@ -259,15 +260,15 @@ class PvHistorySearch extends Component {
 
     } else if (timeInterval === 10) { // 10min数据切换至秒级数
       const tmpEndTime = interval === 5 ? moment(endTime).subtract(1, 'd') : moment(endTime).subtract(14, 'd');
-      if (startTime.isBefore(tmpEndTime, 's')) {
+      if (startData.isBefore(tmpEndTime, 's')) {
         message.error(`${interval === 5 ? '时间选择范围不可超过1天' : '时间选择范围不可超过14天'}`);
         return;
       }
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          // startTime: recordedMinuteStart,
+          // endTime: recordedMinuteEnd,
         },
         allHistory: {},
         partHistory: {},
@@ -275,8 +276,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          // startTime: recordedMinuteStart,
+          // endTime: recordedMinuteEnd,
         },
       });
       getListHistory({
@@ -287,7 +288,7 @@ class PvHistorySearch extends Component {
       });
     } else if (interval === 2) { // 由秒级数据切换到1分钟数据
       const tmpEndTime = moment(endTime).subtract(14, 'd');
-      if (startTime.isBefore(tmpEndTime, 's')) {
+      if (startData.isBefore(tmpEndTime, 's')) {
         message.error('时间选择范围不可超过14天');
         return;
       }
@@ -323,6 +324,7 @@ class PvHistorySearch extends Component {
     const { devicePoints } = queryParam;
     const tmpPayload = { queryParam: { ...queryParam, ...params } };
     const { startTime, endTime, timeInterval } = tmpPayload.queryParam;
+    const startData = moment(startTime);
     if (timeInterval === 10) {
       tmpPayload.recordedMinuteStart = startTime;
       tmpPayload.recordedMinuteEnd = endTime;
@@ -338,7 +340,7 @@ class PvHistorySearch extends Component {
       2: '时间选择范围不可超过14天',
       5: '时间选择范围不可超过1天',
     };
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+    if (startData.isBefore(tmpAllowedEnd, 's')) {
       message.error(tmpText[timeInterval]);
       changeHistoryStore(tmpPayload);
     } else if (devicePoints.length > 0) { // 已选择测点 - 重新请求数据

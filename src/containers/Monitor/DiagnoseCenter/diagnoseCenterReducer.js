@@ -8,6 +8,7 @@ const diagnoseCenterAction = {
   stopCircleQueryList: Symbol('stopCircleQueryList'),
   getEventsAnalysis: Symbol('getEventsAnalysis'),
   editEventsStatus: Symbol('editEventsStatus'),
+  getLinkageList: Symbol('getLinkageList'),
 
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -54,6 +55,17 @@ const initState = {
   isNoDataTip: false, // 线型图页-所选周期无数据时弹出提示语
   isCycleTip: false, // 线型图页-点击选择框时无数据弹提示语
   isDataTip: false, // 线型图页-点击选择日期时无数据弹提示语
+  isMoreData: false, // 显示联动表格跳转后的数据时，不跳向其他页面
+  linkageListLoading: false, // 线型图-联动决策表格loading
+  linkageListError: false, // 线型图-联动决策表格loading
+  linkageListData: [], // 线型图-联动决策表格数据
+  oldAnalysisEvent: {}, // 最初选中的事件信息
+  interval: null, // 最初选中的事件时间间隔
+  filterLoading: false, // 切换时间或者数据间隔时加载echarts图
+  isChartLoading: false, // 联动决策返回原线型图数据时加载echarts图
+  isBackEvent: false, // 显示原来的事件详情信息
+  linkagePage: '', // 联动决策返回原测点数据时的事件
+  diagWarningId: '', // 事件的告警记录Id
 };
 
 const diagnoseCenter = (state = initState, action) => {

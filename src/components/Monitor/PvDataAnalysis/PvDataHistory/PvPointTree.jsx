@@ -38,35 +38,43 @@ class PvPointTree extends Component {
       this.setState({
         expandedKeys: [],
       });
+      const { devicePoints } = searchUtil(search).parse();
+
       if (search) {
-        const { devicePoints } = searchUtil(search).parse();
-        const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
-        const devicePointCodes = filterPoint.map(e => e.devicePointId);
-        if (filterPoint.length === 0) {
+        if (devicePoints) {
+          const filterPoint = pointInfo.filter(e => devicePoints.indexOf(e.devicePointCode) !== -1); // 诊断中心传来的devicePointId,筛选出相同的devicePointId数组
+          const devicePointCodes = filterPoint.map(e => e.devicePointId);
+          if (filterPoint.length === 0) {
+            this.setState({ isNoDataTip: true });
+            setTimeout(() => {
+              this.setState({ isNoDataTip: false });
+            }, 3000);
+          }
+          changeHistoryStore({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+          });
+          getChartHistory({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+           });
+          getListHistory({
+            queryParam: {
+              ...queryParam,
+              devicePoints: devicePointCodes,
+            },
+            listParam,
+          });
+        }else{
           this.setState({ isNoDataTip: true });
           setTimeout(() => {
             this.setState({ isNoDataTip: false });
           }, 3000);
         }
-        changeHistoryStore({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-        });
-        getChartHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-         });
-        getListHistory({
-          queryParam: {
-            ...queryParam,
-            devicePoints: devicePointCodes,
-          },
-          listParam,
-        });
       }
     }
   }
@@ -105,6 +113,7 @@ class PvPointTree extends Component {
     });
     const { queryParam, listParam, getChartHistory, getListHistory, changeHistoryStore } = this.props;
     const { startTime, endTime, timeInterval } = queryParam;
+    const startData = moment(startTime);
     const newQueryParam = {
       ...queryParam,
       devicePoints: selectedKeys,
@@ -120,7 +129,7 @@ class PvPointTree extends Component {
       2: '时间选择范围不可超过14天',
       5: '时间选择范围不可超过1天',
     };
-    if (startTime.isBefore(tmpAllowedEnd, 's')) {
+    if (startData.isBefore(tmpAllowedEnd, 's')) {
       message.error(tmpText[timeInterval]);
       changeHistoryStore({
         queryParam: newQueryParam,

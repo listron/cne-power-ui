@@ -25,6 +25,7 @@ class DiagnoseList extends Component {
     changeStore: PropTypes.func,
     getDiagnoseList: PropTypes.func,
     editEventsStatus: PropTypes.func,
+    getLinkageList: PropTypes.func,
   }
 
   state = {
@@ -38,8 +39,10 @@ class DiagnoseList extends Component {
     deviceTypeName: 'deviceTypeName',
     deviceName: 'deviceName',
     beginTime: 'beginTime',
+    updateTime: 'updateTime',
     warningDuration: 'duration',
-    warningFrequency: 'frequency',
+    // warningFrequency: 'frequency',
+    warningFrequencyRate: 'frequencyRate',
     statusName: 'eventStatus',
     stationName: 'stationName',
   };
@@ -51,7 +54,10 @@ class DiagnoseList extends Component {
     deviceName: 'deviceName',
     beginTime: 'beginTime',
     duration: 'warningDuration',
-    frequency: 'warningFrequency',
+    // frequency: 'warningFrequency',
+    updateTime: 'updateTime',
+    frequencyRate: 'warningFrequencyRate',
+    alarmFrequency: 'alarmFrequency',
     eventStatus: 'statusName',
     stationName: 'stationName',
   };
@@ -81,9 +87,12 @@ class DiagnoseList extends Component {
     const eventCode = record.eventCode;
     const { pageKey } = this.props;
     const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
+    const diagWarningId = record.diagWarningId;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
     // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
+    this.props.changeStore({oldAnalysisEvent: record, interval, linkagePage: pageKey, diagWarningId});
     this.props.getEventsAnalysis({ ...record, interval });
+    this.props.getLinkageList({diagWarningId});
   }
 
   toDefect = (record) => {
