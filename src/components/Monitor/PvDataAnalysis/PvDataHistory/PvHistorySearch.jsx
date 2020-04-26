@@ -267,8 +267,8 @@ class PvHistorySearch extends Component {
       changeHistoryStore({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          // startTime: recordedMinuteStart,
+          // endTime: recordedMinuteEnd,
         },
         allHistory: {},
         partHistory: {},
@@ -276,8 +276,8 @@ class PvHistorySearch extends Component {
       getChartHistory({
         queryParam: {
           ...tmpQueryParam,
-          startTime: recordedMinuteStart,
-          endTime: recordedMinuteEnd,
+          // startTime: recordedMinuteStart,
+          // endTime: recordedMinuteEnd,
         },
       });
       getListHistory({

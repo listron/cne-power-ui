@@ -600,6 +600,7 @@ export default {
       getDiagnoseList: '/v4/diag/warning', // 获取诊断中心事件列表
       getEventsAnalysis: '/v4/diag/warning/analysis', // 诊断中心事件分析
       editEventsStatus: '/v4/diag/warning', // 忽略 删除 事件
+      getLinkageList: '/v4/diag/warning/relevant', //	获取多故障联动告警列表
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码
