@@ -502,9 +502,36 @@
   .deviceTypeCont {
     padding: 7px 13px;
     line-height: 30px;
+    :global {
+      .ant-radio-group {
+        width: 100%;
+      }
+    }
+    .radioBox {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .modeVersion {
+      display: flex;
+      height: 30px;
+      width: 122px;
+      margin-right: 20px;
+      .iconBox{
+        margin-top: -4px;
+        :global {
+          .iconfont {
+            color: #4d90fd;
+            &:hover {
+              color: #f9b600;
+            }
+          }
+        }
+      }
+    }
     .version {
       @include overflowText();
-      width: 124px;
+      max-width: 120px;
+      margin-right: 0;
     }
   }
   .footer {
