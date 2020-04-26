@@ -397,7 +397,7 @@ const menuData = [
             name: '分析报告',
             path: 'analysisReport',
             defaultPath: true,
-            rightKey: 'statistics_report_dailyQuery',
+            rightKey: 'statistics_report_analysisReport',
           },
         ],
       }, {
