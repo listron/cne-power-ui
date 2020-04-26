@@ -153,7 +153,6 @@
   }
 
   .projectCompany,
-  .childName,
   .mainName,
   .workMajor {
     word-break: break-all;
@@ -162,7 +161,9 @@
   }
 
   .childName{
-    padding: 0 10px;
+    word-break: break-all;
+    min-width: 80px;
+    @include maxWidth();
   }
 
   .stationName {

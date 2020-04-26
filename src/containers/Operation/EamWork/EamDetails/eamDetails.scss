@@ -446,6 +446,10 @@
       }
 
       :global {
+        .icon-rightarr {
+          font-size: 14px;
+        }
+
         .ant-table-placeholder {
           border: 1px solid $borderColor;
           color: #353535;
