@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Form, Button, Upload, message, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 
@@ -112,13 +113,13 @@ class ImportIntelligent extends Component {
                   beforeUpload={this.beforeUploadStation}
                   fileList={fileList}
                 >
-                  <Button type="primary"><Icon type="upload" />选择文件上传</Button>
+                  <CneButton><Icon type="upload" />选择文件上传</CneButton>
                   <span> 支持xlsx文件</span>
                 </Upload>
               )}
             </FormItem>
             <FormItem wrapperCol={{ offset: 8 }} >
-              <Button type="primary" htmlType="submit" onClick={this.handleSubmit} disabled={fileList.length === 0}>确认导入</Button>
+              <CneButton htmlType="submit" onClick={this.handleSubmit} disabled={fileList.length === 0}>确认导入</CneButton>
             </FormItem>
           </Form>
         </Modal>

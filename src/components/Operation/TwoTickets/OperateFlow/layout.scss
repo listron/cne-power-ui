@@ -11,6 +11,20 @@
     .selectCondition {
       display: flex;
       justify-content: space-between;
+      .workflow {
+        z-index: 0;
+        margin-left: 0px;
+        margin-right: 12px;
+        display: flex;
+        padding: 0 15px 0 6px;
+        .icon {
+          margin: 0 10px 0 0;
+        }
+      }
+      .cbtn {
+        z-index: 0;
+        margin-right: 12px;
+      }
     }
     .commonButton {
       cursor: pointer;
@@ -98,6 +112,24 @@
       margin-right: 16px;
       > span:first-child {
         margin-right: 28px;
+      }
+    }
+    :global {
+      .ant-radio-group {
+        .ant-radio-button-wrapper {
+          color: #199475;
+          border: 1px solid #199475;
+          &:first-child {
+              border: 1px solid #199475;
+          }
+          &:hover {
+              background-color: #ceebe0;
+          }
+          &.ant-radio-button-wrapper-checked {
+              background-color: #199475;
+              color: #fff;
+          }
+        }
       }
     }
   }

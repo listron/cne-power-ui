@@ -12,6 +12,7 @@ import Obsolete from '../Common/HandleForm/Obsolete';
 import CneTable from '@components/Common/Power/CneTable';
 import { handleRights, handleRight } from '@utils/utilFunc';
 import Cookie from 'js-cookie';
+import CneButton from '@components/Common/Power/CneButton';
 
 class TableList extends Component {
     static propTypes = {
@@ -327,16 +328,20 @@ class TableList extends Component {
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        {addRight && <Button type="add" onClick={this.addWorkFlow}><i>+</i>操作票 </Button>}
-                        {handleRight && <div className={`${styles.commonButton} ${!review && styles.disabled}`}
-                            onClick={() => { this.handleBatch('review'); }}>审核</div>}
+                        {addRight && <CneButton className={styles.workflow} onClick={this.addWorkFlow}>
+                            <div className={styles.icon}>
+                                <span className={'iconfont icon-newbuilt'} />
+                            </div> 工作票
+                        </CneButton>}
+                        {handleRight && <CneButton  className={styles.cbtn} disabled={!review}
+                            onClick={() => { this.handleBatch('review'); }}>审核</CneButton>}
                         {handleRight && stopRight.map((e) => {
                             if (e.nodeName) {
                                 return (
-                                    <div className={`${styles.commonButton} ${!obsolete && styles.disabled}`}
+                                    <CneButton className={styles.cbtn} disabled={!obsolete}
                                         onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                         {e.nodeName}
-                                    </div>
+                                    </CneButton>
                                 );
                             }
                         })}

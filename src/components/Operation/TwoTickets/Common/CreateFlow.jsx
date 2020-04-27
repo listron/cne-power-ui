@@ -7,6 +7,7 @@ import InputLimit from '../../../Common/InputLimit/index';
 import ImgUploader from '../../../Common/Uploader/ImgUploader';
 import pathConfig from '../../../../constants/path';
 import DefectLIst from './DefectLIst';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -217,8 +218,8 @@ class CreateFlow extends Component {
             }
           </React.Fragment>
           <div className={styles.actionBar}>
-            <Button className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</Button>
-            {!reject && <Button onClick={() => this.onDefectCreate(true)}>保存并继续添加</Button>}
+            <CneButton className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</CneButton>
+            {!reject && <CneButton onClick={() => this.onDefectCreate(true)}>保存并继续添加</CneButton>}
           </div>
         </Form>
       </div>

@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceMode.scss';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
-import { Button, Table, Form, Input, Icon, Modal, Select } from 'antd';
+import { Table, Form, Input, Icon, Modal, Select } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -107,7 +108,7 @@ class EditMode extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
+            <CneButton onClick={this.confirmForm} className={styles.nextButton}>确定</CneButton>
           </Form>
 
         </Modal>

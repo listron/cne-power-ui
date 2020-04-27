@@ -55,35 +55,12 @@
     button{
       margin-right: 8px;
     }
-    .enterWarehouse{ // 入库
-      width: 70px;
-      height: 32px;
-      border-radius: 2px;
-      border: 1px solid $themeColor;
-      background-color: #fff;
-      cursor: pointer;
+
+    .enterWarehouse {
       display: flex;
-      align-items: center;
-      .plus, .text{
-        line-height: 30px;
-      }
-      .plus{
-        background-color: $themeColor;
-        color: #fff;
-        flex: 0 0 28px;
-        &:focus{
-          outline-width: 0;
-        }
-      }
-      .text{
-        color: $themeColor;
-        flex: 1; 
-        &:focus{
-          outline-width: 0;
-        }
-      }
-      &:focus{
-        outline-width: 0;
+      padding: 0 15px 0 6px;
+      .icon {
+        margin: 0 10px 0 0;
       }
     }
   }

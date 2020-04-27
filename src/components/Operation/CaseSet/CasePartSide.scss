@@ -174,18 +174,6 @@
 
         }
       }
-
-      .uploadBtn,
-      .submitBtn,
-      .keepOnAdd {
-        border-color: $themeColor;
-        color: $themeColor;
-
-        &:hover {
-          background: $themeColor;
-          color: #fff;
-        }
-      }
     }
   }
 

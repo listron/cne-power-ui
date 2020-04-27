@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, Button, Select, Icon } from 'antd';
 import styles from './intelligentExpert.scss';
 import FilterCondition from '../../Common/FilterConditions/FilterCondition';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { Option } = Select;
 
@@ -170,7 +171,7 @@ class IntelligentSearch extends Component {
           >
             {usernames && usernames.map(e => <Option key={e} value={e}>{e}</Option>)}
           </Select>
-          <Button onClick={this.onSearch}>查询</Button>
+          <CneButton onClick={this.onSearch}>查询</CneButton>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
         </div>
       </div>

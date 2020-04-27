@@ -5,6 +5,7 @@ import moment from 'moment';
 import styles from './intelligentExpert.scss';
 import path from '../../../constants/path';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class ShowIntelligent extends Component {
   static propTypes = {
@@ -76,7 +77,7 @@ class ShowIntelligent extends Component {
         <div className={styles.titleTop}>
           <span className={styles.text}>查看解决方案</span>
           <div className={styles.titleRight}>
-            {editRight && <Button onClick={this.editBtn} className={styles.editBtn}>编辑</Button>}
+            {editRight && <CneButton onClick={this.editBtn} className={styles.editBtn}>编辑</CneButton>}
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
           </div>
         </div>
@@ -146,8 +147,8 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             {intelligentDetail.liked === 0 &&
-              <Button className={styles.likeBtn} onClick={this.likeBtn} type="primary">点赞<Icon type="like" /></Button> ||
-              <Button className={styles.likedBtn} disabled>已点赞</Button>}
+              <CneButton className={styles.likeBtn} onClick={this.likeBtn} type="primary">点赞<Icon type="like" /></CneButton> ||
+              <CneButton className={styles.likedBtn} disabled>已点赞</CneButton>}
           </div>
         </div>
       </div>

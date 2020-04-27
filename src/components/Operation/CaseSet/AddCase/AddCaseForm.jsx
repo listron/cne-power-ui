@@ -7,6 +7,7 @@ import StationSelect from '../../../Common/StationSelect/index';
 import AutoSelect from '../../../Common/AutoSelect';
 import WarningTip from '../../../Common/WarningTip';
 import path from '../../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -299,7 +300,7 @@ class AddCaseForm extends React.Component {
                 fileList={initFileList}
                 onPreview={this.onPreview}
               >
-                <Button> <Icon type="upload" /> 选择文件上传</Button>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
+                <CneButton> <Icon type="upload" /> 选择文件上传</CneButton>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
               </Upload>
             )}
           </FormItem>
@@ -314,11 +315,11 @@ class AddCaseForm extends React.Component {
             </div>
           }
           {showPage === 'add' && <div className={styles.submitStyle}>
-            <Button onClick={this.addsubmitForm} className={styles.submitBtn}>保存</Button>
-            <Button onClick={this.keepOnAdd} className={styles.keepOnAdd} >保存并继续添加</Button>
+            <CneButton onClick={this.addsubmitForm} className={styles.submitBtn}>保存</CneButton>
+            <CneButton onClick={this.keepOnAdd} className={styles.keepOnAdd} >保存并继续添加</CneButton>
           </div>}
           {showPage === 'edit' && <div className={styles.submitStyle}>
-            <Button onClick={this.editsubmitForm} className={styles.submitBtn} >保存</Button>
+            <CneButton onClick={this.editsubmitForm} className={styles.submitBtn} >保存</CneButton>
           </div>}
         </Form>
       </div>

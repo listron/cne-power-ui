@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Select, Button } from 'antd';
+import { Select } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
@@ -130,12 +131,12 @@ class ConditionSearch extends Component {
             ))}
           </Select>}
         </div>
-        {warehouseHandleRight && <Button
+        {warehouseHandleRight && <CneButton
           className={styles.export}
           disabled={!selectedWarehouse || stocksList.length === 0}
           onClick={this.exportStock}
           loading={exportInfoLoading}
-        >导出</Button>}
+        >导出</CneButton>}
       </div>
     );
   }

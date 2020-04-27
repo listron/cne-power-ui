@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
 import FilterCondition from '../../../components/Common/FilterConditions/FilterCondition';
 import { Input, Button, Select, Icon } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 class CaseSearch extends React.Component {
   static propTypes = {
@@ -178,7 +179,7 @@ class CaseSearch extends React.Component {
               return <Option key={e.userId} value={e.userId}>{e.userName}</Option>;
             })}
           </Select>
-          <Button className={styles.searchBtn} onClick={this.onSearch}>查询</Button>
+          <CneButton className={styles.searchBtn} onClick={this.onSearch}>查询</CneButton>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
         </div>
 

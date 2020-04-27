@@ -6,6 +6,7 @@ import { Icon, Button } from 'antd';
 import WarningTip from '../../../../components/Common/WarningTip';
 import path from '../../../../constants/path';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const { originUri } = path.basePaths;
 class DetailCase extends React.Component {
   static propTypes = {
@@ -114,7 +115,7 @@ class DetailCase extends React.Component {
           <div className={styles.pageTop}>
             <div className={styles.pageTopLeft}>
               <span className={styles.text}>查看案例集</span>
-              {caseHandleRight && <Button type="primary" onClick={this.showEditPage} >编辑</Button>}
+              {caseHandleRight && <CneButton onClick={this.showEditPage} >编辑</CneButton>}
             </div>
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
           </div>
@@ -151,9 +152,9 @@ class DetailCase extends React.Component {
               <div className={styles.infoName}></div>
               <div className={styles.infoValue} >
                 {likeCount === 0 ?
-                  <Button type="primary" style={{ width: '200px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></Button>
+                  <CneButton style={{ width: '200px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton>
                   :
-                  <Button style={{ width: '200px' }} disabled>已点赞<Icon type="like" /></Button>
+                  <CneButton style={{ width: '200px' }} disabled>已点赞<Icon type="like" /></CneButton>
                 }
               </div>
             </div>

@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import styles from './deviceMode.scss';
 import EditMode from './EditMode';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
-import { Button, Form, Input, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import Pagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -309,7 +310,7 @@ class DeviceMode extends React.Component {
                   </Select>
                 )}
               </FormItem>
-              <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
+              <CneButton className={styles.addButton} onClick={this.submitForm}>添加</CneButton>
             </Form>
           </div>
 

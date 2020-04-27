@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Table, Button, Icon } from 'antd';
+import { Modal, Table, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import CommonPagination from '../../../../Common/CommonPagination';
 import { dataFormats } from '../../../../../utils/utilFunc';
 import styles from './manageCommon.scss';
 import CneTable from '../../../../Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 
 export default class MaterialDetailsList extends Component {
 
@@ -193,8 +194,8 @@ export default class MaterialDetailsList extends Component {
               locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
             />
             <div className={styles.handle}>
-              <Button onClick={this.reset} className={styles.reset}>重置</Button>
-              <Button onClick={this.confirm} className={styles.confirm}>确认选择</Button>
+              <CneButton onClick={this.reset} className={styles.reset}>重置</CneButton>
+              <CneButton onClick={this.confirm} className={styles.confirm}>确认选择</CneButton>
             </div>
           </div>
         </Modal>

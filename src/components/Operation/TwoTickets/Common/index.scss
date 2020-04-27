@@ -72,17 +72,9 @@
     .actionBar {
       margin-left: 88px;
       .saveBtn {
-        border-color: $themeColor;
-        color: $themeColor;
         margin-right: 20px;
       }
-      button {
-        &:hover {
-          background-color: $themeColor;
-          box-shadow:0 2px 8px 0 rgba(0,0,0,0.20);
-          color: #fff;
-        }
-      }
+
     }
     .basicItem {
       display: flex;

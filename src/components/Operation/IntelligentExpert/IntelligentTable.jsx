@@ -9,6 +9,7 @@ import WarningTip from '../../Common/WarningTip';
 import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class IntelligentTable extends Component {
   static propTypes = {
@@ -282,10 +283,14 @@ class IntelligentTable extends Component {
           <div className={styles.leftPart}>
             {editRight &&
               <React.Fragment>
-                <Button className={styles.addHandler} type="add" onClick={this.addIntelligent}><i>+</i>添加</Button>
-                <Button className={styles.deleteHandler} type="reset" onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</Button>
-                <Button className={styles.importHandler} type="primary" onClick={this.showModal}>批量导入</Button>
-                <Button className={styles.exportHandler} type="primary" onClick={this.downLoad} loading={templateLoading}>下载导入模板</Button>
+                <CneButton className={styles.addHandler} onClick={this.addIntelligent}>
+                  <div className={styles.icon}>
+                      <span className={'iconfont icon-newbuilt'} />
+                  </div> 添加
+                </CneButton>
+                <CneButton className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</CneButton>
+                <CneButton className={styles.importHandler} onClick={this.showModal}>批量导入</CneButton>
+                <CneButton className={styles.exportHandler} onClick={this.downLoad} loading={templateLoading}>下载导入模板</CneButton>
               </React.Fragment>
             }
           </div>

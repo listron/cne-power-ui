@@ -15,12 +15,6 @@
   }
   .searchRight{
     .inImportBtn{
-      color: $themeColor;
-      border: 1px solid $themeColor;
-    }
-    .inImportBtn:hover{
-      background-color: $themeColor;
-      color: #fff;
     }
   }
 }
@@ -30,6 +24,25 @@
     display: flex;
     justify-content: space-between;
     margin:0 0 15px 34px;
+
+    :global {
+      .ant-radio-group {
+        .ant-radio-button-wrapper {
+          color: #199475;
+          border: 1px solid #199475;
+          &:first-child {
+              border: 1px solid #199475;
+          }
+          &:hover {
+              background-color: #ceebe0;
+          }
+          &.ant-radio-button-wrapper-checked {
+              background-color: #199475;
+              color: #fff;
+          }
+        }
+      }
+    }
   }
   
 }

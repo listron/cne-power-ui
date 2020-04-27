@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './CasePartContainer.scss';
 import path from '../../../constants/path';
-import { Button } from 'antd';
 import CommonPagination from '../../../components/Common/CommonPagination';
 import WarningTip from '../../../components/Common/WarningTip';
 import UploadModal from './UploadModal';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const { originUri } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -113,20 +113,21 @@ class CaseHandle extends React.Component {
       <div className={styles.caseHandle}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         {caseHandleRight ? <div className={styles.leftHandler}>
-          <Button onClick={this.showAddPage} className={styles.addButton}>
-            <span className={styles.plus}>+</span>
-            <span className={styles.name}>{'添加'}</span>
-          </Button>
-          <Button type="primary" disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </Button>
-          <Button className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </Button>
+          <CneButton className={styles.addButton} onClick={this.showAddPage}>
+            <div className={styles.icon}>
+                <span className={'iconfont icon-newbuilt'} />
+            </div> 添加
+          </CneButton>
+          <CneButton disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </CneButton>
+          <CneButton className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </CneButton>
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
-          <Button
+          <CneButton
             className={styles.downloadStyle}
             href={downloadTemplet}
             download={downloadTemplet}
             target="_blank"
           >模板下载
-          </Button>
+          </CneButton>
 
         </div> : <div />}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />

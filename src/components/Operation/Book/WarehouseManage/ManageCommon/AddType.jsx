@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Select, Input, Button, Modal } from 'antd';
+import { Form, Select, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -127,15 +128,15 @@ class AddType extends Component {
             </FormItem>
             <div className={styles.confirmRow}>
               <span className={styles.holder} />
-              <Button
+              <CneButton
                 className={styles.save}
                 onClick={this.save}
                 loading={saveMode === 'once' && addTypeStatus === 'loading'}
-              >保存</Button>
-              <Button
+              >保存</CneButton>
+              <CneButton
                 onClick={this.saveContinue}
                 loading={saveMode === 'more' && addTypeStatus === 'loading'}
-              >保存并继续添加</Button>
+              >保存并继续添加</CneButton>
             </div>
           </Form>
         </Modal>}

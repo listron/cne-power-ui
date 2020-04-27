@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Icon, Form, Select, Button, Input } from 'antd';
+import { Icon, Form, Select, Input } from 'antd';
 import PropTypes from 'prop-types';
 import MaterialDetailsList from './ManageCommon/MaterialDetailsList';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -133,7 +134,7 @@ class MaterialTakeout extends Component {
         </Form>
         <div className={styles.handlePart}>
           <span className={styles.holder} />
-          <Button onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</Button>
+          <CneButton onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</CneButton>
         </div>
       </section>
     );

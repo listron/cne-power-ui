@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './deviceFactory.scss';
 import AssetNodeSelect from '../../../../Common/AssetNodeSelect';
-import { Button, Table, Form, Input, Icon, Modal } from 'antd';
+import { Table, Form, Input, Icon, Modal } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 class EditFactors extends React.Component {
@@ -71,7 +72,7 @@ class EditFactors extends React.Component {
                 <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={queryDataType} multiple={true} assetsIds={{ pv, wind }} handleEnterprisecodes={handleEnterprisecodes} />
               )}
             </FormItem>
-            <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
+            <CneButton onClick={this.confirmForm} className={styles.nextButton}>确定</CneButton>
           </Form>
 
         </Modal>

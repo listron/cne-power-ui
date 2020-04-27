@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './assetStructure.scss';
 import WarningTip from '../../../../Common/WarningTip';
 
-import { Button, Input, Form, Icon, Select, InputLimit, TreeSelect, message } from 'antd';
+import { Input, Form, Icon, Select, InputLimit, TreeSelect, message } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -155,7 +156,7 @@ class AddNodeFrom extends React.Component {
                   <Input placeholder="6字以内" />
                 )}
               </FormItem>
-              <Button className={styles.saveStyle} onClick={this.submitForm} >添加</Button>
+              <CneButton className={styles.saveStyle} onClick={this.submitForm} >添加</CneButton>
 
             </Form>
 

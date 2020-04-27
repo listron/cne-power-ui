@@ -19,6 +19,7 @@
       height: 30px;
       line-height: 30px;
       text-align: center;
+      color: #fff;
     }
 
     .pv,
@@ -27,8 +28,11 @@
       height: 30px;
       line-height: 30px;
       text-align: center;
-      border: 1px solid #d9d9d9;
-      color: #353535;
+      border: 1px solid #199475;
+      color: #199475;
+      &:hover {
+        background-color: #ceebe0;
+      }
     }
 
     .pv,
@@ -71,70 +75,13 @@
         }
       }
 
-      .plusButton,
-      .disabledStyle {
+      .plusButton {
+        display: flex;
         width: 104px;
-        padding: 0;
-        font-size: 0;
         margin: 8px 0;
-
-        i {
-          vertical-align: top;
-          font-size: 14px;
-
-        }
-
-        span {
-          background-color: #fff;
-          color: $themeColor;
-          border-radius: 0 2px 2px 0;
-          display: inline-block;
-          font-size: 14px;
-          line-height: 30px;
-          margin: 0px;
-          padding-right: 4px
-        }
-
-        :global {
-          .anticon-plus {
-            color: #fff;
-            height: 100%;
-            border-radius: 2px 0 0 2px;
-            width: 28px;
-            text-align: center;
-            line-height: 30px;
-            background-color: $themeColor;
-          }
-
-          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-            margin-left: 0px;
-            width: 28px;
-            color: $darkColor;
-          }
-        }
-      }
-
-      .plusButton:hover {
-        border-radius: 6px;
-
-        span {
-          background-color: $themeColor;
-          color: #fff;
-        }
-      }
-
-      .disabledStyle {
-        span {
-          background-color: #f8f8f8;
-          color: #999;
-        }
-
-        :global {
-          .anticon-plus {
-            color: #999;
-            background-color: #d4d4d4;
-          }
-
+        padding: 0 15px 0 6px;
+        .icon {
+          margin: 0 10px 0 0;
         }
       }
 

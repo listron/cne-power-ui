@@ -8,6 +8,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import { handleRight } from '@utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { TreeNode } = Tree;
 class AssetStructure extends React.Component {
@@ -222,12 +223,15 @@ class AssetStructure extends React.Component {
             </Tree>
           </div>
           <div className={styles.rightNode}>
-            {operateRight && <Button
+            {operateRight && <CneButton
               onClick={this.addDevice}
-              className={addNode ? styles.disabledStyle : styles.plusButton}
-              icon="plus"
+              className={styles.plusButton}
               disabled={addNode}
-            >添加子节点</Button>}
+            >
+              <div className={styles.icon}>
+                <span className={'iconfont icon-newbuilt'} />
+              </div> 添加
+            </CneButton>}
             {
               addNode && <AddNodeFrom {...this.props} closeFrom={this.closeAddFrom} />
             }

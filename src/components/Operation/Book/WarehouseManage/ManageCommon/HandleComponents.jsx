@@ -1,13 +1,14 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button, Modal, Input } from 'antd';
+import { Icon, Modal, Input } from 'antd';
 import ImportFile from './ImportFile';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarningTip from '../../../../Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
 import styles from './manageCommon.scss';
 import path from '../../../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
@@ -127,31 +128,18 @@ export default class HandleComponent extends Component {
     return (
       <div className={styles.handleRow}>
         {warehouseHandleRight ? <div className={styles.leftHandler}>
-          <button
-            className={styles.enterWarehouse}
-            onClick={this.toInsert}
-            disabled={insertDisable}
-            style={{
-              cursor: insertDisable ? 'not-allowed' : 'pointer',
-              borderColor: insertDisable ? '#d4d4d4' : '#199475',
-            }}
-          >
-            <Icon type="plus"
-              className={styles.plus}
-              style={{ backgroundColor: insertDisable ? '#d4d4d4' : '#199475' }}
-            />
-            <span
-              className={styles.text}
-              style={{ color: insertDisable ? '#d4d4d4' : '#353535' }}
-            >入库</span>
-          </button>
-          <Button disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</Button>
-          {tabName === 'spares' && <Button
+          <CneButton className={styles.enterWarehouse} onClick={this.toInsert} disabled={insertDisable}>
+            <div className={styles.icon}>
+                <span className={'iconfont icon-newbuilt'} />
+            </div> 入库
+          </CneButton>
+          <CneButton disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</CneButton>
+          {tabName === 'spares' && <CneButton
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
-          >设置阈值</Button>}
-          <Button onClick={this.toImport}>导入</Button>
-          <Button onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</Button>
+          >设置阈值</CneButton>}
+          <CneButton onClick={this.toImport}>导入</CneButton>
+          <CneButton onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</CneButton>
         </div> : <div />}
         <CommonPagination
           total={totalCount}
@@ -175,11 +163,11 @@ export default class HandleComponent extends Component {
             </div>
             <div className={styles.savePart}>
               <span className={styles.holder} />
-              <Button
+              <CneButton
                 onClick={this.saveStockMax}
                 disabled={isNaN(stockMaxValue) || !stockMaxValue}
                 loading={maxSettingLoading}
-              >保存</Button>
+              >保存</CneButton>
             </div>
           </div>
         </Modal>

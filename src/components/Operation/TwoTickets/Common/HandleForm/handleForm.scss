@@ -45,8 +45,21 @@
         display: flex;
       }
     }
-    .ant-radio-button-wrapper {
-      padding: 0 8px;
+    .ant-radio-group {
+      .ant-radio-button-wrapper {
+        color: #199475;
+        border: 1px solid #199475;
+        &:first-child {
+            border: 1px solid #199475;
+        }
+        &:hover {
+            background-color: #ceebe0;
+        }
+        &.ant-radio-button-wrapper-checked {
+            background-color: #199475;
+            color: #fff;
+        }
+      }
     }
   }
   .addImg {
@@ -86,7 +99,19 @@
     margin-left: 88px;
     .cancelBtn {
       margin-right: 10px;
+      background-color: transparent;
+      color: #666;
       border: none;
+      &::after {
+        transition: none;
+      }
+
+      &:hover {
+        &::after {
+          background-color: transparent;
+        }
+        color: #199475;
+      }
     }
     button {
       width: 98px;
@@ -118,12 +143,9 @@
   }
   .actionBar {
     .cancelBtn {
-      background-color: #f1f1f1;
-    }
-    button {
+      background-color: transparent;
       &:hover {
-        background-color: $themeColor;
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: none;
         color: #fff;
       }
     }

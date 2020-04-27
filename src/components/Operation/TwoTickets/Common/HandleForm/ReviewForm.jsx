@@ -4,6 +4,7 @@ import styles from './handleForm.scss';
 import moment from 'moment';
 import { Form, DatePicker, Button, Radio } from 'antd';
 import InputLimit from '../../../../Common/InputLimit/index';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -91,8 +92,8 @@ class DefectReviewForm extends Component {
           </FormItem>
         )}
         <div className={styles.actionBar}>
-          <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <CneButton className={styles.cancelBtn} onClick={this.onReset}>重置</CneButton>
+          <CneButton htmlType="submit">提交</CneButton>
         </div>
       </Form>
     );

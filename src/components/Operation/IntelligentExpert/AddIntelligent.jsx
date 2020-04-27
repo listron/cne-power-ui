@@ -6,6 +6,7 @@ import WarningTip from '../../Common/WarningTip';
 import InputLimit from '../../Common/InputLimit';
 import AutoSelect from '../../Common/AutoSelect';
 import path from '../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -386,16 +387,16 @@ class AddIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button className={styles.uploaderBtn}>
+                  <CneButton className={styles.uploaderBtn}>
                     <Icon type="upload" /> 选择文件上传
-                  </Button>
+                  </CneButton>
                   <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
             </Form.Item>
             <div className={styles.actionBtn}>
-              <Button onClick={() => this.saveHandler(false)} className={styles.saveBtn} type="primary">保存</Button>
-              <Button onClick={() => this.saveHandler(true)} className={styles.saveAndAddHandler}>保存并继续添加</Button>
+              <CneButton onClick={() => this.saveHandler(false)} className={styles.saveBtn}>保存</CneButton>
+              <CneButton onClick={() => this.saveHandler(true)} className={styles.saveAndAddHandler}>保存并继续添加</CneButton>
             </div>
           </Form>
         </div>

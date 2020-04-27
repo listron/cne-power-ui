@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Icon, Form, Select, Input, Button } from 'antd';
+import { Icon, Form, Select, Input} from 'antd';
 import PropTypes from 'prop-types';
 import AddGood from './ManageCommon/AddGood';
 import InputLimit from '../../../Common/InputLimit';
 import styles from './warehouseManageComp.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -232,14 +233,14 @@ class MaterialInsert extends Component {
         </Form>
         <div className={styles.handlePart}>
           <span className={styles.holder} />
-          <Button
+          <CneButton
             onClick={this.insertSave}
             loading={saveMode === 'once' && insertStatus === 'loading'}
-          >保存</Button>
-          <Button
+          >保存</CneButton>
+          <CneButton
             onClick={this.saveAndContinue}
             loading={saveMode === 'more' && insertStatus === 'loading'}
-          >保存并继续添加</Button>
+          >保存并继续添加</CneButton>
         </div>
       </section>
     );

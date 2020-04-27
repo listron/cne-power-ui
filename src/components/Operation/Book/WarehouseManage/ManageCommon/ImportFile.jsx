@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Upload, Button, message, Select, Checkbox } from 'antd';
+import { Modal, Upload, message, Select, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './manageCommon.scss';
+import CneButton from '@components/Common/Power/CneButton';
 const { Option } = Select;
 
 export default class ImportFile extends Component {
@@ -85,7 +86,7 @@ export default class ImportFile extends Component {
                   fileList={fileList}
                   showUploadList={false}
                 >
-                  <Button>选择文件</Button>
+                  <CneButton>选择文件</CneButton>
                 </Upload>
                 <span className={styles.text}>支持xls、xlsx文件</span>
               </span>}
@@ -97,12 +98,11 @@ export default class ImportFile extends Component {
           </div>
           <div className={styles.confirmImport}>
             <span className={styles.holder} />
-            <Button
-              type="primary"
+            <CneButton
               disabled={!(warehouseId && fileList.length > 0)}
               onClick={this.importFile}
               loading={importLoading}
-            >导入</Button>
+            >导入</CneButton>
           </div>
         </div>
       </Modal>

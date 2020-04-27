@@ -4,6 +4,7 @@ import styles from './handleForm.scss';
 import { Form, Input, Button, Switch, Radio } from 'antd';
 import pathConfig from '../../../../../constants/path';
 import ImgUploader from '../../../../Common/Uploader/ImgUploader';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 
@@ -75,7 +76,7 @@ class DefectProcessForm extends Component {
           </div>
         </FormItem>
         <div className={styles.actionBar}>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <CneButton htmlType="submit">提交</CneButton>
         </div>
       </Form>
     );

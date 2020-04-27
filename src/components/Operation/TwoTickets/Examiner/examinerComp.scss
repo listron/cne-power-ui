@@ -96,6 +96,19 @@
     }
     .cancelButton{
       margin-right: 36px;
+      background-color: transparent;
+      color: #666;
+      border: none;
+      &::after {
+        transition: none;
+      }
+
+      &:hover {
+        &::after {
+          background-color: transparent;
+        }
+        color: #199475;
+      }
     }
   }
 }

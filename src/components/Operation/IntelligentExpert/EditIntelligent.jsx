@@ -6,6 +6,7 @@ import styles from './intelligentExpert.scss';
 import InputLimit from '../../Common/InputLimit';
 import WarningTip from '../../Common/WarningTip';
 import path from '../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 
@@ -216,9 +217,9 @@ class EditIntelligent extends Component {
                   fileList={initFileList}
                   onPreview={this.onPreview}
                 >
-                  <Button className={styles.uploaderBtn}>
+                  <CneButton className={styles.uploaderBtn}>
                     <Icon type="upload" /> 选择文件上传
-                  </Button>
+                  </CneButton>
                   <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>
               )}
@@ -236,7 +237,7 @@ class EditIntelligent extends Component {
               <div className={styles.value}>{intelligentDetail.likeCount || 0}</div>
             </div>
             <div className={styles.formItem}>
-              <Button onClick={this.saveHandler} className={styles.saveBtn} type="primary">保存</Button>
+              <CneButton onClick={this.saveHandler} className={styles.saveBtn}>保存</CneButton>
             </div>
           </Form>
         </div>

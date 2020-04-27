@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Upload, message, Button, Icon, Form } from 'antd';
 import styles from './CasePartContainer.scss';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 class UploadModal extends React.Component {
@@ -102,12 +103,12 @@ class UploadModal extends React.Component {
                   fileList={fileList}
                   showUploadList={{ showPreviewIcon: false, showRemoveIcon: true }}
                 >
-                  <Button type="primary" className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</Button>
+                  <CneButton className={styles.uploadBtn} >  <Icon type="upload" />选择文件上传</CneButton>
                   <span> 支持xls文件 </span>
                 </Upload>
               )}
             </FormItem>
-            <Button disabled={fileList.length === 0} className={styles.confireImport} type="primary" htmlType="submit" onClick={this.handleSubmit}>确认导入</Button>
+            <CneButton disabled={fileList.length === 0} className={styles.confireImport} htmlType="submit" onClick={this.handleSubmit}>确认导入</CneButton>
           </Form>
         </Modal>
       </div>

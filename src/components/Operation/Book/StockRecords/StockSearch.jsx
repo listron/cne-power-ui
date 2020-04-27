@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, TreeSelect, DatePicker, Button } from 'antd';
+import { Select, TreeSelect, DatePicker } from 'antd';
 import path from '../../../../constants/path';
 import styles from './record.scss';
 import moment from 'moment';
 import { handleRight } from '@utils/utilFunc';
-
+import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
@@ -166,7 +166,7 @@ class StockSearch extends Component {
           />
         </div>
         {stockHandleRight && <div className={styles.searchRight}>
-          <Button onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</Button>
+          <CneButton onClick={this.inImport} className={styles.inImportBtn} disabled={!warehouseId && !goodsType && !startTime && !endTime}>导出</CneButton>
         </div>}
       </div>
     );

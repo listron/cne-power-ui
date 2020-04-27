@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Select, Form, Icon } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './examinerComp.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -124,8 +125,8 @@ class EditModal extends Component {
           </Form>
           <div className={styles.editHandle}>
             <span className={styles.holder} />
-            <Button type="primary" onClick={this.cancelEdit} className={styles.cancelButton}>取消</Button>
-            <Button type="primary" onClick={this.saveEdit} loading={editLoading === 'loading'}>保存</Button>
+            <CneButton onClick={this.cancelEdit} className={styles.cancelButton}>取消</CneButton>
+            <CneButton onClick={this.saveEdit} loading={editLoading === 'loading'}>保存</CneButton>
           </div>
         </div>
       </Modal>

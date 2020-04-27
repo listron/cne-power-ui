@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './handleForm.scss';
 import { Form, Button } from 'antd';
 import InputLimit from '../../../../Common/InputLimit/index';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 class DefectCheckForm extends Component {
@@ -54,8 +55,8 @@ class DefectCheckForm extends Component {
           )}
         </FormItem>
         <div className={styles.actionBar}>
-          <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <CneButton className={styles.cancelBtn} onClick={this.onReset}>重置</CneButton>
+          <CneButton htmlType="submit">提交</CneButton>
         </div>
       </Form>
     );

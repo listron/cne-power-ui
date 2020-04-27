@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './assetStructure.scss';
 
-import { Button, Input, Form, Select, TreeSelect, message } from 'antd';
+import { Input, Form, Select, TreeSelect, message } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TreeNode = TreeSelect.TreeNode;
@@ -155,8 +156,8 @@ class EditNodeFrom extends React.Component {
               </FormItem>
               <div className={styles.editSaveButton}>
                 {/*这里恢复是设置父节点和节点名为初始值，setFieldsValue */}
-                <Button className={styles.restore} onClick={this.recoveryForm} >恢复</Button>
-                <Button className={styles.saveButton} onClick={this.submitForm} >保存</Button>
+                <CneButton className={styles.restore} onClick={this.recoveryForm} >恢复</CneButton>
+                <CneButton className={styles.saveButton} onClick={this.submitForm} >保存</CneButton>
               </div>
             </Form>
 

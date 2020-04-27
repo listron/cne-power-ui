@@ -9,7 +9,7 @@ import WarningTip from '../../../../Common/WarningTip';
 import moment from 'moment';
 import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
-
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 
@@ -251,7 +251,7 @@ class DeviceFactory extends React.Component {
                   <AssetNodeSelect onChange={this.changeSelctNode} stationType={stationType} assetList={assetList} stationTypeCount={stationTypeCount} queryDataType={this.queryDataType} multiple={true} resetValue={this.state.resetValue} handleEnterprisecodes={handleEnterprisecodes} />
                 )}
               </FormItem>
-              <Button className={styles.addButton} onClick={this.submitForm}>添加</Button>
+              <CneButton className={styles.addButton} onClick={this.submitForm}>添加</CneButton>
             </Form>
           </div>
         </div>}
