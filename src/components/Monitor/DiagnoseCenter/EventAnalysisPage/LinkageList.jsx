@@ -144,9 +144,9 @@ class LinkageList extends Component {
             const { showIcon } = this.state;
             return(
               <div className={styles.opreateText}>
-                  <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShow(record); }} />
-                  {!showIcon && <i className={`iconfont icon-suspend ${styles.suspendIcon} ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onSuspend(record); }} />}
-                  {!showIcon && <i className={`iconfont icon-del ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onDel(record); }} />}
+                  <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShow(record); }} title="查看" />
+                  {!showIcon && <i className={`iconfont icon-suspend ${styles.suspendIcon} ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onSuspend(record); }} title="忽略" />}
+                  {!showIcon && <i className={`iconfont icon-del ${record.statusCode === 3 && styles.hideIcon}`} onClick={() => { this.onDel(record); }} title="删除" />}
               </div>
             );
           },
@@ -197,12 +197,14 @@ class LinkageList extends Component {
           visible
           onCancel={this.cancelTip}
           onConfirm={this.confirmTip}
+          confirmText={'确认'}
           tipText={['确认忽略该事件?', '确认删除该事件?'][tipType - 1]}
           width={260}
         />}
         {statusChangeText && <CneTips
           visible
           onConfirm={this.confirmStatusChange}
+          confirmText={'确认'}
           tipText={statusChangeText}
           width={260}
         />}
