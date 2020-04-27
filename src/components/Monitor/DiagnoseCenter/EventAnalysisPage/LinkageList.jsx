@@ -165,8 +165,8 @@ class LinkageList extends Component {
     });
     const linkagedata = { 1: realTimeData, 2: historyData, 3: overhaulData };
     const dataSource = linkagedata[Number(eventTypeCode)];
-    const linkageTableData = dataSource.length > 0 && dataSource[0].list; // 列表数据
-    const count = dataSource.length > 0 && dataSource[0].total; // 列表数据总数
+    const linkageTableData = dataSource.length > 0 && dataSource[0].list ? dataSource[0].list : []; // 列表数据
+    const count = dataSource.length > 0 && dataSource[0].total ? dataSource[0].total : 0; // 列表数据总数
     return (
       <div className={styles.linkageContent}>
         <div className={styles.linkageTop}>

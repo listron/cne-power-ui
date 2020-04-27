@@ -26,6 +26,7 @@ class DiagnoseList extends Component {
     getDiagnoseList: PropTypes.func,
     editEventsStatus: PropTypes.func,
     getLinkageList: PropTypes.func,
+    history: PropTypes.object,
   }
 
   state = {
@@ -80,6 +81,8 @@ class DiagnoseList extends Component {
       this.analysisEvent,
       this.toDefect,
       this.toDelete,
+      this.resendFunc,
+      this.lookFunc,
     );
   }
 
@@ -103,6 +106,17 @@ class DiagnoseList extends Component {
   toDelete = (deleteRecord) => {
     this.setState({ deleteRecords: [deleteRecord], tipType: 2 });
   }
+
+  // EAM重发
+  resendFunc = () => {
+    console.log('EAM重发');
+  };
+
+  // EAM查看
+  lookFunc = () => {
+    const { history } = this.props;
+    history.push('/monitor/EamDetail');
+  };
 
   cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })
 
@@ -184,7 +198,7 @@ class DiagnoseList extends Component {
       };
     }
     // 已派发3, 可跳转至消缺工单
-    const selectCodesSet = new Set(selectedRows.map(e => e.stationCode));
+    const selectCodesSet = new Set(selectedRows.map(e => e.deviceFullcode)); // 筛选属于同设备的
     const handoutDisable = selectCodesSet.size > 1 || selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理, 待确认且选中的属于同一个电站 可派发操作;
     const ignoreDisable = selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理1, 待确认2 可忽略操作
     const deleteDisable = selectedRows.some(e => ![1, 2, 7].includes(e.statusCode)); // 未处理1, 待确认2, 已忽略7 可删除操作

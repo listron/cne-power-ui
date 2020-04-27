@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14337300",
+      "name": "fenx",
+      "font_class": "fenx",
+      "unicode": "e73e",
+      "unicode_decimal": 59198
+    },
+    {
+      "icon_id": "14337301",
+      "name": "kangd",
+      "font_class": "kangd",
+      "unicode": "e73f",
+      "unicode_decimal": 59199
+    },
+    {
+      "icon_id": "14337302",
+      "name": "cfeam",
+      "font_class": "cfeam",
+      "unicode": "e740",
+      "unicode_decimal": 59200
+    },
+    {
+      "icon_id": "14337303",
+      "name": "keam",
+      "font_class": "keam",
+      "unicode": "e741",
+      "unicode_decimal": 59201
+    },
+    {
       "icon_id": "14196866",
       "name": "fhdq",
       "font_class": "fhdq",

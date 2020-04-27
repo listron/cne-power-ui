@@ -35,7 +35,7 @@ import {stringify} from 'qs';
 // updateTime string 更新时间
 // warningDuration	float	持续时长
 // warningFrequency	int	发生频次
-// warningFrequencyRate string 告警频次
+// warningFrequencyRate string 频次
 
 // listParams -> finished: 1归档事件, 0非归档事件
 // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
@@ -160,7 +160,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       ),
     }, {
       dataIndex: 'warningFrequencyRate',
-      title: '告警频次',
+      title: '频次',
       sorter: true,
       className: styles.warningFrequencyRate,
       render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
@@ -177,18 +177,31 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span
-            className={styles.handleAnalysis}
+          <i
+            title="分析"
+            className={`iconfont icon-fenx ${styles.handleAnalysis}`}
             onClick={() => handlers[0] && handlers[0](record)}
-          >分析</span>
-          {record.statusCode === 3 && <span
-            className={styles.toDefect}
+          />
+          {record.statusCode === 3 && <i
+            title="查看"
+            className={`iconfont icon-kangd ${styles.toDefect}`}
             onClick={() => handlers[1] && handlers[1](record)}
-          >查看</span>}
-          {record.statusCode === 7 && <span
-            className={styles.handleDelete}
+          />}
+          {record.statusCode === 7 && <i
+            title="删除"
+            className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
-          >删除</span>}
+          />}
+          <i
+            title="EAM重发"
+            className={`iconfont icon-cfeam ${styles.handleAnalysis}`}
+            onClick={() => handlers[3] && handlers[3](record)}
+          />
+          <i
+            title="EAM查看"
+            className={`iconfont icon-keam ${styles.handleAnalysis}`}
+            onClick={() => handlers[4] && handlers[4](record)}
+          />
         </div>
       ),
     },
@@ -268,18 +281,21 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span
-            className={styles.handleAnalysis}
-            onClick={() => handlers[0](record)}
-          >分析</span>
-          {record.statusCode === 3 && <span
-            className={styles.toDefect}
+          <i
+            title="分析"
+            className={`iconfont icon-fenx ${styles.handleAnalysis}`}
+            onClick={() => handlers[0] && handlers[0](record)}
+          />
+          {record.statusCode === 3 && <i
+            title="查看"
+            className={`iconfont icon-kangd ${styles.toDefect}`}
             onClick={() => handlers[1] && handlers[1](record)}
-          >查看</span>}
-          {record.statusCode === 7 && <span
-            className={styles.handleDelete}
+          />}
+          {record.statusCode === 7 && <i
+            title="删除"
+            className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
-          >删除</span>}
+          />}
         </div>
       ),
     },
@@ -363,18 +379,21 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
-          <span
-            className={styles.handleAnalysis}
-            onClick={() => handlers[0](record)}
-          >分析</span>
-          {record.statusCode === 3 && <span
-            className={styles.toDefect}
+          <i
+            title="分析"
+            className={`iconfont icon-fenx ${styles.handleAnalysis}`}
+            onClick={() => handlers[0] && handlers[0](record)}
+          />
+          {record.statusCode === 3 && <i
+            title="查看"
+            className={`iconfont icon-kangd ${styles.toDefect}`}
             onClick={() => handlers[1] && handlers[1](record)}
-          >查看</span>}
-          {record.statusCode === 7 && <span
-            className={styles.handleDelete}
+          />}
+          {record.statusCode === 7 && <i
+            title="删除"
+            className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
-          >删除</span>}
+          />}
         </div>
       ),
     },

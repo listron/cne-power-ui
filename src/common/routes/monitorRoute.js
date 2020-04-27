@@ -103,9 +103,13 @@ export const monitorRoute = [
   ...data,
   //...report,
   ...alarm,
-  { // 
+  { //
     path: '/monitor/diagnoseCenter',
     component: lazy(() => import('../../containers/Monitor/DiagnoseCenter/DiagnoseCenter')),
+  },
+  { // 诊断中心 - 点击查看EAM - 登记详情
+    path: '/monitor/EamDetail',
+    component: lazy(() => import('../../containers/Monitor/EamRegisterDetail/EamRegisterDetail')),
   },
   ...pvData,
 ];
