@@ -52,7 +52,11 @@ class EventColumn extends Component {
 
 
   onChangeColumn = (type, value) => { // 改变每列值
-    const { eventData } = this.props;
+    const { eventData, alarmEventType } = this.props;
+    if (type === 'eventCode') { // 标准告警事件与告警级别联动
+      const { eventLevel } = alarmEventType.find(e => e.eventCode === value) || {};
+      eventData.eventLevel = eventLevel || null;
+    }
     eventData[type] = value;
     this.props.editEvent(eventData);
   }
@@ -66,7 +70,6 @@ class EventColumn extends Component {
   render() {
     const { alarmEventType = [], eventData } = this.props;
     const { editable, key, pointValue } = eventData;
-    // console.log('editable', editable);
     return (
       <div className={styles.EventColumn}>
         {editable &&
@@ -94,7 +97,7 @@ class EventColumn extends Component {
             <div className={styles.pointValueDesc}>
               <Input value={eventData.pointValueDesc} onChange={(e) => { this.onChangeColumn('pointValueDesc', e.target.value); }} />
             </div>
-            <div className={styles.switchType}>
+            {/* <div className={styles.switchType}>
               <Select
                 placeholder="请选择"
                 value={eventData.switchType}
@@ -102,6 +105,18 @@ class EventColumn extends Component {
                 onChange={(value) => { this.onChangeColumn('switchType', value); }}>
                 <Option value={1}>是</Option>
                 <Option value={0}>否</Option>
+              </Select>
+            </div> */}
+            <div className={styles.eventLevel}>
+              <Select
+                placeholder="请选择"
+                value={eventData.eventLevel}
+                getPopupContainer={() => this.refs.select}
+                onChange={(value) => { this.onChangeColumn('eventLevel', value); }}>
+                <Option value={1}>一级</Option>
+                <Option value={2}>二级</Option>
+                <Option value={3}>三级</Option>
+                <Option value={4}>四级</Option>
               </Select>
             </div>
             <div className={styles.enabled}>
@@ -127,7 +142,8 @@ class EventColumn extends Component {
             <div className={styles.eventName} title={eventData.pointCode}>  {eventData.pointCode}</div>
             <div className={styles.pointValue} title={eventData.pointValue}>  {eventData.pointValue}</div>
             <div className={styles.pointValueDesc} title={eventData.pointValueDesc}>  {eventData.pointValueDesc}</div>
-            <div className={styles.switchType}>  {['否', '是'][eventData.switchType]}</div>
+            {/* <div className={styles.switchType}>  {['否', '是'][eventData.switchType]}</div> */}
+            <div className={styles.eventLevel}>  {['一级', '二级', '三级', '四级'][eventData.eventLevel - 1] || '--'}</div>
             <div className={styles.enabled}>  {['否', '是'][eventData.enabled]}</div>
             <div className={styles.operate}>
               <i className={`iconfont icon-edit ${styles.edit}`} onClick={() => { this.onChangeColumn('editable', true); }} title={'编辑'} />

@@ -124,7 +124,7 @@ class VersionEvent extends Component {
   addEvent = () => { // 添加行
     const { addEventList } = this.state;
     const keyIndex = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0; // 从默认开始添加
-    addEventList.push({ key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1 });
+    addEventList.push({ key: `add${+keyIndex + 1}`, switchType: 1, enabled: 1, pointValue: 1, eventLevel: null });
     this.setState({ addEventList: addEventList });
     this.props.changeStore({ modifyStatus: true });
   }
@@ -235,7 +235,6 @@ class VersionEvent extends Component {
     });
   }
 
-
   rowSelection = (e) => { // 全部
     const checked = e.target.checked;
     const { addEventList, currentEventList } = this.state;
@@ -297,7 +296,8 @@ class VersionEvent extends Component {
             <div className={styles.eventName}> 测点编号</div>
             <div className={styles.pointValue}> 告警参数</div>
             <div className={styles.pointValueDesc}> 信号／事件描述</div>
-            <div className={styles.switchType}> 开关类</div>
+            {/* <div className={styles.switchType}> 开关类</div> */}
+            <div className={styles.eventLevel}> 告警级别</div>
             <div className={styles.enabled}> 是否启用</div>
             <div className={styles.operate}> 操作</div>
           </div>
