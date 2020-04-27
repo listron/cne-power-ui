@@ -205,6 +205,7 @@ class LinkageList extends Component {
           visible
           onConfirm={this.confirmStatusChange}
           confirmText={'确认'}
+          cancelText
           tipText={statusChangeText}
           width={260}
         />}

@@ -394,7 +394,7 @@
       .eventType, .pointValueDesc, .deviceTypeName, .beginTime, .statusName{
         width: calc((100vw - 230px) * 0.166);
       }
-      .eventTypeText, .pointValueDescText, .deviceTypeNameText, .beginTimeText, .statusNameText{
+      .eventTypeText, .pointValueDescText, .deviceTypeNameText, .beginTimeText{
         width: calc((100vw - 230px) * 0.166 - 20px);
         @include overflowText();
       }
@@ -407,6 +407,7 @@
         }
         i{
           font-size: 20px;
+          cursor: pointer;
         }
       }
       :global{

@@ -142,7 +142,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
       } else if (diagWarningIds.length > statusChangeNum && statusChangeNum > 0) { // 2. 选中操作项中，有部分操作成功，部分状态已变化
         statusChangeText = `当前选择事件中有${statusChangeNum}条事件已发生状态变更, 其余事件操作成功`;
       } else if (statusChangeNum === 0) { // 3. 选中操作项中，所有状态已经更变
-        statusChangeText = '当前选择事件发生状态变更, 将刷新页面';
+        statusChangeText = isLinkage ? '事件状态已变更, 刷新页面' : '当前选择事件发生状态变更, 将刷新页面';
       }
       yield call(easyPut, 'fetchSuccess', {
         selectedRows: [],
