@@ -62,6 +62,7 @@ class VersionSelect extends PureComponent {
       const diagModeVersionId = versions.length > 0 && versions[0].diagModeVersionId || '';
       if (deviceModeCode && !selectedNodesKey) { // 初始加载的时候
         this.props.changeStore({ deviceModeCode, expandedKeys: [`${manufactorCode}`, initTreeSelect], selectedNodesKey: `${initTreeSelect}_${diagModeVersionId}` });
+        this.props.getAlarmEvent({ deviceTypeCode, diagModeVersionId }); // 请求选中版本下告警与级别的关联关系
         this.props.getVersionEvent({ diagModeVersionId });
       }
     }
@@ -75,7 +76,6 @@ class VersionSelect extends PureComponent {
     const { modifyStatus } = this.props;
     const callback = () => {
       this.props.changeStore({ deviceTypeCode: value, selectedNodesKey: '', expandedKeys: [] });
-      this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: value });
     };
     if (!modifyStatus) {
       callback();
@@ -113,9 +113,10 @@ class VersionSelect extends PureComponent {
 
   selectversion = (event, id, deviceModeCode, manufactorCode) => { //选择版本查看告警事件
     event.stopPropagation();
-    const { modifyStatus } = this.props;
+    const { modifyStatus, deviceTypeCode } = this.props;
     const callback = () => {
       this.props.changeStore({ deviceModeCode, selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${id}` });
+      this.props.getAlarmEvent({ deviceTypeCode, diagModeVersionId: id });
       this.props.getVersionEvent({ diagModeVersionId: id });
     };
     if (!modifyStatus) {

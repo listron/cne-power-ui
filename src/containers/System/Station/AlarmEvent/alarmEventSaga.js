@@ -1,9 +1,8 @@
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { call, put, takeLatest, select, fork } from 'redux-saga/effects';
 import axios from 'axios';
 import { message } from 'antd';
 import Path from '../../../../constants/path';
 import { alarmEventAction } from './alarmEventReducer';
-import moment from 'moment';
 
 const { APIBasePath } = Path.basePaths;
 const { system } = Path.APISubPaths;
@@ -63,6 +62,10 @@ function* editVersion(action) { // 新增版本信息  更新版本信息
         },
       });
       func(false);
+      yield put({ // 2020-04-27 更新该版本的告警事件与对应的事件级别信息
+        type: alarmEventAction.getAlarmEvent,
+        payload: { deviceTypeCode, diagModeVersionId: currentDiagModeVersionId },
+      });
       yield put({
         type: alarmEventAction.getDiagVersion,
       });
@@ -82,7 +85,6 @@ function* editVersion(action) { // 新增版本信息  更新版本信息
     message.warn(e.message);
   }
 }
-
 
 function* delVersion(action) { // 删除版本信息
   const { payload } = action;
@@ -189,7 +191,6 @@ function* getEditVersionStation(action) { // 获取编辑型号制定版本的�
   }
 }
 
-
 function* addVersionEvent(action) { // 添加告警事件
   const { payload } = action;
   const { func, ...rest } = payload;
@@ -210,7 +211,6 @@ function* addVersionEvent(action) { // 添加告警事件
     console.log(e);
   }
 }
-
 
 function* editVersionEvent(action) { // 编辑告警事件
   const { payload } = action;
@@ -237,7 +237,6 @@ function* editVersionEvent(action) { // 编辑告警事件
   }
 }
 
-
 function* delVersionEvent(action) { // 删除告警事件
   const { payload } = action;
   const { diagModeEventIds, suceessfunc, errorfunc } = payload;
@@ -261,12 +260,14 @@ function* delVersionEvent(action) { // 删除告警事件
   }
 }
 
-
 function* getAlarmEvent(action) { // 获取标准告警事件类型
-  const { payload } = action;
+  const { payload } = action; // { eventType: 1,  deviceTypeCode: 206, diagModeVersionId: '516203177511424' }
   const url = `${Path.basePaths.APIBasePath}${Path.APISubPaths.system.getEventType}`;
   try {
-    const response = yield call(axios.get, url, { params: payload });
+    const response = yield call(axios.get, url, { params: {
+      eventType: 1,
+      ...payload,
+    }});
     if (response.data.code === '10000') {
       yield put({
         type: alarmEventAction.changeStore,
@@ -409,7 +410,6 @@ function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理�
   const { payload } = action;
   try {
     const {pointCode, deviceFullcode, deviceTypeCode, stationCode, diagWarningId} = payload;
-
     //1.获取事件详情
     yield call(getEventDetail, {
       payload: {
@@ -418,17 +418,18 @@ function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理�
         diagWarningId,
       },
     });
-
     //2.获取版本信息
-    yield call(getDiagVersion, {payload:undefined});
-
+    yield call(getDiagVersion, {payload: {}});
     const alarmEventDetial = yield select(state => state.system.alarmEventReducer.get('alarmEventDetial'));
     let diagConfigData = yield select(state => state.system.alarmEventReducer.get('diagConfigData'));
     if (diagConfigData) {
       diagConfigData = diagConfigData.toJS();
     }
     const verid = alarmEventDetial.get('diagModeVersionId');
-
+    yield put({ // 2020-04-27 更新该版本的告警事件与对应的事件级别信息
+      type: alarmEventAction.getAlarmEvent,
+      payload: { deviceTypeCode, diagModeVersionId: verid },
+    });
     //3.找出事件对应版本号的设备和厂商信息
     let devInfo = null, over = false;
     if (verid && deviceTypeCode && diagConfigData) {
@@ -457,10 +458,7 @@ function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理�
         }
       }
     }
-
-    // console.log(devInfo);
-    if (devInfo) {
-      //4.修改props的状态
+    if (devInfo) { //4.修改props的状态
       const {deviceModeCode, manufactorCode} = devInfo;
       yield put({
         type: alarmEventAction.changeStore,
@@ -486,11 +484,9 @@ function* alarmEventDetialFlow(action) { //获取详细信息的一系列处理�
   }
   catch (error) {
     console.log(error);
-    console.log("error")
   }
 
 }
-
 
 export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getDiagVersion, getDiagVersion);

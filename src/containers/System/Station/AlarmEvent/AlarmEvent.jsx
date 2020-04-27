@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './alarmEvent.scss';
 import { alarmEventAction } from './alarmEventReducer';
-import { commonAction } from '../../../alphaRedux/commonAction';
 import VersionSelect from '../../../../components/System/Station/AlarmEvent/VersionSelect';
 import VersionEvent from '../../../../components/System/Station/AlarmEvent/VersionEvent';
-
 import Footer from '../../../../components/Common/Footer';
 import PropTypes from 'prop-types';
-import Cookie from 'js-cookie';
 import searchUtil from '@utils/searchUtil';
 
 
@@ -29,7 +26,6 @@ class AlarmEvent extends Component {
 
   componentDidMount() {
     this.props.getDiagVersion(); // 默认加载全部的设备类型
-    this.props.getAlarmEvent({ eventType: 1, deviceTypeCode: this.props.deviceTypeCode });
 
     //只有在告警中心，跳转到本页面的时候，才触发一下处理
     const search = this.props.history.location.search || '';
@@ -39,7 +35,7 @@ class AlarmEvent extends Component {
     if (source && source === 'diagnoseCenter') { //告警中心进入
       const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = paramData;
       if(deviceTypeCode && pointCode && deviceFullcode && stationCode) {
-        const devcode = (typeof deviceTypeCode === 'string') ? parseInt(deviceTypeCode) : deviceTypeCode;
+        const devcode = (typeof deviceTypeCode === 'string') ? parseInt(deviceTypeCode, 10) : deviceTypeCode;
         this.props.alarmEventDetialFlow({deviceTypeCode: devcode, pointCode, deviceFullcode, stationCode, diagWarningId});
       }
     } else if (source && source === 'stationManage') {//电站管理进入
@@ -47,14 +43,13 @@ class AlarmEvent extends Component {
       if (deviceModeCode && manufactorCode && diagModeVersionId && deviceTypeCode) {
         const {getVersionEvent, changeStore} = this.props;
         changeStore({
-            deviceTypeCode: parseInt(deviceTypeCode),
+            deviceTypeCode: parseInt(deviceTypeCode, 10),
             diagModeVersionId,
             deviceModeCode,
             manufactorCode,
             selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${diagModeVersionId}`,
             expandedKeys: [`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
           });
-
         getVersionEvent({diagModeVersionId});
       }
     }
