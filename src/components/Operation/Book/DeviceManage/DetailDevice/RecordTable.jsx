@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Table, Radio } from 'antd';
 import styles from '../deviceSide.scss';
 import moment from 'moment';
-
+import CneTbale from '../../../../Common/Power/CneTable';
 
 class RecordTable extends React.Component {
   static propTypes = {
@@ -25,11 +25,11 @@ class RecordTable extends React.Component {
     partInfoData: PropTypes.array,
   }
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
   }
   changeTableData = (e) => {
     const { getDevicePartInfo, getDevicefixRecord, getDevicehistoryWarning, deviceFullcode, orderField,
-      orderMethod, } = this.props;
+      orderMethod } = this.props;
     const value = e.target.value;
     this.props.changeTableFilter(value);
     value === 'part' ? getDevicePartInfo({ deviceFullcode }) :
@@ -47,14 +47,14 @@ class RecordTable extends React.Component {
         e.assetsData = e.partsData;
         e.partsData && e.partsData.forEach((e, i) => {
           e.key = e.partsModeName;
-        })
+        });
       }
-      return e
-    })
-    return data
+      return e;
+    });
+    return data;
   }
   timeFormate = (text) => {
-    return text ? <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span> : '--'
+    return text ? <span title={moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}>{moment(moment(text)).format('YYYY-MM-DD HH:mm:ss')}</span> : '--';
   }
 
 
@@ -69,87 +69,124 @@ class RecordTable extends React.Component {
       {
         title: '部件名称',
         dataIndex: 'partsName',
-        render: (text) => <span title={text}>{text}</span>
+        textAlign: 'left',
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text}</span>,
       }, {
         title: '部件型号',
+        textAlign: 'left',
         dataIndex: 'partsModeName',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '厂家',
+        textAlign: 'left',
         dataIndex: 'manufactorName',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '制造商',
+        textAlign: 'left',
         dataIndex: 'madeName',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '供应商',
+        textAlign: 'left',
         dataIndex: 'supplierName',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
-      }
-    ]
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
+      },
+    ];
+
     const fixRecordColumns = [
       {
         title: '缺陷级别',
+        textAlign: 'center',
         dataIndex: 'defectLevel',
+        width: '13%',
         render: (text, record, index) => {
-          return text ? defactlevel[text - 1] : '--'
+          return text ? defactlevel[text - 1] : '--';
         },
       }, {
         title: '缺陷描述',
+        textAlign: 'left',
         dataIndex: 'defectDescribe',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '17%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '处理过程',
+        textAlign: 'left',
         dataIndex: 'defectSolveInfo',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '18%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '更换部件',
+        textAlign: 'left',
         dataIndex: 'replaceParts',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        width: '13%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '资产编码',
+        textAlign: 'left',
         dataIndex: 'assetsCode',
-        render: (text) => <span title={text}>{text}</span>
+        width: '13%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text}</span>,
       }, {
         title: '发生时间',
+        textAlign: 'center',
         dataIndex: 'createTime',
-        render: (text) => this.timeFormate(text)
+        width: '13%',
+        render: (text) => this.timeFormate(text),
       }, {
         title: '完成时间',
         dataIndex: 'finishTime',
-        render: (text) => this.timeFormate(text)
-      }
+        textAlign: 'center',
+        width: '13%',
+        render: (text) => this.timeFormate(text),
+      },
     ];
+
     const historyWarningColumns = [
       {
         title: '告警级别',
         dataIndex: 'warningLevel',
+        textAlign: 'center',
+        width: '15%',
         render: (text, record, index) => {
-          return text ? level[text - 1] : '--'
+          return text ? level[text - 1] : '--';
         },
       }, {
         title: '告警类型',
+        textAlign: 'left',
         dataIndex: 'warningConfigName',
-        render: (text) => <span title={'事件告警'}>{text ? '事件告警' : '--'}</span>
+        width: '20%',
+        render: (text) => <span title={'事件告警'}>{text ? '事件告警' : '--'}</span>,
       }, {
         title: '告警描述',
         dataIndex: 'warningCheckDesc',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        textAlign: 'left',
+        width: '20%',
+        render: (text) => <span title={text} className={styles.textOverFlow}>{text ? text : '--'}</span>,
       }, {
         title: '发生时间',
         dataIndex: 'timeOn',
         key: 'startTime',
-        render: (text) => this.timeFormate(text)
+        textAlign: 'center',
+        width: '15%',
+        render: (text) => this.timeFormate(text),
       }, {
         title: '完成时间',
         dataIndex: 'finishTime',
-
-        render: (text) => this.timeFormate(text)
+        textAlign: 'center',
+        width: '15%',
+        render: (text) => this.timeFormate(text),
       }, {
         title: '持续时间',
         dataIndex: 'durationTime',
-        render: (text) => <span title={text}>{text ? text : '--'}</span>
+        textAlign: 'center',
+        width: '15%',
+        render: (text) => <span title={text}>{text ? text : '--'}</span>,
       },
     ];
     return (
@@ -161,17 +198,18 @@ class RecordTable extends React.Component {
             <Radio.Button value="warning">历史告警</Radio.Button>
           </Radio.Group>
         </div>
-        <Table
+
+        <CneTbale
           loading={false}
-          dataSource={tableFilter === 'part' ? partInfoDataFormate : tableFilter === 'record' ? fixRecordData : historyWarningData}
-          columns={tableFilter === 'part' ? partColumns : tableFilter === 'record' ? fixRecordColumns : historyWarningColumns}
+          dataSource={{ 'part': partInfoDataFormate, 'record': fixRecordData, 'warning': historyWarningData }[tableFilter]}
+          columns={{ 'part': partColumns, 'record': fixRecordColumns, 'warning': historyWarningColumns }[tableFilter]}
           pagination={false}
           childrenColumnName={['assetsData']}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
 
       </div>
-    )
+    );
   }
 }
 export default (RecordTable)
+  ;

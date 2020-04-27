@@ -63,11 +63,6 @@
       line-height: 30px;
       background-color: $themeColor;
     }
-    // .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-  //   margin-left: 0px;
-  //   width: 28px;
-  //   color: $darkColor;
-  // }
   }
   .left{
     display: flex;
@@ -86,33 +81,32 @@
 }
 
 .deviceManageList{ // 设备表格区
-  
-  .deviceNameStyle{
-    cursor: pointer;
-    text-decoration: underline;
-  }
   border-top: 1px solid $promptColor;
-  :global{
-    .icon-edit,.icon-del{
-      color:$themeColor;
-    }
-    .icon-edit{
-      margin-right: 8px;
-    }
-
-    .ant-table{
-      .ant-table-placeholder{
-        border-bottom: none;
-      }
-      .ant-table-thead{
-        th>div{
-          height: 60px;
-        }
-      }
-      .ant-table-column-sorter{
-        top: 18px;
-      }
-    }
+  table{
+    table-layout: fixed;
+  }
+  .deviceNameStyle,.deviceTypeName,.deviceModeName,.producerName,.madeName,.supplierName,{
+    @include overflowText();
   }
   
+  .deviceNameStyle,.edit,.del{
+    cursor: pointer;
+    color: var(--themeColor);
+    &:hover{
+      color:#f9b600;
+    }
+  }
+  .editStyle{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .noEdit{
+    cursor: not-allowed;
+    color: var(--lightColor);
+    font-size: 20px;
+  }
+  .edit,.del{
+    font-size: 20px;
+    padding: 0 6px;
+  }  
 }

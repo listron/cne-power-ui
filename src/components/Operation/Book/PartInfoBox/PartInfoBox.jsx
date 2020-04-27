@@ -7,6 +7,7 @@ import CopyParts from './CopyParts';
 import { Button, Table, Upload, message } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import WarningTip from '../../../Common/WarningTip';
+import CneTable from '../../../Common/Power/CneTable';
 
 import path from '../../../../constants/path';
 import moment from 'moment';
@@ -206,66 +207,64 @@ class PartInfoBox extends React.Component {
       warningTipText,
       test,
     } = this.state;
-
     const disableClick = !(stationCode && deviceCode);
     const partInfoRight = handleRight('book_operatePart');
     const baseColumn = [
       {
         title: '部件名称',
         dataIndex: 'partsName',
+        textAlign: 'left',
+        width: '14%',
         render: (text, record, index) => (
-          <span
-            className={styles.comName}
-            title={text}
-            onClick={() => this.showDetailParts(record)}
-          >
-            {text}
-          </span>
+          <span className={styles.comName} title={text} onClick={() => this.showDetailParts(record)} >{text}</span>
         ),
       },
       {
         title: '部件型号',
         dataIndex: 'partsModeName',
-        render: text => <span title={text}>{text}</span>,
+        textAlign: 'left',
+        width: '14%',
+        render: text => <span title={text} className={styles.overFlowText}>{text}</span>,
       },
       {
         title: '资产结构',
         dataIndex: 'assetsName',
+        textAlign: 'left',
+        width: '14%',
         render: text => (
-          <span title={text.replace(/,/g, '>')}>{text.replace(/,/g, '>')}</span>
+          <span title={text.replace(/,/g, '>')} className={styles.overFlowText}>{text.replace(/,/g, '>')}</span>
         ),
       },
       {
         title: '厂家',
         dataIndex: 'manufactorName',
-        render: text => <span title={text}>{text}</span>,
+        textAlign: 'left',
+        width: '15%',
+        render: text => <span title={text} className={styles.overFlowText}>{text}</span>,
       },
       {
         title: '制造商',
         dataIndex: 'madeName',
-        render: text => <span title={text}>{text}</span>,
+        textAlign: 'left',
+        width: '15%',
+        render: text => <span title={text} className={styles.overFlowText}>{text}</span>,
       },
       {
         title: '供货商',
         dataIndex: 'supplierName',
-        render: text => <span title={text}>{text}</span>,
+        textAlign: 'left',
+        width: '14%',
+        render: text => <span title={text} className={styles.overFlowText}>{text}</span>,
       },
     ];
     const columns = partInfoRight ? baseColumn.concat({
       title: '操作',
+      width: '14%',
       render: (text, record, index) => {
         return (
-          <div>
-            <span
-              title="编辑"
-              className="iconfont icon-edit"
-              onClick={() => this.editParts(record)}
-            />
-            <span
-              title="删除"
-              className="iconfont icon-del"
-              onClick={() => this.deleteParts(record)}
-            />
+          <div className={styles.operate}>
+            <span title="编辑" className={`iconfont icon-edit ${styles.edit}`} onClick={() => this.editParts(record)} />
+            <span title="删除" className={`iconfont icon-del ${styles.del}`} onClick={() => this.deleteParts(record)} />
           </div>
         );
       },
@@ -367,16 +366,11 @@ class PartInfoBox extends React.Component {
                 复制
               </Button>
             </div>}
-            <Table
+            <CneTable
               loading={false}
               dataSource={deviceComList}
               columns={columns}
               pagination={false}
-              locale={{
-                emptyText: (
-                  <img width="223" height="164" src="/img/nodata.png" />
-                ),
-              }}
             />
             {showWarningTip && (
               <WarningTip

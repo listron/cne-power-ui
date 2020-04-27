@@ -4,8 +4,7 @@ import { Table } from 'antd';
 import PropTypes from 'prop-types';
 import WarningTip from '../../../Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
-import TableColumnTitle from '../../../Common/TableColumnTitle';
-import { numWithComma } from '../../../../utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable/index';
 
 class DeviceManageList extends Component {
   static propTypes = {
@@ -22,6 +21,8 @@ class DeviceManageList extends Component {
     getPvDevice: PropTypes.func,
     orderMethod: PropTypes.string,
     orderField: PropTypes.string,
+    sortField: PropTypes.string,
+    sortMethod: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -39,14 +40,19 @@ class DeviceManageList extends Component {
     });
   };
 
-  tableChange = (pagination, filter, sorter) => {
-    // 排序触发重新请求设备列表
-    const { getDeviceList, queryParams } = this.props;
+  tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
+    const { getDeviceList, queryParams, sortField, sortMethod } = this.props;
     const { field, order } = sorter;
+    let newSortField = sortField, newSortMethod = '2';
+    if (!field || field === sortField) {
+      newSortMethod = sortMethod === '1' ? '2' : '1';
+    } else {
+      newSortField = field;
+    }
     getDeviceList({
       ...queryParams,
-      sortField: field ? field : '',
-      sortMethod: order ? (sorter.order === 'ascend' ? '1' : '2') : '',
+      sortField: newSortField,
+      sortMethod: newSortMethod,
     });
   };
 
@@ -68,6 +74,7 @@ class DeviceManageList extends Component {
 
     });
   };
+
   showDeviceEdit = record => {
     this.props.changeDeviceManageStore({ showPage: 'edit' });
     this.props.getStationDeviceDetail({
@@ -82,12 +89,15 @@ class DeviceManageList extends Component {
       deviceTypeCode: '509',
     });
   };
+
   deleteDevice = record => {
     this.setState({ showDeleteWarning: true, deviceRecord: record });
   };
+
   cancelWarningTip = () => {
     this.setState({ showDeleteWarning: false });
   };
+
   confirmWarningTip = () => {
     const { deleteDevice } = this.props;
     const { deviceRecord } = this.state;
@@ -97,7 +107,7 @@ class DeviceManageList extends Component {
   };
 
   render() {
-    const { selectedRowKeys } = this.props;
+    const { selectedRowKeys, sortField, sortMethod } = this.props;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -107,88 +117,73 @@ class DeviceManageList extends Component {
       {
         title: '设备名称',
         dataIndex: 'deviceName',
-        key: 'deviceName',
         sorter: true,
+        width: '15%',
+        textAlign: 'left',
         render: (text, record) => (
-          <span
-            className={styles.deviceNameStyle}
-            onClick={() => this.showDeviceDetail(record)}
-          >
-            {text}
-          </span>
+          <div className={styles.deviceNameStyle} onClick={() => this.showDeviceDetail(record)} > {text} </div>
         ),
       },
       {
         title: '设备类型',
         dataIndex: 'deviceTypeName',
-        key: 'deviceTypeName',
         sorter: true,
-        render(text) {
-          return text ? text : '--';
-        },
+        width: '15%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceTypeName} title={text || '--'}>{text || '--'}</div>,
       },
       {
         title: '设备型号',
         dataIndex: 'deviceModeName',
-        key: 'deviceModeName',
         sorter: true,
+        width: '15%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.deviceModeName} title={text || '--'}>{text || '--'}</div>,
       },
       {
         title: '厂家',
         dataIndex: 'producerName',
-        key: 'producerName',
         sorter: true,
+        width: '15%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.producerName} title={text || '--'}>{text || '--'}</div>,
       },
       {
         title: '制造商',
         dataIndex: 'madeName',
-        key: 'madeName',
         sorter: true,
-        render(text) {
-          return text ? text : '--';
-        },
+        width: '15%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.madeName} title={text || '--'}>{text || '--'}</div>,
       },
       {
         title: '供货商',
         dataIndex: 'supplierName',
-        key: 'supplierName',
         sorter: true,
-        render(text) {
-          return text ? text : '--';
-        },
+        width: '15%',
+        textAlign: 'left',
+        render: (text) => <div className={styles.supplierName} title={text || '--'}>{text || '--'}</div>,
       },
     ];
     const deviceListColumn = deviceHandleRight ? deviceBaseColumn.concat({
       title: '操作',
       dataIndex: 'edit',
       key: 'edit',
+      width: '10%',
       render: (text, record) => {
         return (
           <div className={styles.editStyle}>
-            {record.deviceTypeCode === '509' ? (
-              <span
-                style={{ cursor: 'not-allowed', color: '#f5f5f5' }}
-                title="编辑"
-                className="iconfont icon-edit"
-              />
-            ) : (
-                <span
-                  className={styles.edit}
-                  title="编辑"
-                  style={{ cursor: 'pointer' }}
-                  className="iconfont icon-edit"
-                  onClick={() => this.showDeviceEdit(record)}
-                />
-              )}
+            {record.deviceTypeCode === '509' ? (<span title="编辑" className={`iconfont icon-edit ${styles.noEdit}`} />)
+              : (<span title="编辑" className={`iconfont icon-edit ${styles.edit}`} onClick={() => this.showDeviceEdit(record)} />)}
             <span
               title="删除"
-              className="iconfont icon-del"
+              className={`iconfont icon-del ${styles.del}`}
               onClick={() => this.deleteDevice(record)}
             />
           </div>
         );
       },
-    }): deviceBaseColumn;
+    }) : deviceBaseColumn;
     const { tableloading, deviceList } = this.props;
     const { showDeleteWarning, warningTipText } = this.state;
     return (
@@ -200,16 +195,15 @@ class DeviceManageList extends Component {
             value={warningTipText}
           />
         )}
-        <Table
+        <CneTable
           loading={tableloading}
+          dataSource={deviceList.map((e, i) => ({ key: i, ...e }))}
+          columns={deviceListColumn}
+          pagination={false}
           onChange={this.tableChange}
           rowSelection={rowSelection}
-          columns={deviceListColumn}
-          dataSource={deviceList.map((e, i) => ({ key: i, ...e }))}
-          pagination={false}
-          locale={{
-            emptyText: <img width="223" height="164" src="/img/nodata.png" />,
-          }}
+          sortField={sortField}
+          sortMethod={['ascend', 'descend'][sortMethod]}
         />
       </div>
     );

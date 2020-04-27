@@ -121,21 +121,8 @@ class DeviceManage extends Component {
                 />
               )}
               <div className={styles.allStationTitle}>
-                <p
-                  className={
-                    selectType === 'deviceInfo' ? styles.activeStation : ''
-                  }
-                >
-                  设备信息
-                </p>
-                <p
-                  className={
-                    selectType === 'partInfo' ? styles.activeStation : ''
-                  }
-                  onClick={() => {
-                    this.queryTargetData('partInfo');
-                  }}
-                >
+                <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} > 设备信息</p>
+                <p className={selectType === 'partInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('partInfo'); }} >
                   部件信息
                 </p>
               </div>
@@ -174,14 +161,32 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeDeviceManageStore: payload =>
-    dispatch({
-      type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA,
-      payload,
-    }),
-  getDeviceList: payload =>
-    dispatch({ type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload }),
+  changeDeviceManageStore: payload => dispatch({ type: deviceManageAction.CHANGE_DEVICE_MANAGE_STORE_SAGA, payload }),
+  getDeviceList: payload => dispatch({ type: deviceManageAction.GET_DEVICE_MANAGE_LIST, payload }),
   resetStore: () => dispatch({ type: deviceManageAction.resetStore }),
+  changeCommonStore: payload => dispatch({ type: commonAction.changeCommonStore, payload }),
+  addDeviceDetail: payload => dispatch({ type: deviceManageAction.addDeviceDetail, payload }),
+  getStationDeviceDetail: payload => dispatch({ type: deviceManageAction.getStationDeviceDetail, payload }),
+  getOtherPageDeviceDetail: payload => dispatch({ type: deviceManageAction.getOtherPageDeviceDetail, payload }),
+  editDeviceDetail: payload => dispatch({ type: deviceManageAction.editDeviceDetail, payload }),
+  getConnectDevice: payload => dispatch({ type: deviceManageAction.getConnectDevice, payload }),
+  deleteDevice: payload => dispatch({ type: deviceManageAction.deleteDevice, payload }),
+  addDeviceType: payload => dispatch({ type: deviceManageAction.addDeviceType, payload }),
+  addDeviceMode: payload => dispatch({ type: deviceManageAction.addDeviceMode, payload }),
+  addPvDeviceMode: payload => dispatch({ type: deviceManageAction.addPvDeviceMode, payload }),
+  checkDeviceName: payload => dispatch({ type: deviceManageAction.checkDeviceName, payload }),
+  checkDeviceType: payload => dispatch({ type: deviceManageAction.checkDeviceType, payload }),
+  checkDeviceMode: payload => dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
+  deleteStationDevice: payload => dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
+  importStationDevice: payload => dispatch({ type: deviceManageAction.importStationDevice, payload }),
+  getStationDeviceType: payload => dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
+  addDeviceFactors: payload => dispatch({ type: deviceManageAction.addDeviceFactors, payload }),
+  addDeviceModes: payload => dispatch({ type: deviceManageAction.addDeviceModes, payload }),
+  getDeviceFactors: payload => dispatch({ type: deviceManageAction.getDeviceFactors, payload }),
+  getfactorsDeviceMode: payload => dispatch({ type: deviceManageAction.getfactorsDeviceMode, payload }),
+  getDevicePartInfo: payload => dispatch({ type: deviceManageAction.getDevicePartInfo, payload }),
+  getDevicefixRecord: payload => dispatch({ type: deviceManageAction.getDevicefixRecord, payload }),
+  getDevicehistoryWarning: payload => dispatch({ type: deviceManageAction.getDevicehistoryWarning, payload }),
   getStationDeviceTypes: params =>
     dispatch({
       type: commonAction.getStationDeviceTypes,
@@ -218,59 +223,13 @@ const mapDispatchToProps = dispatch => ({
         resultName: 'allStationBaseInfo',
       },
     }),
-    exportPoints: payload => dispatch({
-      type: commonAction.downLoadFile,
-      payload: {
-        ...payload,
-        actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
-      },
-    }),
-  changeCommonStore: payload =>
-    dispatch({ type: commonAction.changeCommonStore, payload }),
-  addDeviceDetail: payload =>
-    dispatch({ type: deviceManageAction.addDeviceDetail, payload }),
-  getStationDeviceDetail: payload =>
-    dispatch({ type: deviceManageAction.getStationDeviceDetail, payload }),
-  getOtherPageDeviceDetail: payload =>
-    dispatch({ type: deviceManageAction.getOtherPageDeviceDetail, payload }),
-  editDeviceDetail: payload =>
-    dispatch({ type: deviceManageAction.editDeviceDetail, payload }),
-  getConnectDevice: payload =>
-    dispatch({ type: deviceManageAction.getConnectDevice, payload }),
-  deleteDevice: payload =>
-    dispatch({ type: deviceManageAction.deleteDevice, payload }),
-  addDeviceType: payload =>
-    dispatch({ type: deviceManageAction.addDeviceType, payload }),
-  addDeviceMode: payload =>
-    dispatch({ type: deviceManageAction.addDeviceMode, payload }),
-  addPvDeviceMode: payload =>
-    dispatch({ type: deviceManageAction.addPvDeviceMode, payload }),
-  checkDeviceName: payload =>
-    dispatch({ type: deviceManageAction.checkDeviceName, payload }),
-  checkDeviceType: payload =>
-    dispatch({ type: deviceManageAction.checkDeviceType, payload }),
-  checkDeviceMode: payload =>
-    dispatch({ type: deviceManageAction.checkDeviceMode, payload }),
-  deleteStationDevice: payload =>
-    dispatch({ type: deviceManageAction.deleteStationDevice, payload }),
-  importStationDevice: payload =>
-    dispatch({ type: deviceManageAction.importStationDevice, payload }),
-  getStationDeviceType: payload =>
-    dispatch({ type: deviceManageAction.getStationDeviceType, payload }),
-  addDeviceFactors: payload =>
-    dispatch({ type: deviceManageAction.addDeviceFactors, payload }),
-  addDeviceModes: payload =>
-    dispatch({ type: deviceManageAction.addDeviceModes, payload }),
-  getDeviceFactors: payload =>
-    dispatch({ type: deviceManageAction.getDeviceFactors, payload }),
-  getfactorsDeviceMode: payload =>
-    dispatch({ type: deviceManageAction.getfactorsDeviceMode, payload }),
-  getDevicePartInfo: payload =>
-    dispatch({ type: deviceManageAction.getDevicePartInfo, payload }),
-  getDevicefixRecord: payload =>
-    dispatch({ type: deviceManageAction.getDevicefixRecord, payload }),
-  getDevicehistoryWarning: payload =>
-    dispatch({ type: deviceManageAction.getDevicehistoryWarning, payload }),
+  exportPoints: payload => dispatch({
+    type: commonAction.downLoadFile,
+    payload: {
+      ...payload,
+      actionName: deviceManageAction.GET_DEVICE_MANAGE_FETCH_SUCCESS,
+    },
+  }),
 });
 
 export default connect(

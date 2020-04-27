@@ -21,60 +21,54 @@ class PartInfo extends Component {
     showPage: PropTypes.string,
     selectType: PropTypes.string,
   };
+
   constructor(props) {
     super(props);
     this.state = {
       showSidePage: 'list',
     };
   }
+
   componentDidMount() {
     const { enterpriseId, getStationOfEnterprise } = this.props;
     getStationOfEnterprise({ enterpriseId }); // 请求用户所在企业的所有企业
 
   }
+
   componentWillUnmount() {
     this.props.resetPartInfoStore();
   }
+
   onToggleSide = () => {
     const { showPage } = this.props;
     this.setState({
       showSidePage: showPage,
     });
   };
+
   onShowSideChange = showSidePage => {
     this.setState({ showSidePage });
   };
+
   queryTargetData = value => {
     //此处是改变deviceManage里的reducer，头部组件选择
     this.props.changeTab(value);
     this.props.resetPartInfoStore();
   };
+
   render() {
     const { selectType, showPage } = this.props;
-
     const { showSidePage } = this.state;
-
     return (
       <div className={styles.deviceManageContainer}>
         {selectType === 'partInfo' && (
           <div className={styles.deviceManage}>
             <div className={styles.deviceManageMain}>
               <div className={styles.allStationTitle}>
-                <p
-                  className={
-                    selectType === 'deviceInfo' ? styles.activeStation : ''
-                  }
-                  onClick={() => {
-                    this.queryTargetData('deviceInfo');
-                  }}
-                >
+                <p className={selectType === 'deviceInfo' ? styles.activeStation : ''} onClick={() => { this.queryTargetData('deviceInfo'); }}>
                   设备信息
                 </p>
-                <p
-                  className={
-                    selectType === 'partInfo' ? styles.activeStation : ''
-                  }
-                >
+                <p className={selectType === 'partInfo' ? styles.activeStation : ''}>
                   部件信息
                 </p>
               </div>
@@ -109,24 +103,22 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changePartInfoStore: payload =>
-    dispatch({ type: partInfoAction.changePartInfoStore, payload }),
-  resetPartInfoStore: payload =>
-    dispatch({ type: partInfoAction.resetPartInfoStore, payload }),
-  getDeviceTypeList: payload =>
-    dispatch({ type: partInfoAction.getDeviceTypeList, payload }),
-  getDeviceComList: payload =>
-    dispatch({ type: partInfoAction.getDeviceComList, payload }),
-  copyPartInfo: payload =>
-    dispatch({ type: partInfoAction.copyPartInfo, payload }),
-  addPartInfo: payload =>
-    dispatch({ type: partInfoAction.addPartInfo, payload }),
-  editPartInfo: payload =>
-    dispatch({ type: partInfoAction.editPartInfo, payload }),
-  getDetailPartInfo: payload =>
-    dispatch({ type: partInfoAction.getDetailPartInfo, payload }),
-  deletePartInfo: payload =>
-    dispatch({ type: partInfoAction.deletePartInfo, payload }),
+  changePartInfoStore: payload => dispatch({ type: partInfoAction.changePartInfoStore, payload }),
+  resetPartInfoStore: payload => dispatch({ type: partInfoAction.resetPartInfoStore, payload }),
+  getDeviceTypeList: payload => dispatch({ type: partInfoAction.getDeviceTypeList, payload }),
+  getDeviceComList: payload => dispatch({ type: partInfoAction.getDeviceComList, payload }),
+  copyPartInfo: payload => dispatch({ type: partInfoAction.copyPartInfo, payload }),
+  addPartInfo: payload => dispatch({ type: partInfoAction.addPartInfo, payload }),
+  editPartInfo: payload => dispatch({ type: partInfoAction.editPartInfo, payload }),
+  getDetailPartInfo: payload => dispatch({ type: partInfoAction.getDetailPartInfo, payload }),
+  deletePartInfo: payload => dispatch({ type: partInfoAction.deletePartInfo, payload }),
+  getPartsAssetTree: payload => dispatch({ type: partInfoAction.getPartsAssetTree, payload }), // 台账生产资产树
+  getPartsFactorsList: payload => dispatch({ type: partInfoAction.getPartsFactorsList, payload }), //获取组件厂家列表
+  getfactorsPartsMode: payload => dispatch({ type: partInfoAction.getfactorsPartsMode, payload }), //获取厂家下设备型号
+  addPartsFactors: payload => dispatch({ type: partInfoAction.addPartsFactors, payload }), //新建组件厂家
+  addPartsModes: payload => dispatch({ type: partInfoAction.addPartsModes, payload }), //新建组件型号
+  getDevicePartInfo: payload => dispatch({ type: partInfoAction.getDevicePartInfo, payload }), //通过设备获得组件详情树
+  getPartAssetsTree: payload => dispatch({ type: partInfoAction.getPartAssetsTree, payload }), //通过设备获得组件详情树
   getStationOfEnterprise: params =>
     dispatch({
       type: commonAction.getStationOfEnterprise,
@@ -144,20 +136,6 @@ const mapDispatchToProps = dispatch => ({
         actionName: partInfoAction.changePartInfoStore,
       },
     }),
-  getPartsAssetTree: payload =>
-    dispatch({ type: partInfoAction.getPartsAssetTree, payload }), // 台账生产资产树
-  getPartsFactorsList: payload =>
-    dispatch({ type: partInfoAction.getPartsFactorsList, payload }), //获取组件厂家列表
-  getfactorsPartsMode: payload =>
-    dispatch({ type: partInfoAction.getfactorsPartsMode, payload }), //获取厂家下设备型号
-  addPartsFactors: payload =>
-    dispatch({ type: partInfoAction.addPartsFactors, payload }), //新建组件厂家
-  addPartsModes: payload =>
-    dispatch({ type: partInfoAction.addPartsModes, payload }), //新建组件型号
-  getDevicePartInfo: payload =>
-    dispatch({ type: partInfoAction.getDevicePartInfo, payload }), //通过设备获得组件详情树
-  getPartAssetsTree: payload =>
-    dispatch({ type: partInfoAction.getPartAssetsTree, payload }), //通过设备获得组件详情树
 });
 
 export default connect(

@@ -504,6 +504,14 @@
         margin-bottom: 12px;
       }
     }
+
+    table{
+      table-layout: fixed;
+      .textOverFlow{
+        display: block;
+        @include overflowText();
+      }
+    }
   }
 
   .infoBox {

@@ -112,9 +112,6 @@ class WarehouseGoodsTable extends Component {
       goodsType: 'goods_type',
       createTime: 'create_time',
     };
-
-
-
     let newSortField = sortField, newSortMethod = 'asc';
     if (!field || fieldData[field] === sortField) {
       newSortMethod = sortMethod === 'asc' ? 'desc' : 'asc';

@@ -117,9 +117,31 @@
 
         }
       }
+      table{
+        table-layout: fixed;
+      }
 
       .comName {
-        text-decoration: underline;
+        color:var(--themeColor);
+        &:hover{
+          color:#f9b600
+        }
+      }
+      .overFlowText,.comName{
+        background: pink;
+        display: block;
+        @include overflowText();
+      }
+      .operate{
+        display: flex;
+        justify-content: space-evenly;
+      }
+      .edit,.del{
+        font-size: 20px;
+        color:var(--themeColor);
+        &:hover{
+          color:#f9b600
+        }
       }
 
        .copyCom {
@@ -127,21 +149,8 @@
         color: $themeColor;
         border-color: $themeColor
       }
+  
 
-      :global {
-        .iconfont {
-          font-size: 20px;
-
-          &:hover {
-            color: #199475
-          }
-        }
-
-        .icon-edit,
-        .icon-del {
-          color: #199475;
-        }
-      }
       .noColor{
         margin-left: 16px;
         background: #f5f5f5;
