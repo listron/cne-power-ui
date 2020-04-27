@@ -117,12 +117,12 @@ export default class EamTable extends React.Component {
       },
       {
         title: '设备编码',
-        dataIndex: 'assertNum',
+        dataIndex: 'assetNum',
         render: (text) => (<div className={styles.deviceCode} title={text || ''} >{text || '- -'}</div>),
       },
       {
         title: '设备资产名称',
-        dataIndex: 'assertName',
+        dataIndex: 'assetName',
         render: (text) => (<div className={styles.deviceName} title={text || ''} >{text || '- -'}</div>),
       },
       {
