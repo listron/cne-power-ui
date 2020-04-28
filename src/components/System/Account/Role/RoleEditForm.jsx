@@ -24,7 +24,7 @@ class RoleEditForm extends Component {
     operatetypeData: PropTypes.array,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       operateType: '执行',
@@ -37,8 +37,8 @@ class RoleEditForm extends Component {
     const selectedRight = isEdit ? selectedRole[0].rightData : [];
     const allRoleIds = this.getRightIdArr(selectedRight);
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if(!err) {
-        const { roleDesc, operateName} = values;
+      if (!err) {
+        const { roleDesc, operateName } = values;
         // const outputRightSet = new Set([...rightId, ...allRoleIds]);
         // const outputRightArr = [...outputRightSet];
         let treeRightValues = values.rightId || [];
@@ -46,7 +46,7 @@ class RoleEditForm extends Component {
           return e.name === operateName;
         }) || '';
         const operateId = selectOperateInfo.id;
-        if(showPage === 'create') {
+        if (showPage === 'create') {
           onCreateRole({
             roleDesc: roleDesc.trim(),
             rightId: treeRightValues.join(','),
@@ -79,10 +79,10 @@ class RoleEditForm extends Component {
   }
 
   getRightIdArr = (rightData, treeKey = []) => { // 获取被编辑角色的所有id根节点数组(给后端传菜单的全部rightId)
-    rightData && rightData.length > 0 && rightData.forEach(e=>{
+    rightData && rightData.length > 0 && rightData.forEach(e => {
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
       treeKey.push(e.rightId);
-      if(hasChildRight){
+      if (hasChildRight) {
         this.getRightIdArr(e.childRightData, treeKey);
       }
     });
@@ -91,11 +91,11 @@ class RoleEditForm extends Component {
 
   getRightId = (rightData) => { // 获取被编辑角色的id根节点数组(剔除中间节点)
     const treeKey = [];
-    rightData && rightData.length > 0 && rightData.forEach(e=>{
+    rightData && rightData.length > 0 && rightData.forEach(e => {
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
-      if(hasChildRight){
+      if (hasChildRight) {
         treeKey.push(...this.getRightId(e.childRightData));
-      }else{
+      } else {
         e.rightId && treeKey.push(e.rightId.toString());
       }
     });
@@ -124,38 +124,38 @@ class RoleEditForm extends Component {
   };
 
 
-  render(){
+  render() {
     const { operateType } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { showPage, loading, continueAdd, selectedRole, menuData } = this.props;
     const isCreate = showPage === 'create';
-    const selectedRight = isCreate? [] : selectedRole[0].rightData;
+    const selectedRight = isCreate ? [] : selectedRole[0].rightData;
     let initialRightValue = [];
     let initialOperateName = '';
     // const defaultRootMenu = this.getDefaultRootMenu(menuData);
-    if(isCreate){
+    if (isCreate) {
       initialRightValue = [];
       initialOperateName = operateType;
-    }else{
+    } else {
       initialRightValue = this.getRightId(selectedRight);
       initialOperateName = selectedRole[0].operateName;
     }
-    return (     
+    return (
       <Form onSubmit={this.onSubmit} className={styles.roleEditForm}>
         <FormItem label="角色名称">
           {getFieldDecorator('roleDesc', {
-            rules: [{ 
+            rules: [{
               required: true, message: '请输入角色名称',
-            },{
-              validator: (rule, value, callback)=>{
-                if(value.trim().length > 10){
+            }, {
+              validator: (rule, value, callback) => {
+                if (value.trim().length > 10) {
                   callback('不超过10个字');
-                }else{
+                } else {
                   callback();
                 }
-              }
+              },
             }],
-            initialValue: (isCreate || !selectedRole[0]) ? '' : selectedRole[0].roleDesc
+            initialValue: (isCreate || !selectedRole[0]) ? '' : selectedRole[0].roleDesc,
           })(
             <Input placeholder="请输入..." />
           )}
@@ -163,26 +163,26 @@ class RoleEditForm extends Component {
         </FormItem>
         <FormItem label="权限设置">
           {getFieldDecorator('operateName', {
-              rules: [{
-                required: true,
-                message: '请选择权限',
-              }],
-              initialValue: initialOperateName,
-            })(
-              <RadioGroup onChange={this.onOperatetypeChange}>
-                <Radio value={'管理'}>管理</Radio>
-                <Radio value={'执行'}>执行</Radio>
-                <Radio value={'浏览'}>浏览</Radio>
-              </RadioGroup>
+            rules: [{
+              required: true,
+              message: '请选择权限',
+            }],
+            initialValue: initialOperateName,
+          })(
+            <RadioGroup onChange={this.onOperatetypeChange}>
+              <Radio value={'管理'}>管理</Radio>
+              <Radio value={'执行'}>执行</Radio>
+              <Radio value={'浏览'}>浏览</Radio>
+            </RadioGroup>
           )}
         </FormItem>
         <FormItem
-          className={styles.dealProposal} 
+          className={styles.dealProposal}
           label="功能设置">
           {getFieldDecorator('rightId', {
-            rules: [{ 
+            rules: [{
               required: true,
-              message: '请勾选功能'
+              message: '请勾选功能',
             }],
             initialValue: initialRightValue,
           })(
@@ -190,9 +190,9 @@ class RoleEditForm extends Component {
           )}
         </FormItem>
         <div className={styles.buttonGroup}>
-          <CneButton className={styles.save} onClick={this.onSaveRole} loading={!continueAdd&&loading}>保存</CneButton>
+          <CneButton className={styles.save} onClick={this.onSaveRole} loading={!continueAdd && loading} lengthMode={'short'}>保存</CneButton>
         </div>
-        <div style={{marginLeft:410}} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页</div>
+        <div style={{ marginLeft: 410 }} className={styles.instructionText}>选择“保存”按钮后将跳转到对应的列表页</div>
       </Form>
     );
   }

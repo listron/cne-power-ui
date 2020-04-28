@@ -12,61 +12,70 @@
   color:$darkColor;
   line-height: 1.5;
 }
+
 .roleTableTitle{
   color:$darkColor;
 }
+
 .roleTableHandleDropdown{
   width: 110px;
 }
+
 .roleList{
   width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   padding: 24px 24px 0;
-  background-color: #F0F2F5;
+   background-color: #F0F2F5;
   min-width: 1100px;
   .roleContent{
     flex: 1;
-    display: flex;
+    // display: flex;
+    // flex-direction: column;
     background-color: #fff;
-    flex-direction: column;
-    .tableBox {
-      flex: 1;
-      box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
-      margin-bottom: 4px;
-      
-      .tableStyle {
-        height: 100%;
-        min-width: 1000px;
+    border: 1px solid #e1e2e2;
+
+    // .tableBox {
+    //   border: 1px solid #d4d4d4;
+    //   border-top: none;
+    //   box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
+    //   background-color: red;
+    // }
+    .tableStyle {
+      background: #ffffff;
+      border: 1px solid #d4d4d4;
+      border-top: none;
+      box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+      height: 100%;
+      min-width: 1000px;
       table{
         width: 100%;
         table-layout: fixed;
       }
       :global {
-          .ant-table-footer {
-            padding: 0 15px;
-          }
-  
-          .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-            overflow-y: scroll;
-            overflow-y: overlay;
-            overflow-x: hidden;
-            height: calc(100vh - 236px) !important;
-          }
-          .ant-table:not(.ant-table-empty) {
-            .ant-table-body:after {
-              content: url("/img/notabdata.png");
-              position: absolute;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              margin: 50px 10px 10px;
-            }
-          }
-          .ant-table-placeholder {
-            border-bottom: none;
+        .ant-table-footer {
+          padding: 0 15px;
+        }
+        .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
+          overflow-y: scroll;
+          overflow-y: overlay;
+          overflow-x: hidden;
+          height: calc(100vh - 236px) !important;
+        }
+        .ant-table:not(.ant-table-empty) {
+          .ant-table-body:after {
+            content: url("/img/notabdata.png");
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 50px 10px 10px;
           }
         }
+        .ant-table-placeholder {
+          border-bottom: none;
+        }
+      }
     }
   }
   .editRole, .deleteRole{
@@ -80,32 +89,25 @@
     margin-right: 4px;
   }
   .roleListTop {
-    // background: #fff;
+    background: #fff;
     display: flex;
     min-height: 72px;
     line-height: 72px;
     justify-content: space-between;
-    .rolelistTopBox {
+    .rolelistTopBox{
       display: flex;
+      align-items: center;
     }
     .addRole{
       margin-left: 20px;
-      margin-top: 20px;
-      display: flex;
-      padding: 0 15px 0 6px;
-      .icon {
-        margin: 0 10px 0 0;
-      }
+      margin-right: 12px;
     }
     .handleRole{
-      margin-left: 12px;
-      height: 72px;
-      line-height: 72px;
       display: inline-block;
       :global{
         .ant-select{
           width: 90px;
-          .ant-select-selection--single {
+         .ant-select-selection--single {
             border:1px solid #199475;
             border-radius:2px;
           }
@@ -146,7 +148,7 @@
       cursor: pointer;
       &:hover {
         color: #f9b600;
-      }
+      }    
     }
   }
 
@@ -235,6 +237,7 @@
     }
   }
 }
+
 .tableModal{
   :global{
     .ant-modal{
@@ -342,23 +345,4 @@
       }
     }
   }
-}
-
-body {
-  :global {
-    .ant-select-dropdown .ant-select-dropdown-menu {
-      .ant-select-dropdown-menu-item {
-        &:not(.ant-select-dropdown-menu-item-disabled) {
-          &:hover {
-            color: #199475;
-            background:rgba(206,235,224,0.30);
-          }
-        }
-        &.ant-select-dropdown-menu-item-active {
-          background-color: transparent;
-        }
-      }
-    }
-  }
-}
 }

@@ -4,6 +4,10 @@
   // 条件查询
   display: flex;
   flex-direction: column;
+   background: #ffffff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+  margin-bottom: 8px;
   // height: 141px;
 
   .topSearch,
@@ -47,6 +51,9 @@
     .reset {
       color: $themeColor;
       cursor: pointer;
+      &:hover{
+        color:#f9b600
+      }
     }
 
     border-bottom: solid 1px $promptColor;
@@ -63,56 +70,17 @@
   align-items: center;
   padding-left: 28px;
   min-width: 1130px;
-
   .leftHandler {
     display: flex;
-
-    .addButton {
-      padding: 0;
-      display: flex;
-      align-items: center;
-
-      .plus {
-        background-color: $themeColor;
-        color: #fff;
-        border-radius: 2px 0 0 2px;
-        line-height: 30px;
-        width: 28px;
-        font-size: 18px;
-      }
-
-      .name {
-        border-radius: 0 2px 2px 0;
-        color: $themeColor;
-        padding: 0 5px;
-        // width: 40px;
-        line-height: 30px;
-      }
-
-      &:hover {
-        .name {
-          color: #fff;
-          background-color: $themeColor;
-        }
-      }
-    }
-
     .importInfo {
       margin-left: 36px;
     }
-
     .intoInfo,
-    .downloadStyle {
+    .downloadStyle,
+    .exportInfo,
+    .clearPoint,
+    .del{
       margin-left: 12px;
-    }
-
-    .exportInfo {
-      margin: 0 12px;
-    }
-
-
-    .clearPoint {
-      margin-right: 12px;
     }
   }
 }

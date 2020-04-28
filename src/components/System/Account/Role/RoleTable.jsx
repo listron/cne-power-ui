@@ -284,11 +284,7 @@ class RoleTable extends Component {
         <div className={styles.roleContent}>
           <div className={styles.roleListTop} >
             <div className={styles.rolelistTopBox}>
-              {roleCreateRight && <CneButton className={styles.addRole} onClick={this.onRoleAdd}>
-                <div className={styles.icon}>
-                  <span className={'iconfont icon-newbuilt'} />
-                </div>角色
-              </CneButton>}
+              {roleCreateRight && <CneButton className={styles.addRole} onClick={this.onRoleAdd} lengthMode={'short'} iconname={'icon-newbuilt'}>角色  </CneButton>}
               <div className={styles.handleRole}>
               {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName = {styles.roleTableHandleDropdown}>
                 {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}

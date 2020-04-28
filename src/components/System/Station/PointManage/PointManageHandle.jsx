@@ -84,11 +84,9 @@ class PointManageHandle extends Component {
     this.setState({
       showWarningTip: false,
     });
-    if (1 == this.clearFlag)
-    { 
+    if (1 == this.clearFlag) {
       this.deletePointList();
-    }
-    else {
+    } else {
       this.props.deletePoints({
         devicePointIds: selectedRowData.map(e => (e.devicePointId)),
       });
@@ -134,11 +132,7 @@ class PointManageHandle extends Component {
       <div className={styles.pointManageHandle}>
         {pointOperation ? <div className={styles.leftHandler}>
           {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-          <CneButton onClick={this.showAddPage} className={styles.addButton} >
-            <div className={styles.icon}>
-              <span className={'iconfont icon-newbuilt'} />
-            </div>测点
-          </CneButton>
+          <CneButton onClick={this.showAddPage} className={styles.addButton} iconname={'icon-newbuilt'} lengthMode={'short'}>测点 </CneButton>
           <SingleStationImportFileModel
             showPlusBtn={false}
             data={allStationBaseInfo}
@@ -155,7 +149,7 @@ class PointManageHandle extends Component {
           >导出测点表</CneButton>
           {/* <Button disabled={pointList.length === 0}>查看测试状态</Button> */}
           <CneButton disabled={pointList.length === 0 || pointForbidClear} onClick={this.deletePoint} className={styles.clearPoint}>清除测点</CneButton>
-          <CneButton disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints}> 删除 </CneButton>
+          <CneButton disabled={pointList.length === 0 || selectedRowKeys.length === 0} onClick={this.deletePoints} className={styles.del}> 删除 </CneButton>
           <CneButton
             className={styles.downloadStyle}
             href={downloadTemplet}

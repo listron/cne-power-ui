@@ -4,6 +4,7 @@ import StationSelect from '../../../Common/StationSelect';
 import { Select, Button, Input } from 'antd';
 import PropTypes from 'prop-types';
 const { Option } = Select;
+import CneButton from '@components/Common/Power/CneButton';
 
 class PointManageSearch extends Component {
   static propTypes = {
@@ -132,7 +133,7 @@ class PointManageSearch extends Component {
           <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changePointCode} allowClear={true} value={devicePointStandardCode} />
           <span className={styles.titleText}>测点描述</span>
           <Input placeholder="请输入..." className={styles.searchInput} onChange={this.changeDesc} allowClear={true} value={devicePointName} />
-          <Button onClick={this.searchData} className={styles.searchBtn}>查询</Button>
+          <CneButton onClick={this.searchData} className={styles.searchBtn} lengthMode={'short'}>查询</CneButton>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
 
         </div>

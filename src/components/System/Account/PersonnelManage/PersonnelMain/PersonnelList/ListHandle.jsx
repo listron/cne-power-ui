@@ -28,7 +28,7 @@ class ListHandle extends Component {
     showLogout: false,
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { logoutSuccess } = nextProps;
     const preLogout = this.props.logoutSuccess;
     if (logoutSuccess && !preLogout) { // 注销成功
@@ -78,7 +78,7 @@ class ListHandle extends Component {
     this.props.getUserList({ ...newPageInfo });
   }
 
-  render(){
+  render() {
     const { showLogout } = this.state;
     const { userListPageInfo, userListTotalNum, userList, selectedRowKeys, selectedDepartment } = this.props;
     const { pageNum, pageSize } = userListPageInfo;
@@ -99,14 +99,10 @@ class ListHandle extends Component {
     return (
       <div className={styles.listHandle}>
         <span className={styles.leftHandle}>
-          {userCreateRight && <CneButton className={styles.addUser} type="add" onClick={this.toAddUser}>
-            <div className={styles.icon}>
-              <span className={'iconfont icon-newbuilt'} />
-            </div>添加人员
-          </CneButton>}
+          {userCreateRight && <CneButton className={styles.addUser} type="add" onClick={this.toAddUser} lengthMode={'short'} iconname={'icon-newbuilt'}>添加人员</CneButton>}
           {hasSelectRights && <Select
             onChange={this.handleUser}
-            style={{width: '90px', margin: '0 28px 0 10px'}}
+            style={{ width: '90px', margin: '0 28px 0 10px' }}
             value="操作"
             dropdownMatchSelectWidth={false}
             disabled={handleDisable}
