@@ -41,7 +41,6 @@ class ChartBar extends PureComponent {
     //   1: '100',
     //   30: '75',
     // };
-    echarts.dispose(this.barRef); // 重绘图形前需销毁实例。否则重绘失败。
     const barChart = echarts.init(this.barRef);
     const xNames = [], baseData = [], theoryData = [], lineData = [], pointData = data;
     // const dataEvent = ['NB1039', 'NB1041'].includes(eventCode); // 转换效率偏低、阵列损耗事件

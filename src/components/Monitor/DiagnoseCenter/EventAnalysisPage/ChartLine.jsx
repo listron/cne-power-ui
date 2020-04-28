@@ -60,10 +60,10 @@ class ChartLine extends PureComponent {
 
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
     const { pageKey } = this.props;
-    // echarts.dispose(this.lineRef);
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
+    
     const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
     const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
@@ -99,7 +99,6 @@ class ChartLine extends PureComponent {
     }
     const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
     if (noAlarmTime || seriesInefficient) { // 不展示告警时段
-      colors.shift();
     }
 
     const unitGroupSets = new Set();

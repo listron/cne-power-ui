@@ -219,10 +219,9 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       }
       const autoIntervalAnalysis = analysisPageLoading && interval === 2 && isEmptyData && (eventType === 1 || eventCode === 'NB1035');
       // 从列表跳入分析页面(autoIntervalAnalysis:true)时: 若interval为5秒+数据为空+事件类型为零电流'NB1035'或者是告警事件时，需继续自动请求10分钟
+      yield call(easyPut, 'fetchSuccess', tmpStoreInfo);
       if (autoIntervalAnalysis) {
         yield fork(getEventsAnalysis, { payload: { ...payload, interval: 1, analysisPageLoading: false } });
-      } else {
-        yield call(easyPut, 'fetchSuccess', tmpStoreInfo);
       }
     } else { throw response.message; }
   } catch (error) {
