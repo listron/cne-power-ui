@@ -58,12 +58,36 @@ class ChartLine extends PureComponent {
     return `${timeMinuteStr}${secondNumStr}`;
   }
 
+  pointDataSorter = (pointData = []) => { // 基于单位对对象数组排序;
+    const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];
+    let unitsGroup = [];
+    const unitGroupSets = new Set();
+    const sortedPointData = pointData.sort((a, b) => { // 单位排序：w/m2 >kw>V>A；其余默认
+      const aUnit = a.pointUnit || '';
+      const bUnit = b.pointUnit || '';
+      unitGroupSets.add(aUnit);
+      unitGroupSets.add(bUnit);
+      unitsGroup = [...unitGroupSets]; // 解出单位数组
+      if(unitSortTemplate.indexOf(aUnit) < 0) {
+        return 1;
+      }
+      if (unitSortTemplate.indexOf(bUnit) < 0) {
+        return -1;
+      }
+      return unitSortTemplate.indexOf(aUnit) - unitSortTemplate.indexOf(bUnit);
+    });
+    if (pointData.length < 2) { // length < 2不会执行排序函数~
+      unitsGroup = sortedPointData.map(e => e.pointUnit);
+    }
+    return { unitsGroup, sortedPointData };
+  }
+
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
-    
+
     const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
     const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
     const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
@@ -80,6 +104,7 @@ class ChartLine extends PureComponent {
       pointData.splice(delPointIndex, 1);
     }
 
+    const lengendColType = (noDeviceName || seriesInefficient) ? 8 : 4; // lengend一行排布模式: 诊断事件零电流、固定物遮挡、组串低效情况下8列，其余情况下4个。
     const legends = [{
       name: '告警时段',
       icon: 'rect',
@@ -93,17 +118,7 @@ class ChartLine extends PureComponent {
         color: '#353535',
       },
     }];
-
-    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
-      legends.shift();
-    }
     const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
-    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
-    }
-
-    const unitGroupSets = new Set();
-    let unitsGroup = []; // 解出单位数组
-    const unitSortTemplate = ['W/m2', 'kW', 'V', 'A'];
     const markAreaData = period.map(e => { // 告警事件段数据规范。
       const { beginTime, endTime } = e || {};
       return [{
@@ -128,41 +143,22 @@ class ChartLine extends PureComponent {
       yAxisIndex: 0,
     }];
     if (noAlarmTime || seriesInefficient) { // 不展示告警时段
+      legends.shift();
+      colors.shift();
       series.shift();
     }
-    const sortedPointData = pointData.sort((a, b) => { // 单位排序：w/m2 >kw>V>A；其余默认
-      const aUnit = a.pointUnit || '';
-      const bUnit = b.pointUnit || '';
-      unitGroupSets.add(aUnit);
-      unitGroupSets.add(bUnit);
-      unitsGroup = [...unitGroupSets]; // 解出单位数组
-      if(unitSortTemplate.indexOf(aUnit) < 0) {
-        return 1;
-      }
-      if (unitSortTemplate.indexOf(bUnit) < 0) {
-        return -1;
-      }
-      return unitSortTemplate.indexOf(aUnit) - unitSortTemplate.indexOf(bUnit);
-    });
-    if (pointData.length < 2) { // length < 2不会执行排序函数~
-      unitsGroup = sortedPointData.map(e => e.pointUnit);
-    }
+    const { unitsGroup, sortedPointData } = this.pointDataSorter(pointData); // 得到排序后的单位与新数组
     sortedPointData.forEach((e, i) => {
       const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
-      colors.push(this.lineColors[i % this.lineColors.length]);
-      if(e.isConnected === 0 && (noDeviceName || seriesInefficient)){ // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
-        colors.splice((i + 1), 1, '#999');
-      }
-      if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
-        colors.splice(i, 1, '#60c060');
-      }else if(fixedShelter){
-        colors.splice(i + 1, 1, '#60c060');
-      }
-      if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
-        colors.splice(i, 1, '#f9b600');
-      }else if(e.isWarned && pageKey === 'diagnose' && fixedShelter){
-        colors.splice(i + 1, 1, '#f9b600');
+      if (e.isConnected === 0 && (noDeviceName || seriesInefficient)) { // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
+        colors.push('#999');
+      } else if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
+        colors.push('#60c060');
+      } else if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
+        colors.push('#f9b600');
+      } else { // 默认配色
+        colors.push(this.lineColors[i % this.lineColors.length]);
       }
 
       legends.push({
@@ -172,7 +168,7 @@ class ChartLine extends PureComponent {
         itemWidth: 20,
         itemHeight: 10,
         left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (2 + (i + 1) % 8 * 12) : (seriesInefficient ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
-        top: `${noAlarmTime ? (Math.floor(i / 4) * 30) : (noDeviceName ? (Math.floor((i + 1) / 8) * 30) : (seriesInefficient ? (Math.floor(i / 8) * 30) : (Math.floor((i + 1) / 4) * 30)))}`,
+        top: `${Math.floor(((noAlarmTime || seriesInefficient) ? i : i + 1) / lengendColType) * 30}`,
         data: [pointFullName],
         textStyle: {
           color: e.isWarned && pageKey === 'diagnose' ? ((noAlarmTime || seriesInefficient || fixedShelter) ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的异常曲线与图例颜色，默认黄色
@@ -195,7 +191,6 @@ class ChartLine extends PureComponent {
       });
     });
     const clientWidth = document.body.clientWidth;
-    const lengendColType = (noDeviceName || seriesInefficient) ? 8 : 4; // lengend一行排布模式: 诊断事件零电流、固定物遮挡、组串低效情况下8列，其余情况下4个。
     const legendNum = (delPointIndex !== -1 && pageKey === 'alarm') ? legends.length + 1 : legends.length; // 告警事件和有脉冲信号的情况下, 额外添加一个lengend；
     const legnedRows = Math.ceil(legendNum / lengendColType);
     const legendHeight = legnedRows * 30;
@@ -497,18 +492,6 @@ class ChartLine extends PureComponent {
     const calcHeight = clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381);
     return (
       <div className={styles.analysisChart}>
-        {/* <div className={styles.legends}>
-          <span className={styles.period}>告警时段</span>
-          {legend.map((e, i) => (
-            <span key={e} className={styles.eachLegend}>
-              <span className={styles.legendIcon}>
-                <span style={{ backgroundColor: this.lineColors[i % this.lineColors.length]}} className={styles.legendLine} />
-                <span style={{ backgroundColor: this.lineColors[i % this.lineColors.length]}} className={styles.legendRound} />
-              </span>
-              <span className={styles.legendName}>{e}</span>
-            </span>
-          ))}
-        </div> */}
         <div style={{width: '100%', height: `${calcHeight}px`}} ref={(ref) => { this.lineRef = ref; } } />
       </div>
     );
