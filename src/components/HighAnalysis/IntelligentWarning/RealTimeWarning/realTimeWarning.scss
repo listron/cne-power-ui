@@ -7,6 +7,23 @@
     background-color: #f9f9f9;
     color: $darkColor;
   }
+
+  .handlerBtn{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: flex-end;
+
+    >span{
+      cursor: pointer;
+      margin-right: 10px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
+    }
+  }
   .realTimeWarningTable {
     .tableHeader {
       background-color: #fff;

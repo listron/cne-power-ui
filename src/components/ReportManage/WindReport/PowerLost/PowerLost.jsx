@@ -5,8 +5,9 @@ import TimeSelectReport from '../../../Common/TimeSelect/TimeSelectReport';
 import SummaryMode from '../../../Common/SummaryMode';
 import TableList from './TableList';
 import moment from 'moment';
-import { Button,message } from 'antd';
+import { message } from 'antd';
 import path from '../../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 message.config({
@@ -36,7 +37,7 @@ class PowerLost extends Component {
   }
 
   onTimeChange = (value) => {
-    
+
     const dateTypes = {
       "day": 1,
       "month": 2,
@@ -104,8 +105,19 @@ class PowerLost extends Component {
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
             region={regionData} />
-          <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList} disabled={powerLostList.length===0} >导出</Button>
+          <CneButton
+            lengthMode="short"
+            onClick={this.onSearch}
+          >
+            查询
+          </CneButton>
+          <CneButton
+            lengthMode="short"
+            className={powerLostList.length === 0 ? styles.disableBtn : ''}
+            onClick={powerLostList.length === 0 ? () => {} : this.exportList}
+          >
+            导出
+          </CneButton>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} />
       </div>

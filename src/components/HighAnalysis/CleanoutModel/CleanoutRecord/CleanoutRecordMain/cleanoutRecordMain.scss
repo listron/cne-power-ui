@@ -1,3 +1,5 @@
+@import '../../../../../theme/theme.scss';
+
 .cleanoutRecordMain {
   display: flex;
   flex: 1 0 auto;
@@ -32,9 +34,20 @@
   //modal的取消确认按钮样式
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-left: 44px;
-  button {
-    margin-right: 16px;
+
+  span{
+    cursor: pointer;
+    color: $themeColor;
+
+    &:hover{
+      color: #f9b600;
+    }
+  }
+
+  button{
+    margin-left: 14px;
   }
 }
 .radioStyle {

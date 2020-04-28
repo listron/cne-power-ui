@@ -29,6 +29,10 @@
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
+
+      &:hover{
+       color: #f9b600;
+      }
     }
   }
 
@@ -95,7 +99,7 @@
       width:23%
     }
     .warningCheckDescText{
-      max-width: calc((100vw - 230px) * 0.23 - 20px);  
+      max-width: calc((100vw - 230px) * 0.23 - 20px);
     }
     .timeOn{
        width:12%;

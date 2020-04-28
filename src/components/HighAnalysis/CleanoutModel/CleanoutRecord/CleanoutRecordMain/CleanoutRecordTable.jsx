@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, DatePicker, Input, Button, Radio } from 'antd';
+import { Modal, Form, DatePicker, Input, Radio } from 'antd';
 import styles from './cleanoutRecordMain.scss';
 import moment from 'moment';
 import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma } from '../../../../../utils/utilFunc';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -281,8 +282,13 @@ class CleanoutRecordTable extends Component {
                 </FormItem>
               </Form>}
             <div className={styles.handle}>
-              <Button onClick={this.cancelModal} >取消</Button>
-              <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
+              <span onClick={this.cancelModal}>取消</span>
+              <CneButton
+                lengthMode="short"
+                onClick={this.confirmModal}
+              >
+                保存
+              </CneButton>
             </div>
           </div>
         </Modal>

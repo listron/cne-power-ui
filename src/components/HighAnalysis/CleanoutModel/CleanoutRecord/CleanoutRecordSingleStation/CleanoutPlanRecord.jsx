@@ -8,13 +8,9 @@ import styles from './cleanoutPlanRecord.scss';
 import PlanRecordTable from './PlanRecordTable';
 import AddCleanoutRecord from './AddCleanoutRecord';
 import Pagination from '../../../../../components/Common/CommonPagination/index';
-import InputLimit from '../../../../Common/InputLimit';
-import moment from 'moment';
-import { Table, Icon, Modal, Form, DatePicker, Input, Button } from 'antd';
-const FormItem = Form.Item;
+import { Form, Button } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 
-
-const { RangePicker } = DatePicker;
 class CleanoutPlanRecord extends Component {
   static propTypes = {
     totalNum: PropTypes.number,
@@ -161,7 +157,13 @@ class CleanoutPlanRecord extends Component {
             </div>
             <div className={styles.wrap}>
               <div className={styles.filterData}>
-                <Button type="add" onClick={this.addRecord} className={styles.plusButton}><i>+</i>添加</Button>
+                <CneButton
+                  lengthMode="short"
+                  onClick={this.addRecord}
+                >
+                  <i className="iconfont icon-newbuilt" />
+                  <span>添加</span>
+                </CneButton>
                 {showAddRecordModal ? <AddCleanoutRecord {...this.props} getAddOrEditCleanRecord={this.props.getAddCleanRecord} showAddRecordModal={showAddRecordModal} cancelAddRecord={this.cancelAddRecord} /> : ''}
                 <Pagination total={cleanRecordTotal} pageSize={cleanRecordPageSize} currentPage={cleanRecordPageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
               </div>

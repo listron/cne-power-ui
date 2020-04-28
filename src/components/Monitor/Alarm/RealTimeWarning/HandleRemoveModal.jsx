@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './realTimeWarning.scss';
 import InputLimit from '../../../Common/InputLimit';
 import WarningTip from '../../../Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 import moment from 'moment';
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -17,7 +18,6 @@ class HandleRemoveModal extends Component {
     onCancel: PropTypes.func,
     selectedRowKeys: PropTypes.array,
     theme: PropTypes.string,
-    HandleRemoveWarning: PropTypes.func,
   }
 
   constructor(props) {
@@ -100,11 +100,11 @@ class HandleRemoveModal extends Component {
           style={{ minHeight: 450 }}
           bodyStyle={{ display: 'flex', flex: 1, flexDirection: 'column', padding: 24 }}
           width={625}
-          onOk={this.onSubmit}
           okText="保存"
+          footer={null}
           visible={true}
           getContainer={() => this.refs.modal}
-          onCancel={this.props.onCancel}>
+        >
           <FormItem className={styles.formItem} label="截止时间">
             <Select className={styles.duration}
               style={{ width: 120 }}
@@ -138,6 +138,15 @@ class HandleRemoveModal extends Component {
             )}
           </FormItem>
           <div className={styles.instructionText}>注意：保存后，此设备的同类告警在所选时限内均被解除。</div>
+          <div className={styles.handlerBtn}>
+            <span onClick={this.props.onCancel}>取消</span>
+            <CneButton
+              lengthMode="short"
+              onClick={this.onSubmit}
+            >
+              保存
+            </CneButton>
+          </div>
         </Modal>
       </Form>
     );

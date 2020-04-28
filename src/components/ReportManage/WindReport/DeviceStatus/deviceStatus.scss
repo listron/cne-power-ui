@@ -3,10 +3,60 @@
 .topStyles {
   display: flex;
   align-content: center;
-  .btn{
-    display: flex;
-    align-self: center;
-    margin-left: 16px;
+  align-items: center;
+
+  button{
+    width: 70px;
+    margin-left: 10px;
+  }
+
+  .disableBtn {
+    letter-spacing: 0 !important;
+    background-color: #f1f1f1 !important;
+    border: 1px solid #d4d4d4 !important;
+    box-shadow: inset 1px 1px 0 0 #ffffff !important;
+    color: #999999 !important;
+    transition: all 0s !important;
+    cursor: no-drop !important;
+
+    &:after {
+      background: #f1f1f1 !important;
+    }
+  }
+
+  :global{
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+      color: $themeColor;
+      border: 1px solid $themeColor;
+
+      &-checked {
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+        color: #fff;
+      }
+
+      &:not(:first-child)::before{
+        background-color: #ffffff;
+      }
+
+      &:hover::before{
+        background-color: #ceebe0;
+      }
+    }
+
+    .ant-btn-primary {
+      color: #fff;
+      border-color: $themeColor;
+      background-color: $themeColor;
+      text-shadow: initial;
+
+      &:active,
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
   }
 }
 .container{
@@ -21,6 +71,41 @@
   height: 55px;
   padding: 0 28px;
   background-color: #fff;
+
+  :global{
+    .ant-radio-button-wrapper {
+      padding: 0 8px;
+      color: $themeColor;
+      border: 1px solid $themeColor;
+
+      &-checked {
+        background-color: $themeColor;
+        border: 1px solid $themeColor;
+        color: #fff;
+      }
+
+      &:not(:first-child)::before{
+        background-color: #ffffff;
+      }
+
+      &:hover::before{
+        background-color: #ceebe0;
+      }
+    }
+
+    .ant-btn-primary {
+      color: #fff;
+      border-color: $themeColor;
+      background-color: $themeColor;
+      text-shadow: initial;
+
+      &:active,
+      &:hover {
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+  }
 }
 
 .tableStyles {

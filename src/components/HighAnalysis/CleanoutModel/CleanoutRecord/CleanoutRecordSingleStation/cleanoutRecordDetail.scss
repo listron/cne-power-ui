@@ -63,6 +63,41 @@
     height: 60px;
     line-height: 60px;
     align-content: center;
+
+    :global {
+      .ant-radio-button-wrapper {
+        padding: 0 8px;
+        color: $themeColor;
+        border: 1px solid $themeColor;
+
+        &-checked {
+          background-color: $themeColor;
+          border: 1px solid $themeColor;
+          color: #fff;
+        }
+
+        &:not(:first-child)::before{
+          background-color: #ffffff;
+        }
+
+        &:hover::before{
+          background-color: #ceebe0;
+        }
+      }
+
+      .ant-btn-primary {
+        color: #fff;
+        border-color: $themeColor;
+        background-color: $themeColor;
+        text-shadow: initial;
+
+        &:active,
+        &:hover {
+          background-color: $themeColor;
+          color: #fff;
+        }
+      }
+    }
   }
 }
 

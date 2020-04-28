@@ -143,7 +143,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
                   dataIndex: 'handle',
                   className: styles.handle,
                   textAlign: 'center',
-                  render: (text, record) => <span onClick={() => this.toWarningDetail(record)} className="iconfont icon-look" />,
+                  render: (text, record) => <span onClick={() => this.toWarningDetail(record)} style={{cursor: 'pointer'}} className="iconfont icon-look" />,
                 },
               ]}
               sortField={sortField}

@@ -24,6 +24,11 @@
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
   .realTimeWarningTable {

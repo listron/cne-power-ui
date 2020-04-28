@@ -3,9 +3,20 @@
 .handle {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-left: 44px;
-  button {
-    margin-right: 16px;
+
+  span{
+    cursor: pointer;
+    color: $themeColor;
+
+    &:hover{
+      color: #f9b600;
+    }
+  }
+
+  button{
+    margin-left: 14px;
   }
 }
 .stationTable {

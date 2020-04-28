@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import InputLimit from '../../../../Common/InputLimit';
 import styles from './cleanoutPlanRecord.scss';
 import moment from 'moment';
-import { Modal, Form, DatePicker, Button, TreeSelect } from 'antd';
+import { Modal, Form, DatePicker, TreeSelect } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const showMatrix = TreeSelect.SHOW_ALL;
 const { RangePicker } = DatePicker;
@@ -144,8 +145,13 @@ class AddCleanoutRecord extends Component {
               </FormItem>
             </Form>
             <div className={styles.handle}>
-              <Button onClick={this.cancelAddRecord} >取消</Button>
-              <Button onClick={this.confirmAddRecord} className={styles.confirmExamine} >保存</Button>
+              <span onClick={this.cancelAddRecord}>取消</span>
+              <CneButton
+                lengthMode="short"
+                onClick={this.confirmAddRecord}
+              >
+                保存
+              </CneButton>
             </div>
           </div>
         </Modal>

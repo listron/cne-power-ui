@@ -79,10 +79,19 @@
   .filterData {
     display: flex;
     justify-content: space-between;
-    padding-left: 28px;
     height: 60px;
-    line-height: 60px;
-    align-content: center;
+    align-items: center;
+    padding-left: 28px;
+
+    button{
+      padding-left: 6px;
+      text-align: left;
+
+      span{
+        text-align: center;
+        width: 100%;
+      }
+    }
 
     .plusButton {
       margin: 16px 12px 0 0;
@@ -92,9 +101,20 @@
 .handle {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-left: 44px;
-  button {
-    margin-right: 16px;
+
+  span{
+    cursor: pointer;
+    color: $themeColor;
+
+    &:hover{
+      color: #f9b600;
+    }
+  }
+
+  button{
+    margin-left: 14px;
   }
 }
 .treeDeviceTypes {

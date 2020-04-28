@@ -13,6 +13,10 @@
     }
     > span:last-child {
       color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
   .realTimeWarningTable {

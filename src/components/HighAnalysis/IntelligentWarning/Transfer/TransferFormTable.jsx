@@ -5,6 +5,7 @@ import CommonPagination from '../../../Common/CommonPagination';
 
 import { Link } from 'react-router-dom';
 import { Popover, Icon, Button } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
 
@@ -114,11 +115,14 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton}>
+        <CneButton
+          style={{margin: '0  auto'}}
+          lengthMode="long"
+        >
           <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
             查看工单详情
           </Link>
-        </Button>
+        </CneButton>
       </div>
     );
   }

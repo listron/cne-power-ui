@@ -3,10 +3,11 @@ import styles from './recordDetailTable.scss';
 import WarningTip from '../../../../Common/WarningTip';
 import AddCleanoutRecord from './AddCleanoutRecord';
 import moment from 'moment';
-import { Modal, Form, DatePicker, Input, Button } from 'antd';
+import { Modal, Form, DatePicker, Input } from 'antd';
 // import TableColumnTitle from '../../../../Common/TableColumnTitle';
 import CneTable from '@components/Common/Power/CneTable';
 import { numWithComma, handleRight } from '../../../../../utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 const { RangePicker } = DatePicker;
@@ -116,9 +117,7 @@ class RecordDetailTable extends Component {
       <Modal
         title={'修改'}
         visible={this.state.showEditModal}
-        onOk={this.confirmModal}
         footer={null}
-        onCancel={this.cancelModal}
         mask={false}
         centered={true}
         closable={false}
@@ -168,8 +167,13 @@ class RecordDetailTable extends Component {
               </FormItem>
             </Form>}
           <div className={styles.handle}>
-            <Button onClick={this.cancelModal} >取消</Button>
-            <Button onClick={this.confirmModal} className={styles.confirmExamine} >保存</Button>
+            <span onClick={this.cancelModal}>取消</span>
+            <CneButton
+              lengthMode="short"
+              onClick={this.confirmModal}
+            >
+              保存
+            </CneButton>
           </div>
         </div>
       </Modal>

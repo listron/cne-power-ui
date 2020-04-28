@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './realTimeWarning.scss';
 import InputLimit from '../../../Common/InputLimit';
 import WarningTip from '../../../Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -28,7 +29,7 @@ class TransferWarningModal extends Component {
   }
 
   componentDidMount() {
-    // 现在只是单电站转工单 如果是批量转工单,不需要查询stationType, deviceTypeCode，或者变成数组 
+    // 现在只是单电站转工单 如果是批量转工单,不需要查询stationType, deviceTypeCode，或者变成数组
     const { selectedTransfer } = this.props;
     const stationType = Array.from(new Set(selectedTransfer.map(e => e.stationType)));
     const deviceTypeCode = Array.from((selectedTransfer.map(e => e.deviceTypeCode)));
@@ -116,9 +117,9 @@ class TransferWarningModal extends Component {
           width={625}
           visible={true}
           okText="保存"
-          onOk={this.onSubmit}
+          footer={null}
           getContainer={() => this.refs.modal}
-          onCancel={this.props.onCancel}>
+        >
           <FormItem className={styles.formItem} label="缺陷类型">
             {getFieldDecorator('defectTypeCode', {
               rules: [{
@@ -148,6 +149,15 @@ class TransferWarningModal extends Component {
           </FormItem>
           <div className={styles.instructionText}>
             {level && `注: 当前告警级别为${this.levelToWork[level].lable}级，对应的工单为${this.levelToWork[level].workLevel}级`}
+          </div>
+          <div className={styles.handlerBtn}>
+            <span onClick={this.props.onCancel}>取消</span>
+            <CneButton
+              lengthMode="short"
+              onClick={this.onSubmit}
+            >
+              保存
+            </CneButton>
           </div>
         </Modal>
       </Form>

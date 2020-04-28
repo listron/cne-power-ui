@@ -36,7 +36,7 @@
     .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
        @include overflowText();
     }
-    
+
     .stationName,.belongMatrix,.parentDeviceName,.deviceName,.lostGenPercent{
       width:14%;
     }
@@ -156,6 +156,24 @@
             margin-right: 4px;
             line-height: 30px;
             margin-bottom: 0;
+          }
+        }
+      }
+      .handlerBtn{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 50px;
+        line-height: 50px;
+        padding-right: 20px;
+
+        >span{
+          cursor: pointer;
+          margin-right: 10px;
+          color: $themeColor;
+
+          &:hover{
+            color: #f9b600;
           }
         }
       }

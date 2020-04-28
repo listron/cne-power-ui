@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Select, DatePicker, Modal, Radio, message, Form } from 'antd';
 import InputLimit from '../../../Common/InputLimit';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -102,11 +103,10 @@ class IgnoreModal extends Component {
                 <span ref="modal" />
                 <Modal
                     visible={ingoreVisible}
-                    onOk={this.handleIngoreOk}
-                    onCancel={this.handleIngoreCancel}
                     width={750}
                     closable={false}
                     centered={true}
+                    footer={null}
                     wrapClassName={styles.stationModal}
                     getContainer={() => this.refs.modal}
                 >
@@ -139,6 +139,15 @@ class IgnoreModal extends Component {
                                 <div className={styles.descripe} >
                                     <InputLimit placeholder="请描述，不超过80个汉字" onChange={this.inputChange} value={otherReason} disabled={ignoreReasonCode === 1407 ? false : true} />
                                 </div>
+                            </div>
+                            <div className={styles.handlerBtn}>
+                              <span onClick={this.handleIngoreCancel}>取消</span>
+                              <CneButton
+                                lengthMode="short"
+                                onClick={this.handleIngoreOk}
+                              >
+                                保存
+                              </CneButton>
                             </div>
                         </div>
                     </div>

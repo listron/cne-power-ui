@@ -29,6 +29,11 @@
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
 
@@ -97,7 +102,7 @@
       width:23%
     }
     .warningCheckDescText{
-      max-width: calc((100vw - 230px) * 0.23 - 20px);  
+      max-width: calc((100vw - 230px) * 0.23 - 20px);
     }
     .timeOn{
        width:12%;
@@ -206,6 +211,23 @@
     align-items: flex-start;
     justify-content: flex-start;
     margin-right: 8px;
+  }
+
+  .handlerBtn{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: flex-end;
+
+    >span{
+      cursor: pointer;
+      margin-right: 10px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
+    }
   }
 
   :global {

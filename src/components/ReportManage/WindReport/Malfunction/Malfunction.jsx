@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './malfunction.scss';
-import { Button ,message} from 'antd';
+import { message } from 'antd';
 import TimeSelectReport from '../../../Common/TimeSelect/TimeSelectReport';
 import SummaryMode from '../../../Common/SummaryMode';
 import TableList from './TableList';
 import moment from 'moment';
 import path from '../../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
 message.config({
@@ -111,8 +112,19 @@ class Malfunction extends Component {
             stationDevicemode={stationDevicemodeData}
             regionStation={regionStationData}
             region={regionData} />
-          <Button className={styles.btn} onClick={this.onSearch}>查询</Button>
-          <Button className={styles.btn} onClick={this.exportList} disabled={disabledStatus} >导出</Button>
+          <CneButton
+            lengthMode="short"
+            onClick={this.onSearch}
+          >
+            查询
+          </CneButton>
+          <CneButton
+            lengthMode="short"
+            className={disabledStatus ? styles.disableBtn : ''}
+            onClick={disabledStatus ? () => {} : this.exportList}
+          >
+            导出
+          </CneButton>
         </div>
         <TableList {...this.props} onChangeFilter={this.onChangeFilter} params={params} />
       </div>

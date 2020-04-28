@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import styles from './transferForm.scss';
 import CommonPagination from '../../../Common/CommonPagination';
 import CneTable from '../../../Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 import { Link } from 'react-router-dom';
-import { Table, Select, Popover, Icon, Button } from 'antd';
+import { Popover, Icon } from 'antd';
 import moment from 'moment';
 
 class TransferFormTable extends Component {
@@ -114,11 +115,14 @@ class TransferFormTable extends Component {
             <span className={styles.value}>{ticketInfo.defectDescribe}</span>
           </div>
         </div>
-        <Button className={styles.ticketButton}>
+        <CneButton
+          lengthMode="long"
+          style={{margin: '0 auto'}}
+        >
           <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
             查看工单详情
           </Link>
-        </Button>
+        </CneButton>
       </div>
     );
   }

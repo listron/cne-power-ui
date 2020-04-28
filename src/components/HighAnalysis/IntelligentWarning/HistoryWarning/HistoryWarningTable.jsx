@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Popover, Icon, Button } from 'antd';
 import CneTable from '@components/Common/Power/CneTable';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 import PropTypes from 'prop-types';
 
 class HistoryWarningTable extends Component {
@@ -139,11 +140,14 @@ class HistoryWarningTable extends Component {
           </div>
         </div>
         {/*<Button className={styles.ticketButton} ><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button>  */}
-        <Button className={styles.ticketButton} >
+        <CneButton
+          lengthMode="long"
+          style={{margin: '0 auto'}}
+        >
           <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
             查看工单详情
           </Link>
-        </Button>
+        </CneButton>
 
       </div>
     );

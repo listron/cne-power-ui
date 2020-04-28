@@ -25,6 +25,11 @@
       font-size: 14px;
       cursor: pointer;
       margin-left: 16px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
   .realTimeWarningTable {
@@ -131,6 +136,22 @@
 }
 
 .transferModal {
+  .handlerBtn{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    justify-content: flex-end;
+
+    >span{
+      cursor: pointer;
+      margin-right: 10px;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
+    }
+  }
   .formItem {
     display: flex;
     flex-direction: row;

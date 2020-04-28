@@ -7,6 +7,7 @@ import { Select, Table, Button, DatePicker, Icon } from 'antd';
 import moment from 'moment';
 import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
+import CneButton from '@components/Common/Power/CneButton';
 import { handleRight } from '@utils/utilFunc';
 import { SequenceChart } from '../CommonChart/SequenceChart';
 const { RangePicker } = DatePicker;
@@ -105,8 +106,19 @@ class UnhandleSide extends Component {
             {
               !dealSuccess && unhandleOperation &&
               <React.Fragment>
-                <Button className={styles.warnButton} onClick={() => { this.selectChange('ignore'); }}> 忽略 </Button>
-                <Button className={styles.warnButton} onClick={() => { this.selectChange('transfer'); }}> 转工单</Button>
+                <CneButton
+                  style={{margin: '0 20px'}}
+                  lengthMode="short"
+                  onClick={() => { this.selectChange('ignore'); }}
+                >
+                  忽略
+                </CneButton>
+                <CneButton
+                  lengthMode="short"
+                  onClick={() => { this.selectChange('transfer'); }}
+                >
+                  转工单
+                </CneButton>
               </React.Fragment>
             }
           </div>
