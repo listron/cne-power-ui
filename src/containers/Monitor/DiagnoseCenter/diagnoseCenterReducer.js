@@ -52,9 +52,8 @@ const initState = {
   summaryInfo: {}, // 汇总统计
   eventAnalysisLoading: false, // 时间分析loading状态
   eventAnalysisInfo: {}, // 告警事件分析结果
-  isNoDataTip: false, // 线型图页-所选周期无数据时弹出提示语
-  isCycleTip: false, // 线型图页-点击选择框时无数据弹提示语
-  isDataTip: false, // 线型图页-点击选择日期时无数据弹提示语
+  showEmptyDataTip: false, // 图表无数据时弹出提示语
+
   isMoreData: false, // 显示联动表格跳转后的数据时，不跳向其他页面
   linkageListLoading: false, // 线型图-联动决策表格loading
   linkageListError: false, // 线型图-联动决策表格loading

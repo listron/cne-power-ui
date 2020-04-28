@@ -11,7 +11,7 @@ class ChartLine extends PureComponent {
     pageKey: PropTypes.string,
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
-    filterLoading: PropTypes.bool,
+    isChartLoading: PropTypes.bool,
   };
 
   componentDidMount(){
@@ -23,10 +23,10 @@ class ChartLine extends PureComponent {
 
   componentWillReceiveProps(nextProps){
     const preAnalysiInfo = this.props.eventAnalysisInfo;
-    const preLoading = this.props.filterLoading;
-    const { eventAnalysisInfo, analysisEvent, filterLoading } = nextProps;
+    const preLoading = this.props.isChartLoading;
+    const { eventAnalysisInfo, analysisEvent, isChartLoading } = nextProps;
     const lineChart = echarts.init(this.lineRef);
-    if (filterLoading && !preLoading) {
+    if (isChartLoading && !preLoading) {
       lineChart.showLoading('default', { text: '', color: '#199475' });
     }
     if (eventAnalysisInfo !== preAnalysiInfo) {

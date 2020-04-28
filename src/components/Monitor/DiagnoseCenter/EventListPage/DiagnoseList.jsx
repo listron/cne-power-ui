@@ -93,8 +93,15 @@ class DiagnoseList extends Component {
     const diagWarningId = record.diagWarningId;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
     // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
-    this.props.changeStore({oldAnalysisEvent: record, interval, linkagePage: pageKey, diagWarningId});
-    this.props.getEventsAnalysis({ ...record, interval });
+    this.props.changeStore({
+      oldAnalysisEvent: record,
+      interval,
+      linkagePage: pageKey,
+      diagWarningId,
+      showAnalysisPage: true,
+      analysisPageLoading: true,
+    });
+    this.props.getEventsAnalysis({ ...record, interval, analysisPageLoading: true });
     this.props.getLinkageList({diagWarningId});
   }
 

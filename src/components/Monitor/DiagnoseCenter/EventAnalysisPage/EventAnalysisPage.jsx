@@ -23,7 +23,7 @@ class EventAnalysisPage extends PureComponent {
     listParams: PropTypes.object,
     changeStore: PropTypes.func,
     getEventsAnalysis: PropTypes.func,
-    eventAnalysisLoading: PropTypes.bool,
+    analysisPageLoading: PropTypes.bool,
     isMoreData: PropTypes.bool,
   };
 
@@ -47,7 +47,7 @@ class EventAnalysisPage extends PureComponent {
   }
 
   render(){
-    const { pageKey, analysisEvent, eventAnalysisInfo, eventAnalysisLoading, isMoreData } = this.props;
+    const { pageKey, analysisEvent, eventAnalysisInfo, analysisPageLoading, isMoreData } = this.props;
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, beginTime } = analysisEvent || {};
     const startTime = moment(moment(beginTime).startOf('day').format()).utc().format();
     const endTime = moment(moment(beginTime).endOf('day').format()).utc().format();
@@ -100,7 +100,7 @@ class EventAnalysisPage extends PureComponent {
             <div className={styles.backIcon}><i className={'iconfont icon-fanhui'} onClick={this.backList} /></div>
           </span>
         </h3>
-        {!eventAnalysisLoading ?
+        {!analysisPageLoading ?
         <div className={styles.detailContent}>
           {chartType === 1 && <EventLineSearch {...this.props} />}
           {chartType === 2 && <EventBarSearch {...this.props} />}

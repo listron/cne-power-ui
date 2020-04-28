@@ -161,17 +161,27 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
 }
 
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
-  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件 }
+  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
+  /**
+   * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
+   * 
+   * isCycleTip: 点击数据时间间隔时:true  => 若得到无数据的响应 => '数据不存在，请选择其他周期';
+   * isDataTip: 点击日期时: true => 若得到无数据的响应 => '数据不存在，请选择其他周期';
+   * isNoDataTip: 无数据响应时候 => '数据不存在，请选择其他周期'; interval === 2 && nodata
+   * 
+   * isChartLoading: 图loading: 分析页下方列表返回最初图表时的chart图形loading
+   * eventAnalysisLoading: 从列表页进入分析页面loading 
+   * filterLoading: 图loading: 点击时间间隔, 日期时候的chart图表loading
+
+   * intervalState； 无数据, 零电流, 时间间隔都是指定情况时，请求另一时间间隔数据。
+   * 没有数据的话: 基于data.pointData.value进行判断, 如果value全不存在 / [null] / [], 则判定为无数据
+   */
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, isCycleTip, isDataTip, fromPath, isChartLoading } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, fromPath, analysisPageLoading } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
-    if(isCycleTip || isDataTip || isChartLoading){
-      yield call(easyPut, 'changeStore', { eventAnalysisLoading: false, filterLoading: true, showAnalysisPage: true}); // 时间间隔或者日期改变时echarts图单独加载loading
-    } else{
-      yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, filterLoading: false, showAnalysisPage: true});
-    }
+    yield call(easyPut, 'changeStore', { isChartLoading: true }); // chart图表loading
     // 1. 外部路径直接跳转分析 => 路径(diagWarningId,deviceFullcode), 将返回结果(response.data.warning)初始化reducer;
     const params = { diagWarningId, deviceFullcode };
     if (!fromPath) { // 2. 正常诊断中心点击分析请求
@@ -182,9 +192,10 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {
-      const tmpStoreInfo = {
-        eventAnalysisLoading: false,
-        filterLoading: false,
+      const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 测点数据结果
+      const isEmptyData = !!(pointData.find(e => (response.data.chartType === 1 ? e.value.length : e.length) > 0)); // 是否空数据
+      const tmpStoreInfo = { // 要产生的必要store输出。
+        analysisPageLoading: false,
         isChartLoading: false,
         analysisEvent: payload,
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
@@ -203,51 +214,15 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
           payload: { eventType: warning.eventType },
         });
       }
-      yield call(easyPut, 'fetchSuccess', tmpStoreInfo);
-      const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
-      const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-        return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
-      });
-      if ((isDataTip || isCycleTip) && resValue.length === 0) {// 如果所选日期/数据间隔无数据时弹出提示语
-        yield call(easyPut, 'changeStore', { isNoDataTip: true });
+      if (isEmptyData) { // 空数据 - 弹出提示
+        tmpStoreInfo.showEmptyDataTip = true;
       }
-      if (!isCycleTip && !isDataTip) { // 第一次进入页面且5秒无数据时才会去请求10分钟数据
-        const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 获取最开始得到的数据
-        const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-          return (response.data.chartType === 1 ? e.value.length : e.length) > 0;
-        });
-        if (resValue.length === 0 && isDataTip) { // 如果所选日期无数据的时弹出提示语
-          yield call(easyPut, 'changeStore', { isNoDataTip: true });
-        }
-        const intervalState = interval === 2 && resValue.length === 0 && (eventType === 1 || eventCode === 'NB1035');
-        if (intervalState) { // 如果请求的是interval为5秒但value的数据为空，以及事件类型为零电流'NB1035'或者是告警事件时，就请求10分钟
-          if (isCycleTip) { // 如果所选数据间隔无数据的时弹出提示语
-            yield call(easyPut, 'changeStore', { isNoDataTip: true });
-          }
-          yield call(easyPut, 'changeStore', { eventAnalysisLoading: true, showAnalysisPage: true });
-          const innerResponse = yield call(request.get, url, { params: {
-            ...params,
-            interval: 1, // 请求10分钟
-          }});
-          if (innerResponse.code === '10000') {
-            yield call(easyPut, 'fetchSuccess', {
-              eventAnalysisLoading: false,
-              analysisEvent: {
-                ...payload,
-                ...(innerResponse.data.warning || {}),
-                interval: 1, // 请求10分钟
-              },
-              eventAnalysisInfo: { ...innerResponse.data, deviceFullcode } || { deviceFullcode },
-            });
-            const pointData = innerResponse.data.chartType === 1 ? innerResponse.data.data.pointData : innerResponse.data.data; // 获取10分钟得到的数据
-            const resValue = pointData.filter(e => { // 请求的value数据是否都为空
-              return (innerResponse.data.chartType === 1 ? e.value.length : e.length) > 0;
-            });
-            if (resValue.length === 0) { // 如果10分钟也没有value数据的话，就弹出提示语“无数据”
-              yield call(easyPut, 'changeStore', { isNoDataTip: true });
-            }
-          }
-        }
+      const autoIntervalAnalysis = analysisPageLoading && interval === 2 && isEmptyData && (eventType === 1 || eventCode === 'NB1035');
+      // 从列表跳入分析页面(autoIntervalAnalysis:true)时: 若interval为5秒+数据为空+事件类型为零电流'NB1035'或者是告警事件时，需继续自动请求10分钟
+      if (autoIntervalAnalysis) {
+        yield fork(getEventsAnalysis, { payload: { ...payload, interval: 1, analysisPageLoading: false } });
+      } else {
+        yield call(easyPut, 'fetchSuccess', tmpStoreInfo);
       }
     } else { throw response.message; }
   } catch (error) {

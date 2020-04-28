@@ -64,7 +64,7 @@ class DiagnoseCenter extends Component {
   }
 
   pathToAnalysis = (pathInfo) => {
-    this.props.changeStore({ showAnalysisPage: true });
+    this.props.changeStore({ showAnalysisPage: true, analysisPageLoading: true });
     this.setState({ sideTranslateX: 'translateX(100%)' });
     // { diagWarningId, deviceFullcode }
     this.props.getEventsAnalysis({ ...pathInfo });

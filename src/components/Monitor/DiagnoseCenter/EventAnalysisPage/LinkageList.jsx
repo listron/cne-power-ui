@@ -37,9 +37,9 @@ class LinkageList extends Component {
   }
 
   onBack = () => { // 显示原来的事件详情信息
-    const { oldAnalysisEvent, interval, changeStore, getEventsAnalysis, linkagePage } = this.props;
-    changeStore({isMoreData: false, isBackEvent: false, pageKey: linkagePage});
-    getEventsAnalysis({...oldAnalysisEvent, interval, isChartLoading: true});
+    const { oldAnalysisEvent, interval, linkagePage } = this.props;
+    this.props.changeStore({isMoreData: false, isBackEvent: false, pageKey: linkagePage});
+    this.props.getEventsAnalysis({...oldAnalysisEvent, interval});
   }
 
   linkageCheck = (e) => { // 切换联动类型
@@ -53,13 +53,13 @@ class LinkageList extends Component {
   }
 
   onShow = (record) => { // 查看
-    const { pageKey, changeStore, getEventsAnalysis } = this.props;
+    const { pageKey } = this.props;
     const eventCode = record.eventCode;
     const eventType = {1: 'alarm', 2: 'diagnose', 3: 'data'};
     const linkageEventType = record.eventType;
     const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1; // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
-    changeStore({ isMoreData: true, isBackEvent: true, pageKey: eventType[linkageEventType] });
-    getEventsAnalysis({ ...record, interval, isChartLoading: true });
+    this.props.changeStore({ isMoreData: true, isBackEvent: true, pageKey: eventType[linkageEventType] });
+    this.props.getEventsAnalysis({ ...record, interval });
   }
 
   onSuspend = (record) => { // 忽略
