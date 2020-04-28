@@ -118,7 +118,7 @@ class CaseHandle extends React.Component {
                 <span className={'iconfont icon-newbuilt'} />
             </div> 添加
           </CneButton>
-          <CneButton disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </CneButton>
+          <CneButton className={styles.alldel} disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </CneButton>
           <CneButton className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </CneButton>
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
           <CneButton

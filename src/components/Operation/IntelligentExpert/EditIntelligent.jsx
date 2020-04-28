@@ -218,7 +218,7 @@ class EditIntelligent extends Component {
                   onPreview={this.onPreview}
                 >
                   <CneButton className={styles.uploaderBtn}>
-                    <Icon type="upload" /> 选择文件上传
+                    <Icon className={styles.icon} type="upload" />选择文件上传
                   </CneButton>
                   <span className={styles.extraSpan}> 上传文件不得大于100M</span>
                 </Upload>

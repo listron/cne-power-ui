@@ -300,7 +300,10 @@ class AddCaseForm extends React.Component {
                 fileList={initFileList}
                 onPreview={this.onPreview}
               >
-                <CneButton> <Icon type="upload" /> 选择文件上传</CneButton>  <span className={styles.extraSpan}> 上传文件不得大于100M</span>
+                <CneButton className={styles.uploadFile}> 
+                  <Icon className={styles.icon} type="upload" /> 选择文件上传
+                </CneButton>
+                <span className={styles.extraSpan}> 上传文件不得大于100M</span>
               </Upload>
             )}
           </FormItem>

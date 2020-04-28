@@ -149,6 +149,13 @@
         }
       }
 
+      .uploadFile {
+        padding: 0 15px 0 10px;
+        .icon {
+          margin: 0 6px 0 0;
+        }
+      }
+
       .detailStyle {
         display: flex;
         flex-direction: column;
@@ -171,7 +178,7 @@
 
         .submitBtn {
           margin: 0 20px 0 200px;
-
+          width:90px;
         }
       }
     }

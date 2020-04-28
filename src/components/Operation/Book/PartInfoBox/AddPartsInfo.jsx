@@ -4,9 +4,10 @@ import styles from './partInfoBox.scss';
 import ShowAddPartsModeModal from './ShowAddPartsModeModal';
 import ShowAddFactor from './ShowAddFactor';
 
-import { Button, Icon, Input, Form, Select, TreeSelect } from 'antd';
+import { Icon, Input, Form, Select, TreeSelect } from 'antd';
 
 import WarningTip from '../../../../components/Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 const TreeNode = TreeSelect.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -361,12 +362,12 @@ class AddPartsInfo extends React.Component {
             })(<Input placeholder="不超过30字" />)}
           </FormItem>
           <div className={styles.submitStyle}>
-            <Button onClick={this.submitForm} className={styles.leftsave}>
+            <CneButton onClick={this.submitForm} className={styles.leftsave}>
               保存
-            </Button>
-            <Button onClick={this.nextAdd} className={styles.leftsave}>
+            </CneButton>
+            <CneButton onClick={this.nextAdd} className={styles.saveandgo}>
               保存并继续添加
-            </Button>
+            </CneButton>
           </div>
         </Form>
         {showAddPartsMode && (

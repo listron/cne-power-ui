@@ -3,10 +3,10 @@ import styles from './deviceManage.scss';
 import ImportDevice from './ImportDevice';
 import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
-import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { handleRight } from '@utils/utilFunc';
 import path from '../../../../constants/path';
+import CneButton from '@components/Common/Power/CneButton';
 
 class DeviceManageHandle extends Component {
   static propTypes = {
@@ -109,17 +109,21 @@ class DeviceManageHandle extends Component {
     return (
       <div className={styles.deviceManageHandle}>
         {deviceHandleRight ? <div className={styles.left}>
-          <Button onClick={this.addDevice} className={styles.plusButton} icon="plus" >设备</Button>
-          <Button className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</Button>
-          <Button className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank" >下载设备信息导入模板</Button>
-          <Button className={styles.import} onClick={this.showModal} loading={this.props.importLoading} >导入</Button>
-          <Button
+          <CneButton className={styles.plusButton} onClick={this.addDevice}>
+            <div className={styles.icon}>
+                <span className={'iconfont icon-newbuilt'} />
+            </div> 设备
+          </CneButton>
+          <CneButton className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</CneButton>
+          <CneButton className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank" >下载设备信息导入模板</CneButton>
+          <CneButton className={styles.import} onClick={this.showModal} loading={this.props.importLoading} >导入</CneButton>
+          <CneButton
             disabled={deviceList.length === 0}
             className={styles.exportInfo}
             onClick={this.toExport}
             loading={exportLoading}
-          >导出</Button>
-          <Button onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</Button>
+          >导出</CneButton>
+          <CneButton onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</CneButton>
         </div> : <div />}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         {showModal ? <ImportDevice {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}

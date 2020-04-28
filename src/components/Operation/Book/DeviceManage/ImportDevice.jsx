@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import StationSelect from '../../../../components/Common/StationSelect';
-import { Modal, Form, Button, Upload, Select, Row, Col, message } from 'antd';
+import { Modal, Form, Upload, Select, Row, Col, message } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 class ImportDevice extends Component {
   static propTypes = {
@@ -126,13 +127,13 @@ class ImportDevice extends Component {
                   fileList={fileList}
                   showUploadList={{showPreviewIcon:false,showRemoveIcon:true}}
                 >
-                  <Button>选择文件</Button>
+                  <CneButton style={{width:90}}>选择文件</CneButton>
                   <span> 支持xls、xlsx文件</span>
                 </Upload>
               )}
             </FormItem>
             <FormItem wrapperCol={{ span: 12, offset: 12 }} >
-              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>导入</Button>
+              <CneButton style={{width:90}} htmlType="submit" onClick={this.handleSubmit}>导入</CneButton>
             </FormItem>
           </Form>
 

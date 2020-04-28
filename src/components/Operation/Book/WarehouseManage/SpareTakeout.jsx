@@ -124,7 +124,7 @@ class SpareTakeout extends Component {
         </Form>
         <div className={styles.handlePart}>
           <span className={styles.holder} />
-          <CneButton onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</CneButton>
+          <CneButton className={styles.saveButon} onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</CneButton>
         </div>
       </section>
     );

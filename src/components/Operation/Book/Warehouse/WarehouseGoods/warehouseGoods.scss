@@ -24,39 +24,11 @@
         width: 100%;
 
         .addControl {
-          width: 70px;
-          padding: 0;
-          font-size: 0;
-          border: 1px solid $themeColor;
-
-          i {
-            background-color: $themeColor;
-            color: #fff;
-            font-size: 14px;
-            vertical-align: top;
-            width: 28px;
-            line-height: 30px;
-            border-radius: 2px 0 0 2px;
-          }
-
-          .text {
-            border-radius: 0 2px 2px 0;
-            font-size: 14px;
-            color: $themeColor;
-            display: inline-block;
-            width: 40px;
-            line-height: 30px;
-            margin: 0;
-            text-align: center;
-          }
-
-          @include highLight($themeColor);
-
-          &:hover {
-            .text {
-              background: $themeColor;
-              color: #fff;
-            }
+          width: 90px;
+          display: flex;
+          padding: 0 15px 0 10px;
+          .icon {
+            margin: 0 16px 0 0;
           }
         }
       }

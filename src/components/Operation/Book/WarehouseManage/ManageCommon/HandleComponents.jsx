@@ -133,12 +133,13 @@ export default class HandleComponent extends Component {
                 <span className={'iconfont icon-newbuilt'} />
             </div> 入库
           </CneButton>
-          <CneButton disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</CneButton>
+          <CneButton className={styles.widthBtn}  disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</CneButton>
           {tabName === 'spares' && <CneButton
+            className={styles.widthBtn} 
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
           >设置阈值</CneButton>}
-          <CneButton onClick={this.toImport}>导入</CneButton>
+          <CneButton  className={styles.widthBtn} onClick={this.toImport}>导入</CneButton>
           <CneButton onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</CneButton>
         </div> : <div />}
         <CommonPagination
@@ -164,6 +165,7 @@ export default class HandleComponent extends Component {
             <div className={styles.savePart}>
               <span className={styles.holder} />
               <CneButton
+                className={styles.saveButton}
                 onClick={this.saveStockMax}
                 disabled={isNaN(stockMaxValue) || !stockMaxValue}
                 loading={maxSettingLoading}

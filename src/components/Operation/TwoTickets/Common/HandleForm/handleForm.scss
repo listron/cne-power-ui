@@ -47,10 +47,18 @@
     }
     .ant-radio-group {
       .ant-radio-button-wrapper {
+        &:not(:first-child)::before {
+          width: 0px;
+        }
         color: #199475;
         border: 1px solid #199475;
+        border-right: none;
         &:first-child {
-            border: 1px solid #199475;
+            border-radius: 2px 0 0 2px;
+        }
+        &:last-child {
+          border-radius: 0 2px 2px 0;
+          border-right: 1px solid #199475;
         }
         &:hover {
             background-color: #ceebe0;
@@ -148,6 +156,9 @@
         box-shadow: none;
         color: #fff;
       }
+    }
+    .submitBtn {
+      width: 90px;
     }
   }
 }

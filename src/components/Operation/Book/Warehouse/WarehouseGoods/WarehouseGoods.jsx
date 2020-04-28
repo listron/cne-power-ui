@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Tree, Form, Row, Col, Input } from 'antd';
+import { Icon, Tree, Form, Row, Col, Input } from 'antd';
 import CommonBreadcrumb from '../../../../../components/Common/CommonBreadcrumb';
 import CommonPagination from '../../../../Common/CommonPagination';
 import WarehouseGoodsTable from './WarehouseGoodsTable/WarehouseGoodsTable';
 import { handleRight } from '@utils/utilFunc';
 import styles from './warehouseGoods.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { TreeNode } = Tree;
 const FormItem = Form.Item;
@@ -184,15 +185,16 @@ class WarehouseGoods extends Component {
           <div className={styles.goodsRight}>
             {warehouseGoodRight && isAbleOper === 0 && (
               <div className={styles.goodsBtn}>
-                <Button
+                <CneButton
                   className={styles.addControl}
                   onClick={() => {
                     return this.onAddFunc();
                   }}
                 >
-                  <Icon type="plus" />
-                  <span className={styles.text}>添加</span>
-                </Button>
+                  <div className={styles.icon}>
+                      <span className={'iconfont icon-newbuilt'} />
+                  </div> 添加
+                </CneButton>
               </div>
             )}
             {warehouseGoodRight && (isAbleOper === 1 ? false : addFlag) && (
@@ -219,13 +221,13 @@ class WarehouseGoods extends Component {
                             ],
                           })(<Input maxLength={6} placeholder="6字以内" />)}
                         </FormItem>
-                        <Button
+                        <CneButton
                           loading={goodsAddLoading}
-                          style={{ minWidth: '68px', marginTop: '4px' }}
+                          style={{ width:'90px', minWidth: '68px', marginTop: '4px' }}
                           htmlType="submit"
                         >
                           添加
-                        </Button>
+                        </CneButton>
                       </Col>
                     </Row>
                   </Form>

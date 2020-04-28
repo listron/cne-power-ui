@@ -10,7 +10,7 @@
 
 .nextButton {
   margin-left: 156px;
-  width: 200px;
+  width: 90px;
 }
 
 .contentBox {
@@ -73,6 +73,8 @@
 
       .nextButton {
         margin-left: 200px;
+        width: 90px;
+        max-width: 90px;
       }
 
       :global {
@@ -144,6 +146,9 @@
 
           .submitStyle {
             padding: 0 0 20px 250px;
+            .saveBtn {
+              width: 90px;
+            }
           }
 
           .systermStyle {
@@ -153,6 +158,10 @@
 
             .leftpreStyles {
               margin-right: 40px;
+              width: 90px;
+            }
+            .saveStyles {
+              width: 90px;
             }
           }
 
@@ -257,6 +266,10 @@
 
             .preStyles {
               margin-right: 40px;
+              width: 90px;
+            }
+            .saveStyles, .saveBtn {
+              width: 90px;
             }
           }
         }
@@ -300,8 +313,7 @@
 
       .topInfoShow {
         .title {
-          font-size: 16px;
-          color: $darkColor;
+          width: 90px;
           margin-left: 36px;
           margin-right: 28px;
         }
@@ -327,11 +339,15 @@
             font-size: 20px;
             margin-right: 20px;
             cursor: pointer;
+            color: #199475;
+            &:hover {
+              color:#F9B600;
+            }
           }
         }
 
         .previous,
-        .next,
+        .next
          {
           font-size: 20px;
           cursor: pointer;
@@ -502,6 +518,32 @@
 
       .radioStyle {
         margin-bottom: 12px;
+        :global {
+          .ant-radio-group {
+            .ant-radio-button-wrapper {
+              &:not(:first-child)::before {
+                width: 0px;
+              }
+              color: #199475;
+              border: 1px solid #199475;
+              border-right: none;
+              &:first-child {
+                  border-radius: 2px 0 0 2px;
+              }
+              &:last-child {
+                border-radius: 0 2px 2px 0;
+                border-right: 1px solid #199475;
+              }
+              &:hover {
+                  background-color: #ceebe0;
+              }
+              &.ant-radio-button-wrapper-checked {
+                  background-color: #199475;
+                  color: #fff;
+              }
+            }
+          }
+        }
       }
     }
 

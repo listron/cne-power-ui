@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Select, DatePicker } from 'antd';
-
+import { Input, Form, Select, DatePicker } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from '../deviceSide.scss';
 import WindInstallDate from '../AddDevice/WindInstallDate';
 import WindMeasurement from '../AddDevice/WindMeasurement';
@@ -397,7 +397,7 @@ class EditDeviceForm extends Component {
               </FormItem>
               {!isShowComponent && (
                 <div className={styles.submitStyle}>
-                  <Button onClick={this.submitForm}>保存</Button>
+                  <CneButton className={styles.saveBtn} onClick={this.submitForm}>保存</CneButton>
                 </div>
               )}
             </div>
@@ -437,7 +437,7 @@ class EditDeviceForm extends Component {
                 />
               )}
               <div className={styles.submitStyle}>
-                <Button onClick={this.submitForm}>保存</Button>
+                <CneButton className={styles.saveBtn} onClick={this.submitForm}>保存</CneButton>
               </div>
             </div>
           )}

@@ -20,6 +20,9 @@
   }
   .partSearch {
     background-color: #f9f9f9;
+    .searchBtn{
+      width: 90px;
+    }
     .reset {
       color: $themeColor;
     }
@@ -50,6 +53,18 @@
       color: $themeColor;
     }
   }
+
+  .importIntelligent {
+    .uploadFile {
+      padding: 0 15px 0 10px;
+      .icon {
+        margin: 0 6px 0 0;
+      }
+    }
+    .okBtn {
+      width: 90px;
+    }
+  }
 }
 .intelligentSide.light {
   background: #fff;
@@ -69,6 +84,17 @@
       .ant-form-item-required::after {
         color: #a42b2c;
       }
+    }
+
+    .uploaderBtn{
+      padding: 0 15px 0 10px;
+      .icon {
+        margin: 0 6px 0 0;
+      }
+    }
+
+    .saveBtn {
+      width: 90px;
     }
   }
   .addIntelligent {
@@ -248,11 +274,9 @@
         line-height: 1;
       }
       .uploaderBtn{
-        background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
-        color: #fff;
-        &:hover{
-          background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
-          color: #fff;
+        padding: 0 15px 0 10px;
+        .icon {
+          margin: 0 6px 0 0;
         }
       }
       .extraSpan{

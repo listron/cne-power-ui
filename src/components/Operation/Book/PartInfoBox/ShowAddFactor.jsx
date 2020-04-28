@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Input, Form, Modal } from "antd";
+import { Input, Form, Modal } from "antd";
 import styles from "./partInfoBox.scss";
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 class ShowAddDeviceModeModal extends Component {
@@ -69,13 +70,12 @@ class ShowAddDeviceModeModal extends Component {
             })(<Input placeholder="请输入..." />)}
           </FormItem>
 
-          <Button
-            type="primary"
+          <CneButton
             onClick={this.confirmForm}
             className={styles.nextButton}
           >
             确定
-          </Button>
+          </CneButton>
         </Form>
       </Modal>
     );

@@ -234,6 +234,7 @@ class ToolInsert extends Component {
         <div className={styles.handlePart}>
           <span className={styles.holder} />
           <CneButton
+            className={styles.saveButon}
             onClick={this.insertSave}
             loading={saveMode === 'once' && insertStatus === 'loading'}
           >保存</CneButton>

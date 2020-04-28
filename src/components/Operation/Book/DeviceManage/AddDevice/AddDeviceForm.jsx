@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Select, DatePicker, Icon } from 'antd';
+import { Input, Form, Select, DatePicker, Icon } from 'antd';
 import StationSelect from '../../../../Common/StationSelect';
 import DeviceSelect from '../../../../Common/DeviceSelect/index';
 import styles from '../deviceSide.scss';
@@ -10,6 +10,7 @@ import ShowAddDeviceModeModal from './ShowAddDeviceModeModal';
 import ShowAddFactor from './ShowAddFactor';
 import Confluence from './Confluence';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -522,13 +523,13 @@ class AddDeviceForm extends Component {
               </FormItem>
               {!isShowSaveButton && (
                 <div className={styles.leftsubmitStyle}>
-                  <Button
+                  <CneButton
                     onClick={this.gobackPre}
                     className={styles.leftpreStyles}
                   >
                     上一步
-                  </Button>
-                  <Button onClick={this.submitForm}>保存</Button>
+                  </CneButton>
+                  <CneButton className={styles.saveStyles} onClick={this.submitForm}>保存</CneButton>
                 </div>
               )}
             </div>
@@ -563,10 +564,10 @@ class AddDeviceForm extends Component {
             )}
             {isShowSaveButton && (
               <div className={styles.submitStyle}>
-                <Button onClick={this.gobackPre} className={styles.preStyles}>
+                <CneButton onClick={this.gobackPre} className={styles.preStyles}>
                   上一步
-                </Button>
-                <Button onClick={this.submitForm}>保存</Button>
+                </CneButton>
+                <CneButton onClick={this.submitForm} className={styles.saveStyles}>保存</CneButton>
               </div>
             )}
           </div>

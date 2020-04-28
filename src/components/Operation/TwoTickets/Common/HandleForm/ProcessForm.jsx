@@ -76,7 +76,7 @@ class DefectProcessForm extends Component {
           </div>
         </FormItem>
         <div className={styles.actionBar}>
-          <CneButton htmlType="submit">提交</CneButton>
+          <CneButton className={styles.submitBtn} htmlType="submit">提交</CneButton>
         </div>
       </Form>
     );

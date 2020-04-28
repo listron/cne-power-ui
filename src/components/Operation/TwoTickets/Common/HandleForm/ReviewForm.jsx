@@ -93,7 +93,7 @@ class DefectReviewForm extends Component {
         )}
         <div className={styles.actionBar}>
           <CneButton className={styles.cancelBtn} onClick={this.onReset}>重置</CneButton>
-          <CneButton htmlType="submit">提交</CneButton>
+          <CneButton className={styles.submitBtn} htmlType="submit">提交</CneButton>
         </div>
       </Form>
     );

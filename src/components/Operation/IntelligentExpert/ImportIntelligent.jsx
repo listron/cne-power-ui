@@ -113,7 +113,9 @@ class ImportIntelligent extends Component {
                   beforeUpload={this.beforeUploadStation}
                   fileList={fileList}
                 >
-                  <CneButton><Icon type="upload" />选择文件上传</CneButton>
+                  <CneButton className={styles.uploadFile}>
+                    <Icon  className={styles.icon} type="upload" />选择文件上传
+                  </CneButton>
                   <span> 支持xlsx文件</span>
                 </Upload>
               )}

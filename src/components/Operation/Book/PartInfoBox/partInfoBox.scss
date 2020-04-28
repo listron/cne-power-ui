@@ -26,10 +26,15 @@
       align-items: center;
     }
 
-    .exportInfo {
-      margin-left: 16px;
-      color: $themeColor;
-      border-color: $themeColor
+    .buttonBox{
+      display: flex;
+      .importInfo,
+      .exportInfo {
+        margin-left: 16px;
+      }
+      .exportInfo {
+        width: 90px;
+      }
     }
   }
 
@@ -51,72 +56,24 @@
       flex-direction: column;
       padding: 0 18px;
 
-      .plusButton,
-      .noColor {
-        width: 62px;
-        padding: 0;
-        font-size: 0;
+      .addParts {
+        display: flex;
+      }
+      .plusButton {
+        width: 90px;
         margin: 8px 0;
-
-        i {
-          vertical-align: top;
-          font-size: 14px;
-
-        }
-
-        span {
-          background-color: #fff;
-          color: $themeColor;
-          border-radius: 0 2px 2px 0;
-          display: inline-block;
-          font-size: 14px;
-          line-height: 30px;
-          margin: 0px;
-          padding-right: 4px
-        }
-
-        :global {
-          .anticon-plus {
-            color: #fff;
-            height: 100%;
-            border-radius: 2px 0 0 2px;
-            width: 28px;
-            text-align: center;
-            line-height: 30px;
-            background-color: $themeColor;
-          }
-
-          .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) .anticon {
-            margin-left: 0px;
-            width: 28px;
-            color: $darkColor;
-          }
+        margin-right: 16px;
+        display: flex;
+        padding: 0 15px 0 10px;
+        .icon {
+          margin: 0 16px 0 0;
         }
       }
-
-      .plusButton:hover {
-        border-radius: 6px;
-
-        span {
-          background-color: $themeColor;
-          color: #fff;
-        }
+      .copyCom {
+        margin: 8px 0;
+        width: 90px;
       }
 
-      .noColor {
-        span {
-          color: #353535;
-          background: #f5f5f5;
-        }
-
-        :global {
-          .anticon-plus {
-            color: #fff;
-            background-color: #f5f5f5;
-          }
-
-        }
-      }
       table{
         table-layout: fixed;
       }
@@ -142,19 +99,6 @@
         &:hover{
           color:#f9b600
         }
-      }
-
-       .copyCom {
-        margin-left: 16px;
-        color: $themeColor;
-        border-color: $themeColor
-      }
-  
-
-      .noColor{
-        margin-left: 16px;
-        background: #f5f5f5;
-        
       }
     }
   }
@@ -193,6 +137,7 @@
 
       .nextButton {
         margin-left: 200px;
+        width: 90px;
       }
 
       :global {
@@ -278,14 +223,19 @@
         display: flex;
 
         .leftsave,
+        .saveandgo,
         .submitForm {
           margin-right: 20px;
-          color: #199475;
-          border-color: #199475;
+        }
+        
+        .leftsave,
+        .submitForm {
+          width: 90px;
         }
 
         .editSave {
           margin-left: 64px;
+          width: 90px;
         }
       }
 
@@ -305,7 +255,7 @@
 
 .nextButton {
   margin-left: 156px;
-  width: 200px;
+  width: 90px;
 }
 
 .detailPartsinfoBox {
@@ -389,8 +339,25 @@
       background: #f0f2f5;
       padding: 8px 0;
 
+      .cancelButton{
+        background-color: transparent;
+        color: #666;
+        border: none;
+        box-shadow: none;
+        &::after {
+          transition: none;
+        }
+  
+        &:hover {
+          &::after {
+            background-color: transparent;
+          }
+          color: #199475;
+        }
+      }
       .confire {
         margin: 0 12px;
+        width: 90px;
       }
 
     }

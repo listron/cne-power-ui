@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Form, Col, Row, Button } from 'antd';
+import { Input, Form, Col, Row } from 'antd';
 import CommonPagination from '../../../../Common/CommonPagination';
 import StationSelect from '../../../../Common/StationSelect/index';
 import WarehouseWrapTable from './WarehouseWrapTable/WarehouseWrapTable';
 import WarningTip from '../../../../Common/WarningTip';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -229,13 +230,13 @@ class WarehouseWrap extends Component {
                     />
                   )}
                 </FormItem>
-                <Button
+                <CneButton
                   loading={warehouseAddLoading}
-                  style={{ minWidth: '68px', marginTop: '4px' }}
+                  style={{ width: '90px', minWidth: '68px', marginTop: '4px' }}
                   htmlType="submit"
                 >
                   添加
-                </Button>
+                </CneButton>
               </Col>
             </Row>
           </Form> : <div />}
@@ -251,14 +252,14 @@ class WarehouseWrap extends Component {
           </div>
         </div>
         <div className={styles.warehouseHandle}>
-          {warehouseHandleRight ? <Button
+          {warehouseHandleRight ? <CneButton
             style={{ width: '90px' }}
             onClick={() => {
               return this.selectDelFunc();
             }}
           >
             批量删除
-          </Button> : <span />}
+          </CneButton> : <span />}
           <CommonPagination
             pageSize={pageSize}
             currentPage={pageNum}

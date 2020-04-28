@@ -12,18 +12,20 @@
       display: flex;
       justify-content: space-between;
       .workflow {
+        width: 90px;
         z-index: 0;
         margin-left: 0px;
         margin-right: 12px;
         display: flex;
         padding: 0 15px 0 6px;
         .icon {
-          margin: 0 10px 0 0;
+          margin: 0 12px 0 0;
         }
       }
       .cbtn {
         z-index: 0;
         margin-right: 12px;
+        width: 90px;
       }
     }
     .commonButton {
@@ -117,10 +119,18 @@
     :global {
       .ant-radio-group {
         .ant-radio-button-wrapper {
+          &:not(:first-child)::before {
+            width: 0px;
+          }
           color: #199475;
           border: 1px solid #199475;
+          border-right: none;
           &:first-child {
-              border: 1px solid #199475;
+              border-radius: 2px 0 0 2px;
+          }
+          &:last-child {
+            border-radius: 0 2px 2px 0;
+            border-right: 1px solid #199475;
           }
           &:hover {
               background-color: #ceebe0;

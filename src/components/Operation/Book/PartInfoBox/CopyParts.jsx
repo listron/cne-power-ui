@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./partInfoBox.scss";
-import { Modal, Button, Tree, Checkbox, message } from "antd";
+import { Modal, Tree, Checkbox, message } from "antd";
+import CneButton from '@components/Common/Power/CneButton';
 const { TreeNode } = Tree;
 class CopyParts extends React.Component {
   static propTypes = {
@@ -266,10 +267,10 @@ class CopyParts extends React.Component {
               </div>
             </div>
             <div className={styles.footer}>
-              <Button onClick={this.handleCancel}>取消</Button>
-              <Button className={styles.confire} onClick={this.confireCopy}>
+              <CneButton className={styles.cancelButton} onClick={this.handleCancel}>取消</CneButton>
+              <CneButton className={styles.confire} onClick={this.confireCopy}>
                 确认复制
-              </Button>
+              </CneButton>
             </div>
           </div>
         </Modal>

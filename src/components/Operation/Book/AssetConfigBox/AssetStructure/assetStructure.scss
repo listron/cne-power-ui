@@ -77,11 +77,11 @@
 
       .plusButton {
         display: flex;
-        width: 104px;
+        width: 90px;
         margin: 8px 0;
-        padding: 0 15px 0 6px;
+        padding: 0 15px 0 10px;
         .icon {
-          margin: 0 10px 0 0;
+          margin: 0 16px 0 0;
         }
       }
 
@@ -152,7 +152,7 @@
             }
 
             .saveStyle {
-              width: 70px;
+              width: 90px;
               height: 32px;
               margin: 10px 0 0 100px;
 
@@ -164,7 +164,7 @@
 
               .saveButton,
               .restore {
-                width: 70px;
+                width: 90px;
                 height: 32px;
                 margin-right: 12px;
               }

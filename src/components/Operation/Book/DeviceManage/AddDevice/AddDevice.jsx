@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../../Common/StationSelect';
-import { Button, Form, Select, Icon } from 'antd';
+import { Form, Select, Icon } from 'antd';
 import WarningTip from '../../../../../components/Common/WarningTip';
 import styles from '../deviceSide.scss';
 import AddDeviceForm from './AddDeviceForm';
 import ShowAddDeviceModal from './ShowAddDeviceModal';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 class AddDevice extends Component {
@@ -154,7 +155,7 @@ class AddDevice extends Component {
           </FormItem>
 
 
-          {(selectdeviceType || selectdeviceTypeName) && <Button type="primary" className={styles.nextButton} onClick={this.nextStep}>下一步</Button>}
+          {(selectdeviceType || selectdeviceTypeName) && <CneButton className={styles.nextButton} onClick={this.nextStep}>下一步</CneButton>}
 
         </Form>}
         {showStep === 'next' && <AddDeviceForm {...this.props} selectStation={selectStation} selectdeviceType={selectdeviceType || selectdeviceTypeName} gobackPre={this.gobackPre} />}

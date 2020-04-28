@@ -90,15 +90,18 @@
       display: flex;
       .deleteHandler,
       .addHandler,
-      .importHandler,
+      .importHandler {
+        margin-right: 10px;
+        width:90px;
+      }
       .exportHandler {
         margin-right: 10px;
       }
       .addHandler {
         display: flex;
-        padding: 0 15px 0 6px;
+        padding: 0 15px 0 10px;
         .icon {
-          margin: 0 10px 0 0;
+          margin: 0 16px 0 0;
         }
       }
       
@@ -252,6 +255,7 @@
       }
       .saveBtn {
         margin-right: 10px;
+        width: 90px;
       }
     }
   }
@@ -288,6 +292,7 @@
   .showIntelligent {
     .editBtn {
       margin-right: 12px;
+      width: 90px;
     }
     .detailContent {
       margin: 20px 0 20px 88px;
@@ -322,7 +327,7 @@
       .likeBtn,
       .likedBtn {
         margin-left: 112px;
-        width: 204px;
+        width: 90px;
       }
     }
   }

@@ -147,7 +147,7 @@ class ShowIntelligent extends Component {
           </div>
           <div className={styles.detailText}>
             {intelligentDetail.liked === 0 &&
-              <CneButton className={styles.likeBtn} onClick={this.likeBtn} type="primary">点赞<Icon type="like" /></CneButton> ||
+              <CneButton className={styles.likeBtn} onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton> ||
               <CneButton className={styles.likedBtn} disabled>已点赞</CneButton>}
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Select, Icon, Modal, message } from 'antd';
+import { Input, Form, Select, Icon, Modal, message } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from '../deviceSide.scss';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -117,7 +118,7 @@ class ShowAddDeviceModeModal extends Component {
             )}
           </FormItem>
 
-          <Button type="primary" onClick={this.confirmForm} className={styles.nextButton}>确定</Button>
+          <CneButton onClick={this.confirmForm} className={styles.nextButton}>确定</CneButton>
         </Form>
       </Modal>
     );

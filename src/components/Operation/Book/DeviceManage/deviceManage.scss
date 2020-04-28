@@ -25,33 +25,14 @@
   justify-content: space-between;
   height: 72px;
   align-items: center;
-  .plusButton { // 添加电站 
+  .plusButton {
+    width: 90px;
     margin: 0 12px 0 32px;
-    padding: 0;
-    font-size: 0;
-    i{
-      vertical-align: top;
-      font-size: 14px;
+    display: flex;
+    padding: 0 15px 0 10px;
+    .icon {
+      margin: 0 16px 0 0;
     }
-    span{
-      background-color: #fff;
-      color:$themeColor;
-      border-radius: 0 2px 2px 0;
-      display: inline-block;
-      font-size: 14px;
-      width: 40px;
-      line-height: 30px; 
-      margin: 0px;
-    }
-    &:hover{
-      span{
-        background-color: $themeColor;
-        color:#fff;
-      }
-    }
-  }
-  .plusButton:hover{
-    border-radius: 6px;
   }
   :global{
     .anticon-plus{
@@ -68,11 +49,16 @@
     display: flex;
     flex:1;
   }
-  .deletStyle,.downloadStyle,.import{
+  .deletStyle,.import{
+    margin:0 4px;
+    width: 90px;
+  }
+  .downloadStyle{
     margin:0 4px;
   }
   .exportInfo{
     margin-left: 12px;
+    width: 90px;
   }
   .deleteStationDevice{
     display: flex;

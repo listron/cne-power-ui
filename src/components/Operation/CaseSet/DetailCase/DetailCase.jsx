@@ -115,7 +115,7 @@ class DetailCase extends React.Component {
           <div className={styles.pageTop}>
             <div className={styles.pageTopLeft}>
               <span className={styles.text}>查看案例集</span>
-              {caseHandleRight && <CneButton onClick={this.showEditPage} >编辑</CneButton>}
+              {caseHandleRight && <CneButton style={{width:90}} onClick={this.showEditPage} >编辑</CneButton>}
             </div>
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onWarningTipShow} />
           </div>
@@ -152,9 +152,9 @@ class DetailCase extends React.Component {
               <div className={styles.infoName}></div>
               <div className={styles.infoValue} >
                 {likeCount === 0 ?
-                  <CneButton style={{ width: '200px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton>
+                  <CneButton style={{ width: '90px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton>
                   :
-                  <CneButton style={{ width: '200px' }} disabled>已点赞<Icon type="like" /></CneButton>
+                  <CneButton style={{ width: '90px' }} disabled>已点赞<Icon type="like" /></CneButton>
                 }
               </div>
             </div>

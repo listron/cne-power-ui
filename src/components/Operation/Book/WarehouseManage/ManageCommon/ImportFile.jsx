@@ -86,7 +86,7 @@ export default class ImportFile extends Component {
                   fileList={fileList}
                   showUploadList={false}
                 >
-                  <CneButton>选择文件</CneButton>
+                  <CneButton className={styles.selectFile}>选择文件</CneButton>
                 </Upload>
                 <span className={styles.text}>支持xls、xlsx文件</span>
               </span>}
@@ -99,6 +99,7 @@ export default class ImportFile extends Component {
           <div className={styles.confirmImport}>
             <span className={styles.holder} />
             <CneButton
+              className={styles.importFile}
               disabled={!(warehouseId && fileList.length > 0)}
               onClick={this.importFile}
               loading={importLoading}

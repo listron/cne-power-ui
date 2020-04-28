@@ -4,7 +4,7 @@ import styles from './partInfoBox.scss';
 import DetailPartsInfo from './DetailPartsInfo';
 import DeviceTree from './DeviceTree';
 import CopyParts from './CopyParts';
-import { Button, Table, Upload, message } from 'antd';
+import { Table, Upload, message } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
 import WarningTip from '../../../Common/WarningTip';
 import CneTable from '../../../Common/Power/CneTable';
@@ -13,6 +13,7 @@ import path from '../../../../constants/path';
 import moment from 'moment';
 import Cookie from 'js-cookie';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const { APIBasePath } = path.basePaths;
 const { operation } = path.APISubPaths;
 
@@ -315,32 +316,34 @@ class PartInfoBox extends React.Component {
               )}
             />
           </div>
-          {partInfoRight && <div>
-            <Upload {...uploadProps} className={styles.exportInfo}>
-              <Button
-                className={styles.exportInfo}
+          {partInfoRight && <div className={styles.buttonBox}>
+            <Upload {...uploadProps}>
+              <CneButton
+                className={styles.importInfo}
                 disabled={!stationCode}
                 onClick={this.showModal}
               >
                 批量导入文件
-              </Button>
+              </CneButton>
             </Upload>
-            <Button
+            <CneButton
               disabled={false}
               className={styles.exportInfo}
               disabled={!stationCode}
               onClick={this.exportparts}
             >
               导出
-            </Button>
-            <Button
-              className={styles.exportInfo}
-              href={downloadTemplet}
-              download={downloadTemplet}
-              target="_blank"
-            >
-              下载部件导入模板
-            </Button>
+            </CneButton>
+            <div>
+              <CneButton
+                className={styles.importInfo}
+                href={downloadTemplet}
+                download={downloadTemplet}
+                target="_blank"
+              >
+                下载部件导入模板
+              </CneButton>
+            </div>
           </div>}
         </div>
         <div className={styles.conatainer}>
@@ -350,21 +353,22 @@ class PartInfoBox extends React.Component {
           </div>
           <div className={styles.right}>
             {partInfoRight && <div className={styles.addParts}>
-              <Button
+              <CneButton
                 onClick={this.addPartsInfo}
                 disabled={disableClick}
-                className={disableClick ? styles.noColor : styles.plusButton}
-                icon="plus"
-              >
-                添加
-              </Button>
-              <Button
-                className={disableClick ? styles.noColor : styles.copyCom}
+                className={styles.plusButton}
+                >
+                  <div className={styles.icon}>
+                      <span className={'iconfont icon-newbuilt'} />
+                  </div>添加
+              </CneButton>
+              <CneButton
+                className={styles.copyCom}
                 disabled={disableClick}
                 onClick={this.copyComponent}
               >
                 复制
-              </Button>
+              </CneButton>
             </div>}
             <CneTable
               loading={false}

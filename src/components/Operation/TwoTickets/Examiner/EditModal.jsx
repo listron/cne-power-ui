@@ -126,7 +126,7 @@ class EditModal extends Component {
           <div className={styles.editHandle}>
             <span className={styles.holder} />
             <CneButton onClick={this.cancelEdit} className={styles.cancelButton}>取消</CneButton>
-            <CneButton onClick={this.saveEdit} loading={editLoading === 'loading'}>保存</CneButton>
+            <CneButton onClick={this.saveEdit} className={styles.okButton} loading={editLoading === 'loading'}>保存</CneButton>
           </div>
         </div>
       </Modal>
