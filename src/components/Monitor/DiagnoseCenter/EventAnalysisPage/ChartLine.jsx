@@ -16,9 +16,10 @@ class ChartLine extends PureComponent {
 
   componentDidMount(){
     const { eventAnalysisInfo, analysisEvent } = this.props;
-    const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
+    const { period = [], data = {}, dataDays, branchPeriod = [] } = eventAnalysisInfo || {};
     const { interval, eventCode, pointCode } = analysisEvent;
-    this.drawChart(period, data, interval, eventCode, dataDays, pointCode);
+    this.drawChart(period, data, interval, eventCode, dataDays, pointCode, branchPeriod);
+    window.addEventListener('resize', this.onChartResize);
   }
 
   componentWillReceiveProps(nextProps){
@@ -30,13 +31,17 @@ class ChartLine extends PureComponent {
       lineChart.showLoading('default', { text: '', color: '#199475' });
     }
     if (eventAnalysisInfo !== preAnalysiInfo) {
-      const { period = [], data = {}, dataDays } = eventAnalysisInfo || {};
+      const { period = [], data = {}, dataDays, branchPeriod = [] } = eventAnalysisInfo || {};
       const { interval, eventCode, pointCode } = analysisEvent;
-      this.drawChart(period, data, interval, eventCode, dataDays, pointCode);
+      this.drawChart(period, data, interval, eventCode, dataDays, pointCode, branchPeriod);
     }
   }
 
-  lineColors = ['#ff9900', '#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onChartResize);
+  }
+
+  lineColors = ['#4d90fd', '#60c060', '#ff8d83', '#00cdff', '#9f98ff', '#d5c503', '#2ad7ab', '#b550b2', '#3e97d1', '#83bcc4', '#cc6500', '#5578c2', '#86acea', '#d3b08e', '#7286f1', '#512ca8', '#33cc27', '#bfbf95', '#986cff'];
 
   timeFormat = (timeStr, interval = 1) => { // 针对markArea时间进行处理
     if (!timeStr) {
@@ -95,7 +100,14 @@ class ChartLine extends PureComponent {
     return [leftPosition, topPosition];
   }
 
-  drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
+  onCountryChartResize = () => {
+    const lineChart = echarts.getInstanceByDom(this.lineRef);
+    if (lineChart && lineChart.resize) {
+      lineChart.resize();
+    }
+  }
+
+  drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode, branchPeriod) => {
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
@@ -160,13 +172,24 @@ class ChartLine extends PureComponent {
     sortedPointData.forEach((e, i) => {
       const pointName = `${isDiagnoseBranch ? '' : e.deviceName} ${e.pointName || ''}`; // 诊断事件的组串类不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
-      // todo 配色有bug
-      if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
+      if (e.pointCode === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;  
+        colors.push('#ff9900');
+      } else if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件 - 未接组串为灰色
         colors.push('#999');
-      } else if (isDiagnoseBranch) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
-        colors.push('#60c060');
-      } else if (e.isWarned && isDiagnoseBranch) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
-        colors.push('#f9b600');
+      } else if (isDiagnoseBranch) { // 诊断事件 - 组串 默认绿色#60c060, 异常红色#f5222d
+        const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
+        const curWarningPeriod = curWarningBranch.warningPeriod || [];
+        const warningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day'));
+        const linearGradientData = [{ offset: 0, color: '#60c060' }];
+        const minDay = moment(time[0].startOf('day'));
+        const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一) 
+        warningDays.forEach(day => {
+          const dayDiff = warningDays.diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
+          linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
+          linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
+          linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
+        });
+        colors.push(new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData));
       } else { // 使用默认配色
         colors.push(this.lineColors[i % this.lineColors.length]);
       }
@@ -196,7 +219,7 @@ class ChartLine extends PureComponent {
         data: e.value,
         symbol: 'circle',
         symbolSize: 5,
-        showSymbol: false,
+        // showSymbol: false,
         smooth: true,
       });
     });
@@ -222,9 +245,23 @@ class ChartLine extends PureComponent {
         show: false,
       },
     };
-    const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => ({
-      ...eachyAxis,
-    })) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
+    const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => {
+      const diagnoseBrancnAxis = isDiagnoseBranch ? { // 诊断事件组串类: 只会返回电压(电流) + 辐照两个轴, 电压电流(左),辐照(右)
+        name: e === 'W/m2' ? '瞬时辐照度(W/m2)' : (e === 'A' ? '电流(A)' : '电压(V)'),
+        axisLabel: {
+          show: true,
+        },
+        position: e === 'W/m2' ? 'right' : 'left',
+        axisLine: {
+          show: true,
+        },
+      } : {};
+      return {
+        name: e,
+        ...eachyAxis,
+        ...diagnoseBrancnAxis,
+      };
+    }) : eachyAxis; // 若返回异常数据导致无单位，使用默认单纵坐标即可
     yAxis[0].splitLine = { // 选一个y轴添加网格线
       lineStyle: {
         type: 'dashed',

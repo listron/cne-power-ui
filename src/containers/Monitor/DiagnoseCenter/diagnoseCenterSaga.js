@@ -164,17 +164,6 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
   //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
   /**
    * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
-   * 
-   * isCycleTip: 点击数据时间间隔时:true  => 若得到无数据的响应 => '数据不存在，请选择其他周期';
-   * isDataTip: 点击日期时: true => 若得到无数据的响应 => '数据不存在，请选择其他周期';
-   * isNoDataTip: 无数据响应时候 => '数据不存在，请选择其他周期'; interval === 2 && nodata
-   * 
-   * isChartLoading: 图loading: 分析页下方列表返回最初图表时的chart图形loading
-   * eventAnalysisLoading: 从列表页进入分析页面loading 
-   * filterLoading: 图loading: 点击时间间隔, 日期时候的chart图表loading
-
-   * intervalState； 无数据, 零电流, 时间间隔都是指定情况时，请求另一时间间隔数据。
-   * 没有数据的话: 基于data.pointData.value进行判断, 如果value全不存在 / [null] / [], 则判定为无数据
    */
   try {
     const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, fromPath, analysisPageLoading } = payload;
@@ -228,8 +217,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     message.error(`告警事件分析结果获取失败, ${error}`);
     yield call(easyPut, 'changeStore', {
       eventAnalysisInfo: {},
-      eventAnalysisLoading: false,
-      filterLoading: false,
+      analysisPageLoading: false,
       isChartLoading: false,
     });
   }

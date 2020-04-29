@@ -5,18 +5,6 @@ import styles from './eventListPage.scss';
 import { Link } from 'react-router-dom';
 import {stringify} from 'qs';
 
-// 告警事件筛选条件: 电站名称, 设备类型，发生时间， 告警事件， 事件状态， 归档按钮
-// 诊断事件筛选条件: 电站名称，设备类型，发生时间， 诊断事件， 事件状态， 归档按钮
-// 数据事件筛选条件: 电站名称，设备类型，发生时间， 数据事件， 时间状态， 归档按钮
-
-// 告警事件表头： 告警事件，事件级别，告警描述，设备类型，设备名称，电站名称，发生时间，持续时长，发生频次，事件状态，操作
-// 诊断事件表头： 诊断事件，事件级别，设备类型，设备名称，电站名称，发生时间，持续时长，事件状态，操作 => 比上少一个告警描述， 一个发生频次
-// 数据事件表头： 数据事件，事件级别，测点描述，设备类型，设备名称，电站名称，发生时间，持续时长，事件状态，操作 => 告警描述变为测点描述，少一个发生频次
-
-// 告警事件归档表头：归档状态标识，告警事件，事件级别，告警描述，设备类型，设备名称，电站名称，发生时间，持续时长，发生频次，操作
-// 诊断事件归档表头: 归档状态标识，诊断事件，事件级别，设备类型，设备名称，电站名称，发生时间，持续时长，操作 => 少一个发生频次， 一个告警描述;
-// 数据事件归档表头: 归档状态标识，数据事件，事件级别，测点描述，设备类型，设备名称，电站名称，发生时间，持续时长，操作 => 少一个发生频次;
-
 // diagWarningId	string	事件Id
 // eventCode	string	标准事件编码
 // eventName	string	标准事件名称
@@ -249,26 +237,43 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
-      title: '发生时间',
+      title: '发生日期',
       sorter: true,
       className: styles.beginTime,
       render: (text) => (
         <div
-          title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
+          title={text ? moment(text).format('YYYY-MM-DD') : '--'}
           className={styles.beginTimeText}
-        >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
+        >{text ? moment(text).format('YYYY-MM-DD') : '--'}</div>
       ),
+    // }, {
+    //   dataIndex: 'warningDuration',
+    //   title: '持续时长(h)',
+    //   // sorter: true,
+    //   className: styles.warningDuration,
+    //   render: (text) => (
+    //     <div
+    //       title={dataFormats(text, '--', 2, true)}
+    //       className={styles.warningDurationText}
+    //     >{dataFormats(text, '--', 2, true)}</div>
+    //   ),
     }, {
-      dataIndex: 'warningDuration',
-      title: '持续时长(h)',
-      // sorter: true,
-      className: styles.warningDuration,
+      dataIndex: 'updateTime',
+      title: '更新日期',
+      sorter: true,
+      className: styles.updateTime,
       render: (text) => (
         <div
-          title={dataFormats(text, '--', 2, true)}
-          className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}</div>
+        title={text ? moment(text).format('YYYY-MM-DD') : '--'}
+        className={styles.updateTimeText}
+      >{text ? moment(text).format('YYYY-MM-DD') : '--'}</div>
       ),
+    }, {
+      dataIndex: 'warningFrequencyRate',
+      title: '诊断频次',
+      sorter: true,
+      className: styles.warningFrequencyRate,
+      render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
