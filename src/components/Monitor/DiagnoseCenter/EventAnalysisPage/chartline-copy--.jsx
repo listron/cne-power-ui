@@ -82,106 +82,96 @@ class ChartLine extends PureComponent {
     return { unitsGroup, sortedPointData };
   }
 
-  getTooltipPosition = legendHeight => (point, params, dom, rect, size) => {
-    const { viewSize, contentSize } = size || {};
-    const [viewWidth] = viewSize || [];
-    const [tipWidth] = contentSize || [];
-    const [pointLeft] = point || [];
-    let leftPosition = pointLeft; // 默认随鼠标
-    if (viewWidth - pointLeft - 10 <= tipWidth) { // 右侧空间不足以展示浮层
-      leftPosition = pointLeft - tipWidth - 5;
-    }
-    const topPosition = legendHeight + 5; //悬浮框位于图形顶部, 防止溢出。
-    return [leftPosition, topPosition];
-  }
-
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode) => {
     const { pageKey } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
 
-    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode);
-    // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
+    const noAlarmTime = ['NB1038', 'NB1040'].includes(eventCode); // 诊断事件电压异常、并网延时中不展示告警时段，页面相应背景图移除
+    const noDeviceName = ['NB1035', 'NB1037'].includes(eventCode); // 诊断事件零电流、固定物遮挡的legend要一行8列展示,以及不展示设备名称
+    const seriesInefficient = ['NB1036'].includes(eventCode); // 组串低效不展示告警、设备名称，且展示8行
+    const fixedShelter = ['NB1037'].includes(eventCode); // 固定遮挡物
     const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
-    let delPointIndex = -1;
-    const pulseSignalInfo = pointData.find((e, index) => { // 找到脉冲信号的数据 及所在索引
-      if (e.pointCode === pointCode) {
-        delPointIndex = index;
-      }
+
+    const pulseSignalInfo = pointData.find(e => { // 找到脉冲信号的数据
+      return e.pointCode === pointCode;
+    });
+    const delPointIndex = pointData.findIndex(e => { // 找到脉冲信号在原测点数组里的位置
       return e.pointCode === pointCode;
     });
     if (delPointIndex >= 0 && pageKey === 'alarm') { // 如果存在脉冲信号，将脉冲信号抽出
       pointData.splice(delPointIndex, 1);
     }
 
-    let legends = [], colors = [], series = []; // 诊断事件-组串类不展示告警时段, 其他都展示
-    if (!isDiagnoseBranch) { // 展示告警时段
-      legends = [{
-        name: '告警时段',
-        icon: 'rect',
-        height: 30,
-        left: '7%',
-        top: 0,
-        itemWidth: 14,
-        selectedMode: false,
-        data: ['告警时段'],
-        textStyle: {
-          color: '#353535',
-        },
+    const lengendColType = (noDeviceName || seriesInefficient) ? 8 : 4; // lengend一行排布模式: 诊断事件零电流、固定物遮挡、组串低效情况下8列，其余情况下4个。
+    const legends = [{
+      name: '告警时段',
+      icon: 'rect',
+      height: 30,
+      left: `${(noDeviceName || seriesInefficient) ? 2 : 7}%`,
+      top: 0,
+      itemWidth: 14,
+      selectedMode: false,
+      data: ['告警时段'],
+      textStyle: {
+        color: '#353535',
+      },
+    }];
+    const colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
+    const markAreaData = period.map(e => { // 告警事件段数据规范。
+      const { beginTime, endTime } = e || {};
+      return [{
+        xAxis: this.timeFormat(beginTime, interval),
+      }, {
+        xAxis: this.timeFormat(endTime, interval),
       }];
-      colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
-      const markAreaData = period.map(e => { // 告警事件段数据规范。
-        const { beginTime, endTime } = e || {};
-        return [{
-          xAxis: this.timeFormat(beginTime, interval),
-        }, {
-          xAxis: this.timeFormat(endTime, interval),
-        }];
-      });
-      series = [{ // 初始化series;
-        name: '告警时段',
-        type: 'line',
-        data: [],
-        markArea: {
-          silent: true,
-          itemStyle: {
-            borderColor: '#fbe6e3',
-            borderWidth: 1,
-          },
-          data: markAreaData,
+    });
+    const series = [{ // 初始化series;
+      name: '告警时段',
+      type: 'line',
+      data: [],
+      markArea: {
+        silent: true,
+        itemStyle: {
+          borderColor: '#fbe6e3',
+          borderWidth: 1,
         },
-        xAxisIndex: 0,
-        yAxisIndex: 0,
-      }];
+        data: markAreaData,
+      },
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    }];
+    if (noAlarmTime || seriesInefficient) { // 不展示告警时段
+      legends.shift();
+      colors.shift();
+      series.shift();
     }
-    const lengendColType = isDiagnoseBranch ? 8 : 4; // lengend一行排布模式: 诊断事件-组串类情况下8列，其余情况下4个。
     const { unitsGroup, sortedPointData } = this.pointDataSorter(pointData); // 得到排序后的单位与新数组
     sortedPointData.forEach((e, i) => {
-      const pointName = `${isDiagnoseBranch ? '' : e.deviceName} ${e.pointName || ''}`; // 诊断事件的组串类不展示设备名称
+      const pointName = `${(!noDeviceName && !seriesInefficient) ? e.deviceName : ''} ${e.pointName || ''}`; // 诊断事件的零电流、组串低效、固定物遮挡不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
-      // todo 配色有bug
-      if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
+      if (e.isConnected === 0 && (noDeviceName || seriesInefficient)) { // 诊断事件零电流、组串低效、固定物遮挡未接组串为灰色
         colors.push('#999');
-      } else if (isDiagnoseBranch) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
+      } else if (noAlarmTime || seriesInefficient) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的曲线与图例颜色，默认绿色
         colors.push('#60c060');
-      } else if (e.isWarned && isDiagnoseBranch) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
+      } else if (e.isWarned && pageKey === 'diagnose' && (noAlarmTime || seriesInefficient)) { // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的告警曲线与图例颜色为黄色
         colors.push('#f9b600');
-      } else { // 使用默认配色
+      } else { // 默认配色
         colors.push(this.lineColors[i % this.lineColors.length]);
       }
 
       legends.push({
-        icon: (e.isConnected === 0 && isDiagnoseBranch) ? 'image:///img/wjr01.png' : '',
+        icon: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 'image:///img/wjr01.png' : '',
         name: pointFullName,
         height: 30,
         itemWidth: 20,
         itemHeight: 10,
-        left: isDiagnoseBranch ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5), // 诊断事件-组串: 8列, 其余展示告警时段且4列展示;
-        top: `${Math.floor((isDiagnoseBranch ? i : i + 1) / lengendColType) * 30}`,
+        left: `${noAlarmTime ? (7 + i % 4 * 21.5) : (noDeviceName ? (2 + (i + 1) % 8 * 12) : (seriesInefficient ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)))}%`, // 诊断事件的组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置;  诊断事件零电流、组串低效、固定物遮挡的要一行8列展示
+        top: `${Math.floor(((noAlarmTime || seriesInefficient) ? i : i + 1) / lengendColType) * 30}`,
         data: [pointFullName],
         textStyle: {
-          color: e.isWarned ? (isDiagnoseBranch ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件-组串，正常黄色, 告警红色, 其余所有默认
+          color: e.isWarned && pageKey === 'diagnose' ? ((noAlarmTime || seriesInefficient || fixedShelter) ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件组串低效、电压异常、并网延时、固定物遮挡事件的异常曲线与图例颜色，默认黄色
         },
         selectedMode: e.isConnected === 0 ? false : true,
       });
@@ -191,7 +181,7 @@ class ChartLine extends PureComponent {
         xAxisIndex: 0,
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
-          width: (e.isConnected === 0 && isDiagnoseBranch) ? 0 : 1, // 诊断事件组串不显示折线
+          width: (e.isConnected === 0 && (noDeviceName || seriesInefficient)) ? 0 : 1, // 诊断事件的零电流、组串低效、固定物遮挡未接组串不显示折线
         },
         data: e.value,
         symbol: 'circle',
@@ -408,7 +398,18 @@ class ChartLine extends PureComponent {
       tooltip: {
         trigger: 'axis',
         show: true,
-        position: this.getTooltipPosition(legendHeight),
+        position: (point, params, dom, rect, size) => {
+          const { viewSize, contentSize } = size || {};
+          const [viewWidth] = viewSize || [];
+          const [tipWidth] = contentSize || [];
+          const [pointLeft] = point || [];
+          let leftPosition = pointLeft; // 默认随鼠标
+          if (viewWidth - pointLeft - 10 <= tipWidth) { // 右侧空间不足以展示浮层
+            leftPosition = pointLeft - tipWidth - 5;
+          }
+          const topPosition = legendHeight + 5; //悬浮框位于图形顶部, 防止溢出。
+          return [leftPosition, topPosition];
+        },
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
           const { name } = params[0] || {};
@@ -425,12 +426,12 @@ class ChartLine extends PureComponent {
               <h3 class=${styles.tooltipTitle}>${name}</h3>
               ${params.map(e => {
                 const { color, seriesIndex, value, seriesName } = e || {};
-                const eachFullData = sortedPointData[isDiagnoseBranch ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串不展示告警时段,所以去除告警时段的位置
+                const eachFullData = sortedPointData[(noAlarmTime || seriesInefficient) ? seriesIndex: seriesIndex - 1] || {}; // 诊断事件组串低效、电压异常、并网延时中不展示告警时段,所以去除告警时段的位置
                 // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
                 return (
-                  `<p class=${(isWarned && pageKey === 'diagnose') ? (isDiagnoseBranch ? styles.specialWarnedItem : styles.warnedItem) : (isConnected === 0 && isDiagnoseBranch ? styles.connected : styles.eachItem)}>
+                  `<p class=${(isWarned && pageKey === 'diagnose') ? ((noAlarmTime || seriesInefficient || fixedShelter) ? styles.specialWarnedItem : styles.warnedItem) : (isConnected === 0 && (noDeviceName || seriesInefficient) ? styles.connected : styles.eachItem)}>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>
@@ -448,7 +449,7 @@ class ChartLine extends PureComponent {
                 <span class=${styles.tipName}>标准值</span>
                 <span class=${styles.tipValue}>${dataFormats(standard, '--', 2, true)}</span>
               </p>
-              <p class=${(periodData.length > 0 && ((dataAnomaly || pageKey === 'alarm') || !isDiagnoseBranch)) ? styles.eachItem : styles.noWarnItem}>
+              <p class=${(periodData.length > 0 && !noAlarmTime && !seriesInefficient && (dataAnomaly || fixedShelter || pageKey === 'alarm')) ? styles.eachItem : styles.noWarnItem}>
                 <span class=${styles.warningIcon}></span>
                 <span class=${styles.tipName}>告警时长</span>
                 <span class=${styles.tipValue}>${periodData.length > 0 ? dataFormats(periodData[0].warningDuration, '--', 2, true) : '--'}h</span>
@@ -498,7 +499,6 @@ class ChartLine extends PureComponent {
 }
 
 export default ChartLine;
-
 
 
 
