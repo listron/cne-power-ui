@@ -109,6 +109,7 @@ class IgnoreModal extends Component {
                     footer={null}
                     wrapClassName={styles.stationModal}
                     getContainer={() => this.refs.modal}
+                    onCancel={this.handleIngoreCancel}
                 >
                     <div className={styles.reasonItem} >
                         <p className={styles.title} >忽略选中预警</p>

@@ -104,6 +104,7 @@ class HandleRemoveModal extends Component {
           footer={null}
           visible={true}
           getContainer={() => this.refs.modal}
+          onCancel={this.props.onCancel}
         >
           <FormItem className={styles.formItem} label="截止时间">
             <Select className={styles.duration}
