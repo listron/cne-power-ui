@@ -67,6 +67,7 @@
     display: flex;
 
     .addButton {
+      margin-right: 16px;
       display: flex;
       width: 90px;
       padding: 0 15px 0 10px;
@@ -99,7 +100,7 @@
     .intoFile,
     .alldel,
     .downloadStyle {
-      margin-left: 12px;
+      margin-right: 16px;
       width: 90px;
     }
 
