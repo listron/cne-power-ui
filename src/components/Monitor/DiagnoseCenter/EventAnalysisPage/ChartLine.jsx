@@ -485,7 +485,7 @@ class ChartLine extends PureComponent {
                 <span class=${styles.tipName}>标准值</span>
                 <span class=${styles.tipValue}>${dataFormats(standard, '--', 2, true)}</span>
               </p>
-              <p class=${(periodData.length > 0 && ((dataAnomaly || pageKey === 'alarm') || !isDiagnoseBranch)) ? styles.eachItem : styles.noWarnItem}>
+              <p class=${(periodData.length > 0 && !isDiagnoseBranch) ? styles.eachItem : styles.noWarnItem}>
                 <span class=${styles.warningIcon}></span>
                 <span class=${styles.tipName}>告警时长</span>
                 <span class=${styles.tipValue}>${periodData.length > 0 ? dataFormats(periodData[0].warningDuration, '--', 2, true) : '--'}h</span>
