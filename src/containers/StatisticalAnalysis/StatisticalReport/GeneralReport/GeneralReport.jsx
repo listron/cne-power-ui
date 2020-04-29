@@ -29,7 +29,11 @@ class GeneralReport extends Component {
       faultDate: moment().subtract(1, 'day'),
       eleInfoDate: moment().subtract(1, 'day'),
       proOperationDate: moment().subtract(1, 'month'),
+      windPowerValue: moment().subtract(1, 'month'),
+      pvPowerValue: moment().subtract(1, 'month'),
       selectedStation: [],
+      windPowerStation: [],
+      pvPowerStation: [],
       typeDowning: '', // report  fault eleInfo proOperate
     };
     this.authData = localStorage.getItem('authData');
@@ -59,6 +63,18 @@ class GeneralReport extends Component {
     });
   };
 
+  windPowerDateChange = value => { // 风电运维月报
+    this.setState({
+      windPowerValue: value,
+    });
+  };
+
+  pvPowerDateChange = value => { // 光伏运维月报
+    this.setState({
+      pvPowerValue: value,
+    });
+  };
+
 
   disabledDate = (current) => { //日期不可选
     return current && current > moment().startOf('day');
@@ -66,6 +82,14 @@ class GeneralReport extends Component {
 
   selectStation = selectedStation => {
     this.setState({ selectedStation });
+  };
+
+  selectWindStation = selectedStation => {
+    this.setState({ windPowerStation: selectedStation });
+  };
+
+  selectPvStation = selectedStation => {
+    this.setState({ pvPowerStation: selectedStation });
   };
 
   preViewReport = () => {
@@ -195,7 +219,7 @@ class GeneralReport extends Component {
   };
 
   render() {
-    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning } = this.state;
+    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, windPowerValue, pvPowerValue, windPowerStation, pvPowerStation } = this.state;
     const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
@@ -213,6 +237,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker
+                  style={{width: 200}}
                   disabledDate={this.disabledDate}
                   placeholder={'选择时间'}
                   onChange={this.ChangeReportDate}
@@ -236,6 +261,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker
+                  style={{width: 200}}
                   disabledDate={this.disabledDate}
                   placeholder={'选择时间'}
                   onChange={this.ChangeFaultDate}
@@ -258,6 +284,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.dateSearch}>
                 <DatePicker
+                  style={{width: 200}}
                   disabledDate={this.disabledDate}
                   placeholder={'选择时间'}
                   onChange={this.ChangeEleInfoDate}
@@ -271,7 +298,7 @@ class GeneralReport extends Component {
                 <CneButton disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo} loading={typeDowning === 'eleInfo'}>下载</CneButton>
               </div>
             </div>}
-            {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
+            { reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.proOperation}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -280,6 +307,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.dateSearch}>
                 <MonthPicker
+                  style={{width: 200}}
                   disabledDate={this.disabledDate}
                   placeholder={'选择月份'}
                   onChange={this.ChangeProOperationDate}
@@ -311,6 +339,88 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
+            <div className={styles.dailyBox}>
+              <div className={styles.boxTop}>
+                <div className={styles.dayReport}>
+                  <Icon type="download" style={{ color: '#ffffff' }} />
+                </div>
+                <span className={styles.title}>风电运维月报</span>
+              </div>
+              <div className={styles.dateSearch}>
+                <MonthPicker
+                  style={{width: 200}}
+                  disabledDate={this.disabledDate}
+                  placeholder={'选择月份'}
+                  onChange={this.windPowerDateChange}
+                  value={windPowerValue}
+                  getCalendarContainer={() => this.refs.wrap}
+                />
+              </div>
+              <div className={styles.stationSearchs}>
+                <StationSelect
+                  data={stations.filter(e => e.stationType === 0)}
+                  onOK={this.selectWindStation}
+                  value={windPowerStation}
+                  holderText="请选择电站"
+                  theme={theme}
+                />
+              </div>
+              <div className={styles.downloadBtn}>
+                <Button
+                  disabled={selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.preViewIndicator}
+                >预览</Button>
+                <span className={styles.line} />
+                <Button
+                  disabled={selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.downloadIndicator}
+                  loading={typeDowning === 'proOperate'}
+                >下载</Button>
+              </div>
+            </div>
+            <div className={styles.dailyBox}>
+              <div className={styles.boxTop}>
+                <div className={styles.dayReport}>
+                  <Icon type="download" style={{ color: '#ffffff' }} />
+                </div>
+                <span className={styles.title}>光伏运维月报</span>
+              </div>
+              <div className={styles.dateSearch}>
+                <MonthPicker
+                  style={{width: 200}}
+                  disabledDate={this.disabledDate}
+                  placeholder={'选择月份'}
+                  onChange={this.pvPowerDateChange}
+                  value={pvPowerValue}
+                  getCalendarContainer={() => this.refs.wrap}
+                />
+              </div>
+              <div className={styles.stationSearchs}>
+                <StationSelect
+                  data={stations.filter(e => e.stationType === 1)}
+                  onOK={this.selectPvStation}
+                  value={pvPowerStation}
+                  holderText="请选择电站"
+                  theme={theme}
+                />
+              </div>
+              <div className={styles.downloadBtn}>
+                <Button
+                  disabled={selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.preViewIndicator}
+                >预览</Button>
+                <span className={styles.line} />
+                <Button
+                  disabled={selectedStation.length === 0 || !proOperationDate}
+                  className={styles.text}
+                  onClick={this.downloadIndicator}
+                  loading={typeDowning === 'proOperate'}
+                >下载</Button>
+              </div>
+            </div>
           </div>
           <Footer />
         </div>

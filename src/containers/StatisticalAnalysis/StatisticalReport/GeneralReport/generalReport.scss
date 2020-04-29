@@ -10,13 +10,14 @@
     .generalReportMain {
       display: flex;
       flex: 1;
+      flex-wrap: wrap;
       // justify-content: space-around;
       //日报
       .dailyBox {
         width: 25%;
         min-width: 280px;
         height: 186px;
-        margin-right: 25px;
+        margin: 0 25px 25px 0;
         display: flex;
         flex-direction: column;
         .boxTop {
@@ -83,6 +84,15 @@
           margin-right: 4px;
         }
       }
+    }
+  }
+  :global{
+    .ant-select:not(.ant-select-disabled) .ant-select-selection:hover{
+      border: none;
+      box-shadow: none;
+    }
+    .ant-input:hover{
+      border: 1px solid $themeColor !important;
     }
   }
 }
