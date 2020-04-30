@@ -230,7 +230,7 @@ class DiagnoseList extends Component {
 
   confirmStatusChange = () => {
     this.props.changeStore({ statusChangeText: '' });
-    this.props.getDiagnoseList(); // 基于当前请求, 刷新数据
+    this.props.getDiagnoseList({}); // 基于当前请求, 刷新数据
   }
 
   render() {

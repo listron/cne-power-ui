@@ -137,22 +137,28 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
     if (response.code === '10000') {
       const statusChangeNum = parseInt(response.data, 10) || 0;
       let statusChangeText = '';
-      if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功;
+      if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功; => 直接刷新列表
         statusChangeText = '';
+        if ( isLinkage ) { // 联动决策-操作
+          yield fork(getLinkageList, { payload: { diagWarningId }});
+        } else {
+          const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
+          yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+        }
       } else if (diagWarningIds.length > statusChangeNum && statusChangeNum > 0) { // 2. 选中操作项中，有部分操作成功，部分状态已变化
         statusChangeText = `当前选择事件中有${statusChangeNum}条事件已发生状态变更, 其余事件操作成功`;
       } else if (statusChangeNum === 0) { // 3. 选中操作项中，所有状态已经更变
         statusChangeText = isLinkage ? '事件状态已变更, 刷新页面' : '当前选择事件发生状态变更, 将刷新页面';
       }
-      yield call(easyPut, 'fetchSuccess', {
-        selectedRows: [],
-        statusChangeText,
-      });
-      const { listParams, listPage } = yield select(state => state.monitor.diagnoseCenter);
-      if(isLinkage){ // 联动决策-操作
-        yield fork(getLinkageList, { payload: { diagWarningId }});
-      }else{
-        yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
+      if (isLinkage) {
+        yield call(easyPut, 'fetchSuccess', {
+          linkedStatusChangeText: statusChangeText,
+        });
+      } else {
+        yield call(easyPut, 'fetchSuccess', {
+          selectedRows: [],
+          statusChangeText,
+        });
       }
     } else { throw response.message; }
   } catch (error) {

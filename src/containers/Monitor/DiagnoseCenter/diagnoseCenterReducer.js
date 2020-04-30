@@ -39,7 +39,8 @@ const initState = {
     sortMethod: 'desc', // 排序方式 asc升序 + desc降序
   }, // 表格排序方式, 表格当前页, 表格每页数据量
   selectedRows: [], // 选中的告警项内容
-  statusChangeText: '', // 更变告警状态时提示
+  statusChangeText: '', // 主页面更变告警状态时提示
+  linkedStatusChangeText: '', // 分析也联动列表状态更变提示
   allEventsStatus: [], // 事件状态信息
   alarmEventtypes: [], //告警事件信息
   diagnEventtypes: [], // 诊断事件信息
