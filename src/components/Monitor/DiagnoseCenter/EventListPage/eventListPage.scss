@@ -229,6 +229,82 @@
   }
 }
 
+.ignoreModal{
+  :global{
+    .ant-modal-close-x{
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      font-size: 24px;
+      margin-right: 12px;
+    }
+    .ant-modal-header{
+      padding: 0 20px;
+      height: 34px;
+    }
+    .ant-modal-title{
+      line-height: 34px;
+    }
+    .ant-modal-body{
+      padding: 16px 0 0 0;
+    }
+  }
+  .ignoreModalForm{
+    .formItem{
+      display: flex;
+      padding: 0 20px;
+      margin-bottom: 4px;
+      :global{
+        .ant-form-item-label{
+          flex: 0 0 100px;
+          label::before{
+            display: none;
+          }
+          label::after{
+            content: '*';
+            top: 3px;
+            margin: 0 8px;
+          }
+        }
+        .ant-form-item-control-wrapper{
+          flex: 1;
+        }
+      }
+    }
+    .reasonGroup{
+      .normalBtn, .activeBtn{
+        border-radius:2px;
+        height:24px;
+        margin-right: 6px;
+        padding: 0 6px;
+        line-height: 24px;
+        text-align: center;
+      }
+      .normalBtn{
+        border-radius:2px;
+        height:24px;
+      }
+    }
+    .formFooter{
+      height: 40px;
+      display: flex;
+      padding: 0 20px;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 16px;
+      .cancelIgnore{
+        flex: 0 0 60px;
+        line-height: 30px;
+        height: 30px;
+        text-align: center;
+        cursor: pointer;
+        margin-right: 20px;
+      }
+    }
+  }
+}
+
+
 .handleSelects{
   :global{
     .ant-select-dropdown-menu{
@@ -344,6 +420,50 @@
       .handleAnalysis, .toDefect, .handleDelete{
         color: var(--themeColor);
       }
+    }
+  }
+}
+
+.ignoreModal{
+  :global{
+    .ant-modal-header{
+      background-color: $themeColor;
+    }
+    .ant-modal-title{
+      color: #fff;
+    }
+    .ant-modal-close-x{
+      color: #fff;
+      &:hover{
+        color: #ceebe0;
+      }
+    }
+  }
+  .ignoreModalForm{
+    .formItem{
+      :global{
+        .ant-form-item-label{
+          label::after{
+            color: #f5222d;
+          }
+        }
+      }
+    }
+    .reasonGroup{
+      .normalBtn{
+        color: $themeColor;
+        border:1px solid #199475;
+        &:hover{
+          background-color: #ceebe0;
+        }
+      }
+      .activeBtn{
+        background-color: $themeColor;
+        color: #fff;
+      }
+    }
+    .formFooter{
+      background-color: #F1F1F1;
     }
   }
 }

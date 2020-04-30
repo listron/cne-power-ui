@@ -131,8 +131,8 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
   const url = `${APIBasePath}${monitor.editEventsStatus}`;
       // payload : {diagWarningIds: string[], type: 1忽略 2删除 }
   try {
-    const { diagWarningIds, diagWarningId, isLinkage, type } = payload || {};
-    const params = { diagWarningIds, type};
+    const { diagWarningIds, diagWarningId, isLinkage, type, ignoreCode, ignoreMessage, endDate } = payload || {};
+    const params = { diagWarningIds, type, ignoreCode, ignoreMessage, endDate };
     const response = yield call(request.delete, url, { ...params });
     if (response.code === '10000') {
       const statusChangeNum = parseInt(response.data, 10) || 0;
@@ -146,7 +146,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
           yield fork(getDiagnoseList, { payload: { ...listParams, ...listPage } });
         }
       } else if (diagWarningIds.length > statusChangeNum && statusChangeNum > 0) { // 2. 选中操作项中，有部分操作成功，部分状态已变化
-        statusChangeText = `当前选择事件中有${statusChangeNum}条事件已发生状态变更, 其余事件操作成功`;
+        statusChangeText = `当前选择事件中有${diagWarningIds.length - statusChangeNum}条事件已发生状态变更, 其余事件操作成功`;
       } else if (statusChangeNum === 0) { // 3. 选中操作项中，所有状态已经更变
         statusChangeText = isLinkage ? '事件状态已变更, 刷新页面' : '当前选择事件发生状态变更, 将刷新页面';
       }
@@ -172,7 +172,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
    * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
    */
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, fromPath, analysisPageLoading } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, updateTime, interval, fromPath, analysisPageLoading } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
@@ -183,7 +183,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       params.eventCode = eventCode;
       params.eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
       params.interval = interval;
-      params.date = moment(beginTime).format('YYYY-MM-DD');
+      params.date = moment(updateTime || beginTime).format('YYYY-MM-DD');
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {

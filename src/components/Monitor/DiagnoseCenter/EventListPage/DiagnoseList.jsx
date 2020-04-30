@@ -5,6 +5,7 @@ import CneTable from '@components/Common/Power/CneTable';
 import CneTips from '@components/Common/Power/CneTips';
 import CommonPagination from '@components/Common/CommonPagination';
 import { createAlarmColumn, createDiagnoseColumn, createDataColumn } from './listColumns';
+import IgnoreModal from './IgnoreModal';
 import styles from './eventListPage.scss';
 
 const { Option } = Select;
@@ -32,6 +33,7 @@ class DiagnoseList extends Component {
   state = {
     tipType: 0, // 0无弹框; 1忽略; 2删除
     deleteRecords: null,
+    needIgoreModal: false, // 诊断事件, 忽略操作时，需要弹出额外输入框进行信息输入；
   }
 
   sortFieldMap = { // 表格排序字段 => api
@@ -161,7 +163,13 @@ class DiagnoseList extends Component {
       const { stationCode } = selectedRows[0] || {};
       window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
     }
-    if (handleKeys.includes(value)) {
+    const showIgoreModal = selectedRows.every(info => ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(info.eventCode));
+    if (showIgoreModal) {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
+      this.setState({
+        deleteRecords: selectedRows,
+        needIgoreModal: true,
+      });
+    } else if (handleKeys.includes(value)) { // 其他的删除忽略操作~ 一股脑撸。
       this.setState({
         deleteRecords: selectedRows,
         tipType: handleKeys.indexOf(value) + 1,
@@ -233,8 +241,15 @@ class DiagnoseList extends Component {
     this.props.getDiagnoseList({}); // 基于当前请求, 刷新数据
   }
 
+  onModalIgnore = (ignoreInfo) => { // 特别的诊断事件-指定组串(5种)-忽略操作
+    this.props.editEventsStatus(ignoreInfo);
+    this.setState({ deleteRecords: null, needIgoreModal: false });
+  }
+
+  onModalCancel = () => this.setState({ deleteRecords: null, needIgoreModal: false })
+
   render() {
-    const { tipType } = this.state;
+    const { tipType, needIgoreModal, deleteRecords } = this.state;
     const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows, statusChangeText } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     const { finished } = listParams;
@@ -301,6 +316,11 @@ class DiagnoseList extends Component {
           onConfirm={this.confirmStatusChange}
           tipText={statusChangeText}
           width={260}
+        />}
+        {needIgoreModal && <IgnoreModal
+          records={deleteRecords}
+          onModalIgnore={this.onModalIgnore}
+          onModalCancel={this.onModalCancel}
         />}
       </div>
     );

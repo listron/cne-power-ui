@@ -117,7 +117,7 @@ class ChartLine extends PureComponent {
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
 
-    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239', 'NB1036'].includes(eventCode);
+    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode);
     // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
     const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
     let delPointIndex = -1;
@@ -482,9 +482,9 @@ class ChartLine extends PureComponent {
         extraCssText: 'padding: 5px 10px; background-color: rgba(0,0,0,0.70); box-shadow:0 1px 4px 2px rgba(0,0,0,0.20); border-radius:2px;',
         formatter: (params = []) => {
           const { name } = params[0] || {};
-          const periodData = period.filter(e => {
+          const periodData = period ? period.filter(e => {
             return moment(name).isBetween(e.beginTime, e.endTime);
-          });
+          }) : [];
 
           const pointInfo = pointData.filter(e => {
             return e.standard || e.standard === 0;
