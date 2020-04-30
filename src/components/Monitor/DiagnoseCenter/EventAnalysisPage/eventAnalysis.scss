@@ -1,6 +1,17 @@
 
 @import '../../../../theme/theme.scss';
 
+@media screen and (max-width: 1679px) { // 1679以下屏幕
+  .analysisChart{
+    min-height: calc(100vh - 381px);
+  }
+}
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .analysisChart{
+    min-height: calc(100vh - 461px);
+  }
+}
+
 .eventAnalysis{
   display: flex;
   flex: 1 0 auto;
@@ -81,9 +92,12 @@
       }
     }
   }
-  // .detailContent{
+  .detailContent{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   //   min-height: 760px;
-  // }
+  }
   .spin{
     display: flex;
     min-height: 577px;
@@ -241,8 +255,10 @@
       }
     }
   }
+
   .analysisChart{
     flex: 1;
+    width: 100%;
     .chartTooltip{
       .tooltipTitle{
         margin-bottom: 4px;

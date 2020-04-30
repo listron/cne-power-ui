@@ -100,10 +100,14 @@ class ChartLine extends PureComponent {
     return [leftPosition, topPosition];
   }
 
-  onCountryChartResize = () => {
+  onChartResize = () => {
     const lineChart = echarts.getInstanceByDom(this.lineRef);
     if (lineChart && lineChart.resize) {
-      lineChart.resize();
+      const clientWidth = document.body.clientWidth;
+      const clientHeight = document.body.clientHeight;
+      lineChart.resize({
+        height: clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381),
+      });
     }
   }
 
@@ -113,7 +117,7 @@ class ChartLine extends PureComponent {
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
 
-    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode);
+    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239', 'NB1036'].includes(eventCode);
     // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
     const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
     let delPointIndex = -1;
@@ -172,25 +176,40 @@ class ChartLine extends PureComponent {
     sortedPointData.forEach((e, i) => {
       const pointName = `${isDiagnoseBranch ? '' : e.deviceName} ${e.pointName || ''}`; // 诊断事件的组串类不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
-      if (e.pointCode === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;  
+      let lineStyleColor = '';
+      if (e.pointName === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;  
         colors.push('#ff9900');
+        lineStyleColor = '#ff9900';
       } else if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件 - 未接组串为灰色
         colors.push('#999');
+        lineStyleColor = '#999';
       } else if (isDiagnoseBranch) { // 诊断事件 - 组串 默认绿色#60c060, 异常红色#f5222d
+        colors.push('#60c060');
         const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
         const curWarningPeriod = curWarningBranch.warningPeriod || [];
         const warningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day'));
         const linearGradientData = [{ offset: 0, color: '#60c060' }];
-        const minDay = moment(time[0].startOf('day'));
+        const minDay = moment(time[0]).startOf('day');
         const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一) 
-        warningDays.forEach(day => {
-          const dayDiff = warningDays.diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
-          linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
-          linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
-          linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
+        warningDays.forEach(eachday => {
+          const dayDiff = eachday.diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
+          if (dayDiff >= 0 && dayDiff <= 7) {
+            linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
+            linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
+            linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
+          }
         });
-        colors.push(new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData));
+        // colors.push(new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData));
+        lineStyleColor = {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 1,
+          y2: 0,
+          colorStops: linearGradientData,
+        };
       } else { // 使用默认配色
+        lineStyleColor = this.lineColors[i % this.lineColors.length];
         colors.push(this.lineColors[i % this.lineColors.length]);
       }
 
@@ -200,7 +219,7 @@ class ChartLine extends PureComponent {
         height: 30,
         itemWidth: 20,
         itemHeight: 10,
-        left: isDiagnoseBranch ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5), // 诊断事件-组串: 8列, 其余展示告警时段且4列展示;
+        left: `${isDiagnoseBranch ? (2 + i % 8 * 12) : (7 + (i + 1) % 4 * 21.5)}%`, // 诊断事件-组串: 8列, 其余展示告警时段且4列展示;
         top: `${Math.floor((isDiagnoseBranch ? i : i + 1) / lengendColType) * 30}`,
         data: [pointFullName],
         textStyle: {
@@ -215,11 +234,13 @@ class ChartLine extends PureComponent {
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
           width: (e.isConnected === 0 && isDiagnoseBranch) ? 0 : 1, // 诊断事件组串不显示折线
+          color: lineStyleColor,
         },
         data: e.value,
         symbol: 'circle',
         symbolSize: 5,
-        // showSymbol: false,
+        // showSymbol: (e.isConnected === 0 && isDiagnoseBranch) ? false : true,
+        showSymbol: false,
         smooth: true,
       });
     });
@@ -232,6 +253,9 @@ class ChartLine extends PureComponent {
       // name: '其他测点',
       gridIndex: 0,
       type: 'value',
+      nameTextStyle: {
+        color: 'transparent',
+      },
       axisLabel: {
         show: false,
       },
@@ -248,6 +272,11 @@ class ChartLine extends PureComponent {
     const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => {
       const diagnoseBrancnAxis = isDiagnoseBranch ? { // 诊断事件组串类: 只会返回电压(电流) + 辐照两个轴, 电压电流(左),辐照(右)
         name: e === 'W/m2' ? '瞬时辐照度(W/m2)' : (e === 'A' ? '电流(A)' : '电压(V)'),
+        nameTextStyle: {
+          color: '#353535',
+          fontSize: 12,
+        },
+        nameGap: 10,
         axisLabel: {
           show: true,
         },
@@ -293,10 +322,10 @@ class ChartLine extends PureComponent {
       show: true,
       borderColor: '#d4d4d4',
       bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? '37%' : '',
-      top: legendHeight,
+      top: isDiagnoseBranch ? (legendHeight + 18) : legendHeight,
       left: '7%',
       right: '7%',
-      height: originGridHeight,
+      height: originGridHeight - (isDiagnoseBranch ? 18 : 0),
     }];
     if (delPointIndex !== -1 && pageKey === 'alarm') { // 是告警事件且存在脉冲信号时新增坐标系
       pointData.push(pulseSignalInfo);
@@ -523,13 +552,11 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    const clientWidth = document.body.clientWidth;
-    const clientHeight = document.body.clientHeight;
-    const calcHeight = clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381);
+    // const clientWidth = document.body.clientWidth;
+    // const clientHeight = document.body.clientHeight;
+    // const calcHeight = clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381);
     return (
-      <div className={styles.analysisChart}>
-        <div style={{width: '100%', height: `${calcHeight}px`}} ref={(ref) => { this.lineRef = ref; } } />
-      </div>
+      <div className={styles.analysisChart} ref={(ref) => { this.lineRef = ref; } } />
     );
   }
 }
