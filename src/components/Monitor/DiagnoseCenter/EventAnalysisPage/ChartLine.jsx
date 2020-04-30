@@ -176,13 +176,12 @@ class ChartLine extends PureComponent {
     sortedPointData.forEach((e, i) => {
       const pointName = `${isDiagnoseBranch ? '' : e.deviceName} ${e.pointName || ''}`; // 诊断事件的组串类不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
-      let lineStyleColor = '';
+      let lineStyleColor;
       if (e.pointName === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;  
         colors.push('#ff9900');
         lineStyleColor = '#ff9900';
       } else if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件 - 未接组串为灰色
         colors.push('#999');
-        lineStyleColor = '#999';
       } else if (isDiagnoseBranch) { // 诊断事件 - 组串 默认绿色#60c060, 异常红色#f5222d
         colors.push('#60c060');
         const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
@@ -194,25 +193,21 @@ class ChartLine extends PureComponent {
         warningDays.forEach(eachday => {
           const dayDiff = eachday.diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
           if (dayDiff >= 0 && dayDiff <= 7) {
+            linearGradientData.push({ offset: dayDiff * eachPercent, color: '#60c060' });
             linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
             linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
             linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
           }
         });
-        // colors.push(new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData));
-        lineStyleColor = {
-          type: 'linear',
-          x: 0,
-          y: 0,
-          x2: 1,
-          y2: 0,
-          colorStops: linearGradientData,
-        };
+        if (warningDays.length > 0) { // 有低效, 渐变
+          lineStyleColor = new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData);
+        } else {
+          lineStyleColor = '#60c060';
+        }
       } else { // 使用默认配色
-        lineStyleColor = this.lineColors[i % this.lineColors.length];
         colors.push(this.lineColors[i % this.lineColors.length]);
+        lineStyleColor = this.lineColors[i % this.lineColors.length];
       }
-
       legends.push({
         icon: (e.isConnected === 0 && isDiagnoseBranch) ? 'image:///img/wjr01.png' : '',
         name: pointFullName,
@@ -233,14 +228,24 @@ class ChartLine extends PureComponent {
         xAxisIndex: 0,
         yAxisIndex: unitsGroup.indexOf(e.pointUnit || ''), // 空单位统一以''作为单位
         lineStyle: {
-          width: (e.isConnected === 0 && isDiagnoseBranch) ? 0 : 1, // 诊断事件组串不显示折线
+          width: (e.isConnected === 0 && isDiagnoseBranch) ? 0 : 1, // 诊断事件组串未接入不显示折线
           color: lineStyleColor,
         },
         data: e.value,
         symbol: 'circle',
         symbolSize: 5,
-        // showSymbol: (e.isConnected === 0 && isDiagnoseBranch) ? false : true,
-        showSymbol: false,
+        showSymbol: (e.isConnected === 0 && isDiagnoseBranch) ? false : true, // 未连接 不展示
+        itemStyle: {
+          normal: {
+            color: '#60c060',
+            opacity: 0,
+          },
+          emphasis: {
+            color: '#60c060',
+            opacity: 1,
+          },
+        },
+        z: typeof lineStyleColor === 'string' ? 2 : 9, // 有渐变线放到高层级优先展示
         smooth: true,
       });
     });
@@ -466,7 +471,6 @@ class ChartLine extends PureComponent {
       },
       });
     }
-
     const option = {
       legend: legends,
       color: colors,
