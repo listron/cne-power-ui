@@ -8,13 +8,14 @@
   margin-bottom: 10px;
   align-items: center;
   .stationHandler{
-    cursor: pointer;
-    flex: 0 0 133px;
+    // cursor: pointer;
+    // flex: 0 0 133px;
+    height: 42px;
     line-height: 42px;
-    padding-left: 24px;
-    svg{
-      margin-left: 12px;
-    }
+    // padding-left: 24px;
+    // svg{
+    //   margin-left: 12px;
+    // }
   }
   .stationNames{
     margin-left: 12px;
@@ -32,9 +33,9 @@
       height: 52px;
       align-items: center;
       display: flex;
-      .btnText{
-        padding: 0 16px;
-      }
+      // .btnText{
+      //   padding: 0 16px;
+      // }
       .filterTips{
         margin: 0 8px 0 24px;
       }
@@ -198,10 +199,10 @@
 .light.stationLists{
   border:1px solid #e1e3e4;
   background-color: #fff;
-  .stationHandler{
-    color: #fff;
-    background:var(--themeColor);
-  }
+  // .stationHandler{
+  //   color: #fff;
+  //   background:var(--themeColor);
+  // }
   .stationNames{
     color: var(--darkColor);
   }
@@ -214,6 +215,9 @@
       color: var(--themeColor);
     }
     .filterParts{
+      .filterTypeBtn{
+        color: $themeColor;
+      }
       .filterTypeBtn.active{
         background-color: var(--themeColor);
         color: #fff;

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
 import moment from 'moment';
 import CneTable from '@components/Common/Power/CneTable';
 import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { dataFormat, handleRight } from '../../../../utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './dailyQuery.scss';
 
 const { APIBasePath } = path.basePaths;
@@ -117,12 +117,13 @@ class QuotaList extends Component {
       <div className={styles.quotaList}>
         <div className={styles.pagination}>
         {dailyOperation ?
-          <Button
+          <CneButton
           className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
           onClick={this.onExport}
           loading={exportLoading}
           disabled={dataList.length === 0}
-          >导出</Button> : <div></div>}
+          lengthMode="short"
+          >导出</CneButton> : <div></div>}
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

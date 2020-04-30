@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import StationModal from '@components/Common/StationSelect/StationModal';
+import CneButton from '@components/Common/Power/CneButton';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import styles from './workPage.scss';
@@ -41,10 +42,10 @@ class StationLists extends PureComponent {
     const stationNamePartString = stageStations.length > 6 ? `${stageStations.slice(0, 6).map(e => e.stationName).join(', ')}...` : stationNamesTotal;
     return (
       <div className={`${styles.stationLists} ${styles[theme]}`}>
-        <span className={styles.stationHandler} onClick={this.showStationModal}>
+        <CneButton className={styles.stationHandler} onClick={this.showStationModal} lengthMode="long">
           <span>工作台设置</span>
           <Icon type="setting" />
-        </span>
+        </CneButton>
         <span ref={(ref) => { this.stationRef = ref; }} />
         <span
           className={styles.stationNames}

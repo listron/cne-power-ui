@@ -39,13 +39,16 @@
   .tags {
     display: flex;
     justify-content: flex-start;
-
-    a {
-      padding: 0 12px;
-      border-radius: 2px;
-      height: 30px;
-      line-height: 30px;
+    .alarmsBtn{
       margin-right: 11px;
+    }
+    a {
+      color: $themeColor;
+    //   padding: 0 12px;
+    //   border-radius: 2px;
+    //   height: 30px;
+    //   line-height: 30px;
+    //   margin-right: 11px;
     }
 
     .noLink {
@@ -168,7 +171,9 @@
 
   .hideDetail {
     background: $themeColor;
-
+    &:hover{
+      background-color: #f9b600;
+    }
     :global {
       .iconfont {
         color: #fff;
@@ -176,13 +181,13 @@
     }
   }
 
-  .tags {
-    a {
-      background: #ffffff;
-      border: 1px solid #d4d4d4;
-      color: #353535;
-    }
-  }
+  // .tags {
+  //   a {
+  //     background: #ffffff;
+  //     border: 1px solid #d4d4d4;
+  //     color: #353535;
+  //   }
+  // }
 
   .deviceStatus {
     background: #ffffff;
@@ -207,14 +212,18 @@
       color: $darkColor;
 
       :global {
+        .ant-radio-button-wrapper{
+          padding: 0 5px;
+          color: $themeColor;
+        }
         .ant-radio-button-wrapper-checked:first-child {
           border-color: $themeColor;
         }
 
-        .ant-radio-button-wrapper:hover,
-        .ant-radio-button-wrapper-focused {
-          color: $darkColor;
-        }
+        // .ant-radio-button-wrapper:hover,
+        // .ant-radio-button-wrapper-focused {
+          // color: $darkColor;
+        // }
 
         .ant-radio-button-wrapper-checked {
           border-color: $themeColor;
@@ -235,6 +244,10 @@
         background: #ceebe0;
         border: 1px solid $themeColor;
         color: $themeColor;
+        &:hover{
+          background-color: $themeColor;
+          color: #fff;
+        }
       }
 
       .disabled {
@@ -266,13 +279,13 @@
     }
   }
 
-  .tags {
-    a {
-      background: $themeColor;
-      border: 1px solid $button-border;
-      color: $fontColor-invert;
-    }
-  }
+  // .tags {
+  //   a {
+  //     background: $themeColor;
+  //     border: 1px solid $button-border;
+  //     color: $fontColor-invert;
+  //   }
+  // }
 
   .deviceStatus {
     background: #161858;

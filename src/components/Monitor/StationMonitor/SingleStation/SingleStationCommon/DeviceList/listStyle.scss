@@ -28,7 +28,8 @@
     color: $darkColor;
     :global{
       .ant-switch{
-        background-color: $promptColor;
+        width: 46px;
+        // background-color: $promptColor;
         margin-right: 8px;
       }
       .ant-switch-checked{

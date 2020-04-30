@@ -13,6 +13,7 @@
 
     .ant-switch {
       vertical-align: -5px;
+      width: 46px;
     }
 
     .ant-radio-button-wrapper {
@@ -86,6 +87,16 @@
     display: flex;
     flex-direction: row;
     flex: 1;
+    .filterItems{
+      :global{
+        .ant-radio-button-wrapper{
+          color: $themeColor;
+        }
+        .ant-radio-button-wrapper-checked{
+          color: #fff;
+        }
+      }
+    }
   }
   .containerTabs {
     :global {
@@ -466,18 +477,28 @@
     .tags {
       display: flex;
       justify-content: space-around;
-      margin: 8px 30px;
-      a {
-        padding: 0 12px;
-        background: #ffffff;
-        border: 1px solid #d4d4d4;
-        border-radius: 2px;
-        height: 30px;
-        line-height: 30px;
-        color: #353535;
-      }
+      // margin: 8px 30px;
+      // a {
+      //   padding: 0 12px;
+      //   background: #ffffff;
+      //   border: 1px solid #d4d4d4;
+      //   border-radius: 2px;
+      //   height: 30px;
+      //   line-height: 30px;
+      //   color: #353535;
+      // }
       .noLink {
         pointer-events: none;
+      }
+    }
+    @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+      .tags {
+        margin: 8px 30px;
+      }
+    }
+    @media screen and (min-width: 1920px){
+      .tags {
+        margin: 8px 2px;
       }
     }
     .deviceStatus {

@@ -5,6 +5,7 @@ import { Icon, Button, Spin } from 'antd';
 import EachDate from './PlanModals/EachDate';
 import styles from './workPage.scss';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 
 class PlanList extends PureComponent {
@@ -94,10 +95,7 @@ class PlanList extends PureComponent {
     return (
       <div className={`${styles.planList} ${styles[theme]}`}>
         <div className={styles.topPlanHandle}>
-          {addRight ? <Button className={styles.addPlanBtn} type="add" onClick={this.onAdd} >
-            <i>+</i>
-            <span className={styles.addPlanBtnText}>添加计划</span>
-          </Button> : <span />}
+          {addRight ? <CneButton className={styles.addPlanBtn} iconname="icon-newbuilt" lengthMode="short" onClick={this.onAdd} lengthMode="short">添加计划</CneButton> : <span />}
           <span className={styles.monthHandler}>
             <Icon
               type="left" className={styles.monthIcon}

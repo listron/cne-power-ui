@@ -16,6 +16,7 @@ import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { SpeedScatter } from '../../WindCommon/SpeedScatter';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const { TabPane } = Tabs;
 import moment from 'moment';
 const RadioButton = Radio.Button;
@@ -267,9 +268,9 @@ class WindStation extends Component {
           {fanDisplay !== 'deviceTable' &&
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
-                <Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`}> 查看告警 {dataFormats(singleStationData.alarmNum, '--')} </Link>
-                <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`/report/windstation/powerReport`} > 报表查询  </Link>
+                <CneButton lengthMode="long"><Link to={`/monitor/alarm/realtime?stationCode=${stationCode}`} className={styles.alarmBtn}> 查看告警 {dataFormats(singleStationData.alarmNum, '--')} </Link></CneButton>
+                <CneButton disabled lengthMode="short"><Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link></CneButton>
+                <CneButton lengthMode="short"><Link to={`/report/windstation/powerReport`} className={styles.reportBtn}> 报表查询  </Link></CneButton>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart

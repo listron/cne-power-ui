@@ -53,6 +53,18 @@
   }
 
   .deviceList {
+    .deviceListTab {
+      .deviceRight {
+        :global{
+          .ant-radio-button-wrapper{
+            color: $themeColor;
+          }
+          .ant-radio-button-wrapper-checked{
+            color: #fff;
+          }
+        }
+      }
+    }
     .deviceListBlockBox {
       color: $darkColor;
       .parentDeviceName {
@@ -156,6 +168,7 @@
       color: $darkColor;
       :global {
         .ant-switch {
+          width: 46px;
           background-color: $promptColor;
           margin-right: 8px;
         }
@@ -206,6 +219,29 @@
   .invertDeviceList {
     // 逆变器
     .deviceListTab {
+      .deviceRight{
+        :global{
+          .ant-radio-button-wrapper{
+            color: $themeColor;
+          }
+          .ant-radio-button-wrapper-checked{
+            color: #fff;
+          }
+        }
+      }
+      .inverterRight{
+        :global{
+          .ant-switch{
+            width: 46px;
+          }
+          .ant-radio-button-wrapper{
+            color: $themeColor;
+          }
+          .ant-radio-button-wrapper-checked{
+            color: #fff;
+          }
+        }
+      }
       .deviceListBlockBox {
         color: $darkColor;
         .parentDeviceName {

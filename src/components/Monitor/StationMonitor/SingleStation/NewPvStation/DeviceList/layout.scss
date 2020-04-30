@@ -97,6 +97,11 @@
     .deviceListTab {
       .deviceRight {
         margin-right: 20px;
+        :global{
+          .ant-switch{
+            width: 46px;
+          }
+        }
       }
 
       .deviceListBlockBox {
@@ -345,6 +350,7 @@
       :global {
         .ant-switch {
           margin-right: 8px;
+          width: 46px;
         }
       }
     }
@@ -516,6 +522,11 @@
     .deviceListTab {
       .deviceRight {
         margin-right: 20px;
+        :global{
+          .ant-switch{
+            width: 46px;
+          }
+        }
       }
 
       .deviceListBlockBox {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, DatePicker, Button, message } from 'antd';
+import { Icon, DatePicker, message } from 'antd';
 import Footer from '../../../../components/Common/Footer';
+import CneButton from '@components/Common/Power/CneButton';
 import moment from 'moment';
 import path from '../../../../constants/path';
 import axios from 'axios';
@@ -145,14 +146,14 @@ class AnalysisReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button
+                <CneButton
                   className={styles.text}
                   onClick={this.downloadReport}
                   disabled={!dayDate}
                   loading={typeDowning === 'dayReport'}
                 >
                   下载
-                </Button>
+                </CneButton>
               </div>
             </div>
             <div className={styles.dailyBox}>
@@ -172,14 +173,14 @@ class AnalysisReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button
+                <CneButton
                   className={styles.text}
                   onClick={this.downloadMonthReport}
                   disabled={!dayDate}
                   loading={typeDowning === 'monthReport'}
                 >
                   下载
-                </Button>
+                </CneButton>
               </div>
             </div>
           </div>

@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Form, Input, DatePicker, Select } from 'antd';
+import { Modal, Form, Input, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import InputLimit from '@components/Common/InputLimit';
 import StationSelect from '@components/Common/StationSelect';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './planModals.scss';
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -268,17 +269,19 @@ class AddPlan extends PureComponent {
             </FormItem>}
           </div>
           <div className={styles.saveRow}>
-            <Button
+            <CneButton
               onClick={this.saveAddRecord}
               loading={saveMode === 'normal' && saveRecordLoading}
               className={styles.saveBtn}
-            >保存</Button>
-            <Button
+              lengthMode="short"
+            >保存</CneButton>
+            <CneButton
+              lengthMode="long"
               onClick={this.continueAddRecord}
               loading={saveMode === 'continue' && saveRecordLoading}
               className={styles.continueSaveBtn}
-            >保存并继续添加</Button>
-            <Button onClick={this.cancelHandle} className={styles.cancelSaveBtn}>取消</Button>
+            >保存并继续添加</CneButton>
+            <CneButton onClick={this.cancelHandle} className={styles.cancelSaveBtn} lengthMode="short">取消</CneButton>
           </div>
         </Form>
       </Modal>

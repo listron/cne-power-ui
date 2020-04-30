@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Form, Input, DatePicker, Select } from 'antd';
+import { Form, Input, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import InputLimit from '@components/Common/InputLimit';
 import StationSelect from '@components/Common/StationSelect';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './addEdit.scss';
 
 const FormItem = Form.Item;
@@ -311,17 +312,19 @@ class AddEditPlan extends PureComponent {
             </FormItem>}
           </div>
           <div className={styles.saveRow}>
-            <Button
+            <CneButton
               onClick={planPageKey === 'add' ? this.saveAdd : this.editSave}
               loading={saveMode === 'normal' && addPlanLoading}
               className={styles.saveBtn}
-            >保存</Button>
-            {planPageKey === 'add' && <Button
+              lengthMode="short"
+            >保存</CneButton>
+            {planPageKey === 'add' && <CneButton
+              lengthMode="long"
               onClick={this.continueAdd}
               loading={saveMode === 'continue' && addPlanLoading}
               className={styles.continueSaveBtn}
-            >保存并继续添加</Button>}
-            {planPageKey === 'add' && <Button onClick={this.cancelHandle} className={styles.cancelSaveBtn}>取消</Button>}
+            >保存并继续添加</CneButton>}
+            {planPageKey === 'add' && <CneButton onClick={this.cancelHandle} className={styles.cancelSaveBtn} lengthMode="short">取消</CneButton>}
           </div>
         </Form>
       </section>

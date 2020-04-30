@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
+import CneButton from '@components/Common/Power/CneButton';
 import moment from 'moment';
 import path from '../../../../constants/path';
-import { Button, Select, message } from 'antd';
+import { Select, message } from 'antd';
 
 const Option = Select.Option;
 
@@ -173,9 +174,9 @@ class AreaStationSearch extends Component {
                 }}
               />
             </div>
-            <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
+            <CneButton lengthMode="short" className={styles.searchInfo} onClick={this.searchInfo}>查询</CneButton>
           </div>
-          <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={!reportShow}>下载报告</Button>
+          <CneButton lengthMode="short" className={styles.exportReport} onClick={this.exportReport} antdIcon="download" disabled={!reportShow}>下载报告</CneButton>
         </div>
       </div>
     )

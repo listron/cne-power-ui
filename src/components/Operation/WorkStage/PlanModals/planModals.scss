@@ -175,20 +175,20 @@
       }
     }
   }
-  .saveRow{
-    .saveBtn{
-      background-color: var(--themeColor);
-      color: #fff;
-    }
-    .continueSaveBtn{
-      border: 1px solid var(--themeColor);
-      color: var(--themeColor);
-    }
-    .cancelSaveBtn{
-      border: 1px solid var(--promptColor);
-      color: var(--lightColor);
-    }
-  }
+  // .saveRow{
+  //   .saveBtn{
+  //     background-color: var(--themeColor);
+  //     color: #fff;
+  //   }
+  //   .continueSaveBtn{
+  //     border: 1px solid var(--themeColor);
+  //     color: var(--themeColor);
+  //   }
+  //   .cancelSaveBtn{
+  //     border: 1px solid var(--promptColor);
+  //     color: var(--lightColor);
+  //   }
+  // }
 }
 
 .light.eachDate{

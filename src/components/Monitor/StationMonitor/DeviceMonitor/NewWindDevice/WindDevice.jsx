@@ -15,6 +15,7 @@ import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { PointScatter } from '../../WindCommon/PointScatter';
 import { apiUrlReal } from '../../../../../config/apiConfig';
+import CneButton from '@components/Common/Power/CneButton';
 class WindDevice extends Component {
   static propTypes = {
     loading: PropTypes.bool,
@@ -219,12 +220,12 @@ class WindDevice extends Component {
             </div>
             <div className={styles.windDeviceChart}>
               <div className={styles.tags}>
-                <Link to={{
+                <CneButton lengthMode="long"><Link to={{
                   pathname: `/monitor/alarm/realtime`,
                   search: `?stationCode=${stationCode}`, state: { stationType: '0', deviceName }
-                }}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link>
-                <Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link>
-                <Link to={`/report/windstation/powerReport`} > 报表查询  </Link>
+                }}> 查看告警 {dataFormats(deviceDetail.alarmNum, '--')} </Link></CneButton>
+                <CneButton disabled lengthMode="short"><Link to={`javascript:void(0)`} className={styles.noLink}> 统计分析  </Link></CneButton>
+                <CneButton lengthMode="short"><Link to={`/report/windstation/powerReport`} > 报表查询  </Link></CneButton>
               </div>
               <div className={styles.chartsBox}>
                 <OutputChart

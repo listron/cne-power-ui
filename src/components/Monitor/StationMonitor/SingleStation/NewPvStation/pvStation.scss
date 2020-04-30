@@ -99,6 +99,13 @@
           span {
             color: $darkColor;
           }
+          .stationToggle{
+            i{
+              &:hover{
+                color: #f9b600;
+              }
+            }
+          }
         }
         // .stationRight {
         //   .backIcon {
@@ -216,6 +223,9 @@
         color: $themeColor;
         cursor: pointer;
         padding-right: 4px; 
+        &:hover{
+          color: #f9b600;
+        }
       }
     }
     .pvDeviceCont {
@@ -232,6 +242,9 @@
           color: #fff;
           text-align: center;
           cursor: pointer;
+          &:hover{
+            background: #f9b600;
+          }
         }
         .icon {
           pointer-events: none;
@@ -274,6 +287,9 @@
       flex-direction: column;
       padding: 12px 0;
       cursor: pointer;
+      &:hover{
+        background-color: #f9b600;
+      }
       .detailShowfont {
         color: #fff;
         width: 14px;

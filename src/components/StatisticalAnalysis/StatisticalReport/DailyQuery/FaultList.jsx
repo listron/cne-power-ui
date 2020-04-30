@@ -6,6 +6,7 @@ import path from '../../../../constants/path';
 import CommonPagination from '../../../Common/CommonPagination';
 import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { dataFormats, handleRight } from '../../../../utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './dailyQuery.scss';
 
 const { APIBasePath } = path.basePaths;
@@ -178,12 +179,13 @@ class FaultList extends Component {
       <div className={styles.faultList}>
         <div className={styles.pagination}>
         {dailyOperation ?
-          <Button
+          <CneButton
             className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
             onClick={this.onExport}
             loading={exportLoading}
+            lengthMode="short"
             disabled={dataList.length === 0}
-          >导出</Button> : <div></div>}
+          >导出</CneButton> : <div></div>}
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}

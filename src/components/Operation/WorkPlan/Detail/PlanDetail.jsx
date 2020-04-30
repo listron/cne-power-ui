@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Switch, Popconfirm, Spin } from 'antd';
+import { Switch, Popconfirm, Spin } from 'antd';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './detail.scss';
 
 class PlanDetail extends PureComponent {
@@ -244,7 +245,7 @@ class PlanDetail extends PureComponent {
         <h3 className={styles.detailTop}>
           <span>查看计划</span>
           <span className={styles.topHandle}>
-            {workPlanHandleRight && <Button onClick={this.toEdit}>编辑</Button>}
+            {workPlanHandleRight && <CneButton onClick={this.toEdit} lengthMode="short">编辑</CneButton>}
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
           </span>
         </h3>

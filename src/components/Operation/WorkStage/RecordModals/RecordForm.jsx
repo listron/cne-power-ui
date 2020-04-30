@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, DatePicker } from 'antd';
+import { Form, DatePicker } from 'antd';
 import moment from 'moment';
 import styles from './recordModals.scss';
 import InputLimit from '@components/Common/InputLimit';
 import StationSelect from '@components/Common/StationSelect';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 
 class AddRecord extends PureComponent {
@@ -122,22 +123,25 @@ class AddRecord extends PureComponent {
           )}
         </FormItem>
         <div className={styles.saveRow}>
-          {modalKey === 'addRecord' && <Button
+          {modalKey === 'addRecord' && <CneButton
+            lengthMode="short"
             onClick={this.saveAddRecord}
             loading={saveMode === 'normal' && saveRecordLoading}
             className={styles.saveBtn}
-          >保存</Button>}
-          {modalKey === 'addRecord' && <Button
+          >保存</CneButton>}
+          {modalKey === 'addRecord' && <CneButton
+            lengthMode="long"
             onClick={this.continueAddRecord}
             loading={saveMode === 'continue' && saveRecordLoading}
             className={styles.continueSaveBtn}
-          >保存并继续添加</Button>}
-          {modalKey === 'editRecord' && <Button
+          >保存并继续添加</CneButton>}
+          {modalKey === 'editRecord' && <CneButton
+            lengthMode="short"
             onClick={this.editRecordInfo}
             loading={saveRecordLoading}
             className={styles.saveBtn}
-          >保存</Button>}
-          <Button onClick={this.cancelAdd} className={styles.cancelSaveBtn}>取消</Button>
+          >保存</CneButton>}
+          <CneButton onClick={this.cancelAdd} lengthMode="short" className={styles.cancelSaveBtn}>取消</CneButton>
         </div>
       </Form>
     );

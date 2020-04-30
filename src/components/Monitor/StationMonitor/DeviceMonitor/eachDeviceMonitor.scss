@@ -72,6 +72,9 @@
 
         .swap {
           color: $themeColor;
+          &:hover{
+            color: #f9b600;
+          }
         }
 
         .status {
@@ -182,8 +185,11 @@
   .inverterChartTitle {
     .tabs {
       .inactive {
-        color: #353535;
-        border: 1px solid #d4d4d4;
+        color: $themeColor;
+        border: 1px solid $themeColor;
+        &:hover{
+          background-color: rgba(206,235,224,0.30);
+        }
       }
 
       .active {

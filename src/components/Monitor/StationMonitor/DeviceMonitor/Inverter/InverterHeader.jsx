@@ -3,8 +3,9 @@ import HeaderDeviceChange from '../DeviceMonitorCommon/HeaderDeviceChange';
 import { interverStatus, PVStationTypes } from '../../../../../constants/stationBaseInfo';
 import styles from '../eachDeviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import CneButton from '@components/Common/Power/CneButton';
 
 class InverterHeader extends Component {
 
@@ -73,9 +74,9 @@ class InverterHeader extends Component {
           <span className={styles.status}>设备状态: {interverStatus[deviceStatus] || '--'}</span>
           <span className={styles.manufactor}>生产厂商：{manufacturer || '--'}</span>
           <span className={styles.deviceModelName}>设备型号：{deviceModeName || '--'}</span>
-          <Link to={`/operation/book/deviceManage?deviceFullCode=${deviceCode}&showPage='detail'`} target="_blank">
-            <Button className={styles.deviceBtn} type="primary"><i className="iconfont icon-edit" /><i>修改设备信息</i></Button>
-          </Link>
+          <CneButton className={styles.deviceBtn} lengthMode="long"><Link to={`/operation/book/deviceManage?deviceFullCode=${deviceCode}&showPage='detail'`} target="_blank">
+            <i className="iconfont icon-edit" /><i className={styles.text}>修改设备信息</i>
+          </Link></CneButton>
         </div>
         <div className={styles.linkTo}>
           {(parentDeviceTypeCode && parentDeviceCode && <span

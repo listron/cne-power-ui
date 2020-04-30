@@ -43,6 +43,11 @@
     }
     .detailValue{
       flex: 1;
+      :global{
+        .ant-switch{
+          width: 46px;
+        }
+      }
       .logTip{
         margin-right: 4px;
       }

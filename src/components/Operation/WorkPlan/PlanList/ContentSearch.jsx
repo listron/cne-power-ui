@@ -1,8 +1,9 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Select, Button, Input } from 'antd';
+import { Select, Input } from 'antd';
 import styles from './listSearch.scss';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { Option } = Select;
 
@@ -106,8 +107,8 @@ class ContentSearch extends PureComponent {
             return <Option key={`${e.userId}`} value={`${e.userId}`} title={userText}>{userText}</Option>;
           })}
         </Select>
-        <Button onClick={this.toSearch} className={styles.search}>查询</Button>
-        {(planContent || createUser) && <span onClick={this.toReset} className={styles.reset}>重置</span>}
+        <CneButton onClick={this.toSearch} className={styles.search} lengthMode="short">查询</CneButton>
+        {(planContent || createUser) && <CneButton onClick={this.toReset} className={styles.reset} lengthMode="short">重置</CneButton>}
       </div>
     );
   }

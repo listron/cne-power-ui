@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popconfirm } from 'antd';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 import { handleRight } from '@utils/utilFunc';
 import styles from './recordModals.scss';
 
@@ -87,9 +88,9 @@ class PlanDetail extends PureComponent {
             okText="确定"
             cancelText="取消"
           >
-            <Button loading={saveRecordLoading}>
-              <span className="iconfont icon-markdone" />标记为完成
-            </Button>
+            <CneButton loading={saveRecordLoading} lengthMode="long" iconname="icon-markdone" lengthMode="long">
+              标记为完成
+            </CneButton>
           </Popconfirm>
         </div>}
       </div>

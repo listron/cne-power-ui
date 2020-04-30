@@ -6,6 +6,7 @@ import OwnProgress from '../../../../Common/OwnProgress/index';
 import { DeviceValueFormat } from '../../WindCommon/WindDataformat';
 import { Popover, Modal, InputNumber } from 'antd';
 import moment from 'moment';
+import CneButton from '@components/Common/Power/CneButton';
 class windStationHeader extends React.Component {
   static propTypes = {
     singleStationData: PropTypes.object,
@@ -140,18 +141,26 @@ class windStationHeader extends React.Component {
        
         <Modal
           title="请填写"
+          // wrapClassName={styles.powerModal}
           style={{ top: 300 }}
           visible={modalVisiable}
-          onOk={this.onOk}
-          onCancel={this.onCancel}
+          // onOk={this.onOk}
+          // onCancel={this.onCancel}
           mask={false}
           closable={false}
           maskClosable={false}
+          footer={null}
         >
           <div >
-            {<span>截止到昨日，{editType === 'month' && '本月' || '本年'}累计发电量  </span>}
-            <InputNumber placeholder="请输入" onChange={this.onChange} style={{width:100}} min={0} value={editValue}/>  万kWh
-            {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
+            <div>
+              {<span>截止到昨日，{editType === 'month' && '本月' || '本年'}累计发电量  </span>}
+              <InputNumber placeholder="请输入" onChange={this.onChange} style={{width:100}} min={0} value={editValue}/>  万kWh
+              {editInfoError && <div className={styles.warningInfo}>请输入数字</div>}
+            </div>
+            <div className={styles.headerModalBottom}>
+              <div className={styles.cancelBtn} onClick={this.onCancel}>取消</div>
+              <CneButton className={styles.okBtn} onClick={this.onOk} lengthMode="short">确定</CneButton>
+            </div>
           </div>
         </Modal>
       </div >

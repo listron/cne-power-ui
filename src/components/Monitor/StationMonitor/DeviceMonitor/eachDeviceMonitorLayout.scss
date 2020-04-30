@@ -69,13 +69,18 @@
 
         .deviceBtn {
           margin-left: 20px;
-          border-radius: 2px;
+          // border-radius: 2px;
           i {
             font-style: normal;
           }
-          &:hover {
-            box-shadow: none;
+          .text{
+            text-align: center;
+            display: inline-block;
+            width: 100%;
           }
+          // &:hover {
+          //   box-shadow: none;
+          // }
         }
       }
 
@@ -174,10 +179,9 @@
 
   .tabs {
     border-radius: 2px;
-
     .inactive,
     .active {
-      padding: 2px 6px;
+      padding: 5px 5px;
       cursor: pointer;
       border-radius: 2px;
     }

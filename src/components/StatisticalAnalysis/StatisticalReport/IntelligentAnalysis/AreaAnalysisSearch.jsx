@@ -4,7 +4,8 @@ import path from '../../../../constants/path';
 import styles from './intelligentAnalysis.scss';
 import TimeSelect from '../../../Common/TimeSelect/TimeSelectIndex';
 import moment from 'moment';
-import { Button, message } from 'antd';
+import CneButton from '@components/Common/Power/CneButton';
+import { message } from 'antd';
 
 const { APIBasePath } = path.basePaths;
 const { statisticalAnalysis } = path.APISubPaths;
@@ -125,9 +126,9 @@ class AreaAnalysisSearch extends Component{
                 }}
               />
             </div>
-            <Button className={styles.searchInfo} onClick={this.searchInfo}>查询</Button>
+            <CneButton lengthMode="short" className={styles.searchInfo} onClick={this.searchInfo}>查询</CneButton>
           </div>
-            <Button className={styles.exportReport} onClick={this.exportReport} icon="download" disabled={!reportShow}>下载报告</Button>
+            <CneButton lengthMode="short" className={styles.exportReport} onClick={this.exportReport} antdIcon="download" disabled={!reportShow}>下载报告</CneButton>
         </div>
       </div>
     )

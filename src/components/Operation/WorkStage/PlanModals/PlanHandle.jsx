@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Table } from 'antd';
+import { Modal, Table } from 'antd';
 import moment from 'moment';
 import HandlePart from './HandlePart';
 import WarningTip from '@components/Common/WarningTip';
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './planModals.scss';
 import { handleRight } from '@utils/utilFunc';
 
@@ -154,16 +155,18 @@ class PlanHandle extends PureComponent {
       >
         <div className={styles.planHandle}>
           {planManageRight && <div className={styles.handle}>
-            <Button
+            <CneButton
               onClick={this.publishAll}
               loading={handleType === 'publish' && handlePlanLoading}
               disabled={!hasRowSelected}
-            >批量下发</Button>
-            <Button
+              lengthMode="short"
+            >批量下发</CneButton>
+            <CneButton
               onClick={this.deleteAll}
               loading={handleType === 'delete' && handlePlanLoading}
               disabled={!hasRowSelected}
-            >批量删除</Button>
+              lengthMode="short"
+            >批量删除</CneButton>
           </div>}
           <Table
             dataSource={datePlans}

@@ -283,6 +283,11 @@
 .stationChange.light {
   background-color: #fff;
   color: $darkColor;
+  .titleIcon{
+    &:hover{
+      color: #f9b600;
+    }
+  }
   .stationList {
     .provinceName {
       background: #f8f8f8;

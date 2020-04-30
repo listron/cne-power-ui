@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, DatePicker, Button, message } from 'antd';
+import { Icon, DatePicker, message } from 'antd';
 import styles from './generalReport.scss';
 import StationSelect from '../../../../components/Common/StationSelect';
 import Footer from '../../../../components/Common/Footer';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import PropTypes from 'prop-types';
 import { enterpriseKey } from '../../../../constants/enterpriseKey';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath } = path.basePaths;
 const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx } = path.APISubPaths.statisticalAnalysis;
@@ -220,10 +221,10 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button className={styles.text} onClick={this.preViewReport} disabled={!reportDate}>预览</Button>
-                <span className={styles.line} />
-                <Button className={styles.text} onClick={this.downloadReport} disabled={!reportDate}
-                  loading={typeDowning === 'report'}>下载</Button>
+                <CneButton className={`${styles.text} ${styles.preview}`} onClick={this.preViewReport} disabled={!reportDate}>预览</CneButton>
+                {/* <span className={styles.line} /> */}
+                <CneButton className={styles.text} onClick={this.downloadReport} disabled={!reportDate}
+                  loading={typeDowning === 'report'}>下载</CneButton>
               </div>
             </div>
             {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
@@ -243,9 +244,9 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button disabled={!faultDate} onClick={this.preViewFault} className={styles.text}>预览</Button>
-                <span className={styles.line} />
-                <Button disabled={!faultDate} onClick={this.downloadFault} className={styles.text} loading={typeDowning === 'fault'}>下载</Button>
+                <CneButton disabled={!faultDate} onClick={this.preViewFault} className={styles.text}>预览</CneButton>
+                {/* <span className={styles.line} /> */}
+                <CneButton disabled={!faultDate} onClick={this.downloadFault} className={styles.text} loading={typeDowning === 'fault'}>下载</CneButton>
               </div>
             </div>}
             {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
@@ -265,9 +266,9 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button disabled={!eleInfoDate} className={styles.text} onClick={this.preViewGenInfo}>预览</Button>
-                <span className={styles.line} />
-                <Button disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo} loading={typeDowning === 'eleInfo'}>下载</Button>
+                <CneButton disabled={!eleInfoDate} className={styles.text} onClick={this.preViewGenInfo}>预览</CneButton>
+                {/* <span className={styles.line} /> */}
+                <CneButton disabled={!eleInfoDate} className={styles.text} onClick={this.downloadGenInfo} loading={typeDowning === 'eleInfo'}>下载</CneButton>
               </div>
             </div>}
             {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
@@ -296,18 +297,18 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button
+                <CneButton
                   disabled={selectedStation.length === 0 || !proOperationDate}
                   className={styles.text}
                   onClick={this.preViewIndicator}
-                >预览</Button>
-                <span className={styles.line} />
-                <Button
+                >预览</CneButton>
+                {/* <span className={styles.line} /> */}
+                <CneButton
                   disabled={selectedStation.length === 0 || !proOperationDate}
                   className={styles.text}
                   onClick={this.downloadIndicator}
                   loading={typeDowning === 'proOperate'}
-                >下载</Button>
+                >下载</CneButton>
               </div>
             </div>}
           </div>

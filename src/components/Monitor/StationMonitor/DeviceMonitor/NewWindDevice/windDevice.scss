@@ -19,6 +19,9 @@
           margin-left: 32px;
           color: $themeColor;
           cursor: pointer;
+          &:hover{
+            color: #f9b600;
+          }
         }
         .name {
           font-size: 18px;
@@ -266,17 +269,27 @@
         display: flex;
         justify-content: space-around;
         margin: 8px 30px;
-        a {
-          padding: 0 12px;
-          background: #ffffff;
-          border: 1px solid #d4d4d4;
-          border-radius: 2px;
-          height: 30px;
-          line-height: 30px;
-          color: #353535;
-        }
+        // a {
+        //   padding: 0 12px;
+        //   background: #ffffff;
+        //   border: 1px solid #d4d4d4;
+        //   border-radius: 2px;
+        //   height: 30px;
+        //   line-height: 30px;
+        //   color: #353535;
+        // }
         .noLink {
           pointer-events: none;
+        }
+      }
+      @media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+        .tags {
+          margin: 8px 30px;
+        }
+      }
+      @media screen and (min-width: 1920px){
+        .tags {
+          margin: 8px 2px;
         }
       }
       .chartsBox {

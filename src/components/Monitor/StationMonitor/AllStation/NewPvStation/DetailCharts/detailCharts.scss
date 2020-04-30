@@ -36,21 +36,28 @@
     }
   }
 
-  .tags {
+  .tags, .noRight {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
+    margin-right: 40px;
 
-    a {
-      padding: 0 12px;
-      border-radius: 2px;
-      height: 30px;
-      line-height: 30px;
-      margin-right: 11px;
-    }
+    // a {
+    //   padding: 0 12px;
+    //   border-radius: 2px;
+    //   height: 30px;
+    //   line-height: 30px;
+    //   margin-right: 11px;
+    // }
 
     .noLink {
       pointer-events: none;
     }
+  }
+  .tags{
+    justify-content: space-around;
+  }
+  .noRight{
+    justify-content: flex-start;
   }
 
   .chartsBox {
@@ -96,6 +103,9 @@
 
   .hideDetail {
     background: $themeColor;
+    &:hover{
+      background-color: #f9b600;
+    }
 
     :global {
       .iconfont {
@@ -104,13 +114,13 @@
     }
   }
 
-  .tags {
-    a {
-      background: #ffffff;
-      border: 1px solid #d4d4d4;
-      color: #353535;
-    }
-  }
+  // .tags {
+  //   a {
+  //     background: #ffffff;
+  //     border: 1px solid #d4d4d4;
+  //     color: #353535;
+  //   }
+  // }
 
   .deviceStatus {
     background: #ffffff;
@@ -133,13 +143,18 @@
       color: $darkColor;
 
       :global {
+        .ant-radio-button-wrapper{
+          padding: 0 5px;
+          color: $themeColor;
+        }
+
         .ant-radio-button-wrapper-checked:first-child {
           border-color: $themeColor;
         }
 
         .ant-radio-button-wrapper:hover,
         .ant-radio-button-wrapper-focused {
-          color: $darkColor;
+          color: $themeColor;
         }
 
         .ant-radio-button-wrapper-checked {
@@ -177,13 +192,13 @@
     }
   }
 
-  .tags {
-    a {
-      background: $button-active;
-      border: 1px solid $button-active;
-      color: $fontColor-invert;
-    }
-  }
+  // .tags {
+  //   a {
+  //     background: $button-active;
+  //     border: 1px solid $button-active;
+  //     color: $fontColor-invert;
+  //   }
+  // }
 
   .deviceStatus {
     background: #161858;

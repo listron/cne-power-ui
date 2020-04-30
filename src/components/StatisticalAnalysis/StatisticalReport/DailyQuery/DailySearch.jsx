@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Radio, DatePicker, Button, Input, message } from 'antd';
+import { Radio, DatePicker, Input, message } from 'antd';
 import moment from 'moment';
 import styles from './dailyQuery.scss';
 import StationSelect from '../../../Common/StationSelect';
 import AutoSelect from '../../../Common/AutoSelect';
+import CneButton from '@components/Common/Power/CneButton';
 
 const { RangePicker } = DatePicker;
 
@@ -411,8 +412,8 @@ class DailySearch extends Component {
               <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} disabledDate={disabledDate} />
             </div>
 
-            <Button className={styles.search} onClick={this.onSearch}>查询</Button>
-            {searchInfo && <span className={styles.reset} onClick={this.onReset}>重置</span>}
+            <CneButton lengthMode="short" className={styles.search} onClick={this.onSearch}>查询</CneButton>
+            {searchInfo && <CneButton lengthMode="short" className={styles.reset} onClick={this.onReset}>重置</CneButton>}
           </div>
         </div>
       </div>

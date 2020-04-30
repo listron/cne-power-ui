@@ -9,6 +9,7 @@ import { dataFormats, handleRights } from '../../../../../../utils/utilFunc';
 import DayPower from './DayPower';
 import MonthPlanPower from './MonthPlanPower';
 import MonthPower from './MonthPower';
+import CneButton from '@components/Common/Power/CneButton';
 
 
 class DetailCharts extends Component {
@@ -34,10 +35,10 @@ class DetailCharts extends Component {
         const [statisticsRight, pvReportStationRight] = handleRights(['statistics', 'pvReport_station']);
         return (
             <div className={`${styles.showCharts} ${!detailVisible && styles.hideCharts} ${styles[theme]}`} >
-                <div className={styles.tags}>
-                    <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
-                    {statisticsRight && <Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link>}
-                    {pvReportStationRight && <Link to={'/report/pvstation/station'} > 电站报表  </Link>}
+                <div className={`${styles.tags} ${(!statisticsRight || !pvReportStationRight) && styles.noRight}`}>
+                    <CneButton lengthMode="long"><Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '1' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link></CneButton>
+                    {statisticsRight && <CneButton lengthMode="short"><Link to={'/statistical/stationaccount/allstation'}> 统计分析  </Link></CneButton>}
+                    {pvReportStationRight && <CneButton lengthMode="short"><Link to={'/report/pvstation/station'} > 电站报表  </Link></CneButton>}
                 </div>
                 <div className={styles.hideDetail} onClick={() => { this.props.detailChange({ detailVisible: false }); }}>
                     <i className="iconfont icon-go"></i>

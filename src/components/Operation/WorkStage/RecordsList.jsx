@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Radio, Table, Checkbox, Popconfirm } from 'antd';
+import { Radio, Table, Checkbox, Popconfirm } from 'antd';
 import styles from './workPage.scss';
 import moment from 'moment';
 import { dataFormats, handleRights, handleRight } from '@utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 
 class RecordsList extends PureComponent {
 
@@ -201,10 +202,8 @@ class RecordsList extends PureComponent {
         <div className={styles.recordFilter} ref={(ref) => { this.recordsRef = ref; }}>
           <span className={styles.todayWorkTitle}>今日工作</span>
           <span className={styles.filterParts}>
-            {addRight && <Button className={styles.addRecord} type="add" onClick={this.onAddRecord} >
-              <i>+</i>
-              <span className={styles.btnText}>添加工作记事</span>
-            </Button>}
+            {addRight && <CneButton className={styles.addRecord} iconname="icon-newbuilt" lengthMode="long" onClick={this.onAddRecord}>添加工作记事
+            </CneButton>}
             <span className={styles.filterTips}>筛选查看</span>
             <span>
             <Radio.Group value={recordFilterCode} onChange={this.recordTypeFilter}>

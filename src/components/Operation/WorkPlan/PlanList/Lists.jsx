@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popconfirm, Table } from 'antd';
 import CommonPagination from '@components/Common/CommonPagination';
+import CneButton from '@components/Common/Power/CneButton';
 import { handleRight } from '@utils/utilFunc';
 import styles from './listSearch.scss';
 
@@ -188,12 +189,9 @@ class Lists extends PureComponent {
         <div className={styles.listPageRow} >
           {workPlanHandleRight ? (
             <span className={styles.listBtns}>
-              <Button className={styles.addPlanBtn} type="add" onClick={this.toAddPlan} >
-                <i>+</i>
-                <span>添加计划</span>
-              </Button>
-              {selectedRowKeys.length === 0 ? (
-                <Button disabled={true}>批量删除</Button>
+              <CneButton className={styles.addPlanBtn} lengthMode="short" iconname="icon-newbuilt" onClick={this.toAddPlan} >添加计划</CneButton>
+              {false ? (
+                <CneButton disabled={true} lengthMode="short">批量删除</CneButton>
               ) : (
                   <Popconfirm
                     title="是否确认批量删除选中计划?"
@@ -201,7 +199,7 @@ class Lists extends PureComponent {
                     okText="确定"
                     cancelText="取消"
                   >
-                    <Button disabled={false}>批量删除</Button>
+                    <CneButton disabled={false} lengthMode="short">批量删除</CneButton>
                   </Popconfirm>
                 )}
           </span>

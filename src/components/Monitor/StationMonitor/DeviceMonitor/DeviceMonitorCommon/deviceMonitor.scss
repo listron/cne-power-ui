@@ -26,6 +26,9 @@
       margin-left: 32px;
       margin-right: 12px;
       color: $themeColor;
+      &:hover{
+        color: #f9b600;
+      }
     }
   }
 
@@ -206,17 +209,17 @@
 }
 
 .alarmTable.light {
-  .tableHeader {
-    .historyButton {
-      border: 1px solid $themeColor;
-      color: $themeColor;
-    }
+  // .tableHeader {
+    // .historyButton {
+    //   border: 1px solid $themeColor;
+    //   color: $themeColor;
+    // }
 
-    .historyButton:hover {
-      background: $themeColor;
-      color: #fff;
-    }
-  }
+    // .historyButton:hover {
+    //   background: $themeColor;
+    //   color: #fff;
+    // }
+  // }
 }
 
 .powerProgress.light {
@@ -331,18 +334,18 @@
     font-weight: 400;
   }
 
-  .tableHeader {
-    .historyButton {
-      border: 1px solid $themeColor;
-      color: $fontColor-invert;
-      background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
-    }
+  // .tableHeader {
+    // .historyButton {
+    //   border: 1px solid $themeColor;
+    //   color: $fontColor-invert;
+    //   background-image: linear-gradient(-180deg, #6ebeff 0%, #2465c2 100%);
+    // }
 
-    .historyButton:hover {
-      color: $fontColor-invert;
-      box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
-    }
-  }
+    // .historyButton:hover {
+    //   color: $fontColor-invert;
+    //   box-shadow: inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    // }
+  // }
 }
 
 .powerProgress.dark {

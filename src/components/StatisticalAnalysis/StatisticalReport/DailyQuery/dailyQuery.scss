@@ -31,6 +31,10 @@
       :global{
         .ant-radio-button-wrapper{
           padding: 0 5px;
+          color: $themeColor;
+        }
+        .ant-radio-button-wrapper-checked{
+          color: #fff;
         }
       }
     }
@@ -60,10 +64,6 @@
       }
       .search,.reset{
         margin-top: 8px;
-      }
-      .reset{
-        line-height: 32px;
-        cursor: pointer;
       }
       .keyWord{
         :global{
@@ -102,7 +102,6 @@
     justify-content: space-between;
     height: 50px;
     .listExport,.disabledExport{
-      width: 82px;
       margin: 10px 0 0 38px;
     }
   }
@@ -162,19 +161,8 @@
     border-top: 1px solid $promptColor;
     border-bottom: 1px solid $promptColor;
   }
-  .search{
-    color: $themeColor;
-    border-color: $themeColor;
-  }
-  .reset{
-    color: $themeColor;
-  }
 }
 
 .quotaList,.limitList,.faultList{
   background-color: #fff;
-  .listExport{
-    color: $themeColor;
-    border-color: $themeColor;
-  }
 }

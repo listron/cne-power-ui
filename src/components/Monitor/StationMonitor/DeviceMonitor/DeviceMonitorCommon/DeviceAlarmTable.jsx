@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import CommonPagination from '../../../../Common/CommonPagination';
 import styles from './deviceMonitor.scss';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import TransferWarningModal from './monitorModal/TransferWarningModal';
 import HandleRemoveModal from './monitorModal/HandleRemoveModal';
 import CneTable from '@components/Common/Power/CneTable';
+import CneButton from '@components/Common/Power/CneButton';
 const warningLevelArray = [{
   levelName: '一级',
   levelColor: '#a42b2c',
@@ -230,12 +230,12 @@ class DeviceAlarmTable extends Component {
     return (
       <div className={`${styles.alarmTable} ${styles[theme]}`} style={style}>
         <div className={styles.tableHeader}>
-          <Button className={styles.historyButton}>
+          <CneButton className={styles.historyButton} lengthMode="long">
             <Link to={{
               pathname: '/monitor/alarm/history',
               search: `?stationCode=${stationCode}`, state: { deviceName },
             }}> 查看历史告警  </Link>
-          </Button>
+          </CneButton>
           <CommonPagination pageSize={pageSize} currentPage={currentPage} onPaginationChange={this.changePagination} total={deviceAlarmList.length}
             theme={theme}
           />

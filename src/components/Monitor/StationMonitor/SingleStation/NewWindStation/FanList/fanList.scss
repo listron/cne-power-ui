@@ -39,6 +39,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    :global{
+      .ant-switch{
+        width: 46px;
+      }
+    }
   }
   @mixin propContainer() {
     // 卡片样式

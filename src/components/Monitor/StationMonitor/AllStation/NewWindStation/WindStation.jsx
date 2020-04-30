@@ -12,6 +12,7 @@ import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { SpeedScatter } from '../../WindCommon/SpeedScatter';
 import { dataFormats } from '../../../../../utils/utilFunc';
+import CneButton from '@components/Common/Power/CneButton';
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button;
 
@@ -189,9 +190,9 @@ class WindStation extends React.Component {
           {stationShowType !== 'stationList' &&
             <div className={styles.windStationChart}>
               <div className={styles.tags}>
-                <Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '0' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link>
-                <Link to={'javascript:void(0)'} className={styles.noLink}> 统计分析  </Link>
-                <Link to={'/report/windstation/powerReport'} > 报表查询  </Link>
+                <CneButton lengthMode="long"><Link to={{ pathname: '/monitor/alarm/realtime', state: { stationType: '0' } }}> 查看告警 {dataFormats(stationDataSummary.alarmNum, '--')} </Link></CneButton>
+                <CneButton disabled lengthMode="short"><Link to={'javascript:void(0)'} className={styles.no}> 统计分析  </Link></CneButton>
+                <CneButton lengthMode="short"><Link to={'/report/windstation/powerReport'} > 报表查询  </Link></CneButton>
               </div>
               <div className={styles.deviceStatus}>
                 <div className={styles.deviceStaTitle}> <span>设备状态</span> {/* <i className="iconfont icon-more"></i>  */}

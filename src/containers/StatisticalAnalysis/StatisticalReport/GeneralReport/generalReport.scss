@@ -64,8 +64,11 @@
             width: 50%;
             height: 40px;
             line-height: 40px;
-            border: none;
+            // border: none;
             border-radius: 0;
+          }
+          .preview{
+            border-right: 0;
           }
         }
         .stationSearchs {
@@ -114,10 +117,10 @@
         .line {
           background-color: $promptColor;
         }
-        .text {
-          color: #999;
-          background-color: #fff;
-        }
+        // .text {
+        //   color: #999;
+        //   background-color: #fff;
+        // }
       }
       .stationSearchs::before {
         color: red;
