@@ -446,7 +446,7 @@ class ChartLine extends PureComponent {
         symbol: 'circle',
         data: [],
         xAxisIndex: 0,
-        yAxisIndex: 1,
+        yAxisIndex: unitsGroup.length - 1,
         markLine: {
           silent: true,
           symbol: 'none',

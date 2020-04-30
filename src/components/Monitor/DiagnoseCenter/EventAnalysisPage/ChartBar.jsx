@@ -221,10 +221,9 @@ class ChartBar extends PureComponent {
   }
 
   render(){
-    const clientWidth = document.body.clientWidth;
     return (
       <div className={styles.analysisChart}>
-        <div style={{width: '100%', height: clientWidth === 1440 ? '300px' : '400px'}} ref={(ref) => { this.barRef = ref; } } />
+        <div style={{width: '100%', height: '400px'}} ref={(ref) => { this.barRef = ref; } } />
       </div>
     );
   }
