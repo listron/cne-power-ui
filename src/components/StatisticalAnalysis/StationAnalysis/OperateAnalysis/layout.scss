@@ -45,35 +45,8 @@
         .status {
           margin-right: 4px;
           display: flex;
-          :global {
-            .iconfont {
-              margin-right: 4px;
-            }
-          }
           .plan {
             margin-left: 24px;
-          }
-          .choiceYear {
-            display: inline-block;
-            :global {
-              .active {
-                border: none;
-              }
-            }
-            span {
-              border-radius: 2px;
-              width: 45px;
-              cursor: pointer;
-              display: inline-block;
-              margin: 0 4px;
-              text-align: center;
-              height: 19px;
-              line-height: 19px;
-              padding: 0 5px;
-              &.noSelect {
-                cursor: not-allowed;
-              }
-            }
           }
         }
         .rightFont {
@@ -152,11 +125,15 @@
           height: 300px;
           margin-right: 24px;
           > div:nth-child(1) {
-            flex: 5;
+            flex: 6.4;
           }
-          > div:nth-child(2) {
-            flex: 4;
+           > div:nth-child(2) {
+            flex:3.6;
           }
+          .tableChart{
+            flex:3.6;
+          }
+          
           .LostPowerTypeRate {
             height: 300px;
             .LostPowerTypeTitle {

@@ -287,12 +287,12 @@ class BarGraph extends React.Component {
   }
 
   drawCharts = (param, themeChange) => {
-    const { graphId, dateType, theme } = param;
+    const { dateType, theme } = param;
     const themeColor = theme === 'dark' ? 'darkTheme' : 'lightTheme';
-    let targetChart = echarts.init(document.getElementById(graphId), themeColor);
+    let targetChart = echarts.init(this.chart, themeColor);
     if (themeChange) {
       targetChart.dispose();
-      targetChart = echarts.init(document.getElementById(graphId), themeColor);
+      targetChart = echarts.init(this.chart, themeColor);
     }
     if (dateType !== this.state.prevDateType) {
       targetChart.clear();
@@ -305,9 +305,9 @@ class BarGraph extends React.Component {
   };
 
   render() {
-    const { graphId, theme = 'light' } = this.props;
+    const { theme = 'light' } = this.props;
     return (
-      <div id={graphId} className={`${styles.statisticGraph} ${styles[theme]}`}> </div>
+      <div className={`${styles.statisticGraph} ${styles[theme]}`} ref={ref => (this.chart = ref)}> </div>
     );
   }
 }

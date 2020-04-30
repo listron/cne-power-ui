@@ -206,14 +206,13 @@
         .dataGraph {
           display: flex;
           flex-direction: row;
-          // flex: 1;
           height: 300px;
           margin-right: 24px;
           > div:nth-child(1) {
-            flex: 5;
+            flex: 6.4;
           }
           > div:nth-child(2) {
-            flex: 4;
+            flex: 3.6;
           }
         }
       }

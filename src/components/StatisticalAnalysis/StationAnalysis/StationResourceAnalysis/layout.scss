@@ -111,10 +111,16 @@
           height: 300px;
           margin-right: 24px;
           > div:nth-child(1) {
-            flex: 5;
+            // flex: 6.4;
+            flex: 0 0 64%;
           }
           > div:nth-child(2) {
-            flex: 4;
+            // flex: 3.6;
+            flex: 0 0 36%;
+          }
+
+          .rightText{
+            text-align: right;
           }
           .LostPowerTypeRate {
             width: 50%;

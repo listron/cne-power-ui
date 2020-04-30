@@ -74,9 +74,10 @@
   border-right: 0;
   width: 100%;
   overflow: auto;
+  display: flex;
 
   .baseNameBox {
-    float: left;
+    display: flex;
     flex-direction: column;
     width: 300px;
 
@@ -109,15 +110,7 @@
         }
 
         .stationnameBg {
-          text-align: right;
-
-          >div {
-            width: 200px;
-            padding-right: 8px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
+          text-align: center;
 
         }
       }
@@ -152,6 +145,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      padding: 0 10px;
     }
 
 
@@ -177,6 +171,29 @@
   }
 
 
+}
+
+ .scroll{
+    .limitWidth{
+      margin-left: 2px;
+    }
+   
+  }
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .stationContrastTable{
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .stationContrastTable{
+    font-size: 1.3rem;
+    .baseNameBox{
+      width:330px;
+    }
+  }
+  
 }
 
 .contrastOverlayClassName {

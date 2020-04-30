@@ -202,6 +202,7 @@ class SingleStationStatistic extends React.Component {
       showStationSelect: true,
     });
   }
+
   hiddenStationList = () => {
     this.setState({
       showStationSelect: false,
@@ -328,7 +329,6 @@ class SingleStationStatistic extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <BarGraph
-                    graphId={'power'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
                     title={'发电量环比'}
@@ -342,6 +342,8 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     tableType={'powerGenRatio'}
                     dataArray={singleStationPowerData}
+                    sortMethod={'ascend'}
+                    sortField={'ringRatio'}
                   />
                 </div>
               </div>
@@ -356,13 +358,13 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                     dateType={dateType}
                     tableType={'pr'}
+                    sortMethod={'ascend'} sortField={'pr'}
                     dataArray={singleStationPowerEffectiveData} />
                 </div>
               </div>
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <BarGraph
-                    graphId={'yearLostPower'}
                     yAxisName={'损失电量 (万kWh)'}
                     xAxisName={'损失电量'}
                     title={'损失电量环比'}
@@ -375,6 +377,7 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                     dateType={dateType}
                     tableType={'lostPowerRatio'}
+                    className={styles.tableChart} sortMethod={'ascend'} sortField={'ringRatio'}
                     dataArray={singleStationLostPowerData} />
                 </div>
               </div>
@@ -386,7 +389,6 @@ class SingleStationStatistic extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <BarGraph
-                    graphId={'power'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
                     title={'发电量同比'}
@@ -410,7 +412,6 @@ class SingleStationStatistic extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <PlanCompleteRateAnalysisBar
-                    graphId={'planCompleteRate'}
                     yAxisName={'发电量 (万kWh)'}
                     dateType={dateType}
                     title={'计划完成率'}
@@ -422,6 +423,7 @@ class SingleStationStatistic extends React.Component {
                   <TableGraph
                     dateType={dateType}
                     tableType={'plan'}
+                    sortMethod={'descend'} sortField={'per'}
                     dataArray={singleStationPlanRateData} />
                 </div>
               </div>
@@ -450,6 +452,7 @@ class SingleStationStatistic extends React.Component {
                     tableType={'lightTB'}
                     currentYear={currentYear}
                     lastYear={lastYear}
+                    sortMethod={'descend'} sortField={'powerYearOnYear'}
                     dataArray={singleStationPvCompareData} />
                 </div>
               </div>
@@ -466,6 +469,7 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     tableType={'pr'}
                     dataArray={singleStationPowerEffectiveData}
+                    className={styles.tableChart} sortMethod={'ascend'} sortField={'pr'}
                   />
                 </div>
               </div>
@@ -475,7 +479,6 @@ class SingleStationStatistic extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <BarGraph
-                    graphId={'lostPower'}
                     yAxisName={'损失电量 (万kWh)'}
                     xAxisName={'损失电量'}
                     title={'损失电量同比'}
@@ -493,7 +496,9 @@ class SingleStationStatistic extends React.Component {
                     tableType={'lostPowerTB'}
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    dataArray={singleStationLostPowerData} />
+                    dataArray={singleStationLostPowerData}
+                    className={styles.tableChart} sortMethod={'descend'} sortField={'yearOnYear'}
+                  />
                 </div>
               </div>
             </div>}
@@ -504,7 +509,6 @@ class SingleStationStatistic extends React.Component {
               <div className={styles.tabContainer}>
                 <div className={styles.dataGraph}>
                   <BarGraph
-                    graphId={'dayPower'}
                     yAxisName={'发电量 (万kWh)'}
                     xAxisName={'发电量'}
                     title={'发电量同比'}
@@ -555,6 +559,7 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     tableType={'pr'}
                     dataArray={singleStationPowerEffectiveData}
+                    className={styles.tableChart} sortMethod={'ascend'} sortField={'pr'}
                   />
                 </div>
               </div>
@@ -584,6 +589,7 @@ class SingleStationStatistic extends React.Component {
                     currentYear={currentYear}
                     lastYear={lastYear}
                     dataArray={singleStationLostPowerData}
+                    className={styles.tableChart} sortMethod={'descend'} sortField={'yearOnYear'}
                   />
                 </div>
               </div>

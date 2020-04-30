@@ -1,31 +1,12 @@
+@import "../../../../theme/theme.scss";
 .stationStatisticList {
   display: flex;
   flex-direction: column;
-
-  .stationName {
-    width: 100px;
-    word-break: break-all;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  table{
+    table-layout: fixed;
   }
-
-  :global {
-
-    .ant-table .ant-table-thead>tr>th,
-    .ant-table .ant-table-tbody>tr>td {
-      padding: 0 8px 0 6px;
-    }
-
-    .ant-table-thead {
-      th>div {
-        height: 60px;
-      }
-    }
-
-    .ant-table .ant-table-thead .ant-table-column-sorter {
-      top: 18px;
-    }
+  .regoin,.stationName{
+    @include overflowText();
   }
 
   .stationStatisticFilter {
@@ -40,18 +21,35 @@
       display: flex;
       flex-direction: row;
       padding-left: 20px;
+      align-items: center;
 
       .exportBtn {
         margin-left: 24px;
-        height: 20px;
-        line-height: 20px;
+      }
+      .selectButton{
+        height: 19px;
+        line-height: 18px;
+        padding: 0 5px;
+        border: 1px solid var(--themeColor);
+        border-radius: 2px;
+        margin: 0 5px;
+        color:var(--themeColor);
+      }
+      .disabled{
+        background: #f1f1f1;
+        color:var(--lightColor);
+        border:1px solid #d4d4d4;
+        cursor: pointer;
+        pointer-events: none;
       }
 
-      :global {
-        .ant-radio-button-wrapper {
-          height: 19px;
-          line-height: 18px;
-          padding: 0 5px;
+      :global{
+        .ant-radio-button-wrapper:not(:first-child)::before{
+          background-color:transparent
+        }
+        .ant-radio-button-wrapper-checked{
+          color:#fff;
+          background: var(--themeColor);
         }
       }
     }
@@ -73,24 +71,5 @@
     background-image: -webkit-gradient(linear, 0 0, 0 bottom, from($fontColor-hover), to($fontColor));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-
-  :global {
-
-    .ant-table .ant-table-thead>tr>th,
-    .ant-table .ant-table-tbody>tr>td {
-      padding: 0 6px 0 6px;
-      text-align: center;
-    }
-
-    .ant-table-thead {
-      th>div {
-        height: 60px;
-      }
-    }
-
-    .ant-table .ant-table-thead .ant-table-column-sorter {
-      top: 18px;
-    }
   }
 }

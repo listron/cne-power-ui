@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, Button } from 'antd';
 import styles from './stationSelectModal.scss';
 const ButtonGroup = Button.Group;
+import CneButton from '../../../Common/Power/CneButton';
 
 class StationSelectModal extends Component {
   static propTypes = {
@@ -106,7 +107,7 @@ class StationSelectModal extends Component {
         <span ref={'singleModal'} />
         <Modal
           wrapClassName={`${styles.stationSelectModal} ${styles[theme]}`}
-          style={{ top: 56, right: 24, height: '90%', float: 'right', paddingBottom: 0 }}
+          style={{ top: 56, right: 11, height: '90%', float: 'right', paddingBottom: 0 }}
           width={620}
           title={title}
           visible={true}
@@ -114,8 +115,8 @@ class StationSelectModal extends Component {
           getContainer={() => this.refs.singleModal}
           onCancel={this.props.onClose}
           footer={<div className={styles.btn}>
-            <Button onClick={this.onCancel}>重置</Button>
-            <Button type="primary" onClick={this.onOk}>确认</Button>
+            <CneButton onClick={this.onCancel} lengthMode="short">重置</CneButton>
+            <CneButton onClick={this.onOk} lengthMode="short">确认</CneButton>
           </div>}
         >
           {this.renderStation()}

@@ -86,8 +86,10 @@ class AllStationStatistic extends React.Component {
   onTimeChange = (timeObj) => { // 时间选择
     const dateType = timeObj.timeStyle;
     const currentMonth = moment().month();
+    this.props.changeAllStationStore({ allStationAvalibaData: [] });
     timeObj.timeStyle === 'year' ?
-      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) : this.props.changeAllStationStore({ dateType, year: [timeObj.startTime], powerSelectMonth: currentMonth });
+      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime, timeObj.endTime], selectYear: timeObj.endTime, powerSelectYear: timeObj.endTime }) :
+      this.props.changeAllStationStore({ dateType, year: [timeObj.startTime], powerSelectMonth: currentMonth });
     this.props.changeAllStationStore({ targetShowType: 'EqpGen' });
   }
 
@@ -238,7 +240,6 @@ class AllStationStatistic extends React.Component {
     const planSummary = allStationStatisticData.planSummary || []; // 什么sb 传回来的数据结构
     return (
       <div className={`${styles.allStationTypeTabs} ${styles[theme]}`}>
-
         {(stationTypeCount === 'pv' || stationTypeCount === 'wind') ?
           <div className={styles.AlarmStatisticByTypeBox} >
             {enterpriseId !== '451436467886592' && (<div className={styles.singleAlarmFilter} >{operations}</div>)}
@@ -269,24 +270,24 @@ class AllStationStatistic extends React.Component {
           //      <div className={styles.windContainer} />
           //    </TabPane>
           //    <TabPane tab="光伏" key={'1'}>
-              <div className={styles.componentContainer}>
-                <div className={styles.timeSelect}> 
-                  <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
-                  {operations}
-                </div>
-                <PlanCompletionRate
-                  dateType={dateType}
-                  theme={theme}
-                  stationType={stationType}
-                  allStationAvalibaData={allStationAvalibaData}
-                  allStationStatisticData={planSummary.length > 0 && planSummary[0] || {}}
-                  getAllStationStatisticData={getAllStationStatisticData}
-                  year={year}
-                  selectYear={selectYear}
-                  changeAllStationStore={changeAllStationStore} />
-                <TargetTabs {...this.props} theme={theme} />
-                <StationStatisticList {...this.props} theme={theme} />
-              </div>
+          <div className={styles.componentContainer}>
+            <div className={styles.timeSelect}>
+              <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
+              {operations}
+            </div>
+            <PlanCompletionRate
+              dateType={dateType}
+              theme={theme}
+              stationType={stationType}
+              allStationAvalibaData={allStationAvalibaData}
+              allStationStatisticData={planSummary.length > 0 && planSummary[0] || {}}
+              getAllStationStatisticData={getAllStationStatisticData}
+              year={year}
+              selectYear={selectYear}
+              changeAllStationStore={changeAllStationStore} />
+            <TargetTabs {...this.props} theme={theme} />
+            <StationStatisticList {...this.props} theme={theme} />
+          </div>
           //   </TabPane>
           // </Tabs>
         }

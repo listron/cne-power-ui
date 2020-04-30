@@ -174,6 +174,11 @@
     }
   }
 
+
+  // .ant-select-search--inline .ant-select-search__field{
+  //   border-radius: 2px !important;
+  // }
+
   button.ant-switch{
     height: 16px;
     background:#f1f1f1;
@@ -206,6 +211,12 @@
       &:hover{
         background: $slideSelectColor;
         color:$themeColor
+      }
+      &::first-child{
+        border-radius: 2px 0  0  2px;
+      }
+      &::last-child{
+        border-radius: 0 2px 2px 0;
       }
     }
   }

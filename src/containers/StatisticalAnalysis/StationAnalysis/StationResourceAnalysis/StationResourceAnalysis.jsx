@@ -39,7 +39,7 @@ class ResourceAnalysisContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.stationResourceAnalysisReducer.toJS(),
-    stations: state.common.get('stations'),
+    stations: state.common.get('stations').toJS(),
     userId: Cookie.get('userId'),
     theme: state.common.get('theme'),
   };

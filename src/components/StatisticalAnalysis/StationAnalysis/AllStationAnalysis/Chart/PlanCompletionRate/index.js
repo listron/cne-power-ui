@@ -34,12 +34,9 @@ class PlancompletionRate extends React.Component {
     const { allStationAvalibaData, selectYear } = this.props;
     if (allStationAvalibaData.length > 0) {
       return (
-        <Radio.Group value={`${selectYear}`} buttonStyle="solid" onChange={this.handleTime}>
+        <Radio.Group value={`${selectYear}`} onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
-            if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
-            }
-            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
+            return (<Radio.Button value={e.year} key={index} className={`${!e.isTrue && styles.disabled} ${styles.selectButton}`}>{e.year}</Radio.Button>);
 
           })}
         </Radio.Group>
@@ -77,18 +74,18 @@ class PlancompletionRate extends React.Component {
           </div>
           <div className={styles.dataSummary}>
             {/*<div className={styles.stationTargetData}>*/}
-              {/*<div className={styles.stationTargetName}>累计光辐射总量 : </div>*/}
-              {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.rayRadiation)}*/}
-                {/*<span className={styles.unit}> MJ/㎡</span></div>*/}
+            {/*<div className={styles.stationTargetName}>累计光辐射总量 : </div>*/}
+            {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.rayRadiation)}*/}
+            {/*<span className={styles.unit}> MJ/㎡</span></div>*/}
             {/*</div>*/}
             <div className={styles.stationTargetData}>
               <div className={styles.stationTargetName}>电站可利用率 : </div>
               <div className={styles.stationTargetValue}>{monitordataFormat(planSummary.stationAvailability)}% </div>
             </div>
             {/*<div className={styles.stationTargetData}>*/}
-              {/*<div className={styles.stationTargetName}>等效利用小时数 : </div>*/}
-              {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.equivalentHours)}*/}
-                {/*<span className={styles.unit}>h</span></div>*/}
+            {/*<div className={styles.stationTargetName}>等效利用小时数 : </div>*/}
+            {/*<div className={styles.stationTargetValue}>{monitordataFormat(planSummary.equivalentHours)}*/}
+            {/*<span className={styles.unit}>h</span></div>*/}
             {/*</div>*/}
             <div className={styles.stationTargetData}>
               <div className={styles.stationTargetName}>故障台次数 : </div>

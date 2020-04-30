@@ -41,7 +41,7 @@ class OperateAnalysisContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     ...state.statisticalAnalysisReducer.operateAnalysisReducer.toJS(),
-    stations: state.common.get('stations'),
+    stations: state.common.get('stations').toJS(),
     userId: Cookie.get('userId'),
     theme: state.common.get('theme'),
   };

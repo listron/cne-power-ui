@@ -25,7 +25,31 @@ class StationContrastTable extends React.Component {
     super(props);
     this.state = {
       clicked: false,
+      scroll: false,
     };
+  }
+
+  componentDidMount() {
+    const main = this.refs.stationTable;
+    main.addEventListener('scroll', this.bindScroll);
+  }
+
+  componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
+    // this.props.resetStore();
+  }
+
+  bindScroll = () => {
+    const main = this.refs.stationTable;
+    const scrollLeft = main.scrollLeft;
+    const { scroll } = this.state;
+    if (scrollLeft > 0 && !scroll) {
+      this.setState({ scroll: !scroll });
+    }
+    if (scrollLeft === 0) {
+      this.setState({ scroll: false });
+    }
   }
 
   onVisibleChange = (item) => {
@@ -84,7 +108,7 @@ class StationContrastTable extends React.Component {
   render() {
     const { stationContrastDetail, theme, stationContrastList, loading } = this.props;
     // console.log('loading---table: ', loading);
-    const { clicked } = this.state;
+    const { clicked, scroll } = this.state;
     const content = (
       <div onClick={this.chartlegend}>
         <StationContrastDetail
@@ -97,7 +121,7 @@ class StationContrastTable extends React.Component {
     );
 
     return (
-      <div className={styles.stationContrastTable} >
+      <div className={`${styles.stationContrastTable} ${scroll && styles.scroll}`}>
         <div className={styles.baseNameBox} >
           {stationContrastBaseName.map((e, i) => {
             return (<div className={styles.baseName} key={i}>
@@ -105,7 +129,7 @@ class StationContrastTable extends React.Component {
               <div className={styles.rowName} >
                 {e.rowName.map((item, index) => {
                   if (item === '电站名称') {
-                    return (<div className={styles.stationnameBg}><div key={index}>{item}</div></div>);
+                    return (<div className={styles.stationnameBg}>{item}</div>);
                   }
                   return (<div key={index}>{item}</div>);
                 })}
@@ -113,7 +137,7 @@ class StationContrastTable extends React.Component {
             </div>);
           })}
         </div>
-        <div className={styles.limitWidth}>
+        <div className={styles.limitWidth} ref={'stationTable'}>
           {stationContrastList &&
             // {stationContrastList && stationContrastList.length === 2 &&
             (<div className={styles.stationOne} >

@@ -8,6 +8,8 @@ import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma } from '../../../../utils/utilFunc';
 import Path from '../../../../constants/path';
 import Cookie from 'js-cookie';
+import CneTable from '../../../Common/Power/CneTable';
+import CneButton from '../../../Common/Power/CneButton';
 
 class StationStatisticList extends React.Component {
   static propTypes = {
@@ -27,24 +29,14 @@ class StationStatisticList extends React.Component {
   }
 
   ontableSort = (pagination, filter, sorter) => {
-    const { getAllStationStatisticTableData, stationType, year, month, powerSelectYear, dateType, pageSize, pageNum } = this.props;
-    const { field, order } = sorter;
-    const sortInfo = {
-      stationName: 'stationName',
-      region: 'region',
-      planGen: 'planGen',
-      genValid: 'genValid',
-      planGenRate: 'planGenRate',
-      powerRate: 'powerRate',
-      resourceValue: 'resourceValue',
-      resourceRate: 'resourceRate',
-      equivalentHours: 'equivalentHours',
-      pr: 'pr',
-      lostPower: 'lostPower',
-      limitPowerHours: 'limitPowerHours',
-    };
-    const sort = sortInfo[field] ? sortInfo[field] : '';
-    const sortType = order ? (sorter.order === 'descend' ? 'desc' : 'asc') : '';
+    const { getAllStationStatisticTableData, stationType, year, month, powerSelectYear, dateType, pageSize, pageNum, sort, sortType } = this.props;
+    const { field } = sorter;
+    let newSort = sort, newSortType = 'asc';
+    if (!field || sort === field) {
+      newSortType = sortType === 'asc' ? 'desc' : 'asc';
+    } else {
+      newSort = field;
+    }
     const prams = {
       pageNum,
       pageSize,
@@ -52,11 +44,11 @@ class StationStatisticList extends React.Component {
       stationType,
       month,
       dateType,
-      sort,
-      sortType,
+      sort: newSort,
+      sortType: newSortType,
     };
     getAllStationStatisticTableData(prams);
-    this.props.changeAllStationStore({ sort, sortType });
+    this.props.changeAllStationStore({ sort: newSort, sortType: newSortType });
   }
 
   onPaginationChange = ({ pageSize, currentPage }) => { // 分页器操作
@@ -78,34 +70,30 @@ class StationStatisticList extends React.Component {
     const changeMonth = Number(e.target.value);
     const { changeAllStationStore, getAllStationStatisticTableData, stationType, dateType, pageNum, pageSize, sortType, year, sort, powerSelectYear } = this.props;
     changeAllStationStore({ month: changeMonth, powerSelectMonth: changeMonth });
-    getAllStationStatisticTableData(
-      {
-        year: year[0],
-        dateType,
-        month: changeMonth,
-        pageNum, // 当前页
-        pageSize, // 每页条数
-        sortType,
-        sort,
-        stationType,
-      }
-    );
+    getAllStationStatisticTableData({
+      year: year[0],
+      dateType,
+      month: changeMonth,
+      pageNum: 1, // 当前页
+      pageSize: 10, // 每页条数
+      sortType,
+      sort,
+      stationType,
+    });
   }
 
   handleYearTime = (e) => { // 选择年
     const changeYear = Number(e.target.value);
     const { getAllStationStatisticTableData, dateType, pageNum, pageSize, sortType, sort, stationType, changeAllStationStore } = this.props;
-    getAllStationStatisticTableData(
-      {
-        year: changeYear,
-        dateType,
-        pageNum, // 当前页
-        pageSize, // 每页条数
-        sortType,
-        sort,
-        stationType,
-      }
-    );
+    getAllStationStatisticTableData({
+      year: changeYear,
+      dateType,
+      pageNum: 1, // 当前页
+      pageSize: 10, // 每页条数
+      sortType,
+      sort,
+      stationType,
+    });
     changeAllStationStore({ powerSelectYear: changeYear });
   }
 
@@ -113,26 +101,18 @@ class StationStatisticList extends React.Component {
     const { allStationAvalibaData, dateType, powerSelectMonth, powerSelectYear } = this.props;
     if (dateType === 'year' && allStationAvalibaData.length > 0) {
       return (
-        <Radio.Group value={`${powerSelectYear}`} buttonStyle="solid" onChange={this.handleYearTime}>
+        <Radio.Group value={`${powerSelectYear}`} onChange={this.handleYearTime}>
           {allStationAvalibaData.map((e, index) => {
-            if (e.isTrue === true) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
-            }
-            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}</Radio.Button>;
-
-          }
-          )}
+            return <Radio.Button value={e.year} key={index} className={`${!e.isTrue && styles.disabled} ${styles.selectButton}`}>{e.year}</Radio.Button>;
+          })}
         </Radio.Group>
       );
     } else if (allStationAvalibaData.length > 0) {
       return (
-        <Radio.Group value={+powerSelectMonth} buttonStyle="solid" onChange={this.handleTime}>
+        <Radio.Group value={+powerSelectMonth} onChange={this.handleTime}>
           {allStationAvalibaData.map((e, index) => {
-            if (e.isTrue === true || +e.year === moment().month() + 1) {
-              return <Radio.Button value={e.year} key={index} style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>;
-            }
-            return <Radio.Button value={e.year} key={index} disabled style={{ margin: '0 5px' }}>{e.year}月</Radio.Button>;
-
+            const flag = e.isTrue === true || +e.year === moment().month() + 1;
+            return <Radio.Button value={e.year} key={index} className={`${!flag && styles.disabled} ${styles.selectButton}`}>{e.year}月</Radio.Button>;
           })}
         </Radio.Group>
       );
@@ -150,321 +130,201 @@ class StationStatisticList extends React.Component {
 
   initMonthColumn = () => { // 月table表
     const enterpriseId = Cookie.get('enterpriseId');
-    const columns1 = [
-      {
-        title: '电站名称',
-        dataIndex: 'stationName',
-        className: styles.stationName,
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <a onClick={() => this.selectStation(record)}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a>
-            ),
-          };
-        },
-      }, {
-        title: '区域',
-        dataIndex: 'region',
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div className={styles.region}>{record.region}</div>
-            ),
-          };
-        },
-      }, {
-        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
-        dataIndex: 'genValid',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
-        dataIndex: 'planGen',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: 'planGenRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-        defaultSortOrder: 'ascend',
-      }, {
-        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
-        dataIndex: 'powerRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: 'resourceValue',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="资源同比" unit="%" />,
-        dataIndex: 'resourceRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-        dataIndex: 'equivalentHours',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: 'pr',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: 'lostPower',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: 'limitPowerHours',
-        sorter: true,
-        render(text) { return numWithComma(text); },
+    const baseColumn = [{
+      title: '电站名称',
+      dataIndex: 'stationName',
+      textAlign: 'left',
+      width: '10%',
+      onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+      sorter: true,
+      render: (value, record) => {
+        return (
+          <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
+            <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+          </a >);
       },
-    ];
-    const columns2 = [
-      {
-        title: '电站名称',
-        dataIndex: 'stationName',
-        className: styles.stationName,
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-            ),
-          };
-        },
-      }, {
-        title: '区域',
-        dataIndex: 'region',
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div className={styles.region}>{record.region}</div>
-            ),
-          };
-        },
-      }, {
-        title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
-        dataIndex: 'genValid',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
-        dataIndex: 'planGen',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: 'planGenRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-        defaultSortOrder: 'ascend',
-      }, {
-        title: () => <TableColumnTitle title="发电量同比" unit="%" />,
-        dataIndex: 'powerRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: 'resourceValue',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="资源同比" unit="%" />,
-        dataIndex: 'resourceRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: 'pr',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: 'lostPower',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: 'limitPowerHours',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      },
-    ];
-    return enterpriseId !== '451436467886592' ? columns1 : columns2;
+    }, {
+      title: '区域',
+      dataIndex: 'region',
+      sorter: true,
+      textAlign: 'left',
+      width: '8%',
+      render: (value, record, index) => <div className={styles.region}>{record.region}</div>,
+    }, {
+      title: () => <TableColumnTitle title="月发电量" unit="万kWh" />,
+      dataIndex: 'genValid',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="月计划" unit="万kWh" />,
+      dataIndex: 'planGen',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="计划完成率" unit="%" />,
+      dataIndex: 'planGenRate',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+      defaultSortOrder: 'ascend',
+    }, {
+      title: () => <TableColumnTitle title="发电量同比" unit="%" />,
+      dataIndex: 'powerRate',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+      dataIndex: 'resourceValue',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="资源同比" unit="%" />,
+      dataIndex: 'resourceRate',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }];
+    const lastBaseColumn = [{
+      title: () => <TableColumnTitle title="PR" unit="%" />,
+      dataIndex: 'pr',
+      sorter: true,
+      textAlign: 'right',
+      width: '6%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
+      dataIndex: 'lostPower',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
+      dataIndex: 'limitPowerHours',
+      sorter: true,
+      textAlign: 'right',
+      width: '10%',
+      render(text) { return numWithComma(text); },
+    }];
+    const equivalentHours = {
+      title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
+      dataIndex: 'equivalentHours',
+      sorter: true,
+      textAlign: 'right',
+      width: '10%',
+      render(text) { return numWithComma(text); },
+    };
+    return enterpriseId !== '451436467886592' ? [...baseColumn, equivalentHours, ...lastBaseColumn] : [...baseColumn, ...lastBaseColumn];
   }
   //年table表
   initYearColumn = () => {
     const enterpriseId = Cookie.get('enterpriseId');
-    const columns1 = [
-      {
-        title: '电站名称',
-        dataIndex: 'stationName',
-        className: styles.stationName,
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a >
-            ),
-          };
-        },
-      }, {
-        title: '区域',
-        dataIndex: 'region',
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div className={styles.region}>{record.region}</div>
-            ),
-          };
-        },
-      }, {
-        title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
-        dataIndex: 'genValid',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
-        dataIndex: 'planGen',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: 'planGenRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-        defaultSortOrder: 'ascend',
-      }, {
-        title: () => <TableColumnTitle title="发电量环比" unit="%" />,
-        dataIndex: 'powerRate',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: 'resourceValue',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="资源环比" unit="%" />,
-        dataIndex: 'resourceRate',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
-        dataIndex: 'equivalentHours',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: 'pr',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: 'lostPower',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: 'limitPowerHours',
-        render(text) { return numWithComma(text); },
-        sorter: true,
+    const baseColumn = [{
+      title: '电站名称',
+      dataIndex: 'stationName',
+      className: styles.stationName,
+      textAlign: 'left',
+      width: '10%',
+      onFilter: (value, record) => record.stationName.indexOf(value) === 0,
+      sorter: true,
+      render: (value, record) => {
+        return (
+          <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
+            <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
+          </a >);
       },
-    ];
-
-    const columns2 = [
-      {
-        title: '电站名称',
-        dataIndex: 'stationName',
-        className: styles.stationName,
-        onFilter: (value, record) => record.stationName.indexOf(value) === 0,
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <a href={`#/statistical/stationaccount/allstation/${record.key}`} onClick={() => this.selectStation(record)}>
-                <div title={record.stationName} className={styles.stationName}>{record.stationName}</div>
-              </a >
-            ),
-          };
-        },
-      }, {
-        title: '区域',
-        dataIndex: 'region',
-        sorter: true,
-        render: (value, record, index) => {
-          return {
-            children: (
-              <div className={styles.region}>{record.region}</div>
-            ),
-          };
-        },
-      }, {
-        title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
-        dataIndex: 'genValid',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
-        dataIndex: 'planGen',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="计划完成率" unit="%" />,
-        dataIndex: 'planGenRate',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-        defaultSortOrder: 'ascend',
-      }, {
-        title: () => <TableColumnTitle title="发电量环比" unit="%" />,
-        dataIndex: 'powerRate',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
-        dataIndex: 'resourceValue',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="资源环比" unit="%" />,
-        dataIndex: 'resourceRate',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="PR" unit="%" />,
-        dataIndex: 'pr',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      }, {
-        title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
-        dataIndex: 'lostPower',
-        sorter: true,
-        render(text) { return numWithComma(text); },
-      }, {
-        title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
-        dataIndex: 'limitPowerHours',
-        render(text) { return numWithComma(text); },
-        sorter: true,
-      },
-    ];
-    return enterpriseId !== '451436467886592' ? columns1 : columns2;
+    }, {
+      title: '区域',
+      dataIndex: 'region',
+      sorter: true,
+      textAlign: 'left',
+      width: '8%',
+      render: (value, record, index) => <div className={styles.region}>{record.region}</div>,
+    }, {
+      title: () => <TableColumnTitle title="年发电量" unit="万kWh" />,
+      dataIndex: 'genValid',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="年计划" unit="万kWh" />,
+      dataIndex: 'planGen',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="计划完成率" unit="%" />,
+      dataIndex: 'planGenRate',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+      defaultSortOrder: 'ascend',
+    }, {
+      title: () => <TableColumnTitle title="发电量环比" unit="%" />,
+      dataIndex: 'powerRate',
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    }, {
+      title: () => <TableColumnTitle title="辐射总量" unit="MJ/m²" />,
+      dataIndex: 'resourceValue',
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    }, {
+      title: () => <TableColumnTitle title="资源环比" unit="%" />,
+      dataIndex: 'resourceRate',
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    }];
+    const LastBaseColumn = [{
+      title: () => <TableColumnTitle title="PR" unit="%" />,
+      dataIndex: 'pr',
+      textAlign: 'right',
+      width: '6%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    }, {
+      title: () => <TableColumnTitle title="损失电量" unit="万kWh" />,
+      dataIndex: 'lostPower',
+      sorter: true,
+      textAlign: 'right',
+      width: '8%',
+      render(text) { return numWithComma(text); },
+    }, {
+      title: () => <TableColumnTitle title="损失电量等效时" unit="h" />,
+      dataIndex: 'limitPowerHours',
+      textAlign: 'right',
+      width: '10%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    }];
+    const equivalentHours = { // 因为普洛斯项目暂时需要将等效小时数去掉
+      title: () => <TableColumnTitle title="等效利用小时数" unit="h" />,
+      dataIndex: 'equivalentHours',
+      textAlign: 'right',
+      width: '10%',
+      render(text) { return numWithComma(text); },
+      sorter: true,
+    };
+    return enterpriseId !== '451436467886592' ? [...baseColumn, equivalentHours, ...LastBaseColumn] : [...baseColumn, ...LastBaseColumn];
   }
   //导出table
   exportTable = () => {
@@ -490,7 +350,7 @@ class StationStatisticList extends React.Component {
   }
 
   render() {
-    const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, theme } = this.props;
+    const { dateType, allStationStatisticTableData, totalNum, pageSize, pageNum, theme, sort, sortType } = this.props;
     const columns = dateType === 'month' ? this.initMonthColumn() : this.initYearColumn();
     const dataSource = allStationStatisticTableData.map((e, i) => ({ ...e, key: i }));
     return (
@@ -499,16 +359,19 @@ class StationStatisticList extends React.Component {
           <div className={styles.leftTime}>
             <div className={styles.gradient}>综合指标统计表</div>
             {this.selectYear()}
-            <Button type="primary" className={styles.exportBtn} onClick={this.exportTable} >导出</Button>
+            <CneButton onClick={this.exportTable} className={styles.exportBtn}>导出</CneButton>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <div>
-          <Table columns={columns}
+          <CneTable columns={columns}
             dataSource={dataSource}
             // bordered={true}
             onChange={this.ontableSort}
-            pagination={false} />
+            pagination={false}
+            sortMethod={{ 'desc': 'descend', 'asc': 'ascend' }[sortType]}
+            sortField={sort}
+          />
         </div>
 
       </div>
