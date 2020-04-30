@@ -43,9 +43,14 @@
         margin-right: 5px;
       }
 
-      span {
+      .eamLook {
         color: $themeColor;
         font-size: 18px;
+      }
+
+      .eamInfo{
+        display: flex;
+        align-items: center;
       }
     }
 
@@ -70,186 +75,227 @@
     width: 100%;
     padding: 0 24px;
 
-    .eamRegisterWrap {
+    .eamRegisterCenter{
       width: 100%;
-      min-height: calc(100vh - 40px - 60px - 54px);;
+      min-height: calc(100vh - 40px - 60px - 54px);
       background-color: #FFFFFF;
-      padding: 20px 24px 40px 24px;
       box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.20);
 
-      .tableBar {
+      .eamTopTitle{
         width: 100%;
+        background-color: $themeColor;
+        color: #FFFFFF;
         display: flex;
-        padding-right: 12px;
+        align-items: center;
+        padding: 0 30px 0 33px;
         justify-content: space-between;
 
-        .barProcess {
-          width: 840px;
-          color: $themeColor;
-          height: 30px;
-          line-height: 30px;
-          padding-left: 12px;
-          border-left: 4px solid #199475;
-          background-image: linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);
-
-          span {
-            color: #4d90fd;
-          }
-        }
-
         i {
-          color: $themeColor;
-          cursor: pointer;
           font-size: 20px;
+          margin-right: 5px;
+        }
 
-          &:hover {
-            color: #f9b600;
-          }
+        span {
+          font-size: 18px;
         }
       }
 
-      .eamRegisterInfoBox {
+      .faultListBox{
         width: 100%;
-        min-height: 44px;
-        border: 1px solid #199475;
-        padding-top: 6px;
-        box-shadow: 2px 2px 0 3px #ceebe0;
-        border-radius: 2px;
+        padding: 20px 24px 0 24px;
+      }
 
-        .tableWrap {
+      .recordDetails{
+        width: 100%;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        color: $themeColor;
+        padding-left: 28px;
+
+        i{
+          font-size: 20px;
+          margin-right: 5px;
+        }
+      }
+
+      .eamRegisterWrap {
+        width: 100%;
+        padding: 0 24px 40px 24px;
+
+        .tableBar {
           width: 100%;
-          padding: 9px 15px 15px 15px;
+          display: flex;
+          padding-right: 12px;
+          justify-content: space-between;
 
-          .tableBox {
-            width: 100%;
-            border: 1px solid $borderColor;
+          .barProcess {
+            width: 840px;
+            color: $themeColor;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 12px;
+            border-left: 4px solid #199475;
+            background-image: linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);
 
-            .tableTr {
-              display: flex;
-              border-bottom: 1px solid $borderColor;
-            }
-
-            .tableMoreBox{
-              width: 63%;
-            }
-
-            .tableMoreTd{
-              display: flex;
-              border-bottom: 1px solid $borderColor;
-            }
-
-            .tableMoreName{
-              width: 14.3%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              min-height: 40px;
-              background-color: #f3f2f2;
-              font-weight: bold;
-              border-right: 1px dashed $borderColor;
-            }
-
-            .tableMoreCode{
-              width: 85.7%;
-              display: flex;
-              padding: 9px 0 9px 10px;
-              word-break: break-all;
-              min-height: 40px;
-              align-items: center;
-              border-right: 1px dashed $borderColor;
-            }
-
-            .numberName {
-              width: 9%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              min-height: 40px;
-              background-color: #f3f2f2;
-              font-weight: bold;
-              border-right: 1px dashed $borderColor;
-            }
-
-            .numberCode {
-              width: 54%;
-              display: flex;
-              padding: 9px 0 9px 10px;
-              word-break: break-all;
-              min-height: 40px;
-              align-items: center;
-              border-right: 1px dashed $borderColor;
-            }
-
-            .statusName {
-              width: 12%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              min-height: 40px;
-              background-color: #f3f2f2;
-              font-weight: bold;
-              border-right: 1px dashed $borderColor;
-            }
-
-            .statusCode {
-              width: 25%;
-              display: flex;
-              padding-left: 10px;
-              min-height: 40px;
-              align-items: center;
-            }
-
-            .allText {
-              width: 91%;
-              display: flex;
-              padding-left: 10px;
-              min-height: 40px;
-              align-items: center;
+            span {
+              color: #4d90fd;
             }
           }
-        }
-
-      }
-
-      .commonInfoBox{
-        width: 100%;
-        min-height: 44px;
-        border: 1px solid #199475;
-        padding-top: 6px;
-        box-shadow: 2px 2px 0 3px #ceebe0;
-        border-radius: 2px;
-        margin-top: 18px;
-
-        .commonIconBox{
-          display: flex;
-          align-items: center;
 
           i {
             color: $themeColor;
             cursor: pointer;
             font-size: 20px;
-            margin-left: 10px;
 
             &:hover {
               color: #f9b600;
             }
           }
+        }
+
+        .eamRegisterInfoBox {
+          width: 100%;
+          min-height: 44px;
+          border: 1px solid #199475;
+          padding-top: 6px;
+          box-shadow: 2px 2px 0 3px #ceebe0;
+          border-radius: 2px;
+
+          .tableWrap {
+            width: 100%;
+            padding: 9px 15px 15px 15px;
+
+            .tableBox {
+              width: 100%;
+              border: 1px solid $borderColor;
+
+              .tableTr {
+                display: flex;
+                border-bottom: 1px solid $borderColor;
+              }
+
+              .tableMoreBox{
+                width: 63%;
+              }
+
+              .tableMoreTd{
+                display: flex;
+                border-bottom: 1px solid $borderColor;
+              }
+
+              .tableMoreName{
+                width: 14.3%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 40px;
+                background-color: #f3f2f2;
+                font-weight: bold;
+                border-right: 1px dashed $borderColor;
+              }
+
+              .tableMoreCode{
+                width: 85.7%;
+                display: flex;
+                padding: 9px 0 9px 10px;
+                word-break: break-all;
+                min-height: 40px;
+                align-items: center;
+                border-right: 1px dashed $borderColor;
+              }
+
+              .numberName {
+                width: 9%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 40px;
+                background-color: #f3f2f2;
+                font-weight: bold;
+                border-right: 1px dashed $borderColor;
+              }
+
+              .numberCode {
+                width: 54%;
+                display: flex;
+                padding: 9px 0 9px 10px;
+                word-break: break-all;
+                min-height: 40px;
+                align-items: center;
+                border-right: 1px dashed $borderColor;
+              }
+
+              .statusName {
+                width: 12%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 40px;
+                background-color: #f3f2f2;
+                font-weight: bold;
+                border-right: 1px dashed $borderColor;
+              }
+
+              .statusCode {
+                width: 25%;
+                display: flex;
+                padding-left: 10px;
+                min-height: 40px;
+                align-items: center;
+              }
+
+              .allText {
+                width: 91%;
+                display: flex;
+                padding-left: 10px;
+                min-height: 40px;
+                align-items: center;
+              }
+            }
+          }
 
         }
 
-        .commonWrap{
-          padding: 15px 30px;
+        .commonInfoBox{
+          width: 100%;
+          min-height: 44px;
+          border: 1px solid #199475;
+          padding-top: 6px;
+          box-shadow: 2px 2px 0 3px #ceebe0;
+          border-radius: 2px;
+          margin-top: 18px;
+
+          .commonIconBox{
+            display: flex;
+            align-items: center;
+
+            i {
+              color: $themeColor;
+              cursor: pointer;
+              font-size: 20px;
+              margin-left: 10px;
+
+              &:hover {
+                color: #f9b600;
+              }
+            }
+
+          }
+
+          .commonWrap{
+            padding: 15px 30px;
+          }
+        }
+
+        .deleteBorderRight {
+          border-right: none !important;
+        }
+
+        .deleteBorderBottom {
+          border-bottom: none !important;
         }
       }
-
-      .deleteBorderRight {
-        border-right: none !important;
-      }
-
-      .deleteBorderBottom {
-        border-bottom: none !important;
-      }
-
 
       :global {
         .icon-rightarr {

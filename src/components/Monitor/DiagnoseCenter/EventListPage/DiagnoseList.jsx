@@ -120,9 +120,19 @@ class DiagnoseList extends Component {
   };
 
   // EAM查看
-  lookFunc = () => {
+  lookFunc = (data) => {
+    console.log(data, 'data');
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName } = data;
     const { history } = this.props;
-    history.push('/monitor/EamDetail');
+    // 展示信息
+    const params = {
+      eventName,
+      eventDesc: pointValueDesc,
+      deviceTypeName,
+      deviceName,
+      stationName,
+    };
+    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}`);
   };
 
   cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })
