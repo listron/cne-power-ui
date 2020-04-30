@@ -152,21 +152,21 @@ class StationResourceAnalysis extends React.Component {
     }
   }
 
-  selctYear = (year) => { // 电站看单年的时间选择
+  selectYear = (e) => { // 电站看单年的时间选择
     const specilPrams = {
       stationCode: this.props.stationCode,
       dateType: 'year',
-      year: year,
+      year: e.target.value,
     };
     this.props.getResourcePlan(specilPrams);
-    this.props.changeResourceStore({ selectYear: year });
+    this.props.changeResourceStore({ selectYear: e.target.value });
   }
 
   selectProductYear = () => { // 运行分析的时间
     const { resourceAvalibaData = [], selectYear } = this.props;
     if (resourceAvalibaData.length > 0) {
       return (
-        <Radio.Group value={`${selectYear}`} buttonStyle="solid" onChange={this.selctYear}>
+        <Radio.Group value={`${selectYear}`} buttonStyle="solid" onChange={this.selectYear}>
           {resourceAvalibaData.map((e, index) => {
             return (<Radio.Button value={e.year} key={index} className={`${!e.isTrue && styles.disabled} ${styles.selectButton}`}>{e.year}</Radio.Button>);
           })}
