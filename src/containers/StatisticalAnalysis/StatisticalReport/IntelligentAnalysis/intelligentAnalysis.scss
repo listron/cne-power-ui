@@ -33,8 +33,10 @@
         background-color: #f8f8f8;
         :global {
           .ant-radio-button-wrapper {
+            border: 1px solid #d9d9d9;
             border-top: 2px solid #f8f8f8;
             background-color: #f8f8f8;
+            color: #999;
           }
           .ant-radio-button-wrapper-checked {
             background-color: #fff;

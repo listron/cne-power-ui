@@ -181,13 +181,6 @@
     .reasonName {
       display: flex;
       flex-wrap: wrap;
-      :global {
-        .ant-radio-button-wrapper {
-          border-radius: 2px;
-          margin: 0 4px;
-          padding: 0 4px;
-        }
-      }
     }
     .descripe {
       margin-left: 68px;

@@ -48,11 +48,6 @@
     .scoreContent {
       background: $pageGround;
       :global {
-        .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-          background: #199475;
-          border-color: #199475;
-          color: #fff;
-        }
         .ant-progress-bg {
           border-radius: 100px;
           background-color: #199475;

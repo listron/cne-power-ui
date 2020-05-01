@@ -284,56 +284,12 @@
           display: flex;
           text-align: center;
           justify-content: space-between;
-          color: #d4d4d4;
-          .deviceTypeItem,
-          .elecnettingItem {
-            .deviceTypeIcon {
-            }
-          }
+          color: #d4d4d4;        
         }
         :global {
           .ant-radio-group {
             display: flex;
             align-items: center;
-          }
-          .ant-radio-button-wrapper {
-            background: #f8f8f8;
-            height: 50px;
-            line-height: 50px;
-            border: none;
-            &:first-child {
-              border-radius: 0;
-            }
-            &:last-child {
-              border-radius: 0;
-            }
-            &:hover {
-              border: none;
-              border-top: 1px solid $themeColor;
-              color: $themeColor;
-              background: #fff;
-            }
-          }
-
-          .ant-radio-button-wrapper-focused {
-            color: $themeColor;
-            background: #fff;
-            box-shadow: none;
-            &:after {
-              border: none;
-            }
-          }
-
-          .ant-radio-button-wrapper-checked {
-            background: #fff;
-            border: none;
-            border-top: 1px solid $themeColor;
-            color: $themeColor;
-            box-shadow: none;
-            z-index: 1;
-          }
-          .ant-radio-button-wrapper:not(:first-child)::before {
-            width: 0px;
           }
           .iconfont {
             font-size: 22px;
@@ -344,74 +300,9 @@
             color: #a42b2c;
             margin-left: -8px;
           }
-          .iconfont:hover {
-            color: $themeColor;
-          }
-
-          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-nav-container {
-          //     height: 33px;
-          // }
-          // .ant-tabs-bar {
-          //     border-top: 1px dashed #d4d4d4;
-          //     border-bottom: 1px dashed #d4d4d4;
-          //     margin: 0;
-          // }
-          // .ant-tabs.ant-tabs-card>.ant-tabs-bar {
-          //     border-color: #fff;
-          // }
-          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-          //     border: 1px solid #fff;
-          //     border-bottom: 0;
-          //     border-radius: 2px 4px 0 0;
-          //     background: #fff;
-          // }
-          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab {
-          //     width: 80px;
-          //     height: 33px;
-          //     text-align: center;
-          //     color: $darkColor;
-          // }
-          // .ant-tabs.ant-tabs-card>.ant-tabs-bar .ant-tabs-tab-active {
-          //     background: #f8f8f8;
-          //     border-radius: 2px 4px 0 0;
-          //     width: 80px;
-          //     height: 33px;
-          //     text-align: center;
-          //     color: $darkColor;
-          // }
         }
         .singleDeviceTypeBox {
-          border: 1px solid #d9d9d9;
-          // height: 22px;
-          background: #ffffff;
-          // line-height: 22px;
-          border-radius: 2px;
           margin-right: 12px;
-          .spanNormal,
-          .spanActive {
-            padding: 0 5px;
-            color: #353535;
-            display: inline-block;
-            cursor: pointer;
-            border-right: 1px solid #d9d9d9;
-            height: 30px;
-            line-height: 30px;
-            border-top-left-radius: 2px;
-            border-bottom-left-radius: 2px;
-          }
-          .spanNormal{
-            color: $themeColor;
-            &:hover{
-              background-color: #ceebe0;
-            }
-          }
-          .spanActive {
-            background: $themeColor;
-            color: #fff;
-          }
-          span:last-child{
-            border-right: 0;
-          }
         }
       }
     }

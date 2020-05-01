@@ -52,31 +52,6 @@
           }
         }
       }
-      .reasonName {
-        :global {
-          .ant-radio-button-wrapper {
-            border: 1px solid $themeColor;
-            color: $themeColor;
-          }
-          .ant-radio-button-wrapper:not(:first-child)::before {
-            background-color: $themeColor;
-          }
-          .ant-radio-button-wrapper:hover,
-          .ant-radio-button-wrapper-focused {
-            color: $themeColor;
-          }
-          .ant-radio-button-wrapper-checked {
-            border-color: $themeColor;
-            -webkit-box-shadow: -1px 0 0 0 $themeColor;
-            box-shadow: -1px 0 0 0 $themeColor;
-            color: #fff;
-            background: $themeColor;
-          }
-          .ant-radio-button-wrapper-checked:hover {
-            color: #fff;
-          }
-        }
-      }
     }
   }
 }

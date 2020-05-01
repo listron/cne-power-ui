@@ -28,15 +28,6 @@
     }
     .category{
       margin: 0 0 18px 38px;
-      :global{
-        .ant-radio-button-wrapper{
-          padding: 0 5px;
-          color: $themeColor;
-        }
-        .ant-radio-button-wrapper-checked{
-          color: #fff;
-        }
-      }
     }
     .searchChange{
       display: flex;

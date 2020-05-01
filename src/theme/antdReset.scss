@@ -208,18 +208,36 @@
       padding: 0 5px;
       height: 30px;
       line-height: 30px;
+      border: 1px solid $themeColor;
+      color:$themeColor;
       &:hover{
         background: $slideSelectColor;
         color:$themeColor
       }
-      &::first-child{
+      &:first-child{
         border-radius: 2px 0  0  2px;
+        border-left: 1px solid $themeColor;
       }
-      &::last-child{
+      &:last-child{
         border-radius: 0 2px 2px 0;
       }
+      &:not(:first-child)::before{
+        background:#fff;
+      }
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+        color:#fff;
+        background: $themeColor;
+        border-color: $themeColor;
     }
   }
+
+.ant-radio-button-wrapper-disabled {
+    background:#f1f1f1;
+    border:1px solid #d4d4d4;
+    color:var(--lightColor);
+}
+
 
   .ant-tabs {
     .ant-tabs-ink-bar {

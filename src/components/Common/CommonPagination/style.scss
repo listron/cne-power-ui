@@ -14,6 +14,7 @@ $commonHeight: 28px;
         width: 63px;
         .ant-select-selection {
           height: $commonHeight;
+          border-radius: 2px;
         }
         .ant-select-selection__rendered {
           line-height: 26px;
@@ -41,6 +42,7 @@ $commonHeight: 28px;
             height: 30px;
             line-height: 30px;
             border:1px solid #d4d4d4;
+            border-radius: 2px;
             &::after {
               height: $commonHeight;
               line-height: $commonHeight;
@@ -68,6 +70,7 @@ $commonHeight: 28px;
             vertical-align: middle;
             height: 30px;
             width: 50px;
+            border-radius: 2px;
           }
         }
       }

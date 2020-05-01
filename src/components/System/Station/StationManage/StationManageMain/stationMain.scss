@@ -22,22 +22,6 @@
           margin-right: 12px;
           color: $darkColor;
         }
-        :global {
-          .ant-radio-group {
-            .ant-radio-button-wrapper {
-              color: $darkColor;
-              padding: 0 12px;
-            }
-            .ant-radio-button-wrapper-checked {
-              background-color: $themeColor;
-              border-color: $themeColor;
-              box-shadow: -1px 0 0 0 $themeColor;
-              & > span {
-                color: #fff;
-              }
-            }
-          }
-        }
       }
       .inputSearch {
         // input输入区

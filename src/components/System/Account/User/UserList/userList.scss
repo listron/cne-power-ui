@@ -92,15 +92,6 @@
             margin-right: 20px;
           }
           :global{
-            .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
-              background-color: #199475;
-              border-color: #199475;
-              color: #fff;
-            }
-            .ant-radio-button-wrapper:hover, .ant-radio-button-wrapper-focused {
-              color: #199475;
-              position: relative;
-            }
             .ant-radio-button-wrapper-checked{
               z-index: 0;
             }

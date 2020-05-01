@@ -45,17 +45,6 @@
         margin-right: 28px;
       }
     }
-    :global {
-      .ant-radio-button-wrapper {
-        padding: 0 8px;
-        color: $darkColor;
-      }
-      .ant-radio-button-wrapper-checked {
-        background-color: $themeColor;
-        border: 1px solid $themeColor;
-        color: #fff;
-      }
-    }
   }
 }
 
