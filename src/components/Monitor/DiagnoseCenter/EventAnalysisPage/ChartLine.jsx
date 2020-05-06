@@ -147,14 +147,14 @@ class ChartLine extends PureComponent {
         },
       }];
       colors = ['rgba(251,230,227,0.50)']; // 图标依次着色
-      const markAreaData = period.map(e => { // 告警事件段数据规范。
+      const markAreaData = period ? period.map(e => { // 告警事件段数据规范。
         const { beginTime, endTime } = e || {};
         return [{
           xAxis: this.timeFormat(beginTime, interval),
         }, {
           xAxis: this.timeFormat(endTime, interval),
         }];
-      });
+      }) : [];
       series = [{ // 初始化series;
         name: '告警时段',
         type: 'line',
@@ -249,7 +249,7 @@ class ChartLine extends PureComponent {
         smooth: true,
       });
     });
-    const clientWidth = document.body.clientWidth;
+    const { clientWidth } = document.body;
     const legendNum = (delPointIndex !== -1 && pageKey === 'alarm') ? legends.length + 1 : legends.length; // 告警事件和有脉冲信号的情况下, 额外添加一个lengend；
     const legnedRows = Math.ceil(legendNum / lengendColType);
     const legendHeight = legnedRows * 30;
@@ -556,9 +556,6 @@ class ChartLine extends PureComponent {
   }
 
   render(){
-    // const clientWidth = document.body.clientWidth;
-    // const clientHeight = document.body.clientHeight;
-    // const calcHeight = clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381);
     return (
       <div className={styles.analysisChart} ref={(ref) => { this.lineRef = ref; } } />
     );
