@@ -167,7 +167,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
 }
 
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
-  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, date日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
+  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, updateTime || beginTime日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
   /**
    * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
    */
@@ -179,11 +179,12 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     yield call(easyPut, 'changeStore', { isChartLoading: true }); // chart图表loading
     // 1. 外部路径直接跳转分析 => 路径(diagWarningId,deviceFullcode), 将返回结果(response.data.warning)初始化reducer;
     const params = { diagWarningId, deviceFullcode };
+    const eventTime = moment(updateTime || beginTime).format('YYYY-MM-DD');
     if (!fromPath) { // 2. 正常诊断中心点击分析请求
       params.eventCode = eventCode;
       params.eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
       params.interval = interval;
-      params.date = moment(updateTime || beginTime).format('YYYY-MM-DD');
+      params.date = eventTime;
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {
@@ -192,7 +193,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const tmpStoreInfo = { // 要产生的必要store输出。
         analysisPageLoading: false,
         isChartLoading: false,
-        analysisEvent: payload,
+        analysisEvent: { ...payload, eventTime },
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       };
       if (fromPath) { // 路径跳转需额外添加的数据参数;
@@ -201,6 +202,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         tmpStoreInfo.pageKey = ['alarm', 'diagnose', 'data'][warning.eventType - 1] || 'alarm';
         tmpStoreInfo.analysisEvent = {
           interval: response.data.interval,
+          eventTime: moment(response.data.updateTime || response.data.beginTime).format('YYYY-MM-DD'),
           ...payload,
           ...warning,
         };

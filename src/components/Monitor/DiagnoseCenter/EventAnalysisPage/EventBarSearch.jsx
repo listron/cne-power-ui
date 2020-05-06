@@ -11,9 +11,9 @@ class EventBarSearch extends PureComponent {
     getEventsAnalysis: PropTypes.func,
   };
 
-  onDateChange = (momentTime, beginTime) => {
+  onDateChange = (momentTime, updateTime) => {
     const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
+    this.props.getEventsAnalysis({ ...analysisEvent, updateTime });
   }
 
   prevDay = () => this.onDayChange('subtract')
@@ -22,18 +22,18 @@ class EventBarSearch extends PureComponent {
 
   onDayChange = (method) => {
     const { analysisEvent } = this.props;
-    const { beginTime } = analysisEvent || {};
-    const newDayStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newDayStr });
+    const { eventTime } = analysisEvent || {};
+    const newDayStr = moment(eventTime)[method](1, 'day').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, updateTime: newDayStr });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
     const { analysisEvent } = this.props;
-    const { beginTime, eventCode } = analysisEvent || {};
+    const { eventTime, eventCode } = analysisEvent || {};
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
-    const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
+    const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');
     return (
         <div className={styles.analysisBarSearch}>
           <div className={styles.searchTop}>
@@ -41,7 +41,7 @@ class EventBarSearch extends PureComponent {
             <span className={styles.dateCheck}>
               <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
               <DatePicker
-                value={beginTime? moment(beginTime) : null}
+                value={eventTime? moment(eventTime) : null}
                 className={styles.dateSelect}
                 onChange={this.onDateChange}
                 allowClear={false}

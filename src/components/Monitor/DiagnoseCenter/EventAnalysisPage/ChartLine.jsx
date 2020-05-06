@@ -117,7 +117,7 @@ class ChartLine extends PureComponent {
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
 
-    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode);
+    const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239', 'NB1035', 'NB1036', 'NB1037', 'NB1038'].includes(eventCode);
     // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
     const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
     let delPointIndex = -1;
@@ -182,6 +182,7 @@ class ChartLine extends PureComponent {
         lineStyleColor = '#ff9900';
       } else if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件 - 未接组串为灰色
         colors.push('#999');
+        lineStyleColor = '#999';
       } else if (isDiagnoseBranch) { // 诊断事件 - 组串 默认绿色#60c060, 异常红色#f5222d
         colors.push('#60c060');
         const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};

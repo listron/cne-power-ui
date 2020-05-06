@@ -39,9 +39,9 @@ class EventLineSearch extends PureComponent {
     this.props.getEventsAnalysis({ ...analysisEvent, interval }); // 默认十分钟数据
   }
 
-  onDateChange = (momentTime, beginTime) => {
+  onDateChange = (momentTime, updateTime) => {
     const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime });
+    this.props.getEventsAnalysis({ ...analysisEvent, updateTime });
   }
 
   prevDay = () => this.onDayChange('subtract')
@@ -50,9 +50,9 @@ class EventLineSearch extends PureComponent {
 
   onDayChange = (method) => {
     const { analysisEvent } = this.props;
-    const { beginTime } = analysisEvent || {};
-    const newMonthStr = moment(beginTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, beginTime: newMonthStr });
+    const { eventTime } = analysisEvent || {};
+    const newMonthStr = moment(eventTime)[method](1, 'day').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, updateTime: newMonthStr });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
@@ -60,9 +60,9 @@ class EventLineSearch extends PureComponent {
   render(){
     const { analysisEvent, pageKey } = this.props;
     const { showTip } = this.state;
-    const { beginTime, interval, eventCode } = analysisEvent || {};
+    const { eventTime, interval, eventCode } = analysisEvent || {};
     const noSecondEvent = ['NB1038', 'NB1040', 'NB1036', 'NB1037', 'NB2035', 'NB2036'].includes(eventCode); // 电压异常、并网延时、组串低效、固定物遮挡、高值异常、低值异常没有5秒数据
-    const forbidNextDay = !moment().isAfter(moment(beginTime), 'day');
+    const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');
     return (
         <div className={styles.analysisLineSearch}>
           {showTip && <div className={styles.tipText}>数据不存在，请选择其他周期</div>}
@@ -80,7 +80,7 @@ class EventLineSearch extends PureComponent {
             </Select>
             <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
             <DatePicker
-              value={beginTime? moment(beginTime) : null}
+              value={eventTime? moment(eventTime) : null}
               className={styles.dateSelect}
               onChange={this.onDateChange}
               allowClear={false}
