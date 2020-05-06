@@ -2,31 +2,57 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
+import moment from 'moment';
 import {eamRegisterDetailAction} from './eamRegisterDetailReducer';
 import CneFooter from '@components/Common/Power/CneFooter';
 import CneTable from '@components/Common/Power/CneTable';
 import searchUtil from '@utils/searchUtil';
 
 import styles from './eamRegisterDetail.scss';
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 class EamRegisterDetail extends Component {
   static propTypes = {
     history: PropTypes.object,
     loading: PropTypes.bool,
     theme: PropTypes.string,
+    getEamFaultDetails: PropTypes.func,
+    getEamDefectDetails: PropTypes.func,
+    eamFaultData: PropTypes.object,
+    eamDefectData: PropTypes.object,
+    workOrderList: PropTypes.array,
   };
 
   constructor(props){
     super(props);
+    const { history } = props;
+    const { search, hash } = history.location;
+    // 因为设备名称里面带了#  所以判断hash是否为空
+    const urlSearch = hash ? `${search}${hash}` : search;
+    const { type } = searchUtil(urlSearch).parse(); // EAM查看信息
     this.state = {
       scroll: false,
       baseFlag: true,
       tableFlag: true,
+      type,
     };
   }
 
   componentDidMount() {
     const main = document.getElementById('main');
+    const { type } = this.state;
+    const { getEamFaultDetails, getEamDefectDetails } = this.props;
+    // type：1位故障详情，2位缺陷详情
+    if(type === '1') {
+      getEamFaultDetails({
+        faultId: 1045,
+      });
+    }
+    if(type === '2') {
+      getEamDefectDetails({
+        defectId: '缺YCF2020040007',
+      });
+    }
     // 监听页面滚动
     main.addEventListener('scroll', this.bindScroll);
   }
@@ -73,14 +99,16 @@ class EamRegisterDetail extends Component {
   // 信息展示
   eamInfo = () => {
     const { history } = this.props;
-    const { search } = history.location;
-    const { params } = searchUtil(search).parse(); // EAM查看信息
+    const { search, hash } = history.location;
+    // 因为设备名称里面带了#  所以判断hash是否为空
+    const urlSearch = hash ? `${search}${hash}` : search;
+    const { params } = searchUtil(urlSearch).parse(); // EAM查看信息
     const {
-      eventName,
-      eventDesc,
-      deviceTypeName,
-      deviceName,
-      stationName,
+      eventName = '',
+      eventDesc = '',
+      deviceTypeName = '',
+      deviceName = '',
+      stationName = '',
     } = params && JSON.parse(params) || {}; // 判断从路由中过来的筛选条件
     return (
       <div className={styles.eamInfo}>
@@ -93,36 +121,92 @@ class EamRegisterDetail extends Component {
     );
   };
 
+  // 查看EAM工单详情
+  lookEamDetailsFunc = (record) => {
+    const { workOrderNo } = record;
+    const { history } = this.props;
+    workOrderNo && history.push(`/operation/eamDetails?workOrderNo=${workOrderNo}`);
+  };
 
   render() {
-    const { scroll, baseFlag, tableFlag } = this.state;
-    const { loading, theme } = this.props;
+    const { scroll, baseFlag, tableFlag, type } = this.state;
+    const {
+      loading,
+      theme,
+      eamFaultData: { // 获取EAM故障详情
+        faultNo,
+        stationName1: faultStationName1,
+        stationName2: faultStationName2,
+        stopType,
+        assetNo1: faultAssetNo1,
+        assetNo2: faultAssetNo2,
+        location1: faultLocation1,
+        location2: faultLocation2,
+        faultCode1,
+        faultCode2,
+        manufacturer,
+        model,
+        faultLevel,
+        faultSysType1,
+        faultSysType2,
+        monitorSysFault,
+        status: faultStatus,
+        createName: faultCreateName,
+        createTime: faultCreateTime,
+        faultStartTime: warnStartTime,
+        faultEndTime,
+        reason,
+      },
+      eamDefectData: {
+        defectNo,
+        stationName1,
+        stationName2,
+        defectType,
+        assetNo1,
+        assetNo2,
+        location1,
+        location2,
+        defectDetail,
+        status,
+        createName,
+        createTime,
+        projectSource,
+        phone,
+        faultStartTime,
+        woprofess,
+      },
+      workOrderList,
+    } = this.props;
     const listColumn = [
       {
         title: '工单编号',
         width: '14%',
-        dataIndex: '1',
+        dataIndex: 'workOrderNo',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单描述',
-        dataIndex: '2',
+        dataIndex: 'workOrderDesc',
         width: '42%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '设备名称',
-        dataIndex: '3',
+        dataIndex: 'assetName',
         width: '27%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '状态',
-        dataIndex: '4',
+        dataIndex: 'status',
         width: '12%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '查看',
-        dataIndex: '5',
+        dataIndex: '查看',
         width: '5%',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        align: 'center',
+        className: styles.textAlignName,
+        render: (text, record) => (<div title="查看" className={styles.listLookBox} >
+          <i onClick={() => this.lookEamDetailsFunc(record)} className="iconfont icon-look" />
+        </div>),
       },
     ];
     const faultColumn = [
@@ -194,286 +278,289 @@ class EamRegisterDetail extends Component {
             </div>
             <div className={styles.recordDetails}>
               <i className="iconfont icon-gdxq" />
-              <span>{`EAM ${'故障'}记录详情`}</span>
+              <span>{`EAM ${type === '1' ? '故障' : '缺陷'}记录详情`}</span>
             </div>
             <div className={styles.eamRegisterWrap}>
-              <div className={styles.eamRegisterInfoBox}>
-                <div className={styles.tableBar}>
-                  <div className={styles.barProcess}>
-                    故障基本信息
+              {type === '1' && (
+                <div className={styles.eamRegisterInfoBox}>
+                  <div className={styles.tableBar}>
+                    <div className={styles.barProcess}>
+                      故障基本信息
+                    </div>
+                    <i onClick={this.baseFlagFunc} className={baseFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                   </div>
-                  <i onClick={this.baseFlagFunc} className={baseFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  {baseFlag && <div className={styles.tableWrap}>
+                    <div className={styles.tableBox}>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          编号
+                        </div>
+                        <div className={styles.numberCode}>
+                          {faultNo || '- -'}
+                        </div>
+                        <div className={styles.statusName}>
+                          状态
+                        </div>
+                        <div className={styles.statusCode}>
+                          {faultStatus || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          电场(站)名称
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{faultStationName1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{faultStationName2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          创建人
+                        </div>
+                        <div className={styles.statusCode}>
+                          {faultCreateName || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          故障类型
+                        </div>
+                        <div className={styles.numberCode}>
+                          {stopType || '- -'}
+                        </div>
+                        <div className={styles.statusName}>
+                          创建时间
+                        </div>
+                        <div className={styles.statusCode}>
+                          {faultCreateTime ? moment(faultCreateTime).format(dateFormat) : '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          设备编码
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{faultAssetNo1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{faultAssetNo2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          故障开始时间
+                        </div>
+                        <div className={styles.statusCode}>
+                          {warnStartTime ? moment(warnStartTime).format(dateFormat) : '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          资产标识
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{faultLocation1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{faultLocation2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          恢复运行时间
+                        </div>
+                        <div className={styles.statusCode}>
+                          {faultEndTime ? moment(faultEndTime).format(dateFormat) : '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.tableMoreBox}>
+                          <div className={styles.tableMoreTd}>
+                            <div className={styles.tableMoreName}>
+                              故障代码
+                            </div>
+                            <div className={styles.tableMoreCode}>
+                              <span>{faultCode1 || '- -'}</span>
+                              <i className="iconfont icon-rightarr" />
+                              <span>{faultCode2 || '- -'}</span>
+                            </div>
+                          </div>
+                          <div className={styles.tableMoreTd}>
+                            <div className={styles.tableMoreName}>
+                              设备厂商
+                            </div>
+                            <div className={styles.tableMoreCode}>
+                              {manufacturer || '- -'}
+                            </div>
+                          </div>
+                          <div className={`${styles.tableMoreTd} ${styles.deleteBorderBottom}`}>
+                            <div className={styles.tableMoreName}>
+                              设备型号
+                            </div>
+                            <div className={styles.tableMoreCode}>
+                              {model || '- -'}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.statusName}>
+                          故障原因
+                        </div>
+                        <div className={styles.statusCode}>
+                          {reason || '- -'}
+                        </div>
+                      </div>
+                      <div className={`${styles.tableTr} ${styles.deleteBorderBottom}`}>
+                        <div className={styles.tableMoreBox}>
+                          <div className={styles.tableMoreTd}>
+                            <div className={styles.tableMoreName}>
+                              故障等级
+                            </div>
+                            <div className={styles.tableMoreCode}>
+                              {faultLevel || '- -'}
+                            </div>
+                          </div>
+                          <div className={`${styles.tableMoreTd} ${styles.deleteBorderBottom}`}>
+                            <div className={styles.tableMoreName}>
+                              故障系统分类
+                            </div>
+                            <div className={styles.tableMoreCode}>
+                              <span>{faultSysType1 || '- -'}</span>
+                              <i className="iconfont icon-rightarr" />
+                              <span>{faultSysType2 || '- -'}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.statusName}>
+                          监视系统显示故障
+                        </div>
+                        <div className={styles.statusCode}>
+                          {monitorSysFault || '- -'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
                 </div>
-                {baseFlag && <div className={styles.tableWrap}>
-                  <div className={styles.tableBox}>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        编号
-                      </div>
-                      <div className={styles.numberCode}>
-                        故障G20200403274564
-                      </div>
-                      <div className={styles.statusName}>
-                        状态
-                      </div>
-                      <div className={styles.statusCode}>
-                        已处理
-                      </div>
+              )}
+              {type === '2' && (
+                <div className={styles.eamRegisterInfoBox}>
+                  <div className={styles.tableBar}>
+                    <div className={styles.barProcess}>
+                      缺陷基本信息
                     </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        电场(站)名称
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'CNE325735664454675757' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'道县审章塘风电场' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        创建人
-                      </div>
-                      <div className={styles.statusCode}>
-                        旭明
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        故障类型
-                      </div>
-                      <div className={styles.numberCode}>
-                        风机
-                      </div>
-                      <div className={styles.statusName}>
-                        创建时间
-                      </div>
-                      <div className={styles.statusCode}>
-                        2020-01-20 09:10:12
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        设备编码
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'4101000000445768' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'35kV审章塘#1集电线路F22风机' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        故障开始时间
-                      </div>
-                      <div className={styles.statusCode}>
-                        2020-01-20 09:10:12
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        资产标识
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'1123' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'35kV审章塘#1集电线路F22风机' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        恢复运行时间
-                      </div>
-                      <div className={styles.statusCode}>
-                        2020-01-20 09:10:12
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.tableMoreBox}>
-                        <div className={styles.tableMoreTd}>
-                          <div className={styles.tableMoreName}>
-                            故障代码
-                          </div>
-                          <div className={styles.tableMoreCode}>
-                            <span>{'33' || '- -'}</span>
-                            <i className="iconfont icon-rightarr" />
-                            <span>{'变桨系统故障' || '- -'}</span>
-                          </div>
-                        </div>
-                        <div className={styles.tableMoreTd}>
-                          <div className={styles.tableMoreName}>
-                            设备厂商
-                          </div>
-                          <div className={styles.tableMoreCode}>
-                            设备厂商有限公司有限公司名称
-                          </div>
-                        </div>
-                        <div className={`${styles.tableMoreTd} ${styles.deleteBorderBottom}`}>
-                          <div className={styles.tableMoreName}>
-                            设备型号
-                          </div>
-                          <div className={styles.tableMoreCode}>
-                            WT200D121H87665
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.statusName}>
-                        故障原因
-                      </div>
-                      <div className={styles.statusCode}>
-                        - -
-                      </div>
-                    </div>
-                    <div className={`${styles.tableTr} ${styles.deleteBorderBottom}`}>
-                      <div className={styles.tableMoreBox}>
-                        <div className={styles.tableMoreTd}>
-                          <div className={styles.tableMoreName}>
-                            故障等级
-                          </div>
-                          <div className={styles.tableMoreCode}>
-                            4
-                          </div>
-                        </div>
-                        <div className={`${styles.tableMoreTd} ${styles.deleteBorderBottom}`}>
-                          <div className={styles.tableMoreName}>
-                            故障系统分类
-                          </div>
-                          <div className={styles.tableMoreCode}>
-                            <span>{'20' || '- -'}</span>
-                            <i className="iconfont icon-rightarr" />
-                            <span>{'主控系统' || '- -'}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.statusName}>
-                        监视系统显示故障
-                      </div>
-                      <div className={styles.statusCode}>
-                        F22风机变桨系统故障，F22风机变桨系统
-                        故障F22风机变桨系统故障
-                      </div>
-                    </div>
+                    <i onClick={this.baseFlagFunc} className={baseFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                   </div>
-                </div>}
-              </div>
-              <div className={styles.eamRegisterInfoBox}>
-                <div className={styles.tableBar}>
-                  <div className={styles.barProcess}>
-                    缺陷基本信息
-                  </div>
-                  <i onClick={this.baseFlagFunc} className={baseFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
+                  {baseFlag && <div className={styles.tableWrap}>
+                    <div className={styles.tableBox}>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          编号
+                        </div>
+                        <div className={styles.numberCode}>
+                          {defectNo || '- -'}
+                        </div>
+                        <div className={styles.statusName}>
+                          状态
+                        </div>
+                        <div className={styles.statusCode}>
+                          {status || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          电场(站)名称
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{stationName1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{stationName2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          创建人
+                        </div>
+                        <div className={styles.statusCode}>
+                          {createName || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          缺陷类别
+                        </div>
+                        <div className={styles.numberCode}>
+                          {defectType || '- -'}
+                        </div>
+                        <div className={styles.statusName}>
+                          创建时间
+                        </div>
+                        <div className={styles.statusCode}>
+                          {createTime ? moment(createTime).format(dateFormat) : '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          工单专业
+                        </div>
+                        <div className={styles.numberCode}>
+                          {woprofess || '- -'}
+                        </div>
+                        <div className={styles.statusName}>
+                          所属巡检项目名称
+                        </div>
+                        <div className={styles.statusCode}>
+                          {projectSource || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          设备编码
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{assetNo1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{assetNo2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          联系电话
+                        </div>
+                        <div className={styles.statusCode}>
+                          {phone || '- -'}
+                        </div>
+                      </div>
+                      <div className={styles.tableTr}>
+                        <div className={styles.numberName}>
+                          资产标识
+                        </div>
+                        <div className={styles.numberCode}>
+                          <span>{location1 || '- -'}</span>
+                          <i className="iconfont icon-rightarr" />
+                          <span>{location2 || '- -'}</span>
+                        </div>
+                        <div className={styles.statusName}>
+                          缺陷发现时间
+                        </div>
+                        <div className={styles.statusCode}>
+                          {faultStartTime ? moment(faultStartTime).format(dateFormat) : '- -'}
+                        </div>
+                      </div>
+                      <div className={`${styles.tableTr} ${styles.deleteBorderBottom}`}>
+                        <div className={styles.numberName}>
+                          缺陷详情
+                        </div>
+                        <div className={styles.allText}>
+                          {defectDetail || '- -'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
                 </div>
-                {baseFlag && <div className={styles.tableWrap}>
-                  <div className={styles.tableBox}>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        编号
-                      </div>
-                      <div className={styles.numberCode}>
-                        缺JPF20200403274564
-                      </div>
-                      <div className={styles.statusName}>
-                        状态
-                      </div>
-                      <div className={styles.statusCode}>
-                        消缺中
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        电场(站)名称
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'CNE325735664454675757' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'江华界牌风电场' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        创建人
-                      </div>
-                      <div className={styles.statusCode}>
-                        徐明中
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        缺陷类别
-                      </div>
-                      <div className={styles.numberCode}>
-                        一般缺陷
-                      </div>
-                      <div className={styles.statusName}>
-                        创建时间
-                      </div>
-                      <div className={styles.statusCode}>
-                        2020-01-20 09:10:12
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        工单专业
-                      </div>
-                      <div className={styles.numberCode}>
-                        风机
-                      </div>
-                      <div className={styles.statusName}>
-                        所属巡检项目名称
-                      </div>
-                      <div className={styles.statusCode}>
-                        - -
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        设备编码
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'4101000000445768' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'集电#2线F12风机' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        联系电话
-                      </div>
-                      <div className={styles.statusCode}>
-                        17623283456
-                      </div>
-                    </div>
-                    <div className={styles.tableTr}>
-                      <div className={styles.numberName}>
-                        资产标识
-                      </div>
-                      <div className={styles.numberCode}>
-                        <span>{'1212' || '- -'}</span>
-                        <i className="iconfont icon-rightarr" />
-                        <span>{'集电#2线F12风机' || '- -'}</span>
-                      </div>
-                      <div className={styles.statusName}>
-                        缺陷发现时间
-                      </div>
-                      <div className={styles.statusCode}>
-                        2020-01-20 09:10:12
-                      </div>
-                    </div>
-                    <div className={`${styles.tableTr} ${styles.deleteBorderBottom}`}>
-                      <div className={styles.numberName}>
-                        缺陷详情
-                      </div>
-                      <div className={styles.allText}>
-                        35kV2#1界牌风机进线F12号风机发电机气隙温度1错误
-                      </div>
-                    </div>
-                  </div>
-                </div>}
-              </div>
+              )}
               <div className={styles.commonInfoBox}>
                 <div className={styles.tableBar}>
                   <div className={styles.barProcess}>
-                    {`${'故障'}关联的工单`}
+                    {`${type === '1' ? '故障' : '缺陷'}关联的工单`}
                   </div>
                   <div className={styles.commonIconBox}>
-                    <span>{`合计：${[] ? [].length : 0}`}</span>
+                    <span>{`合计：${workOrderList ? workOrderList.length : 0}`}</span>
                     <i onClick={this.tableFlagFunc} className={tableFlag ? 'iconfont icon-shouqi' : 'iconfont icon-zhankai'} />
                   </div>
                 </div>
                 {tableFlag && <div className={styles.commonWrap}>
                   <CneTable
                     columns={listColumn}
-                    dataSource={[] || []}
+                    dataSource={workOrderList || []}
                     rowKey={(record, index) => index || 'key'}
                     pagination={false}
                     locale={{ emptyText: '暂无数据'}}
@@ -490,12 +577,14 @@ class EamRegisterDetail extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ...state.monitor.eamRegisterDetail,
+  ...state.monitor.eamRegisterDetail.toJS(),
   theme: state.common.get('theme'),
 });
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: eamRegisterDetailAction.resetStore }),
   changeStore: payload => dispatch({ type: eamRegisterDetailAction.changeStore, payload }),
+  getEamFaultDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamFaultDetails, payload }),
+  getEamDefectDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamDefectDetails, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EamRegisterDetail);

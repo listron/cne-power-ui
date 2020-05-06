@@ -15,7 +15,7 @@ export default {
     // getDevices: '/v3/station/stationdevices', // 待废弃 - 设备接口 后台可能有bug会导致数据丢失 - 后期不再使用。
     getDevices: '/v3/base/device/devices/prev',
     getPartitions: '/v3/station/partitions', // 待废弃 - 接口分区 后台可能有bug会导致数据丢失 - 后期不再使用。
-    belongmatrixs: '/v3/base/device/belongmatrixs', // 新获取 分区接口 
+    belongmatrixs: '/v3/base/device/belongmatrixs', // 新获取 分区接口
     getDeviceModel: '/v3/management/devicemodecode', // 获取电站(必填), 设备类型下的设备型号
     getStationPoints: '/v3/management/devicepointcode', // 电站(必填) 设备类型，设备型号，获取所有测点基本信息
     findDeviceExist: '/v3/performance/queryByDeviceName', // 验证设备是否存在
@@ -603,6 +603,8 @@ export default {
       getEventsAnalysis: '/v4/diag/warning/analysis', // 诊断中心事件分析
       editEventsStatus: '/v4/diag/warning', // 忽略 删除 事件
       getLinkageList: '/v4/diag/warning/relevant', //	获取多故障联动告警列表
+      getEamFaultDetails: '/v4/eam/register/fault/detail', // 获取EAM故障详情
+      getEamDefectDetails: '/v4/eam/register/defect/detail', // 获取EAM缺陷详情
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

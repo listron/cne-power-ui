@@ -83,8 +83,8 @@ class DiagnoseList extends Component {
       this.analysisEvent,
       this.toDefect,
       this.toDelete,
-      this.resendFunc,
       this.lookFunc,
+      this.resendFunc,
     );
   }
 
@@ -123,8 +123,7 @@ class DiagnoseList extends Component {
 
   // EAM查看
   lookFunc = (data) => {
-    console.log(data, 'data');
-    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName } = data;
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, type } = data;
     const { history } = this.props;
     // 展示信息
     const params = {
@@ -134,7 +133,8 @@ class DiagnoseList extends Component {
       deviceName,
       stationName,
     };
-    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}`);
+    // type：1位故障详情，2位缺陷详情
+    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}&type=${type}`);
   };
 
   cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })

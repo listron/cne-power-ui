@@ -180,16 +180,19 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
             className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
           />}
-          <i
-            title="EAM重发"
-            className={`iconfont icon-cfeam ${styles.handleAnalysis}`}
-            onClick={() => handlers[3] && handlers[3](record)}
-          />
-          <i
+          {!record.eamStatus && <i
             title="EAM查看"
             className={`iconfont icon-keam ${styles.handleAnalysis}`}
-            onClick={() => handlers[4] && handlers[4](record)}
-          />
+            onClick={() => handlers[3] && handlers[3]({
+              ...record,
+              type: 1,
+            })}
+          />}
+          {/*<i*/}
+            {/*title="EAM重发"*/}
+            {/*className={`iconfont icon-cfeam ${styles.handleAnalysis}`}*/}
+            {/*onClick={() => handlers[3] && handlers[3](record)}*/}
+          {/*/>*/}
         </div>
       ),
     },
@@ -301,6 +304,19 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
             className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
           />}
+          {!record.eamStatus && <i
+            title="EAM查看"
+            className={`iconfont icon-keam ${styles.handleAnalysis}`}
+            onClick={() => handlers[3] && handlers[3]({
+              ...record,
+              type: 2,
+            })}
+          />}
+          {/*<i*/}
+            {/*title="EAM重发"*/}
+            {/*className={`iconfont icon-cfeam ${styles.handleAnalysis}`}*/}
+            {/*onClick={() => handlers[3] && handlers[3](record)}*/}
+          {/*/>*/}
         </div>
       ),
     },

@@ -328,4 +328,22 @@
       }
     }
   }
+
+  .listLookBox{
+
+    i{
+      font-size: 20px;
+      cursor: pointer;
+      color: $themeColor;
+
+      &:hover{
+        color: #f9b600;
+      }
+    }
+  }
+
+  .textAlignName{
+    padding: 0 !important;
+  }
+
 }
