@@ -189,7 +189,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {
       const pointData = response.data.chartType === 1 ? response.data.data.pointData : response.data.data; // 测点数据结果
-      const isEmptyData = !!(pointData.find(e => (response.data.chartType === 1 ? e.value.length : e.length) > 0)); // 是否空数据
+      const isEmptyData = !(pointData.find(e => (response.data.chartType === 1 ? e.value.length : e.length) > 0)); // 是否空数据
       const tmpStoreInfo = { // 要产生的必要store输出。
         analysisPageLoading: false,
         isChartLoading: false,

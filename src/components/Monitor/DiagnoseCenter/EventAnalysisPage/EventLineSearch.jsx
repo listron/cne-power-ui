@@ -19,19 +19,30 @@ class EventLineSearch extends PureComponent {
     showTip: false,
   }
 
+  componentDidMount(){
+    const { showEmptyDataTip } = this.props;
+    if (showEmptyDataTip) {
+      this.emptyDataTip();
+    }
+  }
+
   componentWillReceiveProps(nextProps){
     const { showEmptyDataTip } = nextProps;
     const preTip = this.props.showEmptyDataTip;
-    if (!preTip && showEmptyDataTip) { //无数据
+    if (!preTip && showEmptyDataTip) { // 无数据
       this.props.changeStore({ showEmptyDataTip: false });
-      this.setState({ showTip: true });
-      if (this.dataTipTimer) {
-        clearTimeout(this.dataTipTimer);
-      }
-      this.dataTipTimer = setTimeout(() => {
-        this.setState({ showTip: false });
-      }, 3000);
+      this.emptyDataTip();
     }
+  }
+
+  emptyDataTip = () => { // 无数据 需提示
+    this.setState({ showTip: true });
+    if (this.dataTipTimer) {
+      clearTimeout(this.dataTipTimer);
+    }
+    this.dataTipTimer = setTimeout(() => {
+      this.setState({ showTip: false });
+    }, 3000);
   }
 
   onIntervalChange = (interval) => {
