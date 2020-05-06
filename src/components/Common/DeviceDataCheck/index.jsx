@@ -25,6 +25,7 @@ const Option = Select.Option;
   9. 选填 - max: number; 传入时，限定最多展示设备个数, 否则提示：'所选设备不得超过max个'。
   10. 选填 - needAllCheck: bool; 默认false, 是否需要开启弹框内的全选功能。
   11. 选填- disabledDevice:array['设备全编码'],;不可选设备,默认是[],禁选设备数组里是设备deviceCode的值，其余任意['73M101M34M1']
+  12. 选填 - dataOutputCallback: func; 得到设备数据后, 将数据输出至外界的回调;
 其余参数：组件内部自动挂载数据:
 1. devices // 依据父组件stationCode, deviceTypeCode请求得的所有设备array[object];
   格式如: {
@@ -64,6 +65,7 @@ class DeviceSelect extends Component {
     partitions: PropTypes.array,
     filterDevices: PropTypes.array,
     filterKey: PropTypes.array,
+    dataOutputCallback: PropTypes.func,
   }
 
   static defaultProps = {
@@ -131,15 +133,18 @@ class DeviceSelect extends Component {
 
   getMatrixDevices = async (payload) => {
     // payload: {stationCode, deviceTypeCode, partitionCode}
+    const { dataOutputCallback } = this.props;
     const {
       filterDevices, devices, partitions, checkedMatrix,
     } = await deviceQuery.getMatrixDevices(payload);
     this.setState({ filterDevices, devices, partitions, checkedMatrix });
+    dataOutputCallback && dataOutputCallback({ filterDevices, devices, partitions, checkedMatrix }); // 映射至外界输出
   }
 
   getDevices = async (payload, stateName) => {
     // payload: {stationCode, deviceTypeCode, partitionCode}
     // 直接请求电站+设备类型 + (可有)分区下所有设备。
+    const { dataOutputCallback } = this.props;
     const devices = await deviceQuery.getDevices(payload);
     if (stateName) { // 指定存储
       this.setState({ [stateName]: devices });
@@ -149,6 +154,7 @@ class DeviceSelect extends Component {
         devices,
       });
     }
+    dataOutputCallback && dataOutputCallback({ filterDevices: devices }); // 映射至外界输出
   }
 
   getPartition = async ({stationCode, deviceTypeCode}) => { // 分区数据

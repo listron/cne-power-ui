@@ -21,6 +21,7 @@ const initState = Immutable.fromJS({
   downloading: false, // 文件下载状态
   chartTime: null, // 记录chart表的数据时间
   reRenderTree: null, // 记录属性控件生成时间
+  filterDevices: [], // 所有设备数据
   queryParam: { // 请求chart数据的参数集合
     stationCode: null, // 选中的电站
     deviceFullCodes: [], // 选中的设备

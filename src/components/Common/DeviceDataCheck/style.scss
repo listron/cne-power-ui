@@ -17,11 +17,13 @@
       &:hover {
         box-shadow: none;
       }
-      .ant-select-selection:focus,
-      .ant-select-selection:active,
-      .ant-select-selection:hover {
-        border: none;
-        box-shadow: none;
+      .ant-select-selection:not(.ant-select-selection--multiple){
+        &:active,
+        &:focus,
+        &:hover {
+          border: none;
+          box-shadow: none;
+        }
       }
     }
 

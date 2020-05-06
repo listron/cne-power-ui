@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Select} from 'antd';
 import StationSelect from '../../../Common/StationSelect';
-import DeviceSelect from '../../../Common/DeviceSelect';
+import DeviceDataCheck from '@components/Common/DeviceDataCheck';
 import PropTypes from 'prop-types';
 
 import styles from './pvRealtimeStyle.scss';
@@ -117,6 +117,10 @@ class PvRealtimeSearch extends Component {
     wind: 0,
   };
 
+  getFilterDeviceData = ({ filterDevices }) => {
+    this.props.changeRealtimeStore({ filterDevices });
+  }
+
   render() {
     const {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount,
@@ -155,7 +159,7 @@ class PvRealtimeSearch extends Component {
           </div>
           <div className={styles.deviceSelect}>
             <span className={styles.text}>设备名称</span>
-            <DeviceSelect
+            <DeviceDataCheck
               disabled={!deviceTypeCode}
               stationCode={stationCode}
               value={deviceFullCodes}
@@ -165,6 +169,7 @@ class PvRealtimeSearch extends Component {
               deviceShowNumber={true}
               style={{width: 'auto', minWidth: '198px'}}
               onChange={this.selectedDevice}
+              dataOutputCallback={this.getFilterDeviceData}
             />
           </div>
         </div>

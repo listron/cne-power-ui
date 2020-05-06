@@ -11,7 +11,6 @@ import PvHistoryList from '../../../../components/Monitor/PvDataAnalysis/PvDataH
 import Footer from '../../../../components/Common/Footer/index';
 import Cookie from 'js-cookie';
 import searchUtil from '@utils/searchUtil';
-import moment from 'moment';
 
 class PvDataHistory extends Component {
   static propTypes = {
@@ -27,7 +26,6 @@ class PvDataHistory extends Component {
     changeHistoryStore: PropTypes.func,
     getChartHistory: PropTypes.func,
     getListHistory: PropTypes.func,
-    filterDevices: PropTypes.array,
   };
 
   componentDidMount() { // 获取数据时间间隔 + 若是携带路径参数进入该页面, 进行自动处理。
@@ -79,7 +77,6 @@ class PvDataHistory extends Component {
 const mapStateToProps = state => ({
   ...state.monitor.pvDataHistory.toJS(),
   stations: state.common.get('stations').toJS(),
-  filterDevices: state.common.get('filterDevices').toJS(),
   stationTypeCount: state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Select, DatePicker, Button } from 'antd';
 import StationSelect from '../../../Common/StationSelect';
-import DeviceSelect from '../../../Common/DeviceSelect';
+import DeviceDataCheck from '@components/Common/DeviceDataCheck';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -382,6 +382,10 @@ class PvHistorySearch extends Component {
     wind: 0,
   };
 
+  getFilterDeviceData = ({ filterDevices }) => {
+    this.props.changeHistoryStore({ filterDevices });
+  }
+
   render() {
     const {
       queryParam, selectStationType, stations, deviceTypeCode, stationDeviceTypes, stationTypeCount, intervalInfo, downloading, partHistory, isNoDataTip,
@@ -422,13 +426,14 @@ class PvHistorySearch extends Component {
           </div>
           <div className={styles.deviceSelect}>
             <span className={styles.text}>设备名称</span>
-            <DeviceSelect
+            <DeviceDataCheck
               disabled={!deviceTypeCode}
               stationCode={stationCode}
               value={deviceFullCodes}
               deviceTypeCode={deviceTypeCode}
               multiple={true}
               // max={timeInterval === 10 ? 5 : 2}
+              dataOutputCallback={this.getFilterDeviceData}
               deviceShowNumber={true}
               style={{ width: 'auto', minWidth: '198px' }}
               onChange={this.selectedDevice}

@@ -58,7 +58,6 @@ class PvDataRealtime extends Component {
 const mapStateToProps = state => ({
   ...state.monitor.pvDataRealtime.toJS(),
   stations: state.common.get('stations').toJS(),
-  filterDevices: state.common.get('filterDevices').toJS(),
   stationTypeCount: state.common.get('stationTypeCount'),
   enterpriseId: Cookie.get('enterpriseId'),
 });
