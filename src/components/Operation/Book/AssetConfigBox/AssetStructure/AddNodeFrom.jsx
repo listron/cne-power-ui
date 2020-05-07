@@ -156,7 +156,7 @@ class AddNodeFrom extends React.Component {
                   <Input placeholder="6字以内" />
                 )}
               </FormItem>
-              <CneButton className={styles.saveStyle} onClick={this.submitForm} >添加</CneButton>
+              <CneButton lengthMode="short" className={styles.saveStyle} onClick={this.submitForm} >添加</CneButton>
 
             </Form>
 

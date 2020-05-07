@@ -121,7 +121,7 @@ class ImportIntelligent extends Component {
               )}
             </FormItem>
             <FormItem wrapperCol={{ offset: 8 }} >
-              <CneButton htmlType="submit" onClick={this.handleSubmit} disabled={fileList.length === 0}>确认导入</CneButton>
+              <CneButton lengthMode="short" htmlType="submit" onClick={this.handleSubmit} disabled={fileList.length === 0}>确认导入</CneButton>
             </FormItem>
           </Form>
         </Modal>

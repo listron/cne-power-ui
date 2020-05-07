@@ -171,7 +171,7 @@ class IntelligentSearch extends Component {
           >
             {usernames && usernames.map(e => <Option key={e} value={e}>{e}</Option>)}
           </Select>
-          <CneButton className={styles.searchBtn} onClick={this.onSearch}>查询</CneButton>
+          <CneButton lengthMode="short" onClick={this.onSearch}>查询</CneButton>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
         </div>
       </div>

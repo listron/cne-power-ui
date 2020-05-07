@@ -109,21 +109,22 @@ class DeviceManageHandle extends Component {
     return (
       <div className={styles.deviceManageHandle}>
         {deviceHandleRight ? <div className={styles.left}>
-          <CneButton className={styles.plusButton} onClick={this.addDevice}>
+          <CneButton lengthMode="short" className={styles.plusButton} onClick={this.addDevice}>
             <div className={styles.icon}>
                 <span className={'iconfont icon-newbuilt'} />
             </div> 设备
           </CneButton>
-          <CneButton className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</CneButton>
+          <CneButton lengthMode="short" className={styles.deletStyle} onClick={this.deletDevice} disabled={selectedRowKeys.length === 0} >删除</CneButton>
           <CneButton className={styles.downloadStyle} href={downloadTemplet} download={downloadTemplet} target="_blank" >下载设备信息导入模板</CneButton>
-          <CneButton className={styles.import} onClick={this.showModal} loading={this.props.importLoading} >导入</CneButton>
+          <CneButton lengthMode="short" className={styles.import} onClick={this.showModal} loading={this.props.importLoading} >导入</CneButton>
           <CneButton
+            lengthMode="short"
             disabled={deviceList.length === 0}
             className={styles.exportInfo}
             onClick={this.toExport}
             loading={exportLoading}
           >导出</CneButton>
-          <CneButton onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</CneButton>
+          <CneButton lengthMode="short" onClick={this.deleteStationDevice} className={styles.exportInfo} disabled={!stationCode}>清除设备</CneButton>
         </div> : <div />}
         <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} />
         {showModal ? <ImportDevice {...this.props} showModal={showModal} cancelModal={this.cancelModal} allStationBaseInfo={allStationBaseInfo} /> : ''}

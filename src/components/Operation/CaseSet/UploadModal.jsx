@@ -108,7 +108,7 @@ class UploadModal extends React.Component {
                 </Upload>
               )}
             </FormItem>
-            <CneButton disabled={fileList.length === 0} className={styles.confireImport} htmlType="submit" onClick={this.handleSubmit}>确认导入</CneButton>
+            <CneButton lengthMode="short"  disabled={fileList.length === 0} className={styles.confireImport} htmlType="submit" onClick={this.handleSubmit}>确认导入</CneButton>
           </Form>
         </Modal>
       </div>

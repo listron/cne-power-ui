@@ -212,7 +212,7 @@ class IntelligentTable extends Component {
       },
       {
         title: '故障代码',
-        width: '15%',
+        width: '14%',
         textAlign: 'left',
         dataIndex: 'faultCode',
         render: (text) => {
@@ -258,7 +258,7 @@ class IntelligentTable extends Component {
         className: styles.likeCount,
       }, {
         title: '操作',
-        width: '6%',
+        width: '7%',
         dataIndex: 'handler',
         className: styles.handler,
         render: (text, record, index) => (
@@ -283,13 +283,13 @@ class IntelligentTable extends Component {
           <div className={styles.leftPart}>
             {editRight &&
               <React.Fragment>
-                <CneButton className={styles.addHandler} onClick={this.addIntelligent}>
+                <CneButton lengthMode="short" className={styles.addHandler} onClick={this.addIntelligent}>
                   <div className={styles.icon}>
                       <span className={'iconfont icon-newbuilt'} />
                   </div> 添加
                 </CneButton>
-                <CneButton className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</CneButton>
-                <CneButton className={styles.importHandler} onClick={this.showModal}>批量导入</CneButton>
+                <CneButton lengthMode="short" className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</CneButton>
+                <CneButton lengthMode="short" className={styles.importHandler} onClick={this.showModal}>批量导入</CneButton>
                 <CneButton className={styles.exportHandler} onClick={this.downLoad} loading={templateLoading}>下载导入模板</CneButton>
               </React.Fragment>
             }

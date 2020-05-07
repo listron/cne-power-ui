@@ -20,9 +20,6 @@
   }
   .partSearch {
     background-color: #f9f9f9;
-    .searchBtn{
-      width: 90px;
-    }
     .reset {
       color: $themeColor;
     }
@@ -42,6 +39,9 @@
       }
     }
   }
+  .intelligentTable {
+    padding-right: 1px;
+  }
   .tableFooter {
     background-color: #fff;
     .info {
@@ -60,9 +60,6 @@
       .icon {
         margin: 0 6px 0 0;
       }
-    }
-    .okBtn {
-      width: 90px;
     }
   }
 }

@@ -92,7 +92,6 @@
       .addHandler,
       .importHandler {
         margin-right: 16px;
-        width:90px;
       }
       .exportHandler {
         margin-right: 10px;
@@ -132,7 +131,9 @@
       span{
         display: flex;
         justify-content: space-around;
-
+        i {
+          font-size: 20px;
+        }
         i:hover{
           color: #f9b600;
         }
@@ -254,8 +255,7 @@
         margin-left: 80px;
       }
       .saveBtn {
-        margin-right: 10px;
-        width: 90px;
+        margin-right: 18px;
       }
     }
   }
@@ -327,7 +327,6 @@
       .likeBtn,
       .likedBtn {
         margin-left: 112px;
-        width: 90px;
       }
     }
   }

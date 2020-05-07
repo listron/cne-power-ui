@@ -318,11 +318,11 @@ class AddCaseForm extends React.Component {
             </div>
           }
           {showPage === 'add' && <div className={styles.submitStyle}>
-            <CneButton onClick={this.addsubmitForm} className={styles.submitBtn}>保存</CneButton>
+            <CneButton lengthMode="short"  onClick={this.addsubmitForm} className={styles.submitBtn}>保存</CneButton>
             <CneButton onClick={this.keepOnAdd} className={styles.keepOnAdd} >保存并继续添加</CneButton>
           </div>}
           {showPage === 'edit' && <div className={styles.submitStyle}>
-            <CneButton onClick={this.editsubmitForm} className={styles.submitBtn} >保存</CneButton>
+            <CneButton lengthMode="short"  onClick={this.editsubmitForm} className={styles.submitBtn} >保存</CneButton>
           </div>}
         </Form>
       </div>

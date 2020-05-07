@@ -17,7 +17,6 @@
 
     .searchBtn {
       margin: 0 16px;
-      width: 90px;
     }
 
     .entryPerson {
@@ -69,7 +68,6 @@
     .addButton {
       margin-right: 16px;
       display: flex;
-      width: 90px;
       padding: 0 15px 0 10px;
       .icon {
         margin: 0 16px 0 0;
@@ -92,16 +90,13 @@
     }
 
     .confireImport {
-      width: 90px;
       margin: 0 150px 0 157px;
-
     }
 
     .intoFile,
     .alldel,
     .downloadStyle {
       margin-right: 16px;
-      width: 90px;
     }
 
     .exportInfo {
@@ -119,6 +114,7 @@
     color: $themeColor;
     margin-right: 4px;
     padding: 4px;
+    font-size: 20px;
     &:last-child{
       margin-right: 0px;
     }

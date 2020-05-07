@@ -113,15 +113,16 @@ class CaseHandle extends React.Component {
       <div className={styles.caseHandle}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
         {caseHandleRight ? <div className={styles.leftHandler}>
-          <CneButton className={styles.addButton} onClick={this.showAddPage}>
+          <CneButton lengthMode="short" className={styles.addButton} onClick={this.showAddPage}>
             <div className={styles.icon}>
                 <span className={'iconfont icon-newbuilt'} />
             </div> 添加
           </CneButton>
-          <CneButton className={styles.alldel} disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </CneButton>
-          <CneButton className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </CneButton>
+          <CneButton lengthMode="short" className={styles.alldel} disabled={casePartTableData.length === 0 || selectedRowKeys.length === 0} onClick={this.deleteCasePart} > 批量删除 </CneButton>
+          <CneButton lengthMode="short" className={styles.intoFile} onClick={this.uploadFile}> 批量导入 </CneButton>
           {showUpload && <UploadModal {...this.props} showModal={showUpload} cancelModal={this.cancelModal} />}
           <CneButton
+            lengthMode="short" 
             className={styles.downloadStyle}
             href={downloadTemplet}
             download={downloadTemplet}

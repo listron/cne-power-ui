@@ -395,7 +395,7 @@ class AddIntelligent extends Component {
               )}
             </Form.Item>
             <div className={styles.actionBtn}>
-              <CneButton onClick={() => this.saveHandler(false)} className={styles.saveBtn}>保存</CneButton>
+              <CneButton lengthMode="short" onClick={() => this.saveHandler(false)} className={styles.saveBtn}>保存</CneButton>
               <CneButton onClick={() => this.saveHandler(true)} className={styles.saveAndAddHandler}>保存并继续添加</CneButton>
             </div>
           </Form>

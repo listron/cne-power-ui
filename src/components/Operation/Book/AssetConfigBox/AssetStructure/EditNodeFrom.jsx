@@ -156,8 +156,8 @@ class EditNodeFrom extends React.Component {
               </FormItem>
               <div className={styles.editSaveButton}>
                 {/*这里恢复是设置父节点和节点名为初始值，setFieldsValue */}
-                <CneButton className={styles.restore} onClick={this.recoveryForm} >恢复</CneButton>
-                <CneButton className={styles.saveButton} onClick={this.submitForm} >保存</CneButton>
+                <CneButton lengthMode="short" className={styles.restore} onClick={this.recoveryForm} >恢复</CneButton>
+                <CneButton lengthMode="short" className={styles.saveButton} onClick={this.submitForm} >保存</CneButton>
               </div>
             </Form>
 

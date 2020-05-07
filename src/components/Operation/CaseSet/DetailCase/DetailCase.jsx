@@ -152,9 +152,9 @@ class DetailCase extends React.Component {
               <div className={styles.infoName}></div>
               <div className={styles.infoValue} >
                 {likeCount === 0 ?
-                  <CneButton style={{ width: '90px' }} onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton>
+                  <CneButton lengthMode="short" onClick={this.likeBtn}>点赞<Icon type="like" /></CneButton>
                   :
-                  <CneButton style={{ width: '90px' }} disabled>已点赞<Icon type="like" /></CneButton>
+                  <CneButton lengthMode="short" disabled>已点赞<Icon type="like" /></CneButton>
                 }
               </div>
             </div>

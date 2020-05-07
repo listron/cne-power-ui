@@ -128,18 +128,19 @@ export default class HandleComponent extends Component {
     return (
       <div className={styles.handleRow}>
         {warehouseHandleRight ? <div className={styles.leftHandler}>
-          <CneButton className={styles.enterWarehouse} onClick={this.toInsert} disabled={insertDisable}>
+          <CneButton lengthMode="short" className={styles.enterWarehouse} onClick={this.toInsert} disabled={insertDisable}>
             <div className={styles.icon}>
                 <span className={'iconfont icon-newbuilt'} />
             </div> 入库
           </CneButton>
-          <CneButton className={styles.widthBtn}  disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</CneButton>
+          <CneButton lengthMode="short" className={styles.widthBtn}  disabled={!(checkedStocks.length > 0)} onClick={this.showDelModal} loading={delStockLoading}>删除</CneButton>
           {tabName === 'spares' && <CneButton
+            lengthMode="short"
             className={styles.widthBtn} 
             disabled={!(checkedStocks.length > 0)}
             onClick={this.showStockMax}
           >设置阈值</CneButton>}
-          <CneButton  className={styles.widthBtn} onClick={this.toImport}>导入</CneButton>
+          <CneButton  lengthMode="short" className={styles.widthBtn} onClick={this.toImport}>导入</CneButton>
           <CneButton onClick={this.exportTemplete} loading={exportTempleteLoading}>下载导入模板</CneButton>
         </div> : <div />}
         <CommonPagination

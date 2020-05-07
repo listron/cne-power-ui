@@ -352,19 +352,19 @@ class TableList extends Component {
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        {addRight && <CneButton className={styles.workflow} onClick={this.addWorkFlow}>
+                        {addRight && <CneButton lengthMode="short" className={styles.workflow} onClick={this.addWorkFlow}>
                             <div className={styles.icon}>
                                 <span className={'iconfont icon-newbuilt'} />
                             </div> 工作票
                         </CneButton>}
-                        {handleRight && <CneButton  className={styles.cbtn} disabled={!review}
+                        {handleRight && <CneButton lengthMode="short" className={styles.cbtn} disabled={!review}
                             onClick={() => { this.handleBatch('review'); }}>审核</CneButton>}
-                        {handleRight && <CneButton className={styles.cbtn} disabled={!complete}
+                        {handleRight && <CneButton lengthMode="short" className={styles.cbtn} disabled={!complete}
                             onClick={() => { this.handleBatch('complete'); }}>消票</CneButton>}
                         {handleRight && stopRight.map((e) => {
                             if (e.nodeName) {
                                 return (
-                                    <CneButton className={styles.cbtn} disabled={!obsolete}
+                                    <CneButton lengthMode="short" className={styles.cbtn} disabled={!obsolete}
                                         onClick={() => { this.handleBatch('obsolete', e.nodeCode); }} key={e.nodeCode} >
                                         {e.nodeName}
                                     </CneButton>

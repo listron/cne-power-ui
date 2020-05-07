@@ -35,7 +35,6 @@
   }
   .export{
     margin-right: 24px;
-    width: 90px;
   }
   :global{
     .ant-select{
@@ -59,7 +58,6 @@
 
     .enterWarehouse {
       margin-right: 16px;
-      width: 90px;
       display: flex;
       padding: 0 15px 0 10px;
       .icon {
@@ -68,7 +66,6 @@
     }
     .widthBtn {
       margin-right: 16px;
-      width: 90px;
     }
   }
 }
@@ -124,7 +121,6 @@
   }
   .uploader {
     .selectFile {
-      width: 90px;
     }
     .text{
       color: $lightColor;

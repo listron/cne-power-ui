@@ -132,6 +132,7 @@ class ConditionSearch extends Component {
           </Select>}
         </div>
         {warehouseHandleRight && <CneButton
+          lengthMode="short"
           className={styles.export}
           disabled={!selectedWarehouse || stocksList.length === 0}
           onClick={this.exportStock}

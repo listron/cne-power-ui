@@ -127,13 +127,13 @@ class ImportDevice extends Component {
                   fileList={fileList}
                   showUploadList={{showPreviewIcon:false,showRemoveIcon:true}}
                 >
-                  <CneButton style={{width:90}}>选择文件</CneButton>
+                  <CneButton lengthMode="short">选择文件</CneButton>
                   <span> 支持xls、xlsx文件</span>
                 </Upload>
               )}
             </FormItem>
             <FormItem wrapperCol={{ span: 12, offset: 12 }} >
-              <CneButton style={{width:90}} htmlType="submit" onClick={this.handleSubmit}>导入</CneButton>
+              <CneButton lengthMode="short" htmlType="submit" onClick={this.handleSubmit}>导入</CneButton>
             </FormItem>
           </Form>
 

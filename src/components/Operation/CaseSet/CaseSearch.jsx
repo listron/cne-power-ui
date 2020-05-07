@@ -179,7 +179,7 @@ class CaseSearch extends React.Component {
               return <Option key={e.userId} value={e.userId}>{e.userName}</Option>;
             })}
           </Select>
-          <CneButton className={styles.searchBtn} onClick={this.onSearch}>查询</CneButton>
+          <CneButton lengthMode="short" className={styles.searchBtn} onClick={this.onSearch}>查询</CneButton>
           {showResetBtn && <span className={styles.reset} onClick={this.onReset}>重置</span>}
         </div>
 

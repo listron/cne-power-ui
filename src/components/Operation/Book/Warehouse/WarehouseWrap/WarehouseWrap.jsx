@@ -231,8 +231,9 @@ class WarehouseWrap extends Component {
                   )}
                 </FormItem>
                 <CneButton
+                  lengthMode="short"
                   loading={warehouseAddLoading}
-                  style={{ width: '90px', minWidth: '68px', marginTop: '4px' }}
+                  style={{ minWidth: '68px', marginTop: '4px' }}
                   htmlType="submit"
                 >
                   添加
@@ -253,7 +254,7 @@ class WarehouseWrap extends Component {
         </div>
         <div className={styles.warehouseHandle}>
           {warehouseHandleRight ? <CneButton
-            style={{ width: '90px' }}
+            lengthMode="short"
             onClick={() => {
               return this.selectDelFunc();
             }}

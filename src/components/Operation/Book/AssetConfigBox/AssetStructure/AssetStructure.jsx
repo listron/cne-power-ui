@@ -194,7 +194,7 @@ class AssetStructure extends React.Component {
       textAlign: 'center',
       dataIndex: 'handle',
       render: (text, record) => {
-        return record.isBuild ? <span title="删除" className="iconfont icon-del" onClick={() => this.deleteNode(record)}></span> : '';
+        return record.isBuild ? <span title="删除" className="iconfont icon-del" style={{fontSize:'20px'}} onClick={() => this.deleteNode(record)}></span> : '';
       },
     }) : baseColumns;
     const { clientHeight } = document.body;
@@ -224,6 +224,7 @@ class AssetStructure extends React.Component {
           </div>
           <div className={styles.rightNode}>
             {operateRight && <CneButton
+              lengthMode="short" 
               onClick={this.addDevice}
               className={styles.plusButton}
               disabled={addNode}
