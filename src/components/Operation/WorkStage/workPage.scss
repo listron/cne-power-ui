@@ -55,42 +55,34 @@
       @include overflowText();
     }
     .taskTypeName{
-      width: calc((100vw - 640px) * 0.27);
+      width: calc((100vw - 230px) * 0.14);
     }
     .taskTypeNameText{
-      max-width: calc((100vw - 640px) * 0.27 - 20px);
+      max-width: calc((100vw - 230px) * 0.14 - 20px);
     }
     .taskDesc{
-      width: calc((100vw - 640px) * 0.42);
+      width: calc((100vw - 230px) * 0.2);
     }
     .taskDescText{
-      max-width: calc((100vw - 640px) * 0.42);
-    }
-    @media screen and (min-width: 1680px){
-      .taskDesc{
-        width: calc((100vw - 640px) * 0.27);
-      }
-      .taskDescText{
-        max-width: calc((100vw - 640px) * 0.27);
-      }
+      max-width: calc((100vw - 230px) * 0.2);
     }
     .stationName{
-      width: calc((100vw - 640px) * 0.16);
+      width: calc((100vw - 230px) * 0.14);
     }
     .stationNameText{
-      max-width: calc((100vw - 640px) * 0.16);
+      max-width: calc((100vw - 230px) * 0.14);
     }
     .completeTime{
-      width: calc((100vw - 640px) * 0.20);
+      width: calc((100vw - 230px) * 0.14);
     }
     .handleUser{
-      width: calc((100vw - 640px) * 0.15);
+      width: calc((100vw - 230px) * 0.14);
     }
     .handleUserText{
-      max-width: calc((100vw - 640px) * 0.15);
+      max-width: calc((100vw - 230px) * 0.14);
     }
     .completeStatus{
-      width: calc((100vw - 640px) * 0.16);
+      width: calc((100vw - 230px) * 0.14);
     }
     .handleRow{
       :global{
