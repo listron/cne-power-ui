@@ -66,6 +66,14 @@
     .taskDescText{
       max-width: calc((100vw - 640px) * 0.42);
     }
+    @media screen and (min-width: 1680px){
+      .taskDesc{
+        width: calc((100vw - 640px) * 0.27);
+      }
+      .taskDescText{
+        max-width: calc((100vw - 640px) * 0.27);
+      }
+    }
     .stationName{
       width: calc((100vw - 640px) * 0.16);
     }
