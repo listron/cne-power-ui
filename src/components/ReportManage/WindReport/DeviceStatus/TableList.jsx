@@ -141,6 +141,7 @@ class TableList extends Component {
     }, {
       title: '次数',
       dataIndex: 'num',
+      className: styles.num,
       sorter: true,
       width: '6.5%',
       textAlign: 'right',
