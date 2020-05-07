@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14410327",
+      "name": "downlook",
+      "font_class": "downlook",
+      "unicode": "e742",
+      "unicode_decimal": 59202
+    },
+    {
       "icon_id": "14337300",
       "name": "fenx",
       "font_class": "fenx",

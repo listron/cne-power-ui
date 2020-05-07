@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FilterConditions from '@components/Common/FilterConditions/FilterCondition';
 import styles from './eventListPage.scss';
+import Cookie from 'js-cookie';
 
 class DiagnoseFilter extends Component {
   static propTypes = {
@@ -82,7 +83,7 @@ class DiagnoseFilter extends Component {
         this.props.getEventtypes(param);
       }
       const [startTime, endTime] = rangeTimes || [];
-      newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
+      newListParams = { // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件,
         ...listParams,
         stationCode,
         finished: preFinish,
@@ -137,11 +138,12 @@ class DiagnoseFilter extends Component {
       { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: statusArray },
       { name: '归档事件', type: 'switch', typeName: 'finished' },
     ];
+    const enterpriseCode = Cookie.get('enterpriseCode');
     return (
       <div className={styles.diagnoseFilter} >
         <FilterConditions
           onChange={this.filterConditionChange}
-          option={options}
+          option={enterpriseCode === '1010' && pageKey !== 'data' ? options.filter(cur => cur.name !== '事件状态') : options}
           filterBoxType={filterBoxType}
           onFilterBoxTypeChange={this.onFilterBoxTypeChange}
           value={{

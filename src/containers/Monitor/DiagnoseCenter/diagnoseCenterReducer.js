@@ -9,6 +9,7 @@ const diagnoseCenterAction = {
   getEventsAnalysis: Symbol('getEventsAnalysis'),
   editEventsStatus: Symbol('editEventsStatus'),
   getLinkageList: Symbol('getLinkageList'),
+  getEamRegisterWaring: Symbol('getEamRegisterWaring'),
 
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -17,7 +18,7 @@ const diagnoseCenterAction = {
 
 const initState = {
   pageKey: 'alarm', // 激活页 alarm告警事件 diagnose诊断时间 data数据事件
-  showAnalysisPage: false, // 展示侧边分析页 
+  showAnalysisPage: false, // 展示侧边分析页
   filterBoxType: 'items', // 手动控制筛选条件的显隐; 默认items, 切换tabs变为none
   analysisEvent: {}, // 选中用于分析的信息
   listParams: {
@@ -31,7 +32,7 @@ const initState = {
     startTime: null, //  起始时间
     endTime: null, // 终止事件
     hassum: 1, // 1包括汇总信息, 0不包括
-  }, // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件, 
+  }, // 列表请求参数: 电站, 设备类型, 发生时间, 告警事件, 事件状态, 归档事件,
   listPage: {
     pageNum: 1, // 页码
     pageSize: 10, // 页容量

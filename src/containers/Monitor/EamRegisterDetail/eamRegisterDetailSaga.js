@@ -9,6 +9,42 @@ const {basePaths, APISubPaths} = path;
 const {APIBasePath} = basePaths;
 const {monitor} = APISubPaths;
 
+function* getEamDiagList(action) { // 查询告警登记记录
+  const {payload} = action;
+  const url = `${APIBasePath}${monitor.getEamDiagList}/${payload.waringId}`;
+  try {
+    yield put({
+      type: eamRegisterDetailAction.changeStore,
+      payload: {
+        diagLoading: true,
+      },
+    });
+    const response = yield call(axios.post, url, {});
+    if (response.data.code === '10000') {
+      yield put({
+        type: eamRegisterDetailAction.changeStore,
+        payload: {
+          diagLoading: false,
+          eamDiagList: response.data.data,
+        },
+      });
+
+
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield put({
+      type: eamRegisterDetailAction.changeStore,
+      payload: {
+        diagLoading: false,
+      },
+    });
+    console.log(e);
+  }
+}
+
 function* getEamFaultDetails(action) { // 获取EAM故障详情
   const {payload} = action;
   const url = `${APIBasePath}${monitor.getEamFaultDetails}/${payload.faultId}`;
@@ -16,7 +52,7 @@ function* getEamFaultDetails(action) { // 获取EAM故障详情
     yield put({
       type: eamRegisterDetailAction.changeStore,
       payload: {
-        loading: true,
+        detailLoading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -24,7 +60,7 @@ function* getEamFaultDetails(action) { // 获取EAM故障详情
       yield put({
         type: eamRegisterDetailAction.changeStore,
         payload: {
-          loading: false,
+          detailLoading: false,
           eamFaultData: response.data.data,
           workOrderList: response.data.data.workOrders || [],
         },
@@ -39,7 +75,7 @@ function* getEamFaultDetails(action) { // 获取EAM故障详情
     yield put({
       type: eamRegisterDetailAction.changeStore,
       payload: {
-        loading: false,
+        detailLoading: false,
       },
     });
     console.log(e);
@@ -53,7 +89,7 @@ function* getEamDefectDetails(action) { // 获取EAM缺陷详情
     yield put({
       type: eamRegisterDetailAction.changeStore,
       payload: {
-        loading: true,
+        detailLoading: true,
       },
     });
     const response = yield call(axios.get, url);
@@ -61,7 +97,7 @@ function* getEamDefectDetails(action) { // 获取EAM缺陷详情
       yield put({
         type: eamRegisterDetailAction.changeStore,
         payload: {
-          loading: false,
+          detailLoading: false,
           eamDefectData: response.data.data,
           workOrderList: response.data.data.workOrders || [],
         },
@@ -76,7 +112,7 @@ function* getEamDefectDetails(action) { // 获取EAM缺陷详情
     yield put({
       type: eamRegisterDetailAction.changeStore,
       payload: {
-        loading: false,
+        detailLoading: false,
       },
     });
     console.log(e);
@@ -84,6 +120,7 @@ function* getEamDefectDetails(action) { // 获取EAM缺陷详情
 }
 
 export function* watchEamRegisterDetail() {
+  yield takeLatest(eamRegisterDetailAction.getEamDiagList, getEamDiagList);
   yield takeLatest(eamRegisterDetailAction.getEamFaultDetails, getEamFaultDetails);
   yield takeLatest(eamRegisterDetailAction.getEamDefectDetails, getEamDefectDetails);
 }

@@ -4,6 +4,7 @@ import moment from 'moment';
 import styles from './eventListPage.scss';
 import { Link } from 'react-router-dom';
 import {stringify} from 'qs';
+import Cookie from 'js-cookie';
 
 // diagWarningId	string	事件Id
 // eventCode	string	标准事件编码
@@ -30,6 +31,8 @@ import {stringify} from 'qs';
 const columnFilter = (totalColumn, finished) => totalColumn.filter(e => (e.dataIndex !== (finished > 0 ? 'statusName' : 'statusCode')));
 
 const eventLevelArray = ['--', '一级', '二级', '三级', '四级'];
+
+const enterpriseCode = Cookie.get('enterpriseCode');
 
 const statusIcon = (record) => {
   const { statusName } = record;
@@ -198,7 +201,9 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
     },
   ];
   // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
-  return columnFilter(totalColumn, finished);
+  // 判断是否是协和新能源，去掉事件状态列
+  const newTotalColumn = enterpriseCode === '1010' ? totalColumn.filter(cur => cur.title !== '事件状态') : totalColumn;
+  return columnFilter(newTotalColumn, finished);
 };
 
 export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件表头 finishStatus 是否归档; handlers 交互事件
@@ -304,7 +309,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
             className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
           />}
-          {!record.eamStatus && <i
+          {record.eamStatus && <i
             title="EAM查看"
             className={`iconfont icon-keam ${styles.handleAnalysis}`}
             onClick={() => handlers[3] && handlers[3]({
@@ -321,7 +326,9 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       ),
     },
   ];
-  return columnFilter(totalColumn, finished);
+  // 判断是否是协和新能源，去掉事件状态列
+  const newTotalColumn = enterpriseCode === '1010' ? totalColumn.filter(cur => cur.title !== '事件状态') : totalColumn;
+  return columnFilter(newTotalColumn, finished);
 };
 
 export const createDataColumn = (finished, ...handlers) => { //数据事件表头 finishStatus 是否归档; handlers 交互事件

@@ -14,13 +14,16 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 class EamRegisterDetail extends Component {
   static propTypes = {
     history: PropTypes.object,
-    loading: PropTypes.bool,
+    diagLoading: PropTypes.bool,
+    detailLoading: PropTypes.bool,
     theme: PropTypes.string,
     getEamFaultDetails: PropTypes.func,
     getEamDefectDetails: PropTypes.func,
+    getEamDiagList: PropTypes.func,
     eamFaultData: PropTypes.object,
     eamDefectData: PropTypes.object,
     workOrderList: PropTypes.array,
+    eamDiagList: PropTypes.array,
   };
 
   constructor(props){
@@ -29,19 +32,20 @@ class EamRegisterDetail extends Component {
     const { search, hash } = history.location;
     // 因为设备名称里面带了#  所以判断hash是否为空
     const urlSearch = hash ? `${search}${hash}` : search;
-    const { type } = searchUtil(urlSearch).parse(); // EAM查看信息
+    const { type, waringId } = searchUtil(urlSearch).parse(); // EAM查看信息
     this.state = {
       scroll: false,
       baseFlag: true,
       tableFlag: true,
       type,
+      waringId,
     };
   }
 
   componentDidMount() {
     const main = document.getElementById('main');
-    const { type } = this.state;
-    const { getEamFaultDetails, getEamDefectDetails } = this.props;
+    const { type, waringId } = this.state;
+    const { getEamFaultDetails, getEamDefectDetails, getEamDiagList } = this.props;
     // type：1位故障详情，2位缺陷详情
     if(type === '1') {
       getEamFaultDetails({
@@ -53,6 +57,10 @@ class EamRegisterDetail extends Component {
         defectId: '缺YCF2020040007',
       });
     }
+    // 查询告警登记记录
+    getEamDiagList({
+      waringId,
+    });
     // 监听页面滚动
     main.addEventListener('scroll', this.bindScroll);
   }
@@ -128,11 +136,17 @@ class EamRegisterDetail extends Component {
     workOrderNo && history.push(`/operation/eamDetails?workOrderNo=${workOrderNo}`);
   };
 
+  // 查看EAM故障列表
+  lookEamDiagFunc = (record) => {
+    console.log(record, 'record');
+  };
+
   render() {
     const { scroll, baseFlag, tableFlag, type } = this.state;
     const {
-      loading,
       theme,
+      diagLoading,
+      detailLoading,
       eamFaultData: { // 获取EAM故障详情
         faultNo,
         stationName1: faultStationName1,
@@ -176,6 +190,7 @@ class EamRegisterDetail extends Component {
         woprofess,
       },
       workOrderList,
+      eamDiagList,
     } = this.props;
     const listColumn = [
       {
@@ -204,37 +219,44 @@ class EamRegisterDetail extends Component {
         width: '5%',
         align: 'center',
         className: styles.textAlignName,
-        render: (text, record) => (<div title="查看" className={styles.listLookBox} >
-          <i onClick={() => this.lookEamDetailsFunc(record)} className="iconfont icon-look" />
-        </div>),
+        render: (text, record) => (
+          <div title="查看" className={styles.listLookBox} >
+            <i onClick={() => this.lookEamDetailsFunc(record)} className="iconfont icon-look" />
+          </div>
+        ),
       },
     ];
     const faultColumn = [
       {
         title: '故障编号',
         width: '25%',
-        dataIndex: '1',
+        dataIndex: 'registerNo',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单编号',
-        dataIndex: '2',
+        dataIndex: 'workOrderNo',
         width: '25%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '故障类型',
-        dataIndex: '3',
+        dataIndex: 'faultType',
         width: '25%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '故障开始时间',
-        dataIndex: '4',
+        dataIndex: 'faultStartTime',
         width: '15%',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        render: (text) => (<div title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
       }, {
         title: '查看',
         dataIndex: '5',
         width: '10%',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        className: styles.textAlignName,
+        render: (text, record) => (
+          <div title="查看" >
+            <i onClick={() => this.lookEamDiagFunc(record)} className="iconfont icon-downlook" />
+          </div>
+        ),
       },
     ];
     return (
@@ -254,9 +276,7 @@ class EamRegisterDetail extends Component {
             <i className="iconfont icon-fanhui" />
           </div>
         </div>
-        {loading ? <div className={styles.eamRegisterLoading}>
-          <Spin />
-        </div> : <div className={styles.eamRegisterContent}>
+        <div className={styles.eamRegisterContent}>
           <div className={styles.eamRegisterCenter}>
             <div className={styles.eamTopTitle}>
               <div>
@@ -264,13 +284,14 @@ class EamRegisterDetail extends Component {
                 <span>EAM故障列表</span>
               </div>
               <div>
-                {`合计：${111}`}
+                {`合计：${eamDiagList ? eamDiagList.length : 0}`}
               </div>
             </div>
             <div className={styles.faultListBox}>
               <CneTable
+                loading={diagLoading}
                 columns={faultColumn}
-                dataSource={[] || []}
+                dataSource={eamDiagList || []}
                 rowKey={(record, index) => index || 'key'}
                 pagination={false}
                 locale={{ emptyText: '暂无数据'}}
@@ -280,7 +301,9 @@ class EamRegisterDetail extends Component {
               <i className="iconfont icon-gdxq" />
               <span>{`EAM ${type === '1' ? '故障' : '缺陷'}记录详情`}</span>
             </div>
-            <div className={styles.eamRegisterWrap}>
+            {detailLoading ? <div className={styles.detailsLoadingBox}>
+              <Spin />
+            </div> : <div className={styles.eamRegisterWrap}>
               {type === '1' && (
                 <div className={styles.eamRegisterInfoBox}>
                   <div className={styles.tableBar}>
@@ -559,6 +582,7 @@ class EamRegisterDetail extends Component {
                 </div>
                 {tableFlag && <div className={styles.commonWrap}>
                   <CneTable
+                    loading={detailLoading}
                     columns={listColumn}
                     dataSource={workOrderList || []}
                     rowKey={(record, index) => index || 'key'}
@@ -567,9 +591,9 @@ class EamRegisterDetail extends Component {
                   />
                 </div>}
               </div>
-            </div>
+            </div>}
           </div>
-        </div>}
+        </div>
         <CneFooter />
       </div>
     );
@@ -583,6 +607,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   resetStore: () => dispatch({ type: eamRegisterDetailAction.resetStore }),
   changeStore: payload => dispatch({ type: eamRegisterDetailAction.changeStore, payload }),
+  getEamDiagList: payload => dispatch({ type: eamRegisterDetailAction.getEamDiagList, payload }),
   getEamFaultDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamFaultDetails, payload }),
   getEamDefectDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamDefectDetails, payload }),
 });

@@ -3,6 +3,8 @@ const eamRegisterDetailAction = {
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
   resetStore: Symbol('resetStore'),
+  // 查询告警登记记录
+  getEamDiagList: Symbol('getEamDiagList'),
   // 获取EAM故障登记详情
   getEamFaultDetails: Symbol('getEamFaultDetails'),
   // 获取EAM故障缺陷详情
@@ -10,7 +12,8 @@ const eamRegisterDetailAction = {
 };
 
 const initState = immutable.fromJS({
-  loading: false,
+  diagLoading: false,
+  detailLoading: false,
   eamFaultData: { // 获取EAM故障详情
     faultNo: '',
     stationName1: '',
@@ -54,6 +57,7 @@ const initState = immutable.fromJS({
     woprofess: '',
   },
   workOrderList: [], // 子工单列表
+  eamDiagList: [], // 查询告警登记记录
 });
 
 const eamRegisterDetail = (state = initState, action) => {

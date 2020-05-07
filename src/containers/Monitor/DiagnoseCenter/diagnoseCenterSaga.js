@@ -253,6 +253,29 @@ function * getLinkageList({payload = {}}){ // 诊断分析-线型图-联动决�
   }
 }
 
+function * getEamRegisterWaring({payload = {}}){ // 诊断事件派发至缺陷登记
+  const url = `${APIBasePath}${monitor.getEamRegisterWaring}`;
+  // 保存参数
+  const objParams = {};
+  // 过滤func函数
+  Object.keys(payload).forEach((key) => {
+    if (key !== 'func') {
+      objParams[key] = payload[key];
+    }
+  });
+  try{
+    yield call(easyPut, 'changeStore');
+    const response = yield call(request.post, url, objParams);
+    if (response.code === '10000') {
+      payload.func();
+      message.success('已派发');
+      console.log(11111);
+    } else { throw response.message; }
+  } catch(error){
+    message.error(error.message);
+  }
+}
+
 export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.getEventstatus, getEventstatus);
   yield takeEvery(diagnoseCenterAction.getEventtypes, getEventtypes);
@@ -262,5 +285,6 @@ export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.getEventsAnalysis, getEventsAnalysis);
   yield takeLatest(diagnoseCenterAction.editEventsStatus, editEventsStatus);
   yield takeLatest(diagnoseCenterAction.getLinkageList, getLinkageList);
+  yield takeLatest(diagnoseCenterAction.getEamRegisterWaring, getEamRegisterWaring);
 }
 

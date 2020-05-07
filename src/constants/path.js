@@ -605,6 +605,8 @@ export default {
       getLinkageList: '/v4/diag/warning/relevant', //	获取多故障联动告警列表
       getEamFaultDetails: '/v4/eam/register/fault/detail', // 获取EAM故障详情
       getEamDefectDetails: '/v4/eam/register/defect/detail', // 获取EAM缺陷详情
+      getEamRegisterWaring: '/v4/eam/register/waring/manual', // 诊断事件派发至缺陷登记
+      getEamDiagList: '/v4/eam/register/diag', // 查询告警登记记录
     },
     other: {
       editPassword: '/v3/user/password', // 更变密码

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import CneTable from '@components/Common/Power/CneTable';
 import CneTips from '@components/Common/Power/CneTips';
+import moment from 'moment';
 import CommonPagination from '@components/Common/CommonPagination';
 import { createAlarmColumn, createDiagnoseColumn, createDataColumn } from './listColumns';
 import IgnoreModal from './IgnoreModal';
 import styles from './eventListPage.scss';
+import Cookie from 'js-cookie';
 
 const { Option } = Select;
 
@@ -27,6 +29,7 @@ class DiagnoseList extends Component {
     getDiagnoseList: PropTypes.func,
     editEventsStatus: PropTypes.func,
     getLinkageList: PropTypes.func,
+    getEamRegisterWaring: PropTypes.func,
     history: PropTypes.object,
   }
 
@@ -123,7 +126,7 @@ class DiagnoseList extends Component {
 
   // EAM查看
   lookFunc = (data) => {
-    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, type } = data;
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, diagWarningId, type } = data;
     const { history } = this.props;
     // 展示信息
     const params = {
@@ -134,7 +137,7 @@ class DiagnoseList extends Component {
       stationName,
     };
     // type：1位故障详情，2位缺陷详情
-    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}&type=${type}`);
+    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}&waringId=${diagWarningId}&type=${type}`);
   };
 
   cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })
@@ -156,12 +159,39 @@ class DiagnoseList extends Component {
   }
 
   onSelectedHandle = (value) => {
-    const { selectedRows } = this.props;
+    const { selectedRows, getEamRegisterWaring, listParams, listPage, getDiagnoseList } = this.props;
     const handleKeys = ['ignore', 'delete'];
+    const enterpriseCode = Cookie.get('enterpriseCode');
     const diagWarningIds = selectedRows.map(e => e.diagWarningId);
     if (value === 'handout') {
-      const { stationCode } = selectedRows[0] || {};
-      window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
+      // 判断是否是协和新能源
+      if(enterpriseCode === '1010') {
+        // 只能选择一个
+        if(diagWarningIds.length > 1){
+          message.error('仅支持单条组串低效事件推送至EAM');
+        }
+        if(diagWarningIds.length <= 1){
+          const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime } = selectedRows[0];
+          // 派发
+          getEamRegisterWaring({
+            deviceFullcode,
+            level: warningLevel,
+            waringId: diagWarningId,
+            detail: pointValueDesc,
+            detectedTime: moment(beginTime).format('YYYY-MM-DD HH:mm:ss'),
+            func: () => {
+              // 清空已选
+              this.handleCreator([]);
+              // 请求当前列表
+              getDiagnoseList({...listParams, ...listPage});
+            },
+          });
+        }
+      }
+      if(enterpriseCode !== '1010') {
+        const { stationCode } = selectedRows[0] || {};
+        window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
+      }
     }
     const showIgoreModal = selectedRows.every(info => ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(info.eventCode));
     if (showIgoreModal) {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
@@ -223,7 +253,7 @@ class DiagnoseList extends Component {
       };
     }
     // 已派发3, 可跳转至消缺工单
-    const selectCodesSet = new Set(selectedRows.map(e => e.deviceFullcode)); // 筛选属于同设备的
+    const selectCodesSet = new Set(selectedRows.map(e => e.stationCode)); // 筛选属于同设备的
     const handoutDisable = selectCodesSet.size > 1 || selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理, 待确认且选中的属于同一个电站 可派发操作;
     const ignoreDisable = selectedRows.some(e => ![1, 2].includes(e.statusCode)); // 未处理1, 待确认2 可忽略操作
     const deleteDisable = selectedRows.some(e => ![1, 2, 7].includes(e.statusCode)); // 未处理1, 待确认2, 已忽略7 可删除操作
@@ -250,7 +280,7 @@ class DiagnoseList extends Component {
 
   render() {
     const { tipType, needIgoreModal, deleteRecords } = this.state;
-    const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows, statusChangeText } = this.props;
+    const { listPage, listParams, totalNum, diagnoseListData, diagnoseListLoading, diagnoseListError, selectedRows, statusChangeText, pageKey } = this.props;
     const { pageNum, pageSize, sortField, sortMethod } = listPage || {};
     const { finished } = listParams;
     const {
@@ -259,6 +289,7 @@ class DiagnoseList extends Component {
       deleteDisable,
       selectDisable,
     } = this.handleCreator(selectedRows);
+    const enterpriseCode = Cookie.get('enterpriseCode');
     return (
       <div className={styles.diagnoseList} >
         <div className={styles.pagination}>
@@ -269,9 +300,11 @@ class DiagnoseList extends Component {
             onChange={this.onSelectedHandle}
             dropdownClassName={styles.handleSelects}
           >
-            <Option disabled={handoutDisable} value="handout">
-              <span className="iconfont icon-paifa" />派发
-            </Option>
+            {(enterpriseCode === '1010' && pageKey === 'alarm') ? '' : (
+              <Option disabled={handoutDisable} value="handout">
+                <span className="iconfont icon-paifa" />派发
+              </Option>
+            )}
             <Option disabled={ignoreDisable} value="ignore">
               <span className="iconfont icon-hulue" />忽略
             </Option>
@@ -299,6 +332,13 @@ class DiagnoseList extends Component {
           rowSelection={ !!finished ? null : {
             selectedRowKeys: selectedRows.map(e => e.diagWarningId),
             onChange: this.onRowSelect,
+            getCheckboxProps: record => ({
+              // 首先判断是否是协和新能源和当前诊断事件页
+              // 不等于组串低效的禁止选择
+              // 有EAM查看的禁止选择
+              disabled: (enterpriseCode === '1010' && pageKey === 'diagnose') ? (record.eventName !== '组串低效' && record.eamStatus !== 1) : false,
+              name: record.eventName,
+            }),
           }}
         />
         {tipType !== 0 && <CneTips
