@@ -548,12 +548,12 @@ class ChartLine extends PureComponent {
         {
           show: true,
           height: 20,
-          filterMode: 'none',
+          // filterMode: 'none',
           bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         }, {
           type: 'inside',
-          filterMode: 'none',
+          // filterMode: 'none',
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         },
       ];

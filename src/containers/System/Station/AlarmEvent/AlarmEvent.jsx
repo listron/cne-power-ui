@@ -30,7 +30,6 @@ class AlarmEvent extends Component {
     //只有在告警中心，跳转到本页面的时候，才触发一下处理
     const search = this.props.history.location.search || '';
     const paramData = searchUtil(search).parse() || {};
-    // console.log(paramData);
     const {source} = paramData;
     if (source && source === 'diagnoseCenter') { //告警中心进入
       const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = paramData;
@@ -41,8 +40,7 @@ class AlarmEvent extends Component {
     } else if (source && source === 'stationManage') {//电站管理进入
       const {deviceModeCode, manufactorCode, diagModeVersionId, deviceTypeCode} = paramData;
       if (deviceModeCode && manufactorCode && diagModeVersionId && deviceTypeCode) {
-        const {getVersionEvent, changeStore} = this.props;
-        changeStore({
+        this.props.changeStore({
             deviceTypeCode: parseInt(deviceTypeCode, 10),
             diagModeVersionId,
             deviceModeCode,
@@ -50,10 +48,10 @@ class AlarmEvent extends Component {
             selectedNodesKey: `${manufactorCode}_${deviceModeCode}_${diagModeVersionId}`,
             expandedKeys: [`${manufactorCode}`, `${manufactorCode}_${deviceModeCode}`],
           });
-        getVersionEvent({diagModeVersionId});
+          this.props.getAlarmEvent({ deviceTypeCode, diagModeVersionId });
+          this.props.getVersionEvent({ diagModeVersionId });
       }
     }
-
   }
 
   componentWillUnmount() {
