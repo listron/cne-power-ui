@@ -12,7 +12,6 @@ import CneButton from '@components/Common/Power/CneButton';
 import LinkageList from './LinkageList';
 import moment from 'moment';
 
-
 class EventAnalysisPage extends PureComponent {
 
   static propTypes = {

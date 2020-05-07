@@ -313,12 +313,6 @@
           margin-right: 5px;
         }
       }
-      .noWarnItem{
-        display: none;
-      }
-      .connected{
-        display: none;
-      }
     }
     .legends{
       display: flex;
@@ -552,11 +546,6 @@
       .warnedItem{
         .tipName, .tipValue{
           color: #f5222d;
-        }
-      }
-      .specialWarnedItem{
-        .tipName, .tipValue{
-          color: #f9b600;
         }
       }
     }

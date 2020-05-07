@@ -187,12 +187,13 @@ class ChartLine extends PureComponent {
         colors.push('#60c060');
         const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
         const curWarningPeriod = curWarningBranch.warningPeriod || [];
-        const warningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day'));
+        const tmpWarningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day').format('YYYY-MM-DD'));
+        const warningDays = [...new Set(tmpWarningDays)];
         const linearGradientData = [{ offset: 0, color: '#60c060' }];
         const minDay = moment(time[0]).startOf('day');
         const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一) 
         warningDays.forEach(eachday => {
-          const dayDiff = eachday.diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
+          const dayDiff = moment(eachday).diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
           if (dayDiff >= 0 && dayDiff <= 7) {
             linearGradientData.push({ offset: dayDiff * eachPercent, color: '#60c060' });
             linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
@@ -219,7 +220,7 @@ class ChartLine extends PureComponent {
         top: `${Math.floor((isDiagnoseBranch ? i : i + 1) / lengendColType) * 30}`,
         data: [pointFullName],
         textStyle: {
-          color: e.isWarned ? (isDiagnoseBranch ? '#f9b600' : '#f5222d') : '#353535', // 诊断事件-组串，正常黄色, 告警红色, 其余所有默认
+          color: (e.isWarned && isDiagnoseBranch) ? '#f5222d' : '#353535', // 诊断事件-组串告警红色, 其余所有默认黑
         },
         selectedMode: e.isConnected === 0 ? false : true,
       });
@@ -238,11 +239,11 @@ class ChartLine extends PureComponent {
         showSymbol: (e.isConnected === 0 && isDiagnoseBranch) ? false : true, // 未连接 不展示
         itemStyle: {
           normal: {
-            color: '#60c060',
+            color: isDiagnoseBranch ? (e.isWarned ? '#f5222d' : '#60c060'): lineStyleColor,
             opacity: 0,
           },
           emphasis: {
-            color: '#60c060',
+            color: isDiagnoseBranch ? (e.isWarned ? '#f5222d' : '#60c060'): lineStyleColor,
             opacity: 1,
           },
         },
@@ -500,8 +501,11 @@ class ChartLine extends PureComponent {
                 // 解析全数据使用， 因为系列中有个首条空线， series需减一对应。
                 const { isWarned, pointName, deviceName, isConnected } = eachFullData;
                 const lineFullName = `${deviceName} ${pointName || ''}`;
+                if (isConnected === 0 && isDiagnoseBranch) { // 未连接组串不展示;
+                  return '';
+                }
                 return (
-                  `<p class=${(isWarned && pageKey === 'diagnose') ? (isDiagnoseBranch ? styles.specialWarnedItem : styles.warnedItem) : (isConnected === 0 && isDiagnoseBranch ? styles.connected : styles.eachItem)}>
+                  `<p class=${isWarned && isDiagnoseBranch ? styles.warnedItem : styles.eachItem}>
                     <span class=${styles.tipIcon}>
                       <span class=${styles.line} style="background-color:${color}"></span>
                       <span class=${styles.rect} style="background-color:${color}"></span>
@@ -511,19 +515,19 @@ class ChartLine extends PureComponent {
                   </p>`
                 );
               }).join('')}
-              <p class=${(dataAnomaly && (standard || standard === 0)) ? styles.eachItem : styles.noWarnItem}>
+              ${(dataAnomaly && (standard || standard === 0)) ? `<p class=${styles.eachItem}>
                 <span class=${styles.tipIcon}>
                   <span class=${styles.line} style="background-color: #ffeb00"></span>
                   <span class=${styles.rect} style="background-color: #ffeb00"></span>
                 </span>
                 <span class=${styles.tipName}>标准值</span>
                 <span class=${styles.tipValue}>${dataFormats(standard, '--', 2, true)}</span>
-              </p>
-              <p class=${(periodData.length > 0 && !isDiagnoseBranch) ? styles.eachItem : styles.noWarnItem}>
+              </p>` : ''}
+              ${(periodData.length > 0 && !isDiagnoseBranch) ? `<p class=${styles.eachItem}>
                 <span class=${styles.warningIcon}></span>
                 <span class=${styles.tipName}>告警时长</span>
                 <span class=${styles.tipValue}>${periodData.length > 0 ? dataFormats(periodData[0].warningDuration, '--', 2, true) : '--'}h</span>
-              </p>
+              </p>` : ''}
             </section>`
           );
         },
@@ -544,10 +548,12 @@ class ChartLine extends PureComponent {
         {
           show: true,
           height: 20,
+          filterMode: 'none',
           bottom: (delPointIndex !== -1 && pageKey === 'alarm') ? 10 : 16,
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         }, {
           type: 'inside',
+          filterMode: 'none',
           xAxisIndex: (delPointIndex !== -1 && pageKey === 'alarm') ? [0, 1] : [0],
         },
       ];
