@@ -70,6 +70,7 @@
       &.ant-radio-button-wrapper-checked {
         box-shadow: none;
         border: none;
+        color: var(--themeColor);
         border-bottom: 1px solid #199475;
         &::before {
           opacity: 0;
