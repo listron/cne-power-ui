@@ -1,4 +1,4 @@
-import {put, call, takeLatest} from 'redux-saga/effects';
+import {put, call, takeLatest, select} from 'redux-saga/effects';
 import {eamDetailsAction} from './eamDetailsAction';
 import axios from 'axios';
 import path from '@path';
@@ -22,11 +22,15 @@ function* getEamDetails(action) { // 获取EAM详情
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const { eamDetailData } = yield select(state => state.operation.eamDetails.toJS());
       yield put({
         type: eamDetailsAction.changeStore,
         payload: {
           loading: false,
-          eamDetailData: response.data.data,
+          eamDetailData: {
+            ...response.data.data,
+            workOrder: response.data.data.workOrder ? response.data.data.workOrder : eamDetailData.workOrder,
+          },
         },
       });
 
