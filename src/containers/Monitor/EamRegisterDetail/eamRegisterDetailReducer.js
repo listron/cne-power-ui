@@ -57,7 +57,26 @@ const initState = immutable.fromJS({
     woprofess: '',
   },
   workOrderList: [], // 子工单列表
-  eamDiagList: [], // 查询告警登记记录
+  eamDiagList: [{
+    registerNo: '13313123123123123',
+    workOrderNo: '13313123123123123',
+    faultType: '光伏',
+    faultStartTime: '2018-12-22 11:37:46.0',
+    id: 1,
+  }, {
+    registerNo: '13313123123123123',
+    workOrderNo: '13313123123123123',
+    faultType: '光伏',
+    faultStartTime: '2018-12-22 11:37:46.0',
+    id: 2,
+  }, {
+    registerNo: '13313123123123123',
+    workOrderNo: '13313123123123123',
+    faultType: '光伏',
+    faultStartTime: '2018-12-22 11:37:46.0',
+    id: 3,
+  }], // 查询告警登记记录
+  bgcIndex: 0, // 黄色背景
 });
 
 const eamRegisterDetail = (state = initState, action) => {

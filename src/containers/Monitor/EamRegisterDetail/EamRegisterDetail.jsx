@@ -24,6 +24,8 @@ class EamRegisterDetail extends Component {
     eamDefectData: PropTypes.object,
     workOrderList: PropTypes.array,
     eamDiagList: PropTypes.array,
+    bgcIndex: PropTypes.number,
+    changeStore: PropTypes.func,
   };
 
   constructor(props){
@@ -137,8 +139,23 @@ class EamRegisterDetail extends Component {
   };
 
   // 查看EAM故障列表
-  lookEamDiagFunc = (record) => {
-    console.log(record, 'record');
+  lookEamDiagFunc = (record, index) => {
+    const { type } = this.state;
+    const { changeStore, getEamFaultDetails, getEamDefectDetails } = this.props;
+    // type：1位故障详情，2位缺陷详情
+    if(type === '1') {
+      getEamFaultDetails({
+        faultId: record.id,
+      });
+    }
+    if(type === '2') {
+      getEamDefectDetails({
+        defectId: record.id,
+      });
+    }
+    changeStore({
+      bgcIndex: index,
+    });
   };
 
   render() {
@@ -191,6 +208,7 @@ class EamRegisterDetail extends Component {
       },
       workOrderList,
       eamDiagList,
+      bgcIndex,
     } = this.props;
     const listColumn = [
       {
@@ -231,30 +249,31 @@ class EamRegisterDetail extends Component {
         title: '故障编号',
         width: '25%',
         dataIndex: 'registerNo',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单编号',
         dataIndex: 'workOrderNo',
         width: '25%',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '故障类型',
         dataIndex: 'faultType',
         width: '25%',
-        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+        render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '故障开始时间',
         dataIndex: 'faultStartTime',
         width: '15%',
-        render: (text) => (<div title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
+        render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
       }, {
         title: '查看',
         dataIndex: '5',
         width: '10%',
+        align: 'center',
         className: styles.textAlignName,
-        render: (text, record) => (
-          <div title="查看" >
-            <i onClick={() => this.lookEamDiagFunc(record)} className="iconfont icon-downlook" />
+        render: (text, record, index) => (
+          <div title="查看" className={bgcIndex === index ? `${styles.activeBgc} ${styles.listLookBox}` : `${styles.normalBgc} ${styles.listLookBox}`}>
+            <i onClick={() => this.lookEamDiagFunc(record, index)} className="iconfont icon-downlook" />
           </div>
         ),
       },
