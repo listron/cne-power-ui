@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Radio, Table, Checkbox, Popconfirm } from 'antd';
+import { Radio, Checkbox, Popconfirm } from 'antd';
 import styles from './workPage.scss';
 import moment from 'moment';
 import { dataFormats, handleRights, handleRight } from '@utils/utilFunc';
 import CneButton from '@components/Common/Power/CneButton';
+import CneTable from '@components/Common/Power/CneTable';
 
 class RecordsList extends PureComponent {
 
@@ -27,6 +28,7 @@ class RecordsList extends PureComponent {
       {
         title: '工作类型',
         dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 消缺 3 巡检 4 记事 taskTypeName	String	工作类型名字
+        textAlign: 'left',
         sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
         className: styles.taskTypeName,
         render: (text, record) => {
@@ -48,6 +50,7 @@ class RecordsList extends PureComponent {
       }, {
         title: '工作描述',
         dataIndex: 'taskDesc',
+        textAlign: 'left',
         className: styles.taskDesc,
         render: (text = '', record) => {
           const { taskTypeCode, taskName, taskDesc } = record; // taskTypeCode === 3时候为巡检，工作描述展示巡检名称
@@ -60,31 +63,35 @@ class RecordsList extends PureComponent {
       }, {
         title: '电站',
         dataIndex: 'stationName',
+        textAlign: 'left',
         sorter: (a, b) => a.stationName && a.stationName.localeCompare(b.stationName),
         className: styles.stationName,
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
         title: '完成时间',
         dataIndex: 'completeTime',
+        textAlign: 'center',
         sorter: (a, b) => (moment(a) - moment(b)),
-        width: 175,
+        className: styles.completeTime,
         render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
       }, {
         title: '执行人',
         dataIndex: 'handleUser',
+        textAlign: 'left',
         sorter: (a, b) => a.handleUser && a.handleUser.localeCompare(b.handleUser),
         className: styles.handleUser,
         render: (text = '') => (<div title={text} className={styles.handleUserText}>{text || '--'}</div>),
       }, {
         title: '完成情况', // completeStatus	Int	完成情况  0未完成  1已完成
         dataIndex: 'completeStatus',
+        textAlign: 'center',
         sorter: (a, b) => a.completeStatus - b.completeStatus,
-        width: 110,
+        className: styles.completeStatus,
         render: (text = '') => ['未完成', '已完成'][text] || '--',
       }, {
         title: '操作',
+        textAlign: 'center',
         dataIndex: 'handle',
-        width: 90,
         render: (text, record) => {
           const { taskTypeCode, completeStatus } = record;
           // 工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
@@ -92,7 +99,7 @@ class RecordsList extends PureComponent {
           const [manageRight, finishRecordRight] = handleRights(['operation_workStation_manage', 'operation_workStation_finish']);
           return (
             <span className={styles.handleRow}>
-              <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
+              <span className="iconfont icon-look" onClick={() => this.toDetail(record)} title="查看" />
               {taskTypeCode === 1 && !!completeStatus && <span title="已标记完成">
                 <Checkbox checked={true} />
               </span>}
@@ -225,13 +232,15 @@ class RecordsList extends PureComponent {
             </span>
           </span>
         </div>
-        <Table
+        <CneTable
+          className={styles.recordTable}
+          loading={stageLoading && !pageLoading}
           dataSource={recordSource}
           columns={column}
-          pagination={false}
-          loading={stageLoading && !pageLoading}
           scroll={{ y: 330 }}
-          className={styles.recordTable}
+          pagination={false}
+          dataError={false}
+          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>
     );

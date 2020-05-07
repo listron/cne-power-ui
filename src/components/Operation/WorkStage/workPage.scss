@@ -51,58 +51,49 @@
   }
   .recordTable{ // 工作列表
     min-height: 370px;
-    .taskTypeName, .taskDesc, .taskDescText, .stationName, .stationNameText, .handleUser, .handleUserText{
+    .taskTypeNameText, .taskDescText, .stationNameText, .handleUserText{
       @include overflowText();
     }
     .taskTypeName{
-      padding-left: 24px;
       width: calc((100vw - 640px) * 0.27);
     }
     .taskTypeNameText{
-      max-width: calc((100vw - 640px) * 0.27 - 40px);
+      max-width: calc((100vw - 640px) * 0.27 - 20px);
     }
     .taskDesc{
       width: calc((100vw - 640px) * 0.42);
     }
     .taskDescText{
-      max-width: calc((100vw - 640px) * 0.42 - 32px);
+      max-width: calc((100vw - 640px) * 0.42);
     }
     .stationName{
       width: calc((100vw - 640px) * 0.16);
     }
     .stationNameText{
-      max-width: calc((100vw - 640px) * 0.16 - 32px);
+      max-width: calc((100vw - 640px) * 0.16);
+    }
+    .completeTime{
+      width: calc((100vw - 640px) * 0.20);
     }
     .handleUser{
       width: calc((100vw - 640px) * 0.15);
     }
     .handleUserText{
-      max-width: calc((100vw - 640px) * 0.15 - 32px);
+      max-width: calc((100vw - 640px) * 0.15);
+    }
+    .completeStatus{
+      width: calc((100vw - 640px) * 0.16);
     }
     .handleRow{
       :global{
         .iconfont{
           cursor: pointer;
           margin-right: 8px;
-          font-size: 18px;
-        }
-      }
-    }
-    :global{
-      .ant-table-scroll .ant-table-body{
-        overflow-x: hidden;
-      }
-      .ant-table-scroll .ant-table-header{
-        margin-bottom: 0!important;
-        padding-bottom: 0!important;
-        overflow-x: hidden!important;
-      }
-      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3px;
+          font-size: 20px;
+          color: $themeColor;
+          &:hover{
+            color: #f9b600;
+          }
         }
       }
     }
@@ -228,22 +219,8 @@
     .taskNameHighlight{
       color:#000000;
     }
-    :global{
-      .ant-table-scroll .ant-table-header{
-        &::-webkit-scrollbar-track-piece{
-          background: #f4f4f4;
-        }
-      }
-      .ant-table-scroll .ant-table-body{
-        &::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.5);
-        }
-      }
-      
-    }
   }
 }
-
 .light.runningLog, .light.ticketsLog{
   background-color: #fff;
   h3{
@@ -297,22 +274,6 @@
       .filterTypeBtn.active{
         background-image:linear-gradient(-180deg, #1cfcf4 0%, #009cff 100%);
         color: #fff;
-      }
-    }
-  }
-  .recordTable{
-    :global{
-      .ant-table-scroll .ant-table-body{
-        &::-webkit-scrollbar-thumb {
-          background: #3b55aa;
-        }
-      }
-      .ant-table-scroll .ant-table-header{
-        overflow-x: hidden!important;
-        background-color: transparent;
-        &::-webkit-scrollbar-track-piece{
-          background-color: #1f246f;
-        }
       }
     }
   }

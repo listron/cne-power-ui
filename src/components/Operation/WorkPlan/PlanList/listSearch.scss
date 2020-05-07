@@ -44,12 +44,30 @@
       max-width: calc((100vw - 1180px) * 0.5);
     }
     .handleRow{
+      display: flex;
+      justify-content: space-around;
+      span{
+        font-size: 20px;
+        color: $themeColor;
+        &:hover{
+          color: #f9b600;
+        }
+      }
       :global{
         .iconfont{
-          margin-right: 12px;
           cursor: pointer;
         }
       }
+    }
+
+    .planTypeName,.inspectContent,.stations,.validPeriod,.planStatus,.handle{
+      width: 10.5%;
+    }
+    .firstStartTime,.nextSendTime{
+      width: 15%;
+    }
+    .cycleTypeName{
+      width: 7%;
     }
   }
   .tableFoot{
@@ -103,4 +121,3 @@
     }
   }
 }
-

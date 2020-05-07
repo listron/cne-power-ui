@@ -1,9 +1,10 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Popconfirm, Table } from 'antd';
+import { Popconfirm } from 'antd';
 import CommonPagination from '@components/Common/CommonPagination';
 import CneButton from '@components/Common/Power/CneButton';
+import CneTable from '@components/Common/Power/CneTable';
 import { handleRight } from '@utils/utilFunc';
 import styles from './listSearch.scss';
 
@@ -30,10 +31,14 @@ class Lists extends PureComponent {
         title: '计划类型',
         dataIndex: 'planTypeName',
         sorter: true,
+        textAlign: 'center',
+        className: styles.planTypeName,
       }, {
         title: '内容',
         dataIndex: 'inspectContent',
         sorter: true,
+        textAlign: 'left',
+        className: styles.inspectContent,
         render: (text = '', record) => {
           const { inspectTypeCode, inspectContent, planName } = record;
           const contentText = parseFloat(inspectTypeCode) === 100002 ? planName: inspectContent;
@@ -44,6 +49,8 @@ class Lists extends PureComponent {
       }, {
         title: '适用电站',
         dataIndex: 'stations', //  stationCode + stationName 对象数组
+        className: styles.stations,
+        textAlign: 'left',
         render: (text, record = {}) => {
           const { stations = [] } = record;
           const stationStr = stations.map(e => e.stationName).join(',');
@@ -52,7 +59,9 @@ class Lists extends PureComponent {
       }, {
         title: '首次下发时间',
         dataIndex: 'firstStartTime', // firstStartTime + firstStartWeek
+        className: styles.firstStartTime,
         sorter: true,
+        textAlign: 'center',
         render: (text, record) => {
           const { firstStartTime, firstStartWeek } = record;
           return <span>{firstStartTime || '--'} {firstStartWeek}</span>;
@@ -60,7 +69,9 @@ class Lists extends PureComponent {
       }, {
         title: '下次下发时间',
         dataIndex: 'nextSendTime', // nextSendTime + nextSendWeek
+        className: styles.nextSendTime,
         sorter: true,
+        textAlign: 'center',
         render: (text, record) => {
           const { nextSendTime, nextSendWeek } = record;
           return <span>{nextSendTime || '--'} {nextSendWeek}</span>;
@@ -69,31 +80,40 @@ class Lists extends PureComponent {
         title: '执行天数',
         dataIndex: 'validPeriod',
         sorter: true,
+        textAlign: 'right',
+        className: styles.validPeriod,
       }, {
         title: '周期',
         dataIndex: 'cycleTypeName',
         sorter: true,
+        textAlign: 'center',
+        className: styles.cycleTypeName,
       }, {
         title: '启用状态',
         dataIndex: 'planStatus',
         sorter: true,
+        textAlign: 'center',
+        className: styles.planStatus,
         render: (text) => ['--', '启用', '停用'][text] || '--',
       }, {
         title: '操作',
         dataIndex: 'handle',
+        className: styles.handle,
+        textAlign: 'center',
         render: (text, record) => {
           const workPlanHandleRight = handleRight('operation_workStation_manage');
           return (
             <span className={styles.handleRow}>
-              <span className="iconfont icon-look" onClick={() => this.toDetail(record)} />
-              {workPlanHandleRight && <span className="iconfont icon-edit" onClick={() => this.toEdit(record)} />}
+              <span className="iconfont icon-look" onClick={() => this.toDetail(record)} title="查看" />
+              {workPlanHandleRight && <span className="iconfont icon-edit" onClick={() => this.toEdit(record)} title="编辑" />}
               {workPlanHandleRight && <Popconfirm
                 title="是否确认删除计划?"
+                placement="topRight"
                 onConfirm={() => this.deletePlan(record)}
                 okText="确定"
                 cancelText="取消"
               >
-                <span className="iconfont icon-del" />
+                <span className="iconfont icon-del" title="删除" />
               </Popconfirm>}
             </span>
           );
@@ -102,7 +122,7 @@ class Lists extends PureComponent {
     ],
   }
 
-  orderFieldBase = ['', 'planTypeName', 'inspectContent', 'firstStartTime', 'nextSendTime', 'validPeriod', 'cycleTypeName', 'planStatus', 'lastHandleTime']
+  // orderFieldBase = ['', 'planTypeName', 'inspectContent', 'firstStartTime', 'nextSendTime', 'validPeriod', 'cycleTypeName', 'planStatus', 'lastHandleTime']
 
   toDetail = ({ planId }) => { // 查看详情
     this.props.getWorkPlanDetail({ planId });
@@ -154,17 +174,48 @@ class Lists extends PureComponent {
     });
   }
 
-  tableSortChange = (pagination, filter, { field, order }) => { // 排序
-    let orderField = 3, orderMethod = 'asc';
-    if (field) {
-      orderField = this.orderFieldBase.indexOf(field);
-      orderMethod = order === 'ascend' ? 'asc' : 'desc';
-    }
+  sortFieldMap = { // 表格排序字段 => api
+    planTypeName: '1',
+    inspectContent: '2',
+    firstStartTime: '3',
+    nextSendTime: '4',
+    validPeriod: '5',
+    cycleTypeName: '6',
+    planStatus: '7',
+    lastHandleTime: '8',
+  };
+
+  tableSortMap = { // api存储字段 => 表格排序字段
+    1: 'planTypeName',
+    2: 'inspectContent',
+    3: 'firstStartTime',
+    4: 'nextSendTime',
+    5: 'validPeriod',
+    6: 'cycleTypeName',
+    7: 'planStatus',
+    8: 'lastHandleTime',
+  };
+
+  sortMethodMap = {
+    desc: 'descend',
+    asc: 'ascend',
+  }
+
+  tableSortChange = (pagination, filter, sorter) => { // 排序
+    const { field } = sorter || {};
     const { planParams, planListPageParams } = this.props;
+    const { orderField, orderMethod } = planListPageParams || {};
+    let newField = orderField, newSort = 'desc';
+    if (!field || (orderField === this.sortFieldMap[field])) { // 点击的是正在排序的列
+        newSort = orderMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+    } else { // 切换列
+        newField = this.sortFieldMap[field];
+    }
+
     const newPageParams = {
       ...planListPageParams,
-      orderField,
-      orderMethod,
+      orderField: newField,
+      orderMethod: newSort,
     };
     this.props.changeStore({ // 修改参数
       planListPageParams: newPageParams,
@@ -182,7 +233,7 @@ class Lists extends PureComponent {
   render(){
     const { column, selectedRowKeys } = this.state;
     const { planListPageParams, planCount, planList, planListLoading, theme } = this.props;
-    const { pageNum, pageSize } = planListPageParams;
+    const { pageNum, pageSize, orderField, orderMethod } = planListPageParams;
     const workPlanHandleRight = handleRight('operation_workStation_manage');
     return (
       <div className={`${styles.lists} ${styles[theme]}`}>
@@ -190,8 +241,8 @@ class Lists extends PureComponent {
           {workPlanHandleRight ? (
             <span className={styles.listBtns}>
               <CneButton className={styles.addPlanBtn} lengthMode="short" iconname="icon-newbuilt" onClick={this.toAddPlan} >添加计划</CneButton>
-              {false ? (
-                <CneButton disabled={true} lengthMode="short">批量删除</CneButton>
+              {selectedRowKeys.length === 0 ? (
+                <CneButton disabled={true}>批量删除</CneButton>
               ) : (
                   <Popconfirm
                     title="是否确认批量删除选中计划?"
@@ -199,7 +250,7 @@ class Lists extends PureComponent {
                     okText="确定"
                     cancelText="取消"
                   >
-                    <CneButton disabled={false} lengthMode="short">批量删除</CneButton>
+                    <CneButton disabled={false}>批量删除</CneButton>
                   </Popconfirm>
                 )}
           </span>
@@ -212,7 +263,7 @@ class Lists extends PureComponent {
             theme={theme}
           />
         </div>
-        <Table
+        <CneTable
             dataSource={planList}
             columns={column}
             pagination={false}
@@ -223,6 +274,11 @@ class Lists extends PureComponent {
               selectedRowKeys,
               onChange: this.planSelects,
             }}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={this.sortMethodMap[orderMethod] || false}
+            dataError={false}
+            pagination={false}
+            locale={{ emptyText: <img src="/img/nodata.png" /> }}
           />
         <div className={styles.tableFoot}>
           当前选中<span className={styles.selectedNum}>{selectedRowKeys.length}</span>项

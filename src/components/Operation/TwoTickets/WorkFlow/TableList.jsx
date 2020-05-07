@@ -283,8 +283,8 @@ class TableList extends Component {
                 width: '7%',
                 render: (text, record) => (
                     <div className={styles.opreate}>
-                        <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShowDetail(record); }} />
-                        <i className={`iconfont icon-del ${(handleRight('workTicket_operate') && record.stateCode === '2') ? styles.iconShow : styles.iconHide}`} onClick={() => { this.delList('del', record.docketId); }} />
+                        <i className={`iconfont icon-look ${styles.lookIcon}`} onClick={() => { this.onShowDetail(record); }} title="查看" />
+                        <i className={`iconfont icon-del ${(handleRight('workTicket_operate') && record.stateCode === '2') ? styles.iconShow : styles.iconHide}`} onClick={() => { this.delList('del', record.docketId); }} title="删除" />
                     </div>
                 ),
             },

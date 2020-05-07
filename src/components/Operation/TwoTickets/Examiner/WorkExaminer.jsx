@@ -118,10 +118,12 @@ class WorkExaminer extends Component {
               onClick={() => {
                 state > 0 ? this.showEdit(record) : this.showCreate(record);
               }}
+              title="编辑"
             />
             <span
               className={`iconfont icon-look ${state > 0 ? styles.iconShow : styles.iconHide}`}
               onClick={() => this.showDetail(record)}
+              title="查看"
             />
           </div>
         );
