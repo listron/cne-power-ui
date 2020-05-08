@@ -158,6 +158,18 @@
     background-color: #ceebe0;
   }
 
+  div.ant-select-selection__rendered{ // 下拉框
+    border-radius: 2px;
+  }
+
+  .ant-select-selection--single{
+    border-radius: 2px;
+  }
+
+   div.ant-select-selection,span.ant-select-selection{
+    border-radius: 2px;
+  }
+
   .ant-select:not(.ant-select-disabled) {
     .ant-select-selection {
       .ant-select-selection__rendered {
@@ -175,9 +187,9 @@
   }
 
 
-  // .ant-select-search--inline .ant-select-search__field{
-  //   border-radius: 2px !important;
-  // }
+  .ant-select-search--inline  input.ant-select-search__field{
+    border-radius: 2px;
+  }
 
   button.ant-switch{
     height: 16px;
@@ -280,10 +292,14 @@
   .ant-input {
     background: #ffffff;
     border: 1px solid $promptColor;
-    border-radius: 2px;
     width: 198px;
     height: 31px;
   }
+
+  input.ant-input,span.ant-input,div.ant-input-number{
+    border-radius: 2px;
+  }
+  
 
   /*输入框前面的小方块*/
   .ant-input-affix-wrapper .ant-input-prefix {
