@@ -1,7 +1,7 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button, Spin, Dropdown } from 'antd';
+import { message, Modal, Button, Spin } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -11,13 +11,11 @@ import axios from 'axios';
 import { commonAction } from '../alphaRedux/commonAction';
 import { loginAction } from '../Login/loginAction';
 import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
-import TopMenu from '../../components/Layout/TopMenu';
+import AppHeader from '../../components/Layout/AppHeader';
 import SideMenu from '../../components/Layout/SideMenu';
-import MenuBoard from '../../components/Layout/MenuBoard';
-import LogoInfo from '../../components/Layout/LogoInfo';
-import UserInfo from '../../components/Layout/UserInfo';
 import Cookie from 'js-cookie';
 import { enterFirstPage } from '../../utils/utilFunc';
+import { hasTokenToQuery, isAppRender, renderWithoutMenu } from './authToken';
 
 const Login = lazy(() => import('../Login/LoginLayout'));
 
@@ -42,30 +40,11 @@ class Main extends Component {
     theme: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: 'home',
-      logined: false,
-      showFeedback: false,
-    };
-  }
-
   componentDidMount() {
-    const { pathname } = this.props.history.location;
-    if (pathname !== '/login') {
-      const authData = localStorage.getItem('authData') || '';
-      if (authData) {
-        this.props.getStations();
-        this.props.getDeviceTypes();
-        this.props.getMonitorDataUnit(); // 请求企业的数据单位
-        axios.get('/menuBoardRequired.json').then((req) => { // 需菜单遮罩企业添加入commonReducer
-          const { data } = req || {};
-          const { menuBoardRequired, screenAddress } = data || {};
-          this.props.changeCommonStore({ menuBoardRequired, screenAddress });
-        });
-      }
-    }
+    const { pathname = '', search = '' } = this.props.history.location;
+    console.log(this.props.history.location);
+    const hasToken = hasTokenToQuery({ pathname, search });
+    hasToken && this.getInitData(true); // F5或外系统携凭证跳入本系统
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,21 +63,21 @@ class Main extends Component {
       // })
     }
     if (nextProps.login.size > 0 && this.props.login.size === 0) { // 登录成功
-      this.props.getStations();
-      this.props.getDeviceTypes();
-      this.props.getMonitorDataUnit();
-      axios.get('/menuBoardRequired.json').then((req) => { // 根据企业判定是否展示菜单遮罩
-        const { data } = req || {};
-        const { menuBoardRequired, screenAddress } = data || {};
-        const enterpriseId = Cookie.get('enterpriseId');
-        const menuBoardShow = menuBoardRequired.includes(enterpriseId);
-        this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAddress });
-      });
+      this.getInitData(false);
     }
   }
-  componentWillUnmount() {
-    this.props.resetMonitorData();
-    this.props.resetCommonStore();
+
+  getInitData = (isLogined) => { // 具有登录凭证 - 进行默认数据初始化(todo - 该逻辑与结构不相关，放置saga解耦更合适)
+    this.props.getStations(); // 请求用户下所有电站基本信息
+    this.props.getDeviceTypes(); // 请求用户下所有设备类型数据
+    this.props.getMonitorDataUnit(); // 请求企业的数据单位
+    axios.get('/menuBoardRequired.json').then((req) => { // 根据企业判定是否展示菜单遮罩
+      const { data } = req || {};
+      const { menuBoardRequired, screenAddress } = data || {};
+      const enterpriseId = Cookie.get('enterpriseId');
+      const menuBoardShow = isLogined ? false : menuBoardRequired.includes(enterpriseId); // isLogined已登录完成的刷新, 不需展示快捷面板
+      this.props.changeCommonStore({ menuBoardShow, menuBoardRequired, screenAddress });
+    });
   }
 
   changeTheme = (themeValue) => {
@@ -119,8 +98,7 @@ class Main extends Component {
     Cookie.remove('refresh_token');
     Cookie.remove('isNotLogin');
     Cookie.remove('auto');
-    
-// Cookie.remove('theme');
+    // Cookie.remove('theme');
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.changeLoginStore({ pageTab: 'login' });
@@ -128,74 +106,27 @@ class Main extends Component {
   }
 
   render() {
-    const { changeLoginStore, history, resetMonitorData, userFullName, username, userLogo, resetCommonStore, theme, stationTypeCount } = this.props;
-    const authData = localStorage.getItem('authData') || '';
-    const isNotLogin = Cookie.get('isNotLogin');
+    const { history, theme, stationTypeCount } = this.props;
+    const { location } = history || {};
     const userRight = localStorage.getItem('rightHandler');
     const rightMenu = localStorage.getItem('rightMenu') || '';
-    const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
-    const enterFirst = enterFirstPage();
-    //console.log(enterFirstPage);
-    if (authData && isTokenValid) {
-      axios.defaults.headers.common['Authorization'] = 'bearer ' + authData;
-    }
-    const themeMenu = (
-      <ul className={styles.themeMenu}>
-        <li onClick={() => this.changeTheme('dark')} className={`${theme === 'dark' && styles.active}`}> 深色 </li>
-        <li onClick={() => this.changeTheme('light')} className={`${theme === 'light' && styles.active}`}> 浅色 </li>
-      </ul>
-    );
-    if (isTokenValid && authData && (isNotLogin === '0')) {
+    const layoutRender = isAppRender(location); // 是否渲染界面
+    const hideLayoutMenu = renderWithoutMenu(location); // 渲染界面内是否有顶部及侧边菜单
+    if (layoutRender) {
       // if(true){
-      const homePageArr = ['/homepage'];
-      const isHomePage = homePageArr.includes(history.location.pathname); // 首页不同的解析规则
       return (
         <div className={`${styles.app} ${styles[theme]}`}>
-          {!isHomePage && <div className={styles.appHeader}>
-            <div className={styles.headerLeft}>
-              <div className={styles.logoBg}>
-                <LogoInfo />
-                <MenuBoard
-                  changeCommonStore={this.props.changeCommonStore}
-                  screenAddress={this.props.screenAddress}
-                  menuBoardRequired={this.props.menuBoardRequired}
-                  menuBoardShow={this.props.menuBoardShow}
-                />
-              </div>
-              {!this.props.menuBoardShow && <TopMenu />}
-            </div>
-            <div className={styles.headerRight}>
-              {/* <img width="294px" height="53px" src="/img/topbg02.png" className={styles.powerConfig} /> */}
-              <div ref={'changeTheme'} />{/*
-              <Dropdown overlay={themeMenu}
-                getPopupContainer={() => this.refs.changeTheme}
-                overlayStyle={{ width: '70px' }}
-                placement="bottomCenter">
-                <div className={styles.changeTheme}> <span className={'iconfont icon-skinpeel'} /> 换肤</div>
-              </Dropdown>*/}
-              <UserInfo
-                username={username}
-                userFullName={userFullName}
-                userLogo={userLogo}
-                changeLoginStore={changeLoginStore}
-                resetMonitorData={resetMonitorData}
-                resetCommonStore={resetCommonStore}
-                theme={theme}
-              />
-            </div>
-          </div>}
+          {!hideLayoutMenu && <AppHeader {...this.props} />}
           <div className={styles.appMain}>
-            {!isHomePage && <SideMenu stationTypeCount={stationTypeCount} />}
+            {!hideLayoutMenu && <SideMenu stationTypeCount={stationTypeCount} />}
             <main
               className={`${styles.content} ${styles[theme]}`}
-              style={{ height: isHomePage ? '100vh' : 'calc(100vh - 40px)' }}
+              style={{ height: hideLayoutMenu ? '100vh' : 'calc(100vh - 40px)' }}
               id="main"
             >
               <Switch>
                 {routerConfig}
-                <Redirect to={
-                  enterFirst
-                } />
+                <Redirect to={enterFirstPage()} />
               </Switch>
             </main>
           </div>
@@ -236,12 +167,6 @@ const mapStateToProps = (state) => {
     enterpriseId: state.login.get('enterpriseId'),
     ...state.common.toJS(),
     theme: state.common.get('theme'),
-    // stations: state.common.get('stations').toJS(),
-    // username: state.common.get('username'),
-    // userFullName: state.common.get('userFullName'),
-    // userLogo: state.common.get('userLogo'),
-    // menuBoardShow: state.common.get('menuBoardShow'),
-    // menuBoardRequired: state.common.get('menuBoardRequired').toJS(),
   });
 };
 

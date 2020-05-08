@@ -26,17 +26,25 @@ class DiagnoseCenter extends Component {
     changeStore: PropTypes.func,
     getDiagnoseList: PropTypes.func,
   }
-
-  state = {
-    sideTranslateX: 'translateX(100%)',
+  constructor(props){
+    super(props);
+    const { history } = props;
+    const { location } = history || {};
+    const { search } = location || {};
+    const pathInfo = searchUtil(search).parse() || {}; // 路径解析
+    let sideTranslateX = 'translateX(100%)';
+    if (pathInfo.diagWarningId){
+      sideTranslateX = 'translateX(0%)';
+    }
+    this.state = { sideTranslateX };
   }
 
   componentDidMount(){
     const { history } = this.props;
     const { location } = history;
     const { search } = location;
-    const pathInfo = searchUtil(search).parse(); // 路径解析
-    if (pathInfo && pathInfo.diagWarningId) { // 由外界手动控制直接进入分析页
+    const pathInfo = searchUtil(search).parse() || {}; // 路径解析
+    if (pathInfo.diagWarningId) { // 由外界手动控制直接进入分析页
       this.pathToAnalysis({ ...pathInfo, fromPath: true });
     } else { // 默认
       this.props.circlingQueryList({}); // 以默认参数启动告警中心数据请求;
@@ -63,8 +71,12 @@ class DiagnoseCenter extends Component {
     this.props.reset();
   }
 
-  pathToAnalysis = (pathInfo) => {
-    this.props.changeStore({ showAnalysisPage: true, analysisPageLoading: true });
+  pathToAnalysis = (pathInfo = {}) => {
+    this.props.changeStore({
+      fromOutside: pathInfo.fromOutside === 'eam', // 从eam系统外部跳入 => 若是, 应屏蔽内部所有可跳转内容
+      showAnalysisPage: true,
+      analysisPageLoading: true,
+    });
     this.setState({ sideTranslateX: 'translateX(100%)' });
     // { diagWarningId, deviceFullcode }
     this.props.getEventsAnalysis({ ...pathInfo });
@@ -95,7 +107,7 @@ class DiagnoseCenter extends Component {
 const mapStateToProps = (state) => ({
   stations: state.common.get('stations').toJS(),
   deviceTypes: state.common.get('deviceTypes').toJS(),
-  stationDeviceTypes:[],
+  stationDeviceTypes: [],
   ...state.monitor.diagnoseCenter,
 });
 const mapDispatchToProps = (dispatch) => ({
@@ -115,7 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
       params,
       deviceTypeAction: diagnoseCenterAction.fetchSuccess,
       resultName: 'stationDeviceTypes', //不能用deviceTypes， 因为deviceTypes 在站不限的时候用
-    }
+    },
   }),
   editEventsStatus: payload => dispatch({ type: diagnoseCenterAction.editEventsStatus, payload }),
 });

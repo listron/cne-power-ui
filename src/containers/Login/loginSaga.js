@@ -55,6 +55,8 @@ function* userNameLogin(action) {
       //   }
       // })
       if (data.userEnterpriseStatus === 3) {//3启用状态
+
+        axios.defaults.headers.common['Authorization'] = 'bearer ' + data.access_token;
         // data.access_token && Cookie.set('authData', data.access_token);
         data.access_token && localStorage.setItem('authData', data.access_token);
         data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
@@ -147,6 +149,7 @@ function* phoneCodeLogin(action) {
       const { data } = response.data;
       if (data.userEnterpriseStatus === 3) {
         if (params.isNotLogin === 1 || (data.auto === '0' && data.enterpriseId !== null)) {//非登录/正常用户
+          axios.defaults.headers.common['Authorization'] = 'bearer ' + data.access_token;
           // data.access_token && Cookie.set('authData', JSON.stringify(data.access_token));
           data.access_token && localStorage.setItem('authData', data.access_token);
           data.enterpriseId && Cookie.set('enterpriseId', data.enterpriseId);
