@@ -15,7 +15,7 @@ import AppHeader from '../../components/Layout/AppHeader';
 import SideMenu from '../../components/Layout/SideMenu';
 import Cookie from 'js-cookie';
 import { enterFirstPage } from '../../utils/utilFunc';
-import { hasTokenToQuery, isAppRender, renderWithoutMenu } from './authToken';
+import { hasTokenToQuery, appRenderType, renderWithoutMenu } from './authToken';
 
 const Login = lazy(() => import('../Login/LoginLayout'));
 
@@ -30,6 +30,7 @@ class Main extends Component {
     login: PropTypes.object,
     history: PropTypes.object,
     enterpriseId: PropTypes.string,
+    stationTypeCount: PropTypes.string,
     menuBoardShow: PropTypes.bool,
     menuBoardRequired: PropTypes.array,
     changeLoginStore: PropTypes.func,
@@ -42,7 +43,6 @@ class Main extends Component {
 
   componentDidMount() {
     const { pathname = '', search = '' } = this.props.history.location;
-    console.log(this.props.history.location);
     const hasToken = hasTokenToQuery({ pathname, search });
     hasToken && this.getInitData(true); // F5或外系统携凭证跳入本系统
   }
@@ -110,9 +110,9 @@ class Main extends Component {
     const { location } = history || {};
     const userRight = localStorage.getItem('rightHandler');
     const rightMenu = localStorage.getItem('rightMenu') || '';
-    const layoutRender = isAppRender(location); // 是否渲染界面
+    const layoutRenderKey = appRenderType(location); // 是否渲染界面
     const hideLayoutMenu = renderWithoutMenu(location); // 渲染界面内是否有顶部及侧边菜单
-    if (layoutRender) {
+    if (layoutRenderKey) {
       // if(true){
       return (
         <div className={`${styles.app} ${styles[theme]}`}>
@@ -132,7 +132,7 @@ class Main extends Component {
           </div>
           <Modal
             title=""
-            visible={!userRight && !rightMenu}
+            visible={!userRight && !rightMenu && layoutRenderKey !== 'outside'}
             closable={false}
             footer={null}
             wrapClassName={styles.userRightTip}

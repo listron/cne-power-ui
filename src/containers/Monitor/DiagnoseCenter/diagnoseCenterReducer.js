@@ -17,6 +17,7 @@ const diagnoseCenterAction = {
 };
 
 const initState = {
+  fromOutside: false, // 是否从外系统携凭证免登陆进入本系统的
   pageKey: 'alarm', // 激活页 alarm告警事件 diagnose诊断时间 data数据事件
   showAnalysisPage: false, // 展示侧边分析页
   filterBoxType: 'items', // 手动控制筛选条件的显隐; 默认items, 切换tabs变为none

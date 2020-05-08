@@ -24,6 +24,7 @@ class EventAnalysisPage extends PureComponent {
     getEventsAnalysis: PropTypes.func,
     analysisPageLoading: PropTypes.bool,
     isMoreData: PropTypes.bool,
+    fromOutside: PropTypes.bool,
   };
 
   titleName = {
@@ -46,7 +47,7 @@ class EventAnalysisPage extends PureComponent {
   }
 
   render(){
-    const { pageKey, analysisEvent, eventAnalysisInfo, analysisPageLoading, isMoreData } = this.props;
+    const { pageKey, analysisEvent, eventAnalysisInfo, analysisPageLoading, isMoreData, fromOutside } = this.props;
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, eventTime } = analysisEvent || {};
     const startTime = moment(eventTime).startOf('day').utc().format();
     const endTime = moment(eventTime).endOf('day').utc().format();
@@ -81,8 +82,8 @@ class EventAnalysisPage extends PureComponent {
             <span className={styles.infoText}><span className={styles.text}>设备名称：</span> {deviceName || '--'}；</span>
             <span className={styles.infoText}><span className={styles.text}>电站名称：</span><span className={styles.stationName} title={stationName}> {stationName || '--'}；</span></span>
           </span>
-          <span className={styles.topHandle}>
-            {!isMoreData && <Link to={redirectPath} target="_blank" className={styles.showMore}>
+          <div className={styles.topHandle}>
+            {!isMoreData && !fromOutside && <Link to={redirectPath} target="_blank" className={styles.showMore}>
               <CneButton className={styles.shadow}>
                 <span>
                   <span className="iconfont icon-moredata" />
@@ -90,14 +91,8 @@ class EventAnalysisPage extends PureComponent {
                 </span>
               </CneButton>
             </Link>}
-            {/* <Button className={styles.showMore}>
-              <span className={styles.shadow}>
-                <span className="iconfont icon-gd4" />
-                <span>更多数据</span>
-              </span>
-            </Button> */}
-            <div className={styles.backIcon}><i className={'iconfont icon-fanhui'} onClick={this.backList} /></div>
-          </span>
+            {!fromOutside && <div className={styles.backIcon}><i className={'iconfont icon-fanhui'} onClick={this.backList} /></div>}
+          </div>
         </h3>
         {!analysisPageLoading ?
         <div className={styles.detailContent}>

@@ -206,6 +206,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
           ...payload,
           ...warning,
         };
+        tmpStoreInfo.oldAnalysisEvent = tmpStoreInfo.analysisEvent;
         tmpStoreInfo.listParams = { ...listParams, eventType: warning.eventType };
         yield fork(getDiagnoseList, {
           payload: { eventType: warning.eventType },
