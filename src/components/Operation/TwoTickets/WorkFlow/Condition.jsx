@@ -63,6 +63,7 @@ class Condition extends Component {
                             name: ' 发生时间',
                             type: 'time',
                             typeName: 'rangeTimes',
+
                         },
                         {
                             name: '电站名称',
