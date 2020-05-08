@@ -43,11 +43,11 @@ class Condition extends Component {
 
 
     filterCondition = (value) => {
-        const { listQueryParams } = this.props;
+        const { listQueryParams, commonQueryParams } = this.props;
         const { rangeTimes, IsMy, docketTypes, stationCodes } = value;
         const [startTime, endTime] = rangeTimes;
         this.props.changeFlowStore({ commonQueryParams: { startTime, endTime, docketTypes, stationCodes, IsMy: +IsMy } });
-        this.props.getFlowList({ listQueryParams, commonQueryParams: { startTime, endTime, docketTypes, stationCodes, IsMy: +IsMy } });
+        this.props.getFlowList({ listQueryParams, commonQueryParams: { ...commonQueryParams, startTime, endTime, docketTypes, stationCodes, IsMy: +IsMy } });
     }
 
     render() {
@@ -69,6 +69,8 @@ class Condition extends Component {
                             type: 'parentCheckBox',
                             typeName: 'stationCodes',
                             data: stations,
+                            rules: ['stationName', 'stationCode'],
+                            parentName: 'provinceName',
                         },
                         {
                             name: '两票类型',
