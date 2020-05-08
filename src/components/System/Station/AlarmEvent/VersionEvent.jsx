@@ -11,6 +11,7 @@ class VersionEvent extends Component {
     versionList: PropTypes.array,
     versionStationCodes: PropTypes.array,
     pointList: PropTypes.array,
+    alarmEventType: PropTypes.array,
     getPointList: PropTypes.func,
     addVersionEvent: PropTypes.func,
     editVersionEvent: PropTypes.func,
@@ -134,17 +135,19 @@ class VersionEvent extends Component {
   }
 
   setPointData = (value) => { // 测点编号的添加
-    const { editPoint } = this.props;
+    const { editPoint, alarmEventType } = this.props;
     const { addEventList, currentEventList } = this.state;
     const lastKey = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
     if (!editPoint.diagModeEventId) { // 新添加的
       const findIndex = addEventList.findIndex(e => e.key === editPoint.key); // 当前编辑进行修改
       addEventList[findIndex] = { ...addEventList[findIndex], pointCode: value[0].devicePointStandardCode, pointValueDesc: value[0].devicePointName };
+      const { eventLevel = null } = alarmEventType.find(e => e.eventCode === addEventList[findIndex].eventCode) || {};
       value.forEach((e, index) => { // 多条添加
         if (index > 0) {
           addEventList.push({
             key: `add${+lastKey + index}`,
             switchType: 1,
+            eventLevel,
             enabled: 1,
             pointValue: 1,
             pointCode: e.devicePointStandardCode,
