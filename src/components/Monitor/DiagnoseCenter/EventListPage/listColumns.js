@@ -173,7 +173,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
             className={`iconfont icon-fenx ${styles.handleAnalysis}`}
             onClick={() => handlers[0] && handlers[0](record)}
           />
-          {record.statusCode === 3 && <i
+          {(enterpriseCode !== '1010' && record.statusCode === 3) && <i
             title="查看"
             className={`iconfont icon-kangd ${styles.toDefect}`}
             onClick={() => handlers[1] && handlers[1](record)}
@@ -183,7 +183,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
             className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
           />}
-          {!record.eamStatus && <i
+          {(enterpriseCode === '1010' && !record.eamStatus) && <i
             title="EAM查看"
             className={`iconfont icon-keam ${styles.handleAnalysis}`}
             onClick={() => handlers[3] && handlers[3]({
@@ -299,7 +299,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
             className={`iconfont icon-fenx ${styles.handleAnalysis}`}
             onClick={() => handlers[0] && handlers[0](record)}
           />
-          {record.statusCode === 3 && <i
+          {(enterpriseCode !== '1010' && record.statusCode === 3) && <i
             title="查看"
             className={`iconfont icon-kangd ${styles.toDefect}`}
             onClick={() => handlers[1] && handlers[1](record)}
@@ -309,7 +309,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
             className={`iconfont icon-del ${styles.handleDelete}`}
             onClick={() => handlers[2] && handlers[2](record)}
           />}
-          {record.eamStatus && <i
+          {(enterpriseCode === '1010' && !record.eamStatus) && <i
             title="EAM查看"
             className={`iconfont icon-keam ${styles.handleAnalysis}`}
             onClick={() => handlers[3] && handlers[3]({

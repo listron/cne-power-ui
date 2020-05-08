@@ -1,4 +1,4 @@
-@import '../../../theme/theme.scss';
+@import '../../../../theme/theme.scss';
 
 .eamRegisterBox {
   width: 100%;
@@ -369,3 +369,133 @@
     }
   }
 }
+
+@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+  .eamRegisterWrap {
+
+    .eamRegisterInfoBox {
+
+      .tableWrap {
+
+        .tableBox {
+
+          .tableMoreName{
+            font-size: 14px;
+          }
+
+          .tableMoreCode{
+            font-size: 14px;
+          }
+
+          .numberName {
+            font-size: 14px;
+          }
+
+          .numberCode {
+            font-size: 14px;
+          }
+
+          .statusName {
+            font-size: 14px;
+          }
+
+          .statusCode {
+            font-size: 14px;
+          }
+
+          .allText {
+            font-size: 14px;
+          }
+        }
+      }
+
+    }
+  }
+}
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+  .eamRegisterWrap {
+
+    .eamRegisterInfoBox {
+
+      .tableWrap {
+
+        .tableBox {
+
+          .tableMoreName{
+            font-size: 16px;
+          }
+
+          .tableMoreCode{
+            font-size: 16px;
+          }
+
+          .numberName {
+            font-size: 16px;
+          }
+
+          .numberCode {
+            font-size: 16px;
+          }
+
+          .statusName {
+            font-size: 16px;
+          }
+
+          .statusCode {
+            font-size: 16px;
+          }
+
+          .allText {
+            font-size: 16px;
+          }
+        }
+      }
+
+    }
+  }
+}
+
+@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+  .eamRegisterWrap {
+
+    .eamRegisterInfoBox {
+
+      .tableWrap {
+
+        .tableBox {
+
+          .tableMoreName{
+            font-size: 18px;
+          }
+
+          .tableMoreCode{
+            font-size: 18px;
+          }
+
+          .numberName {
+            font-size: 18px;
+          }
+
+          .numberCode {
+            font-size: 18px;
+          }
+
+          .statusName {
+            font-size: 18px;
+          }
+
+          .statusCode {
+            font-size: 18px;
+          }
+
+          .allText {
+            font-size: 18px;
+          }
+        }
+      }
+
+    }
+  }
+}
+

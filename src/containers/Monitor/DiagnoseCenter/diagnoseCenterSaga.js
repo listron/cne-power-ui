@@ -5,6 +5,7 @@ import { message } from 'antd';
 import moment from 'moment';
 import path from '@path';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
+import axios from 'axios';
 
 const { APIBasePath } = path.basePaths;
 const { monitor } = path.APISubPaths;
@@ -277,6 +278,132 @@ function * getEamRegisterWaring({payload = {}}){ // 诊断事件派发至缺陷�
   }
 }
 
+function* getEamDiagList(action) { // 查询告警登记记录
+  const {payload} = action;
+  const url = `${APIBasePath}${monitor.getEamDiagList}/${payload.waringId}`;
+  try {
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        diagLoading: true,
+      },
+    });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: diagnoseCenterAction.changeStore,
+        payload: {
+          diagLoading: false,
+          eamDiagList: response.data.data,
+        },
+      });
+      const id = response.data.data[0].id;
+      // type：1位故障详情，2位缺陷详情
+      if(payload.type === 1 && id) {
+        yield put({
+          type: diagnoseCenterAction.getEamFaultDetails,
+          payload: {
+            faultId: id,
+          },
+        });
+      }
+      if(payload.type === 2 && id) {
+        yield put({
+          type: diagnoseCenterAction.getEamDefectDetails,
+          payload: {
+            defectId: id,
+          },
+        });
+      }
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        diagLoading: false,
+      },
+    });
+    console.log(e);
+  }
+}
+
+function* getEamFaultDetails(action) { // 获取EAM故障详情
+  const {payload} = action;
+  const url = `${APIBasePath}${monitor.getEamFaultDetails}/${payload.faultId}`;
+  try {
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        detailLoading: true,
+      },
+    });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: diagnoseCenterAction.changeStore,
+        payload: {
+          detailLoading: false,
+          eamFaultData: response.data.data,
+          workOrderList: response.data.data.workOrders || [],
+        },
+      });
+
+
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        detailLoading: false,
+      },
+    });
+    console.log(e);
+  }
+}
+
+function* getEamDefectDetails(action) { // 获取EAM缺陷详情
+  const {payload} = action;
+  const url = `${APIBasePath}${monitor.getEamDefectDetails}/${encodeURI(payload.defectId)}`;
+  try {
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        detailLoading: true,
+      },
+    });
+    const response = yield call(axios.get, url);
+    if (response.data.code === '10000') {
+      yield put({
+        type: diagnoseCenterAction.changeStore,
+        payload: {
+          detailLoading: false,
+          eamDefectData: response.data.data,
+          workOrderList: response.data.data.workOrders || [],
+        },
+      });
+
+
+    } else {
+      throw response.data;
+    }
+  } catch (e) {
+    message.error(e.message);
+    yield put({
+      type: diagnoseCenterAction.changeStore,
+      payload: {
+        detailLoading: false,
+      },
+    });
+    console.log(e);
+  }
+}
+
 export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.getEventstatus, getEventstatus);
   yield takeEvery(diagnoseCenterAction.getEventtypes, getEventtypes);
@@ -287,5 +414,8 @@ export function* watchDiagnoseCenter() {
   yield takeLatest(diagnoseCenterAction.editEventsStatus, editEventsStatus);
   yield takeLatest(diagnoseCenterAction.getLinkageList, getLinkageList);
   yield takeLatest(diagnoseCenterAction.getEamRegisterWaring, getEamRegisterWaring);
+  yield takeLatest(diagnoseCenterAction.getEamDiagList, getEamDiagList);
+  yield takeLatest(diagnoseCenterAction.getEamFaultDetails, getEamFaultDetails);
+  yield takeLatest(diagnoseCenterAction.getEamDefectDetails, getEamDefectDetails);
 }
 

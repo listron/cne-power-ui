@@ -10,6 +10,12 @@ const diagnoseCenterAction = {
   editEventsStatus: Symbol('editEventsStatus'),
   getLinkageList: Symbol('getLinkageList'),
   getEamRegisterWaring: Symbol('getEamRegisterWaring'),
+  // 查询告警登记记录
+  getEamDiagList: Symbol('getEamDiagList'),
+  // 获取EAM故障登记详情
+  getEamFaultDetails: Symbol('getEamFaultDetails'),
+  // 获取EAM故障缺陷详情
+  getEamDefectDetails: Symbol('getEamDefectDetails'),
 
   fetchSuccess: Symbol('fetchSuccess'),
   changeStore: Symbol('changeStore'),
@@ -20,6 +26,7 @@ const initState = {
   fromOutside: false, // 是否从外系统携凭证免登陆进入本系统的
   pageKey: 'alarm', // 激活页 alarm告警事件 diagnose诊断时间 data数据事件
   showAnalysisPage: false, // 展示侧边分析页
+  showEamPage: false, // 展示Eam登记详情
   filterBoxType: 'items', // 手动控制筛选条件的显隐; 默认items, 切换tabs变为none
   analysisEvent: {}, // 选中用于分析的信息
   listParams: {
@@ -68,6 +75,62 @@ const initState = {
   isBackEvent: false, // 显示原来的事件详情信息
   linkagePage: '', // 联动决策返回原测点数据时的事件
   diagWarningId: '', // 事件的告警记录Id
+
+  diagLoading: false,
+  detailLoading: false,
+  eamFaultData: { // 获取EAM故障详情
+    faultNo: '',
+    stationName1: '',
+    stationName2: '',
+    stopType: '',
+    assetNo1: '',
+    assetNo2: '',
+    location1: '',
+    location2: '',
+    faultCode1: '',
+    faultCode2: '',
+    manufacturer: '',
+    model: '',
+    faultLevel: '',
+    faultSysType1: '',
+    faultSysType2: '',
+    monitorSysFault: '',
+    status: '',
+    createName: '',
+    createTime: '',
+    faultStartTime: '',
+    faultEndTime: '',
+    reason: '',
+  },
+  eamDefectData: { // 获取EAM缺陷详情
+    defectNo: '',
+    stationName1: '',
+    stationName2: '',
+    defectType: '',
+    assetNo1: '',
+    assetNo2: '',
+    location1: '',
+    location2: '',
+    defectDetail: '',
+    status: '',
+    createName: '',
+    createTime: '',
+    projectSource: '',
+    phone: '',
+    faultStartTime: '',
+    woprofess: '',
+  },
+  eamDetailParams: { // EAM登记详情
+    eventName: '',
+    eventDesc: '',
+    deviceTypeName: '',
+    deviceName: '',
+    stationName: '',
+    type: 1,
+  },
+  workOrderList: [], // 子工单列表
+  eamDiagList: [], // 查询告警登记记录
+  bgcIndex: 0, // 黄色背景
 };
 
 const diagnoseCenter = (state = initState, action) => {

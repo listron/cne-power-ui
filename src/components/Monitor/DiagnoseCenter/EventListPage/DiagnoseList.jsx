@@ -30,7 +30,7 @@ class DiagnoseList extends Component {
     editEventsStatus: PropTypes.func,
     getLinkageList: PropTypes.func,
     getEamRegisterWaring: PropTypes.func,
-    history: PropTypes.object,
+    getEamDiagList: PropTypes.func,
   }
 
   state = {
@@ -127,7 +127,7 @@ class DiagnoseList extends Component {
   // EAM查看
   lookFunc = (data) => {
     const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, diagWarningId, type } = data;
-    const { history } = this.props;
+    const { changeStore, getEamDiagList } = this.props;
     // 展示信息
     const params = {
       eventName,
@@ -135,9 +135,20 @@ class DiagnoseList extends Component {
       deviceTypeName,
       deviceName,
       stationName,
+      // waringId: diagWarningId,
+      type,
     };
-    // type：1位故障详情，2位缺陷详情
-    history.push(`/monitor/EamDetail?params=${JSON.stringify(params)}&waringId=${diagWarningId}&type=${type}`);
+    // 展示EAM登记详情
+    changeStore({
+      showEamPage: true,
+      eamDetailParams: params,
+    });
+    // 获取展示EAM详情接口
+    getEamDiagList({
+      waringId: 522061852641821,
+      // waringId: diagWarningId,
+      type,
+    });
   };
 
   cancelTip = () => this.setState({ deleteRecords: null, tipType: 0 })

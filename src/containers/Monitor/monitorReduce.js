@@ -29,7 +29,6 @@ import { pvDataHistory } from './PvDataAnalysis/PvDataHistory/pvHistoryReducer';
 import { pvDataRealtime } from './PvDataAnalysis/PvDataRealtime/pvRealtimeReducer'; // 光伏数据分析 - 实时数据
 
 import { diagnoseCenter } from './DiagnoseCenter/diagnoseCenterReducer';
-import { eamRegisterDetail } from './EamRegisterDetail/eamRegisterDetailReducer';
 
 const monitorReducer = combineReducers({
   stationMonitor,
@@ -55,7 +54,6 @@ const monitorReducer = combineReducers({
   pvDataHistory,
   pvDataRealtime,
   diagnoseCenter, // 诊断中心
-  eamRegisterDetail, // 诊断中心 - 查看EAM - 登记详情
 });
 
 export default monitorReducer;

@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import moment from 'moment';
-import {eamRegisterDetailAction} from './eamRegisterDetailReducer';
 import CneFooter from '@components/Common/Power/CneFooter';
 import CneTable from '@components/Common/Power/CneTable';
-import searchUtil from '@utils/searchUtil';
 
 import styles from './eamRegisterDetail.scss';
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
-class EamRegisterDetail extends Component {
+export default class EamRegisterDetail extends Component {
   static propTypes = {
     history: PropTypes.object,
     diagLoading: PropTypes.bool,
@@ -19,50 +16,26 @@ class EamRegisterDetail extends Component {
     theme: PropTypes.string,
     getEamFaultDetails: PropTypes.func,
     getEamDefectDetails: PropTypes.func,
-    getEamDiagList: PropTypes.func,
     eamFaultData: PropTypes.object,
     eamDefectData: PropTypes.object,
     workOrderList: PropTypes.array,
     eamDiagList: PropTypes.array,
     bgcIndex: PropTypes.number,
     changeStore: PropTypes.func,
+    eamDetailParams: PropTypes.object,
   };
 
   constructor(props){
     super(props);
-    const { history } = props;
-    const { search, hash } = history.location;
-    // 因为设备名称里面带了#  所以判断hash是否为空
-    const urlSearch = hash ? `${search}${hash}` : search;
-    const { type, waringId } = searchUtil(urlSearch).parse(); // EAM查看信息
     this.state = {
       scroll: false,
       baseFlag: true,
       tableFlag: true,
-      type,
-      waringId,
     };
   }
 
   componentDidMount() {
     const main = document.getElementById('main');
-    const { type, waringId } = this.state;
-    const { getEamFaultDetails, getEamDefectDetails, getEamDiagList } = this.props;
-    // type：1位故障详情，2位缺陷详情
-    if(type === '1') {
-      getEamFaultDetails({
-        faultId: 1045,
-      });
-    }
-    if(type === '2') {
-      getEamDefectDetails({
-        defectId: '缺YCF2020040007',
-      });
-    }
-    // 查询告警登记记录
-    getEamDiagList({
-      waringId,
-    });
     // 监听页面滚动
     main.addEventListener('scroll', this.bindScroll);
   }
@@ -86,8 +59,8 @@ class EamRegisterDetail extends Component {
 
   // 返回诊断中心
   onCancelEdit = () => {
-    const { history } = this.props;
-    history.push('/monitor/diagnoseCenter');
+    const { changeStore } = this.props;
+    changeStore({showEamPage: false});
   };
 
   // 基本信息
@@ -108,18 +81,13 @@ class EamRegisterDetail extends Component {
 
   // 信息展示
   eamInfo = () => {
-    const { history } = this.props;
-    const { search, hash } = history.location;
-    // 因为设备名称里面带了#  所以判断hash是否为空
-    const urlSearch = hash ? `${search}${hash}` : search;
-    const { params } = searchUtil(urlSearch).parse(); // EAM查看信息
-    const {
-      eventName = '',
-      eventDesc = '',
-      deviceTypeName = '',
-      deviceName = '',
-      stationName = '',
-    } = params && JSON.parse(params) || {}; // 判断从路由中过来的筛选条件
+    const { eamDetailParams: {
+      eventName,
+      eventDesc,
+      deviceTypeName,
+      deviceName,
+      stationName,
+    }} = this.props;
     return (
       <div className={styles.eamInfo}>
         <b style={{marginLeft: '20px'}}>告警事件：</b><span>{eventName || '- -'}；</span>
@@ -140,15 +108,14 @@ class EamRegisterDetail extends Component {
 
   // 查看EAM故障列表
   lookEamDiagFunc = (record, index) => {
-    const { type } = this.state;
-    const { changeStore, getEamFaultDetails, getEamDefectDetails } = this.props;
+    const { changeStore, getEamFaultDetails, getEamDefectDetails, eamDetailParams: { type } } = this.props;
     // type：1位故障详情，2位缺陷详情
-    if(type === '1') {
+    if(type === 1) {
       getEamFaultDetails({
         faultId: record.id,
       });
     }
-    if(type === '2') {
+    if(type === 2) {
       getEamDefectDetails({
         defectId: record.id,
       });
@@ -159,7 +126,7 @@ class EamRegisterDetail extends Component {
   };
 
   render() {
-    const { scroll, baseFlag, tableFlag, type } = this.state;
+    const { scroll, baseFlag, tableFlag } = this.state;
     const {
       theme,
       diagLoading,
@@ -209,6 +176,7 @@ class EamRegisterDetail extends Component {
       workOrderList,
       eamDiagList,
       bgcIndex,
+      eamDetailParams: { type }
     } = this.props;
     const listColumn = [
       {
@@ -248,7 +216,7 @@ class EamRegisterDetail extends Component {
       {
         title: '故障编号',
         width: '25%',
-        dataIndex: 'registerNo',
+        dataIndex: 'faultNo',
         render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '工单编号',
@@ -318,12 +286,12 @@ class EamRegisterDetail extends Component {
             </div>
             <div className={styles.recordDetails}>
               <i className="iconfont icon-gdxq" />
-              <span>{`EAM ${type === '1' ? '故障' : '缺陷'}记录详情`}</span>
+              <span>{`EAM ${type === 1 ? '故障' : '缺陷'}记录详情`}</span>
             </div>
-            {detailLoading ? <div className={styles.detailsLoadingBox}>
+            {diagLoading || detailLoading ? <div className={styles.detailsLoadingBox}>
               <Spin />
             </div> : <div className={styles.eamRegisterWrap}>
-              {type === '1' && (
+              {type === 1 && (
                 <div className={styles.eamRegisterInfoBox}>
                   <div className={styles.tableBar}>
                     <div className={styles.barProcess}>
@@ -477,7 +445,7 @@ class EamRegisterDetail extends Component {
                   </div>}
                 </div>
               )}
-              {type === '2' && (
+              {type === 2 && (
                 <div className={styles.eamRegisterInfoBox}>
                   <div className={styles.tableBar}>
                     <div className={styles.barProcess}>
@@ -592,7 +560,7 @@ class EamRegisterDetail extends Component {
               <div className={styles.commonInfoBox}>
                 <div className={styles.tableBar}>
                   <div className={styles.barProcess}>
-                    {`${type === '1' ? '故障' : '缺陷'}关联的工单`}
+                    {`${type === 1 ? '故障' : '缺陷'}关联的工单`}
                   </div>
                   <div className={styles.commonIconBox}>
                     <span>{`合计：${workOrderList ? workOrderList.length : 0}`}</span>
@@ -618,17 +586,3 @@ class EamRegisterDetail extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  ...state.monitor.eamRegisterDetail.toJS(),
-  theme: state.common.get('theme'),
-});
-const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: eamRegisterDetailAction.resetStore }),
-  changeStore: payload => dispatch({ type: eamRegisterDetailAction.changeStore, payload }),
-  getEamDiagList: payload => dispatch({ type: eamRegisterDetailAction.getEamDiagList, payload }),
-  getEamFaultDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamFaultDetails, payload }),
-  getEamDefectDetails: payload => dispatch({ type: eamRegisterDetailAction.getEamDefectDetails, payload }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EamRegisterDetail);

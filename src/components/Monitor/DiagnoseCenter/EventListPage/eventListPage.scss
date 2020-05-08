@@ -211,10 +211,10 @@
       max-width: calc((100vw - 230px) * 0.06 - 20px);
     }
     .handleStyle{
-      padding: 0!important;
+      padding: 0 10px !important;
       .handlers{
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
 
         i:hover{
           color: #f9b600;

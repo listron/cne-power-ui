@@ -67,7 +67,6 @@ import { watchPvDataRealtimeMonitor } from './Monitor/PvDataAnalysis/PvDataRealt
 
 import { watchDataScatterDiagramMonitor } from './Monitor/DataAnalysis/DataScatterDiagram/scatterDiagramSaga'; // 数据分析 - 散点图
 import { watchDiagnoseCenter } from './Monitor/DiagnoseCenter/diagnoseCenterSaga'; // 诊断中心
-import { watchEamRegisterDetail } from './Monitor/EamRegisterDetail/eamRegisterDetailSaga'; // 诊断中心-查看EAM详情
 
 import { watchMonitorPowerReport } from './ReportManage/WindReport/PowerReport/powerReportSaga'; // 报表
 import { watchMonitorDeviceStatus } from './ReportManage/WindReport/DeviceStatus/deviceStatusSaga'; // 报表
@@ -221,7 +220,6 @@ export default function* rootSaga() {
 
     watchDataScatterDiagramMonitor(), //  数据分析 - 散点图
     watchDiagnoseCenter(), // 诊断中心
-    watchEamRegisterDetail(), // 诊断中心-查看EAM详情
 
     watchOthersSaga(),
     // watchOtherSaga(),

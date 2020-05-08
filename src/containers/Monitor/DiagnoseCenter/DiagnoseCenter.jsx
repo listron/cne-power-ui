@@ -8,6 +8,7 @@ import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/Even
 import DiagnoseFilter from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseFilter';
 import DiagnoseList from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseList';
 import EventAnalysisPage from '../../../components/Monitor/DiagnoseCenter/EventAnalysisPage/EventAnalysisPage';
+import EamRegisterDetail from '../../../components/Monitor/DiagnoseCenter/EamRegisterDetail/EamRegisterDetail';
 import Footer from '@components/Common/Footer';
 import searchUtil from '@utils/searchUtil';
 import { connect } from 'react-redux';
@@ -16,6 +17,7 @@ import { connect } from 'react-redux';
 class DiagnoseCenter extends Component {
   static propTypes = {
     showAnalysisPage: PropTypes.bool,
+    showEamPage: PropTypes.bool,
     history: PropTypes.object,
     getEventstatus: PropTypes.func,
     getEventtypes: PropTypes.func,
@@ -84,22 +86,25 @@ class DiagnoseCenter extends Component {
 
   render() {
     const { sideTranslateX } = this.state;
+    const { showEamPage } = this.props;
     return (
-      <div className={styles.diagnoseCenter} >
-        <div className={styles.diagnoseListPage}>
-          <DiagnoseHeaderTabs {...this.props} />
-          <div className={styles.listPageContent}>
-            <DiagnoseLevelSummry {...this.props} />
-            <DiagnoseFilter {...this.props} />
-            <DiagnoseList {...this.props} />
+      <React.Fragment>
+        {showEamPage ? <EamRegisterDetail {...this.props} /> : <div className={styles.diagnoseCenter} >
+          <div className={styles.diagnoseListPage}>
+            <DiagnoseHeaderTabs {...this.props} />
+            <div className={styles.listPageContent}>
+              <DiagnoseLevelSummry {...this.props} />
+              <DiagnoseFilter {...this.props} />
+              <DiagnoseList {...this.props} />
+            </div>
+            <Footer className={styles.footer} />
           </div>
-          <Footer className={styles.footer} />
-        </div>
-        <div className={styles.diagnoseSidePage} style={{ transform: sideTranslateX }}>
-          <EventAnalysisPage {...this.props} />
-          <Footer className={styles.footer} />
-        </div>
-      </div>
+          <div className={styles.diagnoseSidePage} style={{ transform: sideTranslateX }}>
+            <EventAnalysisPage {...this.props} />
+            <Footer className={styles.footer} />
+          </div>
+        </div>}
+      </React.Fragment>
     );
   }
 }
@@ -120,6 +125,9 @@ const mapDispatchToProps = (dispatch) => ({
   stopCircleQueryList: payload => dispatch({ type: diagnoseCenterAction.stopCircleQueryList, payload }),
   getEventsAnalysis: payload => dispatch({ type: diagnoseCenterAction.getEventsAnalysis, payload }),
   getLinkageList: payload => dispatch({ type: diagnoseCenterAction.getLinkageList, payload }),
+  getEamDiagList: payload => dispatch({ type: diagnoseCenterAction.getEamDiagList, payload }),
+  getEamFaultDetails: payload => dispatch({ type: diagnoseCenterAction.getEamFaultDetails, payload }),
+  getEamDefectDetails: payload => dispatch({ type: diagnoseCenterAction.getEamDefectDetails, payload }),
   getEamRegisterWaring: payload => dispatch({ type: diagnoseCenterAction.getEamRegisterWaring, payload }),
   getStationDeviceTypes: params => dispatch({
     type: commonAction.getStationDeviceTypes,
