@@ -205,7 +205,7 @@ class DiagnoseList extends Component {
       }
     }
     const showIgoreModal = selectedRows.every(info => ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(info.eventCode));
-    if (showIgoreModal) {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
+    if (showIgoreModal && value === 'ignore') {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
       this.setState({
         deleteRecords: selectedRows,
         needIgoreModal: true,

@@ -17,7 +17,7 @@ class IgnoreModal extends Component {
   }
 
   componentDidMount(){
-    this.props.form.setFieldsValue({ ignoreCode: 1 });
+    this.props.form.setFieldsValue({ ignoreCode: 5 });
   }
 
   checkIgnoreCode = (ignoreCode) => {
@@ -46,7 +46,6 @@ class IgnoreModal extends Component {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const buttonInfo = ['固定物遮挡', '地形因素', '植被遮挡', '限电因素', '其他因素'];
     const ignoreCode = getFieldValue('ignoreCode');
-    console.log(ignoreCode);
     return (
       <Modal
         visible

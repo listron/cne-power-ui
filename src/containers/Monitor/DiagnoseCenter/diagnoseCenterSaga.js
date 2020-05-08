@@ -139,6 +139,7 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
       const statusChangeNum = parseInt(response.data, 10) || 0;
       let statusChangeText = '';
       if (diagWarningIds.length === statusChangeNum) {// 情形一. 所有操作项, 均操作成功; => 直接刷新列表
+        message.success(`${type === 1 ? '忽略' : '删除'}成功!`);
         statusChangeText = '';
         if ( isLinkage ) { // 联动决策-操作
           yield fork(getLinkageList, { payload: { diagWarningId }});
