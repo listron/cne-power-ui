@@ -28,7 +28,12 @@ import Cookie from 'js-cookie';
 
 // listParams -> finished: 1归档事件, 0非归档事件
 // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
-const columnFilter = (totalColumn, finished) => totalColumn.filter(e => (e.dataIndex !== (finished > 0 ? 'statusName' : 'statusCode')));
+const columnFilter = (totalColumn, finished) => totalColumn.filter(e => {
+  if (finished > 0) { // 归档事件, 不展示事件状态
+    return e.dataIndex !== 'statusName';
+  }
+  return !['statusCode', 'ignoreMessage'].includes(e.dataIndex); // 非归档事件, 不展示首列状态图标 及 忽略原因
+});
 
 const eventLevelArray = ['--', '一级', '二级', '三级', '四级'];
 
@@ -56,28 +61,30 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '',
       className: styles.finishIcon,
       textAlign: 'center',
+      width: 40,
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '告警事件',
       sorter: true,
       textAlign: 'left',
-      className: styles.eventName,
+      width: '8.5%',
       render: (text, record) => {
         const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = record;
         const paramData={deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId, source: 'diagnoseCenter'};
         const searchStr = stringify(paramData);
         return (
-          <Link to={{ pathname: '/system/station/alarmEvent',
-                      search: `?${searchStr}`,
-                      state: paramData }}
-                target= "_blank"
-                key={record.diagWarningId}>
-            <div
-              title={text}
-              className={`${styles.eventNameText} ${styles.eventNameTextHover}`}
-            >{text || '--'}</div>
-          </Link>
+          <div title={text} className={`${styles.eventNameText}`}>
+            <Link to={{ pathname: '/system/station/alarmEvent',
+                        search: `?${searchStr}`,
+                        state: paramData }}
+                  target= "_blank"
+                  className={styles.eventNameLink}
+                  key={record.diagWarningId}>
+              {text || '--'}
+            </Link>
+          </div>
+
         );
       },
     }, {
@@ -85,99 +92,73 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '事件级别',
       sorter: true,
       textAlign: 'center',
-      className: styles.warningLevel,
-      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      width: '6.5%',
+      render: (text) => eventLevelArray[text] || '--',
     }, {
       dataIndex: 'pointValueDesc',
       title: '告警描述',
       textAlign: 'left',
-      className: styles.pointValueDesc,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceTypeName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.stationName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
       sorter: true,
       textAlign: 'center',
-      className: styles.beginTime,
+      width: '10.5%',
       render: (text) => (
         <div
           title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
           className={styles.beginTimeText}
         >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
       ),
-    },
-    // {
-    //   dataIndex: 'warningDuration',
-    //   title: '持续时长(h)',
-    //   // sorter: true,
-    //   className: styles.warningDuration,
-    //   render: (text) => (
-    //     <div
-    //       title={dataFormats(text, '--', 2, true)}
-    //       className={styles.warningDurationText}
-    //     >{dataFormats(text, '--', 2, true)}</div>
-    //   ),
-    // },
-    // {
-    //   dataIndex: 'warningFrequency',
-    //   title: '发生频次',
-    //   sorter: true,
-    //   className: styles.warningFrequency,
-    //   render: (text) => (<div title={text || '--'} className={styles.warningFrequencyText}>{text || '--'}</div>),
-    // },
-    {
+    }, {
       dataIndex: 'updateTime',
       title: '更新时间',
       sorter: true,
-      className: styles.updateTime,
+      width: '10.5%',
       textAlign: 'center',
-      render: (text) => (
-        <div
-        title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
-        className={styles.updateTimeText}
-      >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
-      ),
+      render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
     }, {
       dataIndex: 'warningFrequencyRate',
       title: '频次',
       sorter: true,
       textAlign: 'right',
-      className: styles.warningFrequencyRate,
-      render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
-    },
-    {
+      width: '6%',
+      render: (text) => dataFormats(text, '--', 2, true),
+    }, {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
       textAlign: 'left',
-      className: styles.statusName,
-      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
+      width: '7%',
+      render: (text) => text || '--',
     }, {
       dataIndex: 'handle',
       title: '操作',
       textAlign: 'center',
-      className: styles.handleStyle,
+      width: '7.5%',
       render: (text, record) => (
         <div className={styles.handlers}>
           <i
@@ -225,96 +206,82 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       title: '',
       className: styles.finishIcon,
       textAlign: 'center',
+      width: 40,
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '诊断事件',
       sorter: true,
       textAlign: 'left',
-      className: styles.eventName,
+      width: '8%',
       render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
       textAlign: 'center',
-      className: styles.warningLevel,
-      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      width: '6.5%',
+      render: (text) => eventLevelArray[text] || '--',
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceTypeName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.stationName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生日期',
       sorter: true,
       textAlign: 'center',
-      className: styles.beginTime,
-      render: (text) => (
-        <div
-          title={text ? moment(text).format('YYYY-MM-DD') : '--'}
-          className={styles.beginTimeText}
-        >{text ? moment(text).format('YYYY-MM-DD') : '--'}</div>
-      ),
-    // }, {
-    //   dataIndex: 'warningDuration',
-    //   title: '持续时长(h)',
-    //   // sorter: true,
-    //   className: styles.warningDuration,
-    //   render: (text) => (
-    //     <div
-    //       title={dataFormats(text, '--', 2, true)}
-    //       className={styles.warningDurationText}
-    //     >{dataFormats(text, '--', 2, true)}</div>
-    //   ),
+      width: '10.5%',
+      render: (text) => text ? moment(text).format('YYYY-MM-DD') : '--',
     }, {
       dataIndex: 'updateTime',
       title: '更新日期',
       sorter: true,
       textAlign: 'center',
-      className: styles.updateTime,
-      render: (text) => (
-        <div
-        title={text ? moment(text).format('YYYY-MM-DD') : '--'}
-        className={styles.updateTimeText}
-      >{text ? moment(text).format('YYYY-MM-DD') : '--'}</div>
-      ),
+      width: '10.5%',
+      render: (text) => text ? moment(text).format('YYYY-MM-DD') : '--',
     }, {
       dataIndex: 'warningFrequencyRate',
       title: '诊断频次',
       sorter: true,
       textAlign: 'right',
-      className: styles.warningFrequencyRate,
-      render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
+      width: '6.5%',
+      render: (text) => dataFormats(text, '--', 2, true),
+    }, {
+      dataIndex: 'ignoreMessage',
+      title: '忽略原因',
+      textAlign: 'left',
+      width: '10%',
+      render: (text) => (<div title={text || '--'} className={styles.ignoreMessageText}>{text || '--'}</div>),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
       textAlign: 'left',
-      className: styles.statusName,
-      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
+      width: '7%',
+      render: (text) => text || '--',
     }, {
       dataIndex: 'handle',
       title: '操作',
       textAlign: 'center',
-      className: styles.handleStyle,
+      width: '7.5%',
       render: (text, record) => (
         <div className={styles.handlers}>
           <i
@@ -361,84 +328,74 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '',
       className: styles.finishIcon,
       textAlign: 'center',
+      width: 40,
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '数据事件',
       sorter: true,
       textAlign: 'left',
-      className: styles.eventName,
+      width: '8.5%',
       render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
       textAlign: 'center',
-      className: styles.warningLevel,
-      render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
+      width: '6.5%',
+      render: (text) => eventLevelArray[text] || '--',
     }, {
       dataIndex: 'pointValueDesc',
       title: '测点描述',
       textAlign: 'left',
-      className: styles.pointValueDesc,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceTypeName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.deviceName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
       textAlign: 'left',
-      className: styles.stationName,
+      width: '10%',
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
       sorter: true,
       textAlign: 'center',
-      className: styles.beginTime,
-      render: (text) => (
-        <div
-          title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
-          className={styles.beginTimeText}
-        >{text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}</div>
-      ),
+      width: '10.5%',
+      render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
     }, {
       dataIndex: 'warningDuration',
       title: '持续时长(h)',
-      //sorter: true,
       textAlign: 'right',
-      className: styles.warningDuration,
-      render: (text) => (
-        <div
-          title={dataFormats(text, '--', 2, true)}
-          className={styles.warningDurationText}
-        >{dataFormats(text, '--', 2, true)}</div>
-      ),
+      width: '8%',
+      render: (text) => dataFormats(text, '--', 2, true),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
       textAlign: 'left',
-      className: styles.statusName,
-      render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
+      width: '7%',
+      render: (text) => text || '--',
     }, {
       dataIndex: 'handle',
       title: '操作',
       textAlign: 'center',
-      className: styles.handleStyle,
+      width: '7.5%',
       render: (text, record) => (
         <div className={styles.handlers}>
           <i
