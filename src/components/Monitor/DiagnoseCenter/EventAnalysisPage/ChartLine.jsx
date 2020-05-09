@@ -228,6 +228,7 @@ class ChartLine extends PureComponent {
         },
         selectedMode: e.isConnected === 0 ? false : true,
       });
+      const itemStyleColor = (isDiagnoseBranch && e.pointName !== '瞬时辐照度') ? (e.isWarned ? '#f5222d' : '#60c060'): lineStyleColor; // 电流-电压告警红, 正常绿, 其余随线色
       series.push({
         name: pointFullName,
         type: 'line',
@@ -243,11 +244,11 @@ class ChartLine extends PureComponent {
         showSymbol: (e.isConnected === 0 && isDiagnoseBranch) ? false : true, // 未连接 不展示
         itemStyle: {
           normal: {
-            color: isDiagnoseBranch ? (e.isWarned ? '#f5222d' : '#60c060'): lineStyleColor,
+            color: itemStyleColor,
             opacity: 0,
           },
           emphasis: {
-            color: isDiagnoseBranch ? (e.isWarned ? '#f5222d' : '#60c060'): lineStyleColor,
+            color: itemStyleColor,
             opacity: 1,
           },
         },
@@ -475,7 +476,7 @@ class ChartLine extends PureComponent {
               },
             },
           ],
-      },
+        },
       });
     }
     const option = {
