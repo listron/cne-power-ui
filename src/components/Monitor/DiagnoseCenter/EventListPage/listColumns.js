@@ -55,11 +55,13 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       dataIndex: 'statusCode',
       title: '',
       className: styles.finishIcon,
+      textAlign: 'center',
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '告警事件',
       sorter: true,
+      textAlign: 'left',
       className: styles.eventName,
       render: (text, record) => {
         const {deviceTypeCode, pointCode, deviceFullcode, stationCode, diagWarningId} = record;
@@ -82,35 +84,41 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
+      textAlign: 'center',
       className: styles.warningLevel,
       render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '告警描述',
+      textAlign: 'left',
       className: styles.pointValueDesc,
       render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceTypeName,
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceName,
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
       sorter: true,
+      textAlign: 'center',
       className: styles.beginTime,
       render: (text) => (
         <div
@@ -143,6 +151,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       title: '更新时间',
       sorter: true,
       className: styles.updateTime,
+      textAlign: 'center',
       render: (text) => (
         <div
         title={text ? moment(text).format('YYYY-MM-DD HH:mm') : '--'}
@@ -153,6 +162,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       dataIndex: 'warningFrequencyRate',
       title: '频次',
       sorter: true,
+      textAlign: 'right',
       className: styles.warningFrequencyRate,
       render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
     },
@@ -160,11 +170,13 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
+      textAlign: 'left',
       className: styles.statusName,
       render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
+      textAlign: 'center',
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
@@ -212,41 +224,48 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       dataIndex: 'statusCode',
       title: '',
       className: styles.finishIcon,
+      textAlign: 'center',
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '诊断事件',
       sorter: true,
+      textAlign: 'left',
       className: styles.eventName,
       render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
+      textAlign: 'center',
       className: styles.warningLevel,
       render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceTypeName,
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceName,
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生日期',
       sorter: true,
+      textAlign: 'center',
       className: styles.beginTime,
       render: (text) => (
         <div
@@ -269,6 +288,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       dataIndex: 'updateTime',
       title: '更新日期',
       sorter: true,
+      textAlign: 'center',
       className: styles.updateTime,
       render: (text) => (
         <div
@@ -280,17 +300,20 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       dataIndex: 'warningFrequencyRate',
       title: '诊断频次',
       sorter: true,
+      textAlign: 'right',
       className: styles.warningFrequencyRate,
       render: (text) => (<div title={dataFormats(text, '--', 2, true)} className={styles.warningFrequencyRateText}>{dataFormats(text, '--', 2, true)}</div>),
     }, {
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
+      textAlign: 'left',
       className: styles.statusName,
       render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
+      textAlign: 'center',
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
@@ -337,46 +360,54 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       dataIndex: 'statusCode',
       title: '',
       className: styles.finishIcon,
+      textAlign: 'center',
       render: (text, record) => statusIcon(record),
     }, {
       dataIndex: 'eventName',
       title: '数据事件',
       sorter: true,
+      textAlign: 'left',
       className: styles.eventName,
       render: (text) => (<div title={text || '--'} className={styles.eventNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'warningLevel',
       title: '事件级别',
       sorter: true,
+      textAlign: 'center',
       className: styles.warningLevel,
       render: (text) => (<div title={eventLevelArray[text] || '--'} className={styles.warningLevelText}>{eventLevelArray[text] || '--'}</div>),
     }, {
       dataIndex: 'pointValueDesc',
       title: '测点描述',
+      textAlign: 'left',
       className: styles.pointValueDesc,
       render: (text) => (<div title={text || '--'} className={styles.pointValueDescText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceTypeName',
       title: '设备类型',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceTypeName,
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
       title: '设备名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.deviceName,
       render: (text) => (<div title={text || '--'} className={styles.deviceNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'stationName',
       title: '电站名称',
       sorter: true,
+      textAlign: 'left',
       className: styles.stationName,
       render: (text) => (<div title={text || '--'} className={styles.stationNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'beginTime',
       title: '发生时间',
       sorter: true,
+      textAlign: 'center',
       className: styles.beginTime,
       render: (text) => (
         <div
@@ -388,6 +419,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       dataIndex: 'warningDuration',
       title: '持续时长(h)',
       //sorter: true,
+      textAlign: 'right',
       className: styles.warningDuration,
       render: (text) => (
         <div
@@ -399,11 +431,13 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       dataIndex: 'statusName',
       title: '事件状态',
       sorter: true,
+      textAlign: 'left',
       className: styles.statusName,
       render: (text) => (<div title={text || '--'} className={styles.statusNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'handle',
       title: '操作',
+      textAlign: 'center',
       className: styles.handleStyle,
       render: (text, record) => (
         <div className={styles.handlers}>
