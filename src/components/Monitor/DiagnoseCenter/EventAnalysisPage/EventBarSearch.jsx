@@ -7,13 +7,19 @@ import moment from 'moment';
 class EventBarSearch extends PureComponent {
 
   static propTypes = {
+    pageKey: PropTypes.string,
     analysisEvent: PropTypes.object,
     getEventsAnalysis: PropTypes.func,
   };
 
-  onDateChange = (momentTime, updateTime) => {
-    const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, updateTime });
+  onDateChange = (momentTime, timeStr) => {
+    // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
+    const { analysisEvent, pageKey } = this.props;
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    this.props.getEventsAnalysis({
+      ...analysisEvent,
+      [timeKey]: timeStr,
+    });
   }
 
   prevDay = () => this.onDayChange('subtract')
@@ -21,18 +27,21 @@ class EventBarSearch extends PureComponent {
   nextDay = () => this.onDayChange('add')
 
   onDayChange = (method) => {
-    const { analysisEvent } = this.props;
-    const { eventTime } = analysisEvent || {};
-    const newDayStr = moment(eventTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, updateTime: newDayStr });
+    // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
+    const { analysisEvent, pageKey } = this.props;
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const newDayStr = moment(analysisEvent[timeKey])[method](1, 'day').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: newDayStr });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
-    const { analysisEvent } = this.props;
-    const { eventTime, eventCode } = analysisEvent || {};
+    const { analysisEvent, pageKey } = this.props;
+    const { eventCode } = analysisEvent || {};
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
+    const eventTime = analysisEvent[timeKey]; // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
     const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');
     return (
         <div className={styles.analysisBarSearch}>

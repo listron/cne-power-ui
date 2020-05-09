@@ -50,9 +50,11 @@ class EventLineSearch extends PureComponent {
     this.props.getEventsAnalysis({ ...analysisEvent, interval }); // 默认十分钟数据
   }
 
-  onDateChange = (momentTime, updateTime) => {
-    const { analysisEvent } = this.props;
-    this.props.getEventsAnalysis({ ...analysisEvent, updateTime });
+  onDateChange = (momentTime, timeStr) => {
+    // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
+    const { analysisEvent, pageKey } = this.props;
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: timeStr });
   }
 
   prevDay = () => this.onDayChange('subtract')
@@ -60,10 +62,11 @@ class EventLineSearch extends PureComponent {
   nextDay = () => this.onDayChange('add')
 
   onDayChange = (method) => {
-    const { analysisEvent } = this.props;
-    const { eventTime } = analysisEvent || {};
-    const newMonthStr = moment(eventTime)[method](1, 'day').format('YYYY-MM-DD');
-    this.props.getEventsAnalysis({ ...analysisEvent, updateTime: newMonthStr });
+    // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
+    const { analysisEvent, pageKey } = this.props;
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const newDayStr = moment(analysisEvent[timeKey])[method](1, 'day').format('YYYY-MM-DD');
+    this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: newDayStr });
   }
 
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
@@ -71,8 +74,10 @@ class EventLineSearch extends PureComponent {
   render(){
     const { analysisEvent, pageKey } = this.props;
     const { showTip } = this.state;
-    const { eventTime, interval, eventCode } = analysisEvent || {};
-    const noSecondEvent = ['NB1038', 'NB1040', 'NB1036', 'NB1037', 'NB2035', 'NB2036'].includes(eventCode); // 电压异常、并网延时、组串低效、固定物遮挡、高值异常、低值异常没有5秒数据
+    const { interval, eventCode } = analysisEvent || {};
+    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const noSecondEvent = ['NB1035', 'NB1036', 'NB1037', 'NB1038', 'NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode) || pageKey === 'data'; //诊断事件(5组串事件) 没有5秒数据， 所有的数据事件pageKey = 'data'也没有5s数据。
+    const eventTime = analysisEvent[timeKey]; // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
     const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');
     return (
         <div className={styles.analysisLineSearch}>
@@ -87,7 +92,7 @@ class EventLineSearch extends PureComponent {
             >
               <Option value={1}>10分钟</Option>
               <Option value={3}>1分钟</Option>
-              {(!noSecondEvent && pageKey !== 'data') && <Option value={2}>5秒钟</Option> }
+              {!noSecondEvent && <Option value={2}>5秒钟</Option> }
             </Select>
             <Icon className={styles.leftIcon} type="left" onClick={this.prevDay} />
             <DatePicker

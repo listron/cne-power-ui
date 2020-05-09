@@ -48,9 +48,11 @@ class EventAnalysisPage extends PureComponent {
 
   render(){
     const { pageKey, analysisEvent, eventAnalysisInfo, analysisPageLoading, isMoreData, fromOutside } = this.props;
-    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval, eventTime } = analysisEvent || {};
-    const startTime = moment(eventTime).startOf('day').utc().format();
-    const endTime = moment(eventTime).endOf('day').utc().format();
+    const timeKey = pageKey === 'diagnose' ? 'updateTime' : 'beginTime';
+    // pageKey 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
+    const { eventName, pointValueDesc, deviceTypeName, deviceName, stationName, interval } = analysisEvent || {};
+    const startTime = moment(analysisEvent[timeKey] || analysisEvent.beginTime).startOf('day').utc().format();
+    const endTime = moment(analysisEvent[timeKey] || analysisEvent.beginTime).endOf('day').utc().format();
     const { chartType, deviceFullcode, data } = eventAnalysisInfo || {};
     const { pointData = [] } = data || {};
     const pointCodes = pointData && pointData.map(e => e.pointCode);

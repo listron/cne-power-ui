@@ -169,24 +169,23 @@ function * editEventsStatus({ payload }) { // 忽略 删除事件
 }
 
 function* getEventsAnalysis({ payload = {} }) { // 诊断分析
-  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, updateTime || beginTime日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
+  //payload: { diagWarningId: 告警id, deviceFullcode, interval数据时间间隔1-10分钟/2-5秒/3-1分钟, beginTime日期, eventCode事件类型编码eventType: 1告警事件2诊断事件3数据事件, fromPath: 从别页直接进入告警中心分析标识, }
   /**
    * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
    */
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime, updateTime, interval, fromPath, analysisPageLoading } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, fromPath, analysisPageLoading } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
     yield call(easyPut, 'changeStore', { isChartLoading: true }); // chart图表loading
     // 1. 外部路径直接跳转分析 => 路径(diagWarningId,deviceFullcode), 将返回结果(response.data.warning)初始化reducer;
     const params = { diagWarningId, deviceFullcode };
-    const eventTime = moment(updateTime || beginTime).format('YYYY-MM-DD');
     if (!fromPath) { // 2. 正常诊断中心点击分析请求
       params.eventCode = eventCode;
       params.eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
       params.interval = interval;
-      params.date = eventTime;
+      params.date = moment(beginTime).format('YYYY-MM-DD');
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {
@@ -195,7 +194,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const tmpStoreInfo = { // 要产生的必要store输出。
         analysisPageLoading: false,
         isChartLoading: false,
-        analysisEvent: { ...payload, eventTime },
+        analysisEvent: { ...payload },
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       };
       if (fromPath) { // 路径跳转需额外添加的数据参数;
@@ -204,7 +203,6 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         tmpStoreInfo.pageKey = ['alarm', 'diagnose', 'data'][warning.eventType - 1] || 'alarm';
         tmpStoreInfo.analysisEvent = {
           interval: response.data.interval,
-          eventTime: moment(response.data.updateTime || response.data.beginTime).format('YYYY-MM-DD'),
           ...payload,
           ...warning,
         };
@@ -217,8 +215,8 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       if (isEmptyData) { // 空数据 - 弹出提示
         tmpStoreInfo.showEmptyDataTip = true;
       }
-      const autoIntervalAnalysis = analysisPageLoading && interval === 2 && isEmptyData && (eventType === 1 || eventCode === 'NB1035');
-      // 从列表跳入分析页面(autoIntervalAnalysis:true)时: 若interval为5秒+数据为空+事件类型为零电流'NB1035'或者是告警事件时，需继续自动请求10分钟
+      const autoIntervalAnalysis = analysisPageLoading && interval === 2 && isEmptyData && (eventType === 1);
+      // 从列表跳入分析页面(autoIntervalAnalysis:true)时: 若interval为5秒+数据为空+事件类型为告警事件时，需继续自动请求10分钟
       yield call(easyPut, 'fetchSuccess', tmpStoreInfo);
       if (autoIntervalAnalysis) {
         yield fork(getEventsAnalysis, { payload: { ...payload, interval: 1, analysisPageLoading: false } });
