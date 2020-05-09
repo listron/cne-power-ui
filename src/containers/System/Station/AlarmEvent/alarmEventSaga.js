@@ -200,10 +200,16 @@ function* addVersionEvent(action) { // 添加告警事件
     if (response.data.code === '10000') {
       message.success('添加成功');
       const diagModeVersionId = yield select(state => state.system.alarmEventReducer.get('diagModeVersionId'));
+      const deviceTypeCode = yield select(state => state.system.alarmEventReducer.get('deviceTypeCode'));
+      yield put({ // 更新重载 选中版本下告警与级别的关联关系
+        type: alarmEventAction.getAlarmEvent,
+        payload: { diagModeVersionId, deviceTypeCode },
+      });
       yield put({
         type: alarmEventAction.getVersionEvent,
         payload: { diagModeVersionId },
       });
+      // const { payload } = action; // { eventType: 1,  deviceTypeCode: 206, diagModeVersionId: '516203177511424' }
       func();
     } else { throw response.data; }
   } catch (e) {
@@ -221,7 +227,12 @@ function* editVersionEvent(action) { // 编辑告警事件
     if (response.data.code === '10000') {
       message.success('编辑成功');
       const diagModeVersionId = yield select(state => state.system.alarmEventReducer.get('diagModeVersionId'));
+      const deviceTypeCode = yield select(state => state.system.alarmEventReducer.get('deviceTypeCode'));
       func();
+      yield put({ // 更新重载 选中版本下告警与级别的关联关系
+        type: alarmEventAction.getAlarmEvent,
+        payload: { diagModeVersionId, deviceTypeCode },
+      });
       yield put({
         type: alarmEventAction.getVersionEvent,
         payload: { diagModeVersionId },
