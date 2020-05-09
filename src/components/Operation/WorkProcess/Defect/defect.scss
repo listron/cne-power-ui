@@ -27,6 +27,7 @@
     margin-right: 16px;
   }
   .searchSelect {
+    margin-right: 30px;
     :global {
       .ant-select-selection__rendered {
         height: 30px;
@@ -36,43 +37,20 @@
       }
     }
   }
-  .search {
-    margin-left: 36px;
-  }
 }
 .defectTable {
   display: flex;
   flex-direction: column;
   flex: 1;
+  table {
+    table-layout: fixed;
+    width:100%;
+  }
   .stationNameText,
   .deviceNameText,
   .defectTypeNameText,
   .defectDescribeText {
     @include overflowText();
-  }
-  .stationName {
-    width: calc((100vw - 900px) * 0.21);
-  }
-  .stationNameText {
-    width: calc((100vw - 900px) * 0.21 - 18px);
-  }
-  .deviceName {
-    width: calc((100vw - 900px) * 0.21);
-  }
-  .deviceNameText {
-    width: calc((100vw - 900px) * 0.21 - 18px);
-  }
-  .defectTypeName {
-    width: calc((100vw - 900px) * 0.23);
-  }
-  .defectTypeNameText {
-    width: calc((100vw - 900px) * 0.23 - 18px);
-  }
-  .defectDescribe {
-    max-width: calc((100vw - 900px) * 0.34);
-  }
-  .defectDescribeText {
-    max-width: calc((100vw - 900px) * 0.34 - 18px);
   }
   .action {
     display: flex;
@@ -110,6 +88,14 @@
         margin-right: 4px;
         justify-content: center;
       }
+    }
+  }
+  .look{
+    font-size: 20px;
+    color: $themeColor;
+    cursor: pointer;
+    &:hover{
+      color: #f9b600;
     }
   }
   :global {
@@ -198,10 +184,7 @@
     padding: 18px 28px;
     background-color: #f8f8f8;
     .dealMethod {
-      border: 1px solid $themeColor;
-      color: $themeColor;
       margin: 0 10px;
-      height: 30px;
     }
   }
   .addImg {
@@ -220,21 +203,10 @@
   .actionBar {
     margin-left: 88px;
     .cancelBtn {
-      background-color: #f1f1f1;
-      color: $darkColor;
       margin-right: 10px;
-      border: none;
-    }
+    }    
     .addContinue {
       margin-left: 10px;
-    }
-    button {
-      // width: 98px;
-      &:hover {
-        background-color: $themeColor;
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
-        color: #fff;
-      }
     }
   }
   :global {

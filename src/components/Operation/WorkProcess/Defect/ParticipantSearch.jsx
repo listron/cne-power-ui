@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Select, Button } from 'antd';
+import CneButton from '../../../Common/Power/CneButton/';
 import styles from './defect.scss';
+
 
 const { Option } = Select;
 
@@ -79,7 +81,7 @@ class ParticipantSearch extends Component {
             return <Option key={`${username}`} value={`${username}`}>{userText}</Option>;
           })}
         </Select>
-        <Button onClick={this.toSearch} className={styles.search}>查询</Button>
+        <CneButton lengthMode='short' onClick={this.toSearch}> 查询 </CneButton>
         {handleUserList.length > 0 && <Button onClick={this.toReset} className={styles.search}>重置</Button>}
       </div>
     );

@@ -5,6 +5,8 @@ import { Table, Select, Tooltip, Radio } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination/index';
 import WarningTip from '../../../Common/WarningTip/index';
 import { handleRight } from '@utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
+import CneButton from '../../../Common/Power/CneButton/';
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -72,8 +74,11 @@ class InspectTable extends React.Component {
     });
   }
 
-  onChangeTable = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
-    const { field, order } = sorter;
+  onChangeTable = (pagination, filter, sorter) => { // 表格排序&&表格重新请求数据
+    const { params } = this.props;
+    const { order, field } = sorter;
+    const { sort } = params;
+    const [sortField, sortMethod] = sort.split(',');
     const orderFile = {
       inspectName: '0',
       stationName: '1',
@@ -81,11 +86,16 @@ class InspectTable extends React.Component {
       checkTime: '6',
       inspectStatus: '4',
     };
-    const orderFiled = orderFile[field];
-    const orderType = order === 'descend' ? 1 : 0;
-    const sort = order ? `${orderFiled},${orderType}` : '';
-    this.getListData({ sort });
+    let newSortField = sortField, newSortMethod = 0;
+    if (!field || orderFile[field] === newSortField) {
+      newSortMethod = `${sortMethod}` === '1' ? 0 : 1;
+    } else {
+      newSortField = orderFile[field];
+    }
+    this.getListData({ sort: `${newSortField},${newSortMethod}` });
   }
+
+
   onSelectChange = (selectedRowKeys, selectedRows) => {
     const inspectArr = selectedRows.map(e => (e.inspectStatus));
     const filterStatus = new Set(inspectArr);//当且仅当只有一种待验收的状态时，方可验收
@@ -121,20 +131,21 @@ class InspectTable extends React.Component {
 
   render() {
     const { selectedRowKeys = [], params = {}, total, tableLoading, theme, inspectList, inspectStatusStatistics } = this.props;
-    const { pageSize = 10, pageNum = 1, status } = params;
+    const { pageSize = 10, pageNum = 1, status, sort } = params;
     const { executeNum, checkNum } = inspectStatusStatistics;
     const { currentSelectedStatus, showWarningTip, warningTipText } = this.state;
     const curInspectStatus = { '0': '待提交', '1': '待审核', '2': '执行中', '3': '待验收', '4': '已完成' };
     const unselected = selectedRowKeys.length === 0;
-    // const rightHandler = localStorage.getItem('rightHandler');
-    // const checkInspectRight = rightHandler && rightHandler.split(',').includes('workExamine_inspection_check');
     const checkInspectRight = handleRight('workExamine_inspection_check');
+    const [sortField, sortMethod] = sort.split(',');
+
+
     const columns = [{
       title: '巡检名称',
       dataIndex: 'inspectName',
-      key: 'inspectName',
       sorter: true,
-      // width: 137,
+      textAlign: 'left',
+      width: '12%',
       className: styles.inspectName,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
@@ -142,9 +153,9 @@ class InspectTable extends React.Component {
     }, {
       title: '电站名称',
       dataIndex: 'stationName',
-      key: 'stationName',
       sorter: true,
-      // width: 137,
+      textAlign: 'left',
+      width: '12%',
       className: styles.inspectName,
       render: (text, record) => {
         return <div className={styles.nameWidth} title={text}>{text}</div>;
@@ -152,8 +163,8 @@ class InspectTable extends React.Component {
     }, {
       title: '工单描述',
       dataIndex: 'deviceTypeName',
-      key: 'deviceTypeName',
-      // width: 270,
+      textAlign: 'left',
+      width: '22%',
       className: styles.desc,
       render: (text, record) => {
         return <div className={styles.inspectDesc} title={text}>{text}</div>;
@@ -161,25 +172,25 @@ class InspectTable extends React.Component {
     }, {
       title: '缺陷数目',
       dataIndex: 'defectNum',
-      key: 'defectNum',
-      width: 80,
+      textAlign: 'right',
+      width: '7%',
       render: (text, record) => {
         return <div className={styles.defectNum} title={text}>{text}</div>;
       },
     }, {
       title: '发生时间',
       dataIndex: 'startTime',
-      key: 'startTime',
       sorter: true,
-      width: 160,
+      width: '13%',
+      textAlign: 'center',
       render: (text, record) => {
         return <div className={styles.textWidth} title={text}>{text}</div>;
       },
     }, {
       title: '完成时间',
       dataIndex: 'checkTime',
-      key: 'checkTime',
-      width: 160,
+      width: '13%',
+      textAlign: 'center',
       render: (text, record) => {
         return <div className={styles.textWidth} title={text}>{text ? text : '--'}</div>;
       },
@@ -187,9 +198,9 @@ class InspectTable extends React.Component {
     }, {
       title: '状态',
       dataIndex: 'inspectStatus',
-      key: 'inspectStatus',
       sorter: true,
-      width: 130,
+      width: '10%',
+      textAlign: 'left',
       render: (value, record, index) => (
         <div className={styles.inspectStatus} >
           <span>{curInspectStatus[value]}</span>
@@ -200,13 +211,9 @@ class InspectTable extends React.Component {
       ),
     }, {
       title: '查看',
-      width: 60,
-      className: styles.lookStyle,
-      render: (text, record) => (
-        <div className={styles.cursorStyle}>
-          <i className="iconfont icon-look" onClick={() => { this.onShowDetail(record.inspectId); }} />
-        </div>
-      ),
+      width: '6%',
+      textAlign: 'center',
+      render: (text, record) => <i className={`iconfont icon-look ${styles.lookStyle}`} onClick={() => { this.onShowDetail(record.inspectId); }} />,
     }];
     const rowSelection = {
       selectedRowKeys,
@@ -243,8 +250,7 @@ class InspectTable extends React.Component {
           </div>
           <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
-
-        <Table
+        <CneTable
           rowKey={(record) => { return record.inspectId; }}
           dataSource={inspectList}
           columns={columns}
@@ -253,7 +259,8 @@ class InspectTable extends React.Component {
           loading={tableLoading}
           // scroll={{ y: 450, scrollToFirstRowOnChange: true }}
           pagination={false}
-          locale={{ emptyText: <div className={styles.noData}><img src="/img/nodata.png" style={{ width: 223, height: 164 }} /></div> }}
+          sortMethod={['ascend', 'descend'][sortMethod]}
+          sortField={['inspectName', 'stationName', 'startTime', '', 'inspectStatus', '', 'checkTime'][sortField]}
         />
         {inspectList.length > 0 && <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRowKeys.length}</span>项</span>

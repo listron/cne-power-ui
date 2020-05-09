@@ -9,62 +9,22 @@
   display: flex;
   flex-direction: column;
   min-width: 700px;
-
-  :global {
-
-    .ant-table .ant-table-thead>tr>th,
-    .ant-table .ant-table-tbody>tr>td {
-      padding: 0 8px;
-    }
+  table{
+    table-layout: fixed;
+    width: '100%';
   }
 
-  .inspectName {
-    width: calc((100vw - 894px) * 0.25);
-
-    .nameWidth {
-      width: calc((100vw - 894px) * 0.25 - 20px);
-    }
+  .inspectName, .nameWidth, .desc, .textWidth,.inspectDesc {
+    @include overflowText();
   }
 
-  .desc {
-    width: calc((100vw - 894px) * 0.50);
-
-    .inspectDesc {
-      width: calc((100vw - 894px) * 0.50 - 20px);
-    }
-  }
-
-  .inspectName,
-  .nameWidth,
-  .desc,
-  .textWidth,
-  .inspectDesc {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: keep-all;
-  }
-
-
-  .defectNum {
-    text-align: right;
-    margin-right: 8px;
-  }
-
-
-
-
-
-
-.lookStyle{
-  text-align: center;
-}
-  .cursorStyle {
+  .lookStyle{
+   font-size: 20px;
+    color: $themeColor;
     cursor: pointer;
-    text-align: center;
-
-    &:hover {
-      color: #199475;
+    padding: 8px;
+    &:hover{
+      color: #f9b600;
     }
   }
 
@@ -72,14 +32,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
     .warning {
       display: flex;
       flex-direction: row;
       font-size: 12px;
       align-items: center;
       margin-left: 12px;
-
       .overTime {
         display: flex;
         align-items: center;
@@ -97,23 +55,17 @@
     margin-left: 22px;
     margin-bottom: 20px;
     align-items: center;
-
     .buttonArea {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-
       :global {
         .icon-help {
           font-size: 12px;
           margin-left: 4px;
         }
       }
-
-
     }
-
-
 
     :global {
       .icon-help {
@@ -154,10 +106,6 @@
     }
   }
 
-  // .tableFooter {
-  //   margin-top: 8px;
-  //   margin-left: 20px;
-  // }
   .tableFooter {
     height: 45px;
     line-height: 45px;
@@ -176,7 +124,6 @@
     }
   }
 }
-
 
 
 .light {

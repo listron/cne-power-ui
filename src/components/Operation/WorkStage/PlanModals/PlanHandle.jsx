@@ -7,6 +7,7 @@ import WarningTip from '@components/Common/WarningTip';
 import CneButton from '@components/Common/Power/CneButton';
 import styles from './planModals.scss';
 import { handleRight } from '@utils/utilFunc';
+import CneTable from '../../../Common/Power/CneTable';
 
 class PlanHandle extends PureComponent {
 
@@ -29,29 +30,35 @@ class PlanHandle extends PureComponent {
       {
         title: '计划类型',
         dataIndex: 'planTypeName',
-        width: 160,
+        width: '16%',
+        textAlign: 'left',
         render: (text = '') => (<div title={text} className={styles.planTypeNameText}>{text}</div>),
       }, {
         title: '内容',
         dataIndex: 'inspectContent',
-        className: styles.inspectContent,
+        textAlign: 'left',
+        width: '31%',
+        // className: styles.inspectContent,
         render: (text = '') => (<div title={text} className={styles.inspectContentText}>{text}</div>),
       }, {
         title: '电站',
         dataIndex: 'stationName',
-        className: styles.stationName,
+        textAlign: 'left',
+        width: '16%',
+        // className: styles.stationName,
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
         title: '执行天数',
+        textAlign: 'right',
         dataIndex: 'validPeriod',
-        width: 90,
+        width: '16%',
         render: (text = '') => (<div title={text} className={styles.validPeriodText}>{text}</div>),
       },
     ],
     handleRow: {
       title: '操作',
       dataIndex: 'handle',
-      width: 150,
+      width: '16%',
       render: (text, record) => <HandlePart record={record} publishOnce={this.publishOnce} deleteOnce={this.deleteOnce} />,
     },
     handleType: '', // publish, delete
@@ -60,7 +67,7 @@ class PlanHandle extends PureComponent {
     warningTipText: '',
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { handlePlanLoading, handleError, planListLoading, planList, activePlanDate } = nextProps;
     const preLoading = this.props.handlePlanLoading;
     const preListLoading = this.props.planListLoading;
@@ -72,7 +79,7 @@ class PlanHandle extends PureComponent {
         handleType: '',
       });
     }
-    if(!planListLoading && preListLoading){ // 日历列表数据返回
+    if (!planListLoading && preListLoading) { // 日历列表数据返回
       const curPlan = planList.find(e => moment(e.reportDate).isSame(activePlanDate, 'day')) || {};
       const list = curPlan.list || [];
       const datePlans = list.map(e => ({ ...e, key: e.planDetailId }));
@@ -138,12 +145,12 @@ class PlanHandle extends PureComponent {
     this.setState({ selectedRowKeys: [] });
   }
 
-  render(){
+  render() {
     const { showModal, modalKey, activePlanDate, datePlans, handlePlanLoading, planListLoading, theme } = this.props;
     const { baseColumn, handleType, selectedRowKeys, handleParams, warningTipText, handleRow } = this.state;
     const hasRowSelected = selectedRowKeys.length > 0;
     const planManageRight = handleRight('operation_workStation_manage');
-    const planColumn = planManageRight ? baseColumn.concat(handleRow): baseColumn;
+    const planColumn = planManageRight ? baseColumn.concat(handleRow) : baseColumn;
     return (
       <Modal
         title={`工作计划 ${activePlanDate}`}
@@ -168,7 +175,7 @@ class PlanHandle extends PureComponent {
               lengthMode="short"
             >批量删除</CneButton>
           </div>}
-          <Table
+          <CneTable
             dataSource={datePlans}
             columns={planColumn}
             pagination={false}

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './defect.scss';
 import { Modal, Button, Icon } from 'antd';
+import CneButton from '../../../Common/Power/CneButton';
 
 
 class SolutionLibrary extends React.PureComponent {
@@ -47,7 +48,7 @@ class SolutionLibrary extends React.PureComponent {
     const { knowledgebaseList } = this.props;
     return (
       <div className={styles.solutionWrap}>
-        {knowledgebaseList.length > 0 && <Button type="default" onClick={this.showModal} className={styles.dealMethod}>查看解决方案</Button>}
+        {knowledgebaseList.length > 0 && <CneButton onClick={this.showModal} className={styles.dealMethod} lengthMode='long'>查看解决方案</CneButton>}
         <div ref="dealMethod" className={styles.dealModal} />
         <Modal
           title="解决方案查看"

@@ -57,8 +57,8 @@ class CommonInput extends Component {
             return (
               <Button
                 key={'common' + index}
-                ghost={true}
                 type="primary"
+                className={styles.initButton}
                 onClick={() => this.onClickCommon(item.languageInfo)}>{item.languageInfo || '--'}</Button>
             );
           })

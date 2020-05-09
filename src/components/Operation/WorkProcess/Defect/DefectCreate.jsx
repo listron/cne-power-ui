@@ -10,6 +10,7 @@ import DeviceSelect from '../../../Common/DeviceSelect/index';
 import DefectProcessForm from './DefectProcessForm';
 import SolutionLibrary from './SolutionLibrary';
 import moment from 'moment';
+import CneButton from '../../../Common/Power/CneButton';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -334,8 +335,8 @@ class DefectCreate extends Component {
           <div className={styles.title}> 处理信息<i className="iconfont icon-content" /> </div>
           <DefectProcessForm form={form} commonList={commonList} rejectDeatil={rejectDeatil.length > 0 && rejectDeatil[0] || {}} />
           <div className={styles.actionBar}>
-            <Button className={styles.saveBtn} onClick={() => this.onDefectCreate(false)}>保存</Button>
-            {!editDefect && <Button onClick={() => this.onDefectCreate(true)} className={styles.addContinue}>保存并继续添加</Button>}
+            <CneButton lengthMode="short" onClick={() => this.onDefectCreate(false)}>保存 </CneButton>
+            {!editDefect && <CneButton lengthMode="long" onClick={() => this.onDefectCreate(true)} className={styles.addContinue}>保存并继续添加 </CneButton>}
           </div>
         </div>
       </Form>

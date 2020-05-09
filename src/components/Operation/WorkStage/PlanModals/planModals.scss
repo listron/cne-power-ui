@@ -106,46 +106,22 @@
     }
   }
   .planTable{
-    .planTypeNameText{
-      max-width: 128px;
-      @include overflowText();
+    table{
+      table-layout: fixed;
+      width: 100%;
     }
-    .inspectContent{
-      width: calc(700px * 0.66);
-    }
-    .inspectContentText{
-      max-width: calc(700px * 0.66 - 32px);
-      @include overflowText();
-    }
-    .stationName{
-      width: calc(700px * 0.33);
-    }
-    .stationNameText{
-      max-width: calc(700px * 0.66 - 32px);
-      @include overflowText();
-    }
-    .validPeriodText{
-      text-align: right;
+    .planTypeNameText,.inspectContentText,.stationNameText{
+       @include overflowText();
     }
     .handleText{
-      .publishPlan{
-        margin-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      .publishPlan,.deletePlan{
         cursor: pointer;
-      }
-      .deletePlan{
-        cursor: pointer;
-      }
-    }
-    :global{
-      .ant-table-scroll .ant-table-body{
-        overflow-x: hidden;
-      }
-      .ant-table-scroll .ant-table-body, .ant-table-scroll .ant-table-header{
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 3px;
+        color: $themeColor;
+        &:hover{
+           color: #f9b600;
         }
       }
     }
@@ -257,16 +233,7 @@
 .light .planHandle{ // 计划下发, 删除
   .planTable{
     .handleText{
-      .publishPlan{
-        color: $themeColor;
-      }
-    }
-    :global{
-      .ant-table-scroll .ant-table-body{
-        &::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.5);
-        }
-      }
+      color: $themeColor;
     }
   }
   .planFooter{
@@ -366,23 +333,6 @@
 }
 
 .dark .planHandle{ // 计划下发, 删除
-  .planTable{
-    :global{
-      .ant-table-scroll .ant-table-body{
-        &::-webkit-scrollbar-thumb {
-          background: #3b55aa;
-        }
-      }
-      .ant-table-scroll .ant-table-header{
-        overflow-x: hidden!important;
-        margin-bottom: 0!important;
-        background-color: transparent;
-        &::-webkit-scrollbar-track-piece{
-          background-color: #1f246f;
-        }
-      }
-    }
-  }
   .planFooter{
     .selectNum{
       color:#f9b600;

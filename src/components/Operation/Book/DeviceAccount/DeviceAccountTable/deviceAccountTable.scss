@@ -11,6 +11,7 @@
   // width: 100%;
   table{
     table-layout: fixed;
+    width:100%;
   }
   .madeNames,.manufactorName,.supplierNames,.deviceModeName,.assetsName{
      @include omit();

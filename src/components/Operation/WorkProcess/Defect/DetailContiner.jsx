@@ -10,6 +10,7 @@ import DefectProcessForm from './DefectProcessForm'; // 执行
 import DefectCheckForm from './DefectCheckForm'; // 验收
 import searchUtil from '@utils/searchUtil';
 import { handleRights } from '@utils/utilFunc';
+import CneButton from '../../../Common/Power/CneButton';
 
 
 class DetailContiner extends Component {
@@ -125,8 +126,8 @@ class DetailContiner extends Component {
               {defectStatus === '3' && <DefectCheckForm form={form} />}
             </Form>
             <div className={styles.actionBar}>
-              <Button className={styles.cancelBtn} onClick={this.onReset}>重置</Button>
-              <Button type="primary" onClick={this.handleSubmit}>提交</Button>
+              <CneButton className={styles.cancelBtn} onClick={this.onReset} lengthMode='short'>重置</CneButton>
+              <CneButton onClick={this.handleSubmit} lengthMode='short'>提交</CneButton>
             </div>
           </div>
           }

@@ -1,15 +1,18 @@
 @import '../../../theme/theme.scss';
 .commonInput {
   .commonList {
-    :global {
-      .ant-btn-background-ghost.ant-btn-primary {
+    button.initButton{
+      border: 1px solid $themeColor;
+      background: #fff;
+      color: $themeColor;
+      font-size: 12px;
+      padding: 0 4px;
+      height: 22px;
+      margin-right: 8px;
+      border-radius: 2px;
+      &:hover{
+        background: #ceebe0;
         color: $themeColor;
-        border-color: $themeColor;
-        margin-right: 12px;
-        font-size: 12px;
-        padding: 0 4px;
-        height: 22px;
-        border-radius: 2px;
       }
     }
   }

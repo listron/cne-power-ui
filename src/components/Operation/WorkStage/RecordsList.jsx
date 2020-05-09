@@ -22,6 +22,7 @@ class RecordsList extends PureComponent {
     deletRecord: PropTypes.func,
   };
 
+
   state = {
     recordFilterCode: 0,
     column: [
@@ -29,7 +30,10 @@ class RecordsList extends PureComponent {
         title: '工作类型',
         dataIndex: 'taskTypeName', // taskTypeCode	Int	工作类型编码 1 计划 2 消缺 3 巡检 4 记事 taskTypeName	String	工作类型名字
         textAlign: 'left',
-        sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
+        // sorter: (a, b) => a.taskTypeCode - b.taskTypeCode,
+        width: '14%',
+        sorter: true,
+        // defaultSortOrder: 'ascend',
         className: styles.taskTypeName,
         render: (text, record) => {
           const { taskTypeName, taskTypeCode, deviceTypeName, taskName } = record;
@@ -37,7 +41,7 @@ class RecordsList extends PureComponent {
           // 消缺 2=> 设备类型； 巡检 3=> 巡检名称； 计划 1=> 巡检计划； 记事 4=> 工作记事
           const recordKey = ['--', taskName, deviceTypeName, taskName, '工作记事'];
           const recordText = recordKey[taskTypeCode] || '--';
-          return ( // className={styles.taskTypeName}
+          return (
             <div
               className={styles.taskTypeNameText}
               title={`【${taskTypeName || '--'}】${recordText}`}
@@ -51,7 +55,7 @@ class RecordsList extends PureComponent {
         title: '工作描述',
         dataIndex: 'taskDesc',
         textAlign: 'left',
-        className: styles.taskDesc,
+        width: '23%',
         render: (text = '', record) => {
           const { taskTypeCode, taskName, taskDesc } = record; // taskTypeCode === 3时候为巡检，工作描述展示巡检名称
           const recordKey = ['--', taskDesc, taskDesc, taskName, taskDesc];
@@ -64,34 +68,39 @@ class RecordsList extends PureComponent {
         title: '电站',
         dataIndex: 'stationName',
         textAlign: 'left',
-        sorter: (a, b) => a.stationName && a.stationName.localeCompare(b.stationName),
-        className: styles.stationName,
+        width: '14%',
+        sorter: true,
+        // sorter: (a, b) => a.stationName && a.stationName.localeCompare(b.stationName),
         render: (text = '') => (<div title={text} className={styles.stationNameText}>{text}</div>),
       }, {
         title: '完成时间',
         dataIndex: 'completeTime',
         textAlign: 'center',
-        sorter: (a, b) => (moment(a) - moment(b)),
-        className: styles.completeTime,
+        width: '14%',
+        sorter: true,
+        // sorter: (a, b) => (moment(a) - moment(b)),
         render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '--',
       }, {
         title: '执行人',
         dataIndex: 'handleUser',
         textAlign: 'left',
-        sorter: (a, b) => a.handleUser && a.handleUser.localeCompare(b.handleUser),
-        className: styles.handleUser,
+        width: '14%',
+        sorter: true,
+        // sorter: (a, b) => a.handleUser && a.handleUser.localeCompare(b.handleUser),
         render: (text = '') => (<div title={text} className={styles.handleUserText}>{text || '--'}</div>),
       }, {
         title: '完成情况', // completeStatus	Int	完成情况  0未完成  1已完成
         dataIndex: 'completeStatus',
         textAlign: 'center',
-        sorter: (a, b) => a.completeStatus - b.completeStatus,
-        className: styles.completeStatus,
+        sorter: true,
+        // sorter: (a, b) => a.completeStatus - b.completeStatus,
+        width: '12%',
         render: (text = '') => ['未完成', '已完成'][text] || '--',
       }, {
         title: '操作',
         textAlign: 'center',
         dataIndex: 'handle',
+        width: '12%',
         render: (text, record) => {
           const { taskTypeCode, completeStatus } = record;
           // 工作类型编码 1 计划 2 缺陷 3 巡检 4 记事 taskTypeName	String	工作类型名字
@@ -100,7 +109,7 @@ class RecordsList extends PureComponent {
           return (
             <span className={styles.handleRow}>
               <span className="iconfont icon-look" onClick={() => this.toDetail(record)} title="查看" />
-              {taskTypeCode === 1 && !!completeStatus && <span title="已标记完成">
+              {taskTypeCode === 1 && !!completeStatus && <span title="已标记完成" className={styles.done}>
                 <Checkbox checked={true} />
               </span>}
               {finishRecordRight && taskTypeCode === 1 && !completeStatus && <Popconfirm
@@ -108,9 +117,9 @@ class RecordsList extends PureComponent {
                 onConfirm={() => this.confirmComplete(record)}
                 okText="确定"
                 cancelText="取消"
-                // disabled={completeStatus > 0}
+              // disabled={completeStatus > 0}
               >
-                <span title="标记为已完成">
+                <span title="标记为已完成" className={styles.done}>
                   <Checkbox checked={false} />
                 </span>
               </Popconfirm>}
@@ -126,12 +135,14 @@ class RecordsList extends PureComponent {
                 cancelText="取消"
               >
                 <span title="删除" className="iconfont icon-del" />
-              </Popconfirm> }
+              </Popconfirm>}
             </span>
           );
         },
       },
     ],
+    sortMethod: 'ascend',
+    sortField: 'taskTypeName',
   }
 
 
@@ -140,7 +151,7 @@ class RecordsList extends PureComponent {
   }
 
   toDetail = ({ taskTypeCode, taskId }) => { // 详情
-    if (taskTypeCode === 4 ) { // 记事 => 弹框展示记事详情
+    if (taskTypeCode === 4) { // 记事 => 弹框展示记事详情
       return this.props.getRecordDetail({ noteId: taskId });
     }
     if (taskTypeCode === 1) { // 计划 => 弹框展示计划详情
@@ -197,10 +208,50 @@ class RecordsList extends PureComponent {
     this.setState({ recordFilterCode: value });
   }
 
-  render(){
+
+  tableChange = (pagination, filter, sorter) => {
+    const { field, order } = sorter || {};
+    const { sortMethod, sortField } = this.state;
+    let newSortField = sortField, newSortMethod = 'ascend';
+    if (!field || field === sortField) {
+      newSortMethod = sortMethod === 'descend' ? 'ascend' : 'descend';
+    } else {
+      newSortField = field;
+    }
+
+    this.setState({
+      sortMethod: newSortMethod,
+      sortField: newSortField,
+    });
+  }
+
+  getDataArray = (dataArray = [], ) => {
+    const { sortMethod, sortField } = this.state;
+    const sortType = sortMethod === 'descend' ? -1 : 1;
+    const name = ['stationName', 'handleUser'];
+
+    dataArray.sort((a, b) => {
+      if (sortField === 'taskTypeName') {
+        return sortType * (a.taskTypeCode - b.taskTypeCode);
+      }
+      if (sortField === 'completeTime') {
+        return sortType * (moment(a) - moment(b));
+      }
+      if (name.includes(sortField)) {
+        const aSort = a[sortField] || '';
+        const bSort = b[sortField] || '';
+        return sortType * (aSort.localeCompare(bSort));
+      }
+      return sortType * (a[sortField] - b[sortField]);
+    });
+    return dataArray;
+  };
+
+  render() {
     const { theme, stageNumInfo = {}, stageList = [], stageLoading, pageLoading } = this.props;
-    const { column, recordFilterCode } = this.state;
-    const recordSource = recordFilterCode === 0 ? stageList : stageList.filter( // 是否按照类型筛选查看
+    const { column, recordFilterCode, sortMethod, sortField } = this.state;
+    const tempStageList = this.getDataArray(stageList);
+    const recordSource = recordFilterCode === 0 ? tempStageList : tempStageList.filter( // 是否按照类型筛选查看
       e => e.taskTypeCode === recordFilterCode
     );
     const addRight = handleRight('workStation_add');
@@ -213,22 +264,22 @@ class RecordsList extends PureComponent {
             </CneButton>}
             <span className={styles.filterTips}>筛选查看</span>
             <span>
-            <Radio.Group value={recordFilterCode} onChange={this.recordTypeFilter}>
-              {this.recordTypesInfo.map(e => {
-                const { key, text } = e;
-                const tmpCode = e.recordFilterCode;
-                return (
-                  <Radio.Button
-                    key={key}
-                    value={tmpCode}
-                    className={`${styles.filterTypeBtn} ${recordFilterCode === tmpCode ? styles.active : ''}`}
-                  >
-                    <span className={styles.filterTypeText}>{text}</span>
-                    <span>{dataFormats(stageNumInfo[key])}</span>
-                  </Radio.Button>
-                );
-              })}
-            </Radio.Group>
+              <Radio.Group value={recordFilterCode} onChange={this.recordTypeFilter}>
+                {this.recordTypesInfo.map(e => {
+                  const { key, text } = e;
+                  const tmpCode = e.recordFilterCode;
+                  return (
+                    <Radio.Button
+                      key={key}
+                      value={tmpCode}
+                      className={`${styles.filterTypeBtn} ${recordFilterCode === tmpCode ? styles.active : ''}`}
+                    >
+                      <span className={styles.filterTypeText}>{text}</span>
+                      <span>{dataFormats(stageNumInfo[key])}</span>
+                    </Radio.Button>
+                  );
+                })}
+              </Radio.Group>
             </span>
           </span>
         </div>
@@ -240,7 +291,9 @@ class RecordsList extends PureComponent {
           scroll={{ y: 330 }}
           pagination={false}
           dataError={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+          onChange={this.tableChange}
+          sortMethod={sortMethod}
+          sortField={sortField}
         />
       </div>
     );

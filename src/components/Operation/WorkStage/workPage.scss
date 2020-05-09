@@ -51,44 +51,22 @@
   }
   .recordTable{ // 工作列表
     min-height: 370px;
+    table{
+      table-layout: fixed;
+      width:100%;
+    }
     .taskTypeNameText, .taskDescText, .stationNameText, .handleUserText{
       @include overflowText();
     }
-    .taskTypeName{
-      width: calc((100vw - 230px) * 0.14);
-    }
-    .taskTypeNameText{
-      max-width: calc((100vw - 230px) * 0.14 - 20px);
-    }
-    .taskDesc{
-      width: calc((100vw - 230px) * 0.2);
-    }
-    .taskDescText{
-      max-width: calc((100vw - 230px) * 0.2);
-    }
-    .stationName{
-      width: calc((100vw - 230px) * 0.14);
-    }
-    .stationNameText{
-      max-width: calc((100vw - 230px) * 0.14);
-    }
-    .completeTime{
-      width: calc((100vw - 230px) * 0.14);
-    }
-    .handleUser{
-      width: calc((100vw - 230px) * 0.14);
-    }
-    .handleUserText{
-      max-width: calc((100vw - 230px) * 0.14);
-    }
-    .completeStatus{
-      width: calc((100vw - 230px) * 0.14);
-    }
     .handleRow{
+      display: flex;
+      .done{
+        width:33%;
+      }
       :global{
         .iconfont{
           cursor: pointer;
-          margin-right: 8px;
+          width:33%;
           font-size: 20px;
           color: $themeColor;
           &:hover{

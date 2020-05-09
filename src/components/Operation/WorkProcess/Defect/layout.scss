@@ -52,34 +52,10 @@
   .defectDescribeText {
     @include overflowText();
   }
-  .stationName {
-    width: calc((100vw - 900px) * 0.21);
-  }
-  .stationNameText {
-    width: calc((100vw - 900px) * 0.21 - 18px);
-  }
-  .deviceName {
-    width: calc((100vw - 900px) * 0.21);
-  }
-  .deviceNameText {
-    width: calc((100vw - 900px) * 0.21 - 18px);
-  }
-  .defectTypeName {
-    width: calc((100vw - 900px) * 0.23);
-  }
-  .defectTypeNameText {
-    width: calc((100vw - 900px) * 0.23 - 18px);
-  }
-  .defectDescribe {
-    max-width: calc((100vw - 900px) * 0.34);
-  }
-  .defectDescribeText {
-    max-width: calc((100vw - 900px) * 0.34 - 18px);
-  }
   .action {
     display: flex;
     justify-content: space-between;
-    margin: 0 0 20px 20px;
+    margin: 0 0 20px 28px;
     align-items: center;
     .buttonArea {
       display: flex;
