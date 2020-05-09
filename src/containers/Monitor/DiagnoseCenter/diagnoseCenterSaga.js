@@ -298,7 +298,7 @@ function* getEamDiagList(action) { // 查询告警登记记录
           eamDiagList: response.data.data,
         },
       });
-      const id = response.data.data[0].id;
+      const id = response.data.data[0] && response.data.data[0].id || '';
       // type：1位故障详情，2位缺陷详情
       if(payload.type === 1 && id) {
         yield put({
