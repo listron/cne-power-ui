@@ -273,6 +273,8 @@ class GeneralReport extends Component {
     const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
+    const windStationArr = stations.filter(e => e.stationType === 0);
+    const pvStationArr = stations.filter(e => e.stationType === 1);
     return (
       <div className={`${styles.generalReportBox} ${styles[theme]}`}>
         <span ref={'wrap'} />
@@ -299,7 +301,7 @@ class GeneralReport extends Component {
                 <CneButton className={`${styles.text} ${styles.preview}`} onClick={this.preViewReport} disabled={!reportDate}>预览</CneButton>
                 {/* <span className={styles.line} /> */}
                 <CneButton className={styles.text} onClick={this.downloadReport} disabled={!reportDate}
-                  loading={typeDowning === 'report'}>下载</CneButton>
+                           loading={typeDowning === 'report'}>下载</CneButton>
               </div>
             </div>
             {reportInfo && reportInfo.showAllReport && <div className={styles.dailyBox}>
@@ -389,7 +391,7 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
-            <div className={styles.dailyBox}>
+            {windStationArr.length > 0 && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.dayReport}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -408,7 +410,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.stationSearchs}>
                 <StationSelect
-                  data={stations.filter(e => e.stationType === 0)}
+                  data={windStationArr}
                   onOK={this.selectWindStation}
                   value={windPowerStation}
                   holderText="请选择电站"
@@ -416,21 +418,21 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button
+                <CneButton
                   disabled={windPowerStation.length === 0 || !windPowerValue}
-                  className={styles.text}
+                  className={`${styles.text} ${styles.preview}`}
                   onClick={this.preViewWind}
-                >预览</Button>
-                <span className={styles.line} />
-                <Button
+                >预览</CneButton>
+                {/*<span className={styles.line} />*/}
+                <CneButton
                   disabled={windPowerStation.length === 0 || !windPowerValue}
                   className={styles.text}
                   onClick={this.downloadWind}
                   loading={typeDowning === 'windLoading'}
-                >下载</Button>
+                >下载</CneButton>
               </div>
-            </div>
-            <div className={styles.dailyBox}>
+            </div>}
+            {pvStationArr.length > 0 && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.dayReport}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -449,7 +451,7 @@ class GeneralReport extends Component {
               </div>
               <div className={styles.stationSearchs}>
                 <StationSelect
-                  data={stations.filter(e => e.stationType === 1)}
+                  data={pvStationArr}
                   onOK={this.selectPvStation}
                   value={pvPowerStation}
                   holderText="请选择电站"
@@ -457,20 +459,20 @@ class GeneralReport extends Component {
                 />
               </div>
               <div className={styles.downloadBtn}>
-                <Button
+                <CneButton
                   disabled={pvPowerStation.length === 0 || !pvPowerValue}
-                  className={styles.text}
+                  className={`${styles.text} ${styles.preview}`}
                   onClick={this.preViewPv}
-                >预览</Button>
-                <span className={styles.line} />
-                <Button
+                >预览</CneButton>
+                {/*<span className={styles.line} />*/}
+                <CneButton
                   disabled={pvPowerStation.length === 0 || !pvPowerValue}
                   className={styles.text}
                   onClick={this.downloadPv}
                   loading={typeDowning === 'pvLoading'}
-                >下载</Button>
+                >下载</CneButton>
               </div>
-            </div>
+            </div>}
           </div>
           <Footer />
         </div>
