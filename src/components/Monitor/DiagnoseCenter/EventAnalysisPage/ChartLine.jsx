@@ -12,6 +12,7 @@ class ChartLine extends PureComponent {
     eventAnalysisInfo: PropTypes.object,
     analysisEvent: PropTypes.object,
     isChartLoading: PropTypes.bool,
+    fromOutside: PropTypes.bool,
   };
 
   componentDidMount(){
@@ -101,18 +102,21 @@ class ChartLine extends PureComponent {
   }
 
   onChartResize = () => {
+    const { fromOutside } = this.props;
     const lineChart = echarts.getInstanceByDom(this.lineRef);
     if (lineChart && lineChart.resize) {
       const clientWidth = document.body.clientWidth;
       const clientHeight = document.body.clientHeight;
+      let resizeHeight = clientHeight - (clientWidth >= 1680 ? 461 : 381);
+      fromOutside && (resizeHeight += 150);
       lineChart.resize({
-        height: clientWidth >= 1680 ? (clientHeight - 461) : (clientHeight - 381),
+        height: resizeHeight,
       });
     }
   }
 
   drawChart = (period = [], data = {}, interval, eventCode, dataDays, pointCode, branchPeriod) => {
-    const { pageKey } = this.props;
+    const { pageKey, fromOutside } = this.props;
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
@@ -255,7 +259,8 @@ class ChartLine extends PureComponent {
     const legendNum = (delPointIndex !== -1 && pageKey === 'alarm') ? legends.length + 1 : legends.length; // 告警事件和有脉冲信号的情况下, 额外添加一个lengend；
     const legnedRows = Math.ceil(legendNum / lengendColType);
     const legendHeight = legnedRows * 30;
-    const originGridHeight = (clientWidth > 1680 ? 300 : 200) + (3 - (legnedRows > 3 ? 3 : legnedRows)) * 30; // 大于1680屏幕分辨率的grid高度最小为300，小于1680屏幕分辨率的grid高度最小为200
+    let originGridHeight = (clientWidth > 1680 ? 300 : 200) + (3 - (legnedRows > 3 ? 3 : legnedRows)) * 30; // 大于1680屏幕分辨率的grid高度最小为300，小于1680屏幕分辨率的grid高度最小为200
+    fromOutside && (originGridHeight += 150); // 外界免登录该体系, 不需联动决策, 额外增加高度。
     const eachyAxis = { // 生成多y纵坐标, 相同单位对应一个y轴
       // name: '其他测点',
       gridIndex: 0,

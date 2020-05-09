@@ -100,7 +100,7 @@ class EventAnalysisPage extends PureComponent {
           {chartType === 2 && <EventBarSearch {...this.props} />}
           {chartType === 1 && <ChartLine {...this.props} />}
           {chartType === 2 && <ChartBar {...this.props} />}
-          <LinkageList {...this.props} />
+          {!fromOutside && <LinkageList {...this.props} />}
         </div> :
         <div className={styles.spin}><Spin /></div>}
       </section>
