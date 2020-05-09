@@ -213,8 +213,8 @@ class GeneralReport extends Component {
 
   // 光伏运维月报下载
   downloadPv = () => {
-    const { pvPowerValue, windPowerStation, typeDowning } = this.state;
-    const { stationCode } = windPowerStation[0];
+    const { pvPowerValue, pvPowerStation, typeDowning } = this.state;
+    const { stationCode } = pvPowerStation[0];
     const pvYear = pvPowerValue.format('YYYY');
     const pvMonth = pvPowerValue.format('MM');
     const downloadHref = `${APIBasePath}/${performanceReport}/${stationCode}/${pvYear}/${pvMonth}`;

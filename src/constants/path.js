@@ -684,7 +684,7 @@ export default {
       faultReport: 'v3/performance/generalreport/fault',
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
-      performanceReport: '/v3/performance/report/month/download',
+      performanceReport: 'v3/performance/report/month/download',
       preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表
