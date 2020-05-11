@@ -186,15 +186,19 @@ function* getOutputDiagram(action){ // 出力图表
   const { enterpriseId, stationType } = payload;
   // const url = '/mock/homepage/output';
   const endTime = moment().utc().format();
-  const startTime = moment().startOf('day').utc().format();
+  const startTime = moment().startOf('day').subtract(10, 'm').utc().format();
+  // 因十分钟聚合数据计算展示区间问题, 出力图调整为夜23: 50, 且放弃掉最后一个时间点, 同时，展示时间调整为依次 + 10min
   const url = `${APIBasePath}${homepage.outputDiagram}/${enterpriseId}/${stationType}/${startTime}/${endTime}`;
   try{
     const response = yield call(axios.get, url);
     const outputPowerTime = moment().format('x'); // 记录时间
+    const tmpOutputPower = response.data.data || [];
+    tmpOutputPower.pop();
+    const outputPower = tmpOutputPower.map(e => ({ ...e, utc: moment(e.utc).add(10, 'm').format() }));
     yield put({
       type: homepageAction.GET_HOMEPAGE_FETCH_SUCCESS,
       payload: {
-        outputPower: response.data.data || [],
+        outputPower,
         outputPowerTime,
       },
     });

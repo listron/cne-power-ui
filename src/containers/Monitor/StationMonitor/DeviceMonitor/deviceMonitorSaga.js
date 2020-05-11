@@ -398,6 +398,8 @@ function* getScatterpoint(action) { // 单风机散点图
 function* getSequencediagram(action) { // 单风机出力图(时序图)
   const { payload } = action;
   const { deviceFullCode, startTime, endTime } = payload;
+  // const timeSubtract = (queryTime) => moment(queryTime).subtract(10, 'm').utc().format();
+  // const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencediagram}/${deviceFullCode}/${timeSubtract(startTime)}/${timeSubtract(endTime)}`;
   const windturbineUrl = `${path.basePaths.APIBasePath}${path.APISubPaths.monitor.sequencediagram}/${deviceFullCode}/${startTime}/${endTime}`;
   try {
     yield put({
@@ -410,9 +412,16 @@ function* getSequencediagram(action) { // 单风机出力图(时序图)
     });
     const response = yield call(axios.get, windturbineUrl, payload);
     if (response.data.code === '10000') {
+      // const { sequenceChartList = [] } = sequencediagram; // 时序图
+      // 因十分钟聚合数据计算展示区间问题, 出力图整体平移10min, 放弃掉最后一个时间点, 同时，展示时间调整为依次 + 10min
+      // const tmpSequencediagram = response.data.data || {};
+      // const tmpSequenceChartList = tmpSequencediagram.sequenceChartList || [];
+      // const sequenceChartList = tmpSequenceChartList.map(e => ({ ...e, utc: moment(e.utc).add(10, 'm').format() }));
+      // const sequencediagram = { ...tmpSequencediagram, sequenceChartList };
       yield put({
         type: deviceAction.CHANGE_DEVICE_MONITOR_STORE,
         payload: {
+          // sequencediagram,
           sequencediagram: response.data.data || {},
           sequencediagramTime: moment().unix(),
           sequenceLoading: false,
