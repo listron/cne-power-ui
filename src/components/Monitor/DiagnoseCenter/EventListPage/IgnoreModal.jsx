@@ -24,6 +24,8 @@ class IgnoreModal extends Component {
     this.props.form.setFieldsValue({ ignoreCode });
   }
 
+  buttonInfo = ['固定物遮挡', '地形因素', '植被遮挡', '限电因素', '其他因素'];
+
   onIgnore = () => {
     const { records, form } = this.props;
     form.validateFieldsAndScroll((err, values) => {
@@ -31,11 +33,16 @@ class IgnoreModal extends Component {
         const daysNum = [undefined, 7, 30, 90];
         const addDaysNum = daysNum[values.ignoreTime];
         const diagWarningIds = records.map(e => e.diagWarningId);
+        const { ignoreCode } = values;
+        let ignoreMessage = values.ignoreMessage;
+        if (ignoreCode !== 5) {
+          ignoreMessage = this.buttonInfo[ignoreCode - 1];
+        }
         this.props.onModalIgnore({
           diagWarningIds,
           type: 1,
-          ignoreCode: values.ignoreCode,
-          ignoreMessage: values.ignoreMessage,
+          ignoreCode,
+          ignoreMessage,
           endDate: addDaysNum && moment().add(addDaysNum, 'days').format('YYYY-MM-DD'),
         });
       }
@@ -44,7 +51,6 @@ class IgnoreModal extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const buttonInfo = ['固定物遮挡', '地形因素', '植被遮挡', '限电因素', '其他因素'];
     const ignoreCode = getFieldValue('ignoreCode');
     return (
       <Modal
@@ -81,7 +87,7 @@ class IgnoreModal extends Component {
               }],
             })(
               <div className={styles.reasonGroup}>
-                {buttonInfo.map((e, i) => (
+                {this.buttonInfo.map((e, i) => (
                   <Button
                     key={e}
                     className={ignoreCode === i + 1 ? styles.activeBtn : styles.normalBtn}

@@ -42,8 +42,7 @@ class Main extends Component {
   };
 
   componentDidMount() {
-    const { pathname = '', search = '' } = this.props.history.location;
-    const hasToken = hasTokenToQuery({ pathname, search });
+    const hasToken = hasTokenToQuery(this.props.history);
     hasToken && this.getInitData(true); // F5或外系统携凭证跳入本系统
   }
 
@@ -81,7 +80,7 @@ class Main extends Component {
   render() {
     const { history = {}, theme, stationTypeCount } = this.props;
     const { search = '' } = history.location || {};
-    const layoutRenderKey = appRenderType(history); // 是否渲染界面
+    const layoutRenderKey = appRenderType(history); // 是否渲染界面ui结构
     const hideLayoutMenu = renderWithoutMenu(history); // 渲染界面内是否有顶部及侧边菜单
     const redirectPath = appRedirect(history); // 登录后默认进入页面;
     if (layoutRenderKey) {

@@ -195,10 +195,10 @@ class ChartLine extends PureComponent {
         const warningDays = [...new Set(tmpWarningDays)];
         const linearGradientData = [{ offset: 0, color: '#60c060' }];
         const minDay = moment(time[0]).startOf('day');
-        const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一) 
+        const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一)
         warningDays.forEach(eachday => {
           const dayDiff = moment(eachday).diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
-          if (dayDiff >= 0 && dayDiff <= 7) {
+          if (dayDiff >= 0 && dayDiff < 7) {
             linearGradientData.push({ offset: dayDiff * eachPercent, color: '#60c060' });
             linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
             linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
@@ -420,6 +420,11 @@ class ChartLine extends PureComponent {
           shadowOffsetX: 0,
           shadowOffsetY: 2,
         },
+        itemStyle: {
+          normal: {
+            color: '#f8e71c',
+          },
+        },
         data: pulseSignalInfo.value,
         symbol: 'circle',
         symbolSize: 5,
@@ -454,6 +459,11 @@ class ChartLine extends PureComponent {
         symbol: 'circle',
         data: [],
         xAxisIndex: 0,
+        itemStyle: {
+          normal: {
+            color: '#ffeb00',
+          },
+        },
         yAxisIndex: unitsGroup.length - 1,
         markLine: {
           silent: true,
