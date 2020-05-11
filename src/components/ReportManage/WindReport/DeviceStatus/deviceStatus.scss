@@ -1,60 +1,72 @@
 
 @import '../../../../theme/theme.scss';
-.topStyles {
+.deviceStatus{
   display: flex;
-  align-content: center;
-  align-items: center;
+  flex: 1;
+  flex-direction: column;
 
-  button{
-    width: 70px;
-    margin-left: 10px;
-  }
+  .topStyles {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 51px;
+    line-height: 51px;
+    margin-bottom: 3px;
+    border:1px solid #d4d4d4;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
 
-  .disableBtn {
-    letter-spacing: 0 !important;
-    background-color: #f1f1f1 !important;
-    border: 1px solid #d4d4d4 !important;
-    box-shadow: inset 1px 1px 0 0 #ffffff !important;
-    color: #999999 !important;
-    transition: all 0s !important;
-    cursor: no-drop !important;
-
-    &:after {
-      background: #f1f1f1 !important;
+    button{
+      width: 70px;
+      margin-left: 10px;
     }
-  }
 
-  :global{
-    .ant-radio-button-wrapper {
-      padding: 0 8px;
-      color: $themeColor;
-      border: 1px solid $themeColor;
+    .disableBtn {
+      letter-spacing: 0 !important;
+      background-color: #f1f1f1 !important;
+      border: 1px solid #d4d4d4 !important;
+      box-shadow: inset 1px 1px 0 0 #ffffff !important;
+      color: #999999 !important;
+      transition: all 0s !important;
+      cursor: no-drop !important;
 
-      &-checked {
-        background-color: $themeColor;
+      &:after {
+        background: #f1f1f1 !important;
+      }
+    }
+
+    :global{
+      .ant-radio-button-wrapper {
+        padding: 0 8px;
+        color: $themeColor;
         border: 1px solid $themeColor;
+
+        &-checked {
+          background-color: $themeColor;
+          border: 1px solid $themeColor;
+          color: #fff;
+        }
+
+        &:not(:first-child)::before{
+          background-color: #ffffff;
+        }
+
+        &:hover::before{
+          background-color: #ceebe0;
+        }
+      }
+
+      .ant-btn-primary {
         color: #fff;
-      }
-
-      &:not(:first-child)::before{
-        background-color: #ffffff;
-      }
-
-      &:hover::before{
-        background-color: #ceebe0;
-      }
-    }
-
-    .ant-btn-primary {
-      color: #fff;
-      border-color: $themeColor;
-      background-color: $themeColor;
-      text-shadow: initial;
-
-      &:active,
-      &:hover {
+        border-color: $themeColor;
         background-color: $themeColor;
-        color: #fff;
+        text-shadow: initial;
+
+        &:active,
+        &:hover {
+          background-color: $themeColor;
+          color: #fff;
+        }
       }
     }
   }
@@ -69,8 +81,7 @@
   justify-content: space-between;
   flex-shrink: 0;
   height: 55px;
-  padding: 0 28px;
-  background-color: #fff;
+  margin-bottom: 4px;
 
   :global{
     .ant-radio-button-wrapper {
@@ -106,6 +117,12 @@
       }
     }
   }
+}
+.list{
+  flex: 1 0 auto;
+  background-color: #fff;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tableStyles {

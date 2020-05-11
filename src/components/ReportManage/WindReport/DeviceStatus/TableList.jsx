@@ -263,16 +263,18 @@ class TableList extends Component {
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
         </div>
-        <CneTable
-          loading={loading}
-          sortField={tableType === 'all' ? sortInfoMap[sortField] : detailSortInfo[sortField]}
-          sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
-          columns={columns}
-          dataSource={dataSource}
-          onChange={this.ontableSort}
-          className={styles.tableStyles}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-          pagination={false} />
+        <div className={styles.list}>
+          <CneTable
+            loading={loading}
+            sortField={tableType === 'all' ? sortInfoMap[sortField] : detailSortInfo[sortField]}
+            sortMethod={sortMethod === 'desc' ? 'descend' : 'ascend'}
+            columns={columns}
+            dataSource={dataSource}
+            onChange={this.ontableSort}
+            className={styles.tableStyles}
+            locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+            pagination={false} />
+        </div>
       </React.Fragment>
     );
   }

@@ -106,7 +106,7 @@ class DeviceStatus extends Component {
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     const disabledStatus = (tableType === 'all' && deviceStatusList.length === 0) || (tableType === 'detail' && statusDetailList.length === 0);
     return (
-      <div style={{ width: '100%' }}>
+      <div className={styles.deviceStatus}>
         <div className={styles.topStyles} >
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}

@@ -10,21 +10,11 @@
   @include contentBoxStyle();
   overflow: hidden;
 }
-// .container {
-//   display: flex;
-//   flex: 1;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   background: #fff;
-//   overflow: hidden;
-// }
+
 .container {
   display: flex;
   flex: 1;
   flex-direction: column;
-  // justify-content: space-between;
-  background: #fff;
-  overflow: hidden;
 
   .typeCheck {
     display: flex;

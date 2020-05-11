@@ -102,8 +102,8 @@ class Malfunction extends Component {
     const params = { dateType, startTime, endTime, summaryType, summaryData, sortField, sortMethod, pageNum, pageSize };
     const disabledStatus=(tableType==='all'&&malfunctionList.length===0)||(tableType==='detail'&&malfunctionDetailList.length===0);
     return (
-      <div style={{ width: '100%' }}>
-        <div className={styles.topStyles}  >
+      <div className={styles.malfunction}>
+        <div className={styles.topStyles}>
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}
             showStatus={false}

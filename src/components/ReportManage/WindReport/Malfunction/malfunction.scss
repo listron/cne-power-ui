@@ -1,9 +1,19 @@
 
 @import '../../../../theme/theme.scss';
-.topStyles {
+.malfunction{
   display: flex;
-  align-content: center;
-  align-items: center;
+  flex: 1;
+  flex-direction: column;
+  .topStyles {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 51px;
+    line-height: 51px;
+    margin-bottom: 3px;
+    border:1px solid #d4d4d4;
+    background-color: #fff;
+    box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
 
   button{
     width: 70px;
@@ -58,7 +68,9 @@
       }
     }
   }
+  }
 }
+
 .container{
   margin: 0 auto;
 }
@@ -69,8 +81,7 @@
   justify-content: space-between;
   flex-shrink: 0;
   height: 55px;
-  padding: 0 28px;
-  background-color: #fff;
+  margin-bottom: 4px;
 
   :global{
     .ant-table .ant-table-thead > tr > th{
@@ -109,6 +120,13 @@
       }
     }
   }
+}
+
+.list{
+  flex: 1 0 auto;
+  background-color: #fff;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tableStyles {

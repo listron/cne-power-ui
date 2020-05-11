@@ -98,7 +98,7 @@ class PowerReport extends Component {
   render() {
     const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData, powerReportList } = this.props;
     return (
-      <div style={{ width: '100%' }}>
+      <div className={styles.powerReport}>
         <div className={styles.topStyles} >
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}

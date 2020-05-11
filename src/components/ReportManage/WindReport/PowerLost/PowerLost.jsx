@@ -94,8 +94,8 @@ class PowerLost extends Component {
   render() {
     const { regionStationDeviceData, stationDevicemodeData, regionStationData, regionData,powerLostList } = this.props;
     return (
-      <div style={{ width: '100%' }}>
-        <div className={styles.topStyles}  >
+      <div className={styles.powerLost}>
+        <div className={styles.topStyles}>
           <TimeSelectReport onChange={this.onTimeChange} />
           <SummaryMode onChange={this.onModechange}
             showStatus={false}
