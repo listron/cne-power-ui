@@ -2,24 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CneFooter from '@components/Common/Power/CneFooter';
 import CneTable from '@components/Common/Power/CneTable';
-import {eamDetailsAction} from './eamDetailsAction';
-import {connect} from 'react-redux';
 import {Spin, Checkbox} from 'antd';
 import moment from 'moment';
 
-import styles from './eamDetails.scss';
-import searchUtil from '@utils/searchUtil';
+import styles from './eamDetail.scss';
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 
-class EamDetails extends React.Component {
+export default class EamDetail extends React.Component {
   static propTypes = {
     theme: PropTypes.string,
-    history: PropTypes.object,
     loading: PropTypes.bool,
     getEamDetails: PropTypes.func,
+    changeStore: PropTypes.func,
     eamDetailData: PropTypes.object,
+    workOrderNo: PropTypes.string,
   };
 
   constructor(props) {
@@ -40,9 +38,7 @@ class EamDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { getEamDetails, history } = this.props;
-    const { search } = history.location;
-    const { workOrderNo } = searchUtil(search).parse(); // 获取EAM详情
+    const { getEamDetails, workOrderNo } = this.props;
     const main = document.getElementById('main');
     // 监听页面滚动
     main.addEventListener('scroll', this.bindScroll);
@@ -69,8 +65,10 @@ class EamDetails extends React.Component {
 
   // 返回
   onCancelEdit = () => {
-    const { history } = this.props;
-    history.push('/operation/eam');
+    const { changeStore } = this.props;
+    changeStore({
+      detailFlag: false,
+    });
   };
 
   // 工单基本信息
@@ -1105,15 +1103,3 @@ class EamDetails extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => ({
-  ...state.operation.eamDetails.toJS(),
-  theme: state.common.get('theme'),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  resetStore: () => dispatch({ type: eamDetailsAction.resetStore }),
-  changeStore: payload => dispatch({ type: eamDetailsAction.changeStore, payload }),
-  getEamDetails: payload => dispatch({ type: eamDetailsAction.getEamDetails, payload }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(EamDetails);

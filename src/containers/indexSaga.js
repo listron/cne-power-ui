@@ -14,7 +14,6 @@ import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 import { wacthMeterReadSet } from './Operation/Running/MeterReadSet/meterReadSetSaga';
 import { watchIntelligentExper } from './Operation/IntelligentExpert/intelligentExpertSaga';
 import { watchEamList } from './Operation/EamWork/EamList/eamListSaga';
-import { watchEamDetail } from './Operation/EamWork/EamDetails/eamDetailsSaga';
 // 工单
 import { watchDefectList } from './Operation/WorkProcess/DefectList/defectListSaga';
 import { watchDefectDetail } from './Operation/WorkProcess/DefectDetail/defectDetailSaga';
@@ -165,7 +164,6 @@ export default function* rootSaga() {
     wacthMeterReadSet(), // 抄表设置
     watchIntelligentExper(), // 光伏智能专家库
     watchEamList(),
-    watchEamDetail(),
 
     watchDefectList(), // 缺陷列表
     watchDefectDetail(), // 缺陷详情

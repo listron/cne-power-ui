@@ -21,7 +21,6 @@ import { warehouseManage } from './Book/WarehouseManage/warehouseManageReducer';
 import intelligentExpert from './IntelligentExpert/intelligentExpertReducer';
 import casePartReducer from './CaseSet/casePartReducer';
 import eamList from './EamWork/EamList/eamListReducer';
-import eamDetails from './EamWork/EamDetails/eamDetailsReducer';
 
 import { examiner } from './TwoTickets/Examiner/examinerReducer'; // 两票 - 审核人
 import workFlow from './TwoTickets/WorkFlow/workFlowReducer'; // 两票 - 工作票
@@ -46,7 +45,6 @@ const operationReducer = combineReducers({
   inspect,
   ticket,
   eamList,
-  eamDetails,
   personnelGps,
   dayReport,
   meterReadSet,

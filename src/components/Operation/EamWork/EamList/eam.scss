@@ -19,6 +19,7 @@
 
     :global {
       .ant-select-selection {
+        border-radius: 2px;
         box-shadow: none;
         border: 1px solid $borderColor;
       }
@@ -41,6 +42,7 @@
 
     :global {
       .ant-select-selection {
+        border-radius: 2px;
         border: 1px solid $borderColor;
 
         .ant-select-arrow {
@@ -61,6 +63,7 @@
 
     :global {
       .ant-select-selection {
+        border-radius: 2px;
         border: 1px solid $borderColor;
 
         .ant-select-arrow {
@@ -162,7 +165,7 @@
 
   .childName{
     word-break: break-all;
-    min-width: 80px;
+    min-width: 100px;
     @include maxWidth();
   }
 
@@ -227,7 +230,7 @@
   }
 
   .isGetName {
-    width: 70px;
+    width: 90px;
   }
 
   .creatTimeName,

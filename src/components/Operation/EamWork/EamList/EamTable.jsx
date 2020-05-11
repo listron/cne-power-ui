@@ -10,7 +10,6 @@ export default class EamTable extends React.Component {
   static propTypes = {
     theme: PropTypes.string,
     tableLoading: PropTypes.bool,
-    history: PropTypes.object,
     eamTableData: PropTypes.object,
     getEamList: PropTypes.func,
     pageNum: PropTypes.number,
@@ -75,8 +74,11 @@ export default class EamTable extends React.Component {
 
   // 详情
   detailsFunc = (workOrderNo) => {
-    const { history } = this.props;
-    workOrderNo && history.push(`/operation/eamDetails?workOrderNo=${workOrderNo}`);
+    const { changeStore } = this.props;
+    changeStore({
+      workOrderNo,
+      detailFlag: true,
+    });
   };
 
   render() {

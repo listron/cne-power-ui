@@ -5,6 +5,7 @@ import {eamListAction} from './eamListAction';
 import CneFooter from '@components/Common/Power/CneFooter';
 import EamSearch from '@components/Operation/EamWork/EamList/EamSearch';
 import EamTable from '@components/Operation/EamWork/EamList/EamTable';
+import EamDetail from '@components/Operation/EamWork/EamDetail/EamDetail';
 import styles from './eamList.scss';
 
 class EamList extends Component {
@@ -19,6 +20,7 @@ class EamList extends Component {
     workOrderType: PropTypes.string,
     startTime: PropTypes.string,
     endTime: PropTypes.string,
+    detailFlag: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -37,17 +39,21 @@ class EamList extends Component {
   }
 
   render() {
-    const { theme = 'light' } = this.props;
+    const { theme = 'light', detailFlag } = this.props;
     return (
-      <div className={`${styles.eamListBox} ${styles[theme]}`}>
-        <div className={styles.eamListContent}>
-          <div className={styles.eamListWrap}>
-            <EamSearch {...this.props} />
-            <EamTable {...this.props} />
+      <React.Fragment>
+        {detailFlag ? <EamDetail {...this.props} /> : (
+          <div className={`${styles.eamListBox} ${styles[theme]}`}>
+            <div className={styles.eamListContent}>
+              <div className={styles.eamListWrap}>
+                <EamSearch {...this.props} />
+                <EamTable {...this.props} />
+              </div>
+            </div>
+            <CneFooter />
           </div>
-        </div>
-        <CneFooter />
-      </div>
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -62,6 +68,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeStore: payload => dispatch({ type: eamListAction.changeStore, payload }),
   getEamStationList: () => dispatch({ type: eamListAction.getEamStationList }),
   getEamList: payload => dispatch({ type: eamListAction.getEamList, payload }),
+  getEamDetails: payload => dispatch({ type: eamListAction.getEamDetails, payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EamList);
