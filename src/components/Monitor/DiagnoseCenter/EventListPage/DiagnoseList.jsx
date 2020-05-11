@@ -134,7 +134,7 @@ class DiagnoseList extends Component {
       deviceTypeName,
       deviceName,
       stationName,
-      // waringId: diagWarningId,
+      waringId: diagWarningId,
       type,
     };
     // 展示EAM登记详情
@@ -144,8 +144,7 @@ class DiagnoseList extends Component {
     });
     // 获取展示EAM详情接口
     getEamDiagList({
-      waringId: 522061852641821,
-      // waringId: diagWarningId,
+      waringId: diagWarningId,
       type,
     });
   };
