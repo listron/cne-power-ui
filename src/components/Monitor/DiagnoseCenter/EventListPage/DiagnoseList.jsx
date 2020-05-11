@@ -92,11 +92,12 @@ class DiagnoseList extends Component {
   }
 
   analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
+    const eventCode = record.eventCode;
     const { pageKey } = this.props;
-    const interval = pageKey === 'alarm' ? 2 : 1;
+    const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
     const diagWarningId = record.diagWarningId;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    // 告警事件-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
+    // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
     this.props.changeStore({
       oldAnalysisEvent: record,
       interval,
@@ -176,13 +177,14 @@ class DiagnoseList extends Component {
       // 判断是否是协和新能源
       if(enterpriseCode === '1010') {
         // 只能选择一个
-        if(diagWarningIds.length > 1){
-          message.error('仅支持单条组串低效事件推送至EAM');
+        // 不是低效组串的NB1238提示
+        if(diagWarningIds.length > 1 || selectedRows.every( item => item.eventCode !== 'NB1238')){
+          return message.error('仅支持单条低效组串事件派发至EAM系统');
         }
         if(diagWarningIds.length <= 1){
           const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime } = selectedRows[0];
           // 派发
-          getEamRegisterWaring({
+          return getEamRegisterWaring({
             deviceFullcode,
             level: warningLevel,
             waringId: diagWarningId,
@@ -199,17 +201,17 @@ class DiagnoseList extends Component {
       }
       if(enterpriseCode !== '1010') {
         const { stationCode } = selectedRows[0] || {};
-        window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
+        return window.open(`#/operation/newWorkProcess/newView?page=defectDetail&isFinish=3&eventId=[${diagWarningIds.join(',')}]&stationCode=${stationCode}`);
       }
     }
     const showIgoreModal = selectedRows.every(info => ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(info.eventCode));
-    if (showIgoreModal && value === 'ignore') {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
-      this.setState({
+    if (showIgoreModal) {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
+      return this.setState({
         deleteRecords: selectedRows,
         needIgoreModal: true,
       });
     } else if (handleKeys.includes(value)) { // 其他的删除忽略操作~ 一股脑撸。
-      this.setState({
+      return this.setState({
         deleteRecords: selectedRows,
         tipType: handleKeys.indexOf(value) + 1,
       });
