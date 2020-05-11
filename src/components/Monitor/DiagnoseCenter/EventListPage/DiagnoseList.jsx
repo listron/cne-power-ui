@@ -343,9 +343,9 @@ class DiagnoseList extends Component {
             onChange: this.onRowSelect,
             getCheckboxProps: record => ({
               // 首先判断是否是协和新能源和当前诊断事件页
-              // 不等于组串低效的禁止选择
               // 有EAM查看的禁止选择
-              disabled: (enterpriseCode === '1010' && pageKey === 'diagnose') ? (record.eventCode !== 'NB1238' && record.eamStatus !== 1) : false,
+              // 不能派发，忽略，删除
+              disabled: (enterpriseCode === '1010' && pageKey === 'diagnose') ? record.eamStatus === 1 : false,
               name: record.eventName,
             }),
           }}
