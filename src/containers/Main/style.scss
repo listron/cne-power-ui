@@ -27,23 +27,7 @@ div[class*="ant-modal-wrap"][class*="dark__"] {
   }
 }
 
-.userRightTip {
-  .exitSystem {
-    float: right;
-    display: block;
-  }
-  :global {
-    .ant-modal-body {
-      height: 100px;
-    }
-    .ant-btn:hover,
-    .ant-btn:focus {
-      color: $themeColor;
-      background-color: #fff;
-      border-color: $themeColor;
-    }
-  }
-}
+
 
 .preComponent {
   display: flex;

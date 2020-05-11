@@ -201,6 +201,25 @@
   }
 }
 
+.userRightTip { // 用户无权限的弹框
+  z-index: 999999;
+  .exitSystem {
+    float: right;
+    display: block;
+  }
+  :global {
+    .ant-modal-body {
+      height: 100px;
+    }
+    .ant-btn:hover,
+    .ant-btn:focus {
+      color: $themeColor;
+      background-color: #fff;
+      border-color: $themeColor;
+    }
+  }
+}
+
 .light {
   $fontColor-dark: #999999;
   .sideLayout {

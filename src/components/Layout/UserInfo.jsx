@@ -40,7 +40,7 @@ class UserInfo extends Component {
     Cookie.remove('isNotLogin');
     Cookie.remove('auto');
     localStorage.clear();
-    this.props.changeLoginStore({ pageTab: 'login' });
+    this.props.changeLoginStore({ pageTab: 'login', loginData: {} });
     this.props.resetMonitorData();
     this.props.resetCommonStore();
     this.props.history.push('/login');

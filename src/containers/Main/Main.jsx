@@ -1,7 +1,7 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { hot } from 'react-hot-loader/root';
 import moment from 'moment';
-import { message, Modal, Button, Spin } from 'antd';
+import { message, Spin } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import { routerConfig } from '../../common/routerSetting';
 import styles from './style.scss';
@@ -13,9 +13,9 @@ import { loginAction } from '../Login/loginAction';
 import { allStationAction } from '../Monitor/StationMonitor/AllStation/allStationAction';
 import AppHeader from '../../components/Layout/AppHeader';
 import SideMenu from '../../components/Layout/SideMenu';
+import NoRightModal from '../../components/Layout/NoRightModal';
 import Cookie from 'js-cookie';
-import { enterFirstPage } from '../../utils/utilFunc';
-import { hasTokenToQuery, appRenderType, renderWithoutMenu } from './authToken';
+import { hasTokenToQuery, appRenderType, renderWithoutMenu, appRedirect } from './authToken';
 
 const Login = lazy(() => import('../Login/LoginLayout'));
 
@@ -48,19 +48,11 @@ class Main extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const authData = localStorage.getItem('authData') || '';
+    const authData = localStorage.getItem('authData');
     const refreshToken = Cookie.get('refresh_token');
     const isTokenValid = Cookie.get('expireData') && moment().isBefore(new Date(Cookie.get('expireData')), 'second');
-    if (isTokenValid && authData && this.props.history.location.pathname === '/login'
-      && Cookie.get('isNotLogin') === '0') {
-      this.props.history.push('/monitor/station');
-    }
     if (authData && !isTokenValid && refreshToken) {
       message.error('token已过期，请刷新页面重新登录后使用');
-      // this.props.refreshToken({ 
-      //   grant_type: 'refresh_token',
-      //   refresh_token:refreshToken
-      // })
     }
     if (nextProps.login.size > 0 && this.props.login.size === 0) { // 登录成功
       this.getInitData(false);
@@ -85,33 +77,13 @@ class Main extends Component {
     this.props.changeCommonStore({ theme: themeValue });
   }
 
-  logout = () => { // 删除登录凭证并退出。
-    Cookie.remove('authData'); // 这一堆cookie看着都烦。有空赶紧进行集合+优化。
-    Cookie.remove('enterpriseId');
-    Cookie.remove('enterpriseName');
-    Cookie.remove('enterpriseLogo');
-    Cookie.remove('userId');
-    Cookie.remove('username');
-    Cookie.remove('userFullName');
-    Cookie.remove('userLogo');
-    Cookie.remove('expireData');
-    Cookie.remove('refresh_token');
-    Cookie.remove('isNotLogin');
-    Cookie.remove('auto');
-    // Cookie.remove('theme');
-    this.props.resetMonitorData();
-    this.props.resetCommonStore();
-    this.props.changeLoginStore({ pageTab: 'login' });
-    this.props.history.push('/login');
-  }
 
   render() {
-    const { history, theme, stationTypeCount } = this.props;
-    const { location } = history || {};
-    const userRight = localStorage.getItem('rightHandler');
-    const rightMenu = localStorage.getItem('rightMenu') || '';
-    const layoutRenderKey = appRenderType(location); // 是否渲染界面
-    const hideLayoutMenu = renderWithoutMenu(location); // 渲染界面内是否有顶部及侧边菜单
+    const { history = {}, theme, stationTypeCount } = this.props;
+    const { search = '' } = history.location || {};
+    const layoutRenderKey = appRenderType(history); // 是否渲染界面
+    const hideLayoutMenu = renderWithoutMenu(history); // 渲染界面内是否有顶部及侧边菜单
+    const redirectPath = appRedirect(history); // 登录后默认进入页面;
     if (layoutRenderKey) {
       // if(true){
       return (
@@ -126,20 +98,11 @@ class Main extends Component {
             >
               <Switch>
                 {routerConfig}
-                <Redirect to={enterFirstPage()} />
+                <Redirect to={redirectPath} />
               </Switch>
             </main>
           </div>
-          <Modal
-            title=""
-            visible={!userRight && !rightMenu && layoutRenderKey !== 'outside'}
-            closable={false}
-            footer={null}
-            wrapClassName={styles.userRightTip}
-          >
-            <p>对不起，您的用户角色尚未设置，请联系管理员进行设置！</p>
-            <Button onClick={this.logout} className={styles.exitSystem} >退出系统</Button>
-          </Modal>
+          <NoRightModal {...this.props} layoutRenderKey={layoutRenderKey} />
         </div>
       );
     }
@@ -154,7 +117,7 @@ class Main extends Component {
             <Login {...this.props} />
           </Suspense>)}
         />
-        <Redirect to="/login" />
+        <Redirect to={`/login${search ? search : ''}`} />
       </Switch>
     );
 
