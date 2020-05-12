@@ -287,8 +287,13 @@ class ChartLine extends PureComponent {
       },
     };
     const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => {
+      // const scaleAxisNumRange = (maxValue) => { // 将 电流/ 电压 线根据数量级(不大于整数)调整渲染大小区间
+      //   // 辐照度尽量布满 图高, 电流/电压 占据80%; 保证辐照线 展示高于 电流电压线
+
+      // };
       const diagnoseBrancnAxis = isDiagnoseBranch ? { // 诊断事件组串类: 只会返回电压(电流) + 辐照两个轴, 电压电流(左),辐照(右)
         name: e === 'W/m2' ? '瞬时辐照度(W/m2)' : (e === 'A' ? '电流(A)' : '电压(V)'),
+        // max: maxValue => { console.log(maxValue); return e === 'W/m2' ? maxValue.max : maxValue.max + 5; },
         nameTextStyle: {
           color: '#353535',
           fontSize: 12,

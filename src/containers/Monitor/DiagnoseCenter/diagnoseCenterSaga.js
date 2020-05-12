@@ -194,7 +194,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       const tmpStoreInfo = { // 要产生的必要store输出。
         analysisPageLoading: false,
         isChartLoading: false,
-        analysisEvent: { ...payload },
+        analysisEvent: { ...payload, fromPath: false },
         eventAnalysisInfo: { ...response.data, deviceFullcode } || { deviceFullcode },
       };
       if (fromPath) { // 路径跳转需额外添加的数据参数;
@@ -204,6 +204,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
         tmpStoreInfo.analysisEvent = {
           interval: response.data.interval,
           ...payload,
+          fromPath: false,
           ...warning,
         };
         tmpStoreInfo.oldAnalysisEvent = tmpStoreInfo.analysisEvent;
