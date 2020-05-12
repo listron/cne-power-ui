@@ -25,6 +25,7 @@
       .typeTabs{
         display: flex;
         line-height: 40px;
+        padding-left: 15px;
       }
       p {
         width: 120px;
@@ -93,15 +94,15 @@
     background: $pageBackground;
   }
   .allStationTitle {
-    background: #f8f8f8;
-    border-bottom: 1px solid $borderColor;
+    border-bottom: 1px solid $themeColor;
     p {
-      border-right: 1px solid $borderColor;
-      color: $lightColor;
+      color: $themeColor;
     }
     .activeStation {
       background: $pageGround;
-      color: $darkColor;
+      color: $themeColor;
+      border-right: 1px solid $themeColor;
+      border-left: 1px solid $themeColor;
       &::before {
         background: $themeColor;
       }
@@ -140,8 +141,7 @@
     background: $background;
     // 样式发生变化
     .allStationTitle {
-      background: $background;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $themeColor;
       height: 42px;
       p {
         border: 1px solid $tab-border-color;
