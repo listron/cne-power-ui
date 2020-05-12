@@ -2,70 +2,75 @@
 @import "./layout.scss";
 
 .light {
-  background: #fff;
-
-  .realTimeWarningFilter {
+  .dataCenter{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-bottom: 7px;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
     background-color: #fff;
-  }
+    .realTimeWarningFilter {
+      background-color: #fff;
+    }
 
-  .deviceNameSearch {
-    background-color: #f9f9f9;
-    color: $darkColor;
-  }
+    .deviceNameSearch {
+      color: $darkColor;
+    }
 
-  .realTimeWarningTable {
-    background-color: #fff;
+    .realTimeWarningTable {
+      background-color: #fff;
 
-    .iconDetail {
-      i {
+      .iconDetail {
+        i {
+          color: $themeColor;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+
+      .deviceName {
+        a {
+          color: $themeColor;
+          text-decoration: none;
+          &:hover{
+            color: #ff9900;
+          }
+        }
+      }
+    }
+
+    .tableFooter {
+      background-color: #fff;
+
+      .info {
+        color: $darkColor;
+
+        .totalNum {
+          color: rgb(250, 185, 7);
+        }
+      }
+
+      .cancel {
+        color: $themeColor;
+      }
+    }
+
+    .detailInfo {
+      color: $darkColor;
+
+    }
+
+    :global {
+      .icon-action {
+        background-color: #ceebe0;
         color: $themeColor;
 
         &:hover {
+          background-color: $themeColor;
           color: #fff;
         }
-      }
-    }
-
-    .deviceName {
-      a {
-        color: $themeColor;
-        text-decoration: none;
-        &:hover{
-          color: #ff9900;
-        }
-      }
-    }
-  }
-
-  .tableFooter {
-    background-color: #fff;
-
-    .info {
-      color: $darkColor;
-
-      .totalNum {
-        color: rgb(250, 185, 7);
-      }
-    }
-
-    .cancel {
-      color: $themeColor;
-    }
-  }
-
-  .detailInfo {
-    color: $darkColor;
-
-  }
-
-  :global {
-    .icon-action {
-      background-color: #ceebe0;
-      color: $themeColor;
-
-      &:hover {
-        background-color: $themeColor;
-        color: #fff;
       }
     }
   }

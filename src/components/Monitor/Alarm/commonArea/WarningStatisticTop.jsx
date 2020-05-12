@@ -34,6 +34,7 @@ class WarningStatisticTop extends Component {
               <span className={styles.alarmNum}>{isNaN(total) ? '- -' : total}</span>
               <span className={styles.alarmText}>{warningStatus === '1' ? '告警数' : warningStatus === '2' ? '手动解除数' : '转工单数'}</span>
             </div>
+            <div className={styles.line}></div>
             <div className={styles.alarmNumDetail}>
               <div className={styles.alarmInfoItem}>
                 <span className={styles.alarmNum}>{!isNaN(oneWarningNum) ? oneWarningNum : '- -'}</span>
@@ -52,6 +53,7 @@ class WarningStatisticTop extends Component {
                 <span className={styles.alarmText}>四级</span>
               </div>
             </div>
+            <div className={styles.line}></div>
 
           </div>
           {warningStatus === '1' && <div className={styles.alarmInfoRight}>

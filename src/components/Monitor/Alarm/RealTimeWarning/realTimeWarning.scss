@@ -2,7 +2,6 @@
 @import "./layout.scss";
 
 .light {
-  background: #fff;
 
   .handlerBtn{
     display: flex;
@@ -22,7 +21,6 @@
   }
 
   .deviceNameSearch {
-    background-color: #f9f9f9;
     color: $darkColor;
   }
 

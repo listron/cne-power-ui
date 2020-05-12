@@ -12,11 +12,12 @@
 
   .deviceNameSearch {
     display: flex;
-    height: 50px;
+    height: 30px;
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
-    padding-left: 28px;
+    padding-left: 20px;
+    margin-bottom: 14px;
 
     .deviceName {
       width: 200px;
@@ -47,7 +48,7 @@
       justify-content: flex-end;
       flex-shrink: 0;
       height: 55px;
-      padding: 0 28px;
+      padding: 0 0 0 20px;
     }
 
     .detailInfo {

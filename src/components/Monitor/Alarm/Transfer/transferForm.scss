@@ -2,14 +2,12 @@
 @import "./layout.scss";
 
 .light {
-  background: #fff;
 
   .realTimeWarningFilter {
     background-color: #fff;
   }
 
   .deviceNameSearch {
-    background-color: #f9f9f9;
 
     >span {
       color: $darkColor;

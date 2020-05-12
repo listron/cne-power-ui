@@ -6,13 +6,20 @@
   flex: 1;
   flex-direction: column;
 
-  .realTimeWarningFilter {
+  .dataCenter{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-bottom: 7px;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    background-color: #fff;
+    .realTimeWarningFilter {
     position: relative;
     display: flex;
     flex-direction: column; // flex: 1 0 auto;
-  }
+    }
 
-  .deviceNameSearch {
+    .deviceNameSearch {
     display: flex;
     height: 50px;
     flex-shrink: 0;
@@ -35,101 +42,102 @@
         color: #f9b600;
       }
     }
-  }
-
-  .realTimeWarningTable {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-
-    :global {
-      .ant-table-placeholder {
-        border-bottom: none;
-      }
-      .ant-table-selection{
-        width: 50px;
-      }
-
-      .icon-action {
-        width: 30px;
-        height: 30px;
-        border-radius: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        margin: 0 auto;
-      }
     }
 
-    .tableHeader {
+    .realTimeWarningTable {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      height: 55px;
-      padding: 0 28px;
-    }
+      flex: 1;
+      flex-direction: column;
 
-    .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
-      @include overflowText();
-    }
+      :global {
+        .ant-table-placeholder {
+          border-bottom: none;
+        }
+        .ant-table-selection{
+          width: 50px;
+        }
 
-    .warningLevel{
-      width:8%;
-    }
-    .stationName{
-      width:12%;
-    }
-    .stationNameText{
-       max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .deviceTypeName{
-      width:12%;
-    }
-    .deviceName{
-      width:12%;
-    }
-    .deviceNameText{
-      display: block;
-      max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .deviceTypeNameText{
-       max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .warningCheckDesc{
-      width:23%
-    }
-    .warningCheckDescText{
-      max-width: calc((100vw - 230px) * 0.23 - 20px);
-    }
-    .timeOn{
-       width:12%;
-    }
-    .durationTime{
-      width:12%;
-    }
-    .iconDetail{
-      width:8%;
-    }
-  }
+        .icon-action {
+          width: 30px;
+          height: 30px;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          margin: 0 auto;
+        }
+      }
 
-  .tableFooter {
-    height: 45px;
-    line-height: 45px;
+      .tableHeader {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        height: 55px;
+        padding: 0 0 0 20px;
+      }
 
-    .info {
-      margin-right: 20px;
-      margin-left: 24px;
+      .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
+        @include overflowText();
+      }
 
-      .totalNum {
-        margin: auto 4px;
+      .warningLevel{
+        width:8%;
+      }
+      .stationName{
+        width:12%;
+      }
+      .stationNameText{
+         max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .deviceTypeName{
+        width:12%;
+      }
+      .deviceName{
+        width:12%;
+      }
+      .deviceNameText{
+        display: block;
+        max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .deviceTypeNameText{
+         max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .warningCheckDesc{
+        width:23%
+      }
+      .warningCheckDescText{
+        max-width: calc((100vw - 230px) * 0.23 - 20px);
+      }
+      .timeOn{
+         width:12%;
+      }
+      .durationTime{
+        width:12%;
+      }
+      .iconDetail{
+        width:8%;
       }
     }
 
-    .cancel {
-      cursor: pointer;
+    .tableFooter {
+      height: 45px;
+      line-height: 45px;
+
+      .info {
+        margin-right: 20px;
+        margin-left: 24px;
+
+        .totalNum {
+          margin: auto 4px;
+        }
+      }
+
+      .cancel {
+        cursor: pointer;
+      }
     }
   }
 }

@@ -6,169 +6,177 @@
   flex-direction: column;
   flex: 1 0 auto;
 
-  .realTimeWarningFilter {
-    position: relative;
+  .dataCenter{
     display: flex;
     flex-direction: column;
-  }
-
-  .deviceNameSearch {
-    display: flex;
-    height: 50px;
-    flex-shrink: 0;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 28px;
-
-    .deviceName {
-      width: 200px;
-      margin: 0 16px;
-    }
-
-    >span:last-child {
-      font-size: 14px;
-      cursor: pointer;
-      margin-left: 16px;
-
-      &:hover{
-       color: #f9b600;
-      }
-    }
-  }
-
-  .realTimeWarningTable {
-    display: flex;
     flex: 1;
-    flex-direction: column;
-
-    .tableHeader {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      flex-shrink: 0;
-      height: 55px;
-      padding: 0 28px;
-    }
-
-    .deviceName {
-      a {
-        text-decoration: none;
-      }
-    }
-
-    :global {
-      .icon-action {
-        width: 30px;
-        height: 30px;
-        border-radius: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        margin: 0 auto;
-      }
-    }
-    .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
-      @include overflowText();
-    }
-
-    .warningLevel{
-      width:8%;
-    }
-    .stationName{
-      width:12%;
-    }
-    .stationNameText{
-       max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .deviceTypeName{
-      width:12%;
-    }
-    .deviceName{
-      width:12%;
-    }
-    .deviceNameText{
-      display: block;
-      max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .deviceTypeNameText{
-       max-width: calc((100vw - 230px) * 0.12 - 20px);
-    }
-    .warningCheckDesc{
-      width:23%
-    }
-    .warningCheckDescText{
-      max-width: calc((100vw - 230px) * 0.23 - 20px);
-    }
-    .timeOn{
-       width:12%;
-    }
-    .durationTime{
-      width:12%;
-    }
-    .warningRemove{
-      width:8%;
-    }
-  }
-
-  .detailInfo {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    max-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    .header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-
-      .title {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        i {
-          cursor: auto;
-        }
-
-        .titleText {
-          font-size: 14px;
-          margin-left: 10px;
-        }
-      }
-    }
-
-    .content {
+    margin-bottom: 7px;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    background-color: #fff;
+    .realTimeWarningFilter {
+      position: relative;
       display: flex;
       flex-direction: column;
-      line-height: 24px;
+    }
 
-      .infoItem {
+      .deviceNameSearch {
         display: flex;
+        height: 50px;
+        flex-shrink: 0;
         flex-direction: row;
+        align-items: center;
+        padding-left: 28px;
 
-        .label {
-          font-size: 14px;
-          min-width: 70px;
-        }
+        .deviceName {
+        width: 200px;
+        margin: 0 16px;
+      }
 
-        .value {
-          display: flex;
-          flex-wrap: wrap;
-          font-size: 14px;
+        >span:last-child {
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 16px;
+
+          &:hover{
+         color: #f9b600;
         }
       }
     }
 
-    .ticketButton {
-      margin-top: 24px;
-      margin-left: 65px;
-      width: 120px;
+      .realTimeWarningTable {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+        .tableHeader {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        height: 55px;
+        padding: 0 0 0 20px;
+      }
+
+        .deviceName {
+        a {
+          text-decoration: none;
+        }
+      }
+
+        :global {
+        .icon-action {
+          width: 30px;
+          height: 30px;
+          border-radius: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          margin: 0 auto;
+        }
+      }
+      .stationNameText,.deviceTypeNameText,.warningCheckDescText,.deviceNameText{
+        @include overflowText();
+      }
+
+        .warningLevel{
+        width:8%;
+      }
+      .stationName{
+        width:12%;
+      }
+      .stationNameText{
+         max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .deviceTypeName{
+        width:12%;
+      }
+      .deviceName{
+        width:12%;
+      }
+      .deviceNameText{
+        display: block;
+        max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .deviceTypeNameText{
+         max-width: calc((100vw - 230px) * 0.12 - 20px);
+      }
+      .warningCheckDesc{
+        width:23%
+      }
+      .warningCheckDescText{
+        max-width: calc((100vw - 230px) * 0.23 - 20px);
+      }
+      .timeOn{
+         width:12%;
+      }
+      .durationTime{
+        width:12%;
+      }
+      .warningRemove{
+        width:8%;
+      }
+    }
+
+      .detailInfo {
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+        .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+
+          .title {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+            i {
+            cursor: auto;
+          }
+
+            .titleText {
+            font-size: 14px;
+            margin-left: 10px;
+          }
+        }
+      }
+
+        .content {
+        display: flex;
+        flex-direction: column;
+        line-height: 24px;
+
+          .infoItem {
+          display: flex;
+          flex-direction: row;
+
+            .label {
+            font-size: 14px;
+            min-width: 70px;
+          }
+
+            .value {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 14px;
+          }
+        }
+      }
+
+        .ticketButton {
+        margin-top: 24px;
+        margin-left: 65px;
+        width: 120px;
+      }
     }
   }
 }
