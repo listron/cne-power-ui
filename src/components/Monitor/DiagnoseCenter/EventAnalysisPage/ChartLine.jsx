@@ -189,27 +189,31 @@ class ChartLine extends PureComponent {
         lineStyleColor = '#999';
       } else if (isDiagnoseBranch) { // 诊断事件 - 组串 默认绿色#60c060, 异常红色#f5222d
         colors.push('#60c060');
-        const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
-        const curWarningPeriod = curWarningBranch.warningPeriod || [];
-        const tmpWarningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day').format('YYYY-MM-DD'));
-        const warningDays = [...new Set(tmpWarningDays)];
-        const linearGradientData = [{ offset: 0, color: '#60c060' }];
-        const minDay = moment(time[0]).startOf('day');
-        const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一)
-        warningDays.forEach(eachday => {
-          const dayDiff = moment(eachday).diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
-          if (dayDiff >= 0 && dayDiff < 7) {
-            linearGradientData.push({ offset: dayDiff * eachPercent, color: '#60c060' });
-            linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
-            linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
-            linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
-          }
-        });
-        if (warningDays.length > 0) { // 有低效, 渐变
-          lineStyleColor = new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData);
-        } else {
-          lineStyleColor = '#60c060';
+        lineStyleColor = '#60c060';
+        if (e.isWarned){
+          lineStyleColor = '#f5222d';
         }
+        // const curWarningBranch = branchPeriod.find(brach => e.pointCode === brach.pointCode) || {};
+        // const curWarningPeriod = curWarningBranch.warningPeriod || [];
+        // const tmpWarningDays = curWarningPeriod.filter(w => w.beginTime).map(w => moment(w.beginTime).startOf('day').format('YYYY-MM-DD'));
+        // const warningDays = [...new Set(tmpWarningDays)];
+        // const linearGradientData = [{ offset: 0, color: '#60c060' }];
+        // const minDay = moment(time[0]).startOf('day');
+        // const totalDays = 7, eachPercent = 1 / totalDays, gradientLength = eachPercent / 100; // 总数据, 渐变间隔(一天), 渐变区间(百分之一)
+        // warningDays.forEach(eachday => {
+        //   const dayDiff = moment(eachday).diff(minDay, 'days'); // 当前告警日 比 最小日(7天最初天) 大的日期
+        //   if (dayDiff >= 0 && dayDiff < 7) {
+        //     linearGradientData.push({ offset: dayDiff * eachPercent, color: '#60c060' });
+        //     linearGradientData.push({ offset: dayDiff * eachPercent + gradientLength, color: '#f5222d' });
+        //     linearGradientData.push({ offset: (dayDiff + 1) * eachPercent - gradientLength, color: '#f5222d' });
+        //     linearGradientData.push({ offset: (dayDiff + 1) * eachPercent, color: '#60c060' });
+        //   }
+        // });
+        // if (warningDays.length > 0) { // 有低效, 渐变
+        //   lineStyleColor = new echarts.graphic.LinearGradient(0, 0, 1, 0, linearGradientData);
+        // } else {
+        //   lineStyleColor = '#60c060';
+        // }
       } else { // 使用默认配色
         colors.push(this.lineColors[i % this.lineColors.length]);
         lineStyleColor = this.lineColors[i % this.lineColors.length];
@@ -252,7 +256,7 @@ class ChartLine extends PureComponent {
             opacity: 1,
           },
         },
-        z: typeof lineStyleColor === 'string' ? 2 : 9, // 有渐变线放到高层级优先展示
+        z: e.isWarned && isDiagnoseBranch ? 9 : 2, // 有渐变线放到高层级优先展示
         smooth: true,
       });
     });
