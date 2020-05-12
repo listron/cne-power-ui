@@ -78,19 +78,19 @@ class DeviceFilter extends Component {
       endTime,
     });
   }
-  selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
-    const { changeAllDeviceStore } = this.props;
-    changeAllDeviceStore({ deviceShowType: type });
-    this.props.onChangeFilter();
+  // selectShowType = (type) => { // 切换图表展示类型 'graph'图 / 'list'表格
+  //   const { changeAllDeviceStore } = this.props;
+  //   changeAllDeviceStore({ deviceShowType: type });
+  //   this.props.onChangeFilter();
 
-  }
+  // }
 
-  showChart = () => {
-    this.selectShowType('graph');
-  }
-  showList = () => {
-    this.selectShowType('list');
-  }
+  // showChart = () => {
+  //   this.selectShowType('graph');
+  // }
+  // showList = () => {
+  //   this.selectShowType('list');
+  // }
   exportList = () => {
     const url = `${APIBasePath}${monitor.exportPowerdevice}`;
     let { startTime, endTime } = this.props;
@@ -165,13 +165,12 @@ class DeviceFilter extends Component {
             >导出</Button> : ''}
           </div>
         </div>
-        <div className={styles.showType}>
+        {/* <div className={styles.showType}>
           <div className={styles.tabIcons}>
             <Icon onClick={this.showChart} type="bar-chart" className={deviceShowType === 'graph' ? styles.active : styles.normal} />
             <Icon onClick={this.showList} type="bars" className={deviceShowType === 'list' ? styles.active : styles.normal} />
           </div>
-
-        </div>
+        </div> */}
       </div>
     );
   }

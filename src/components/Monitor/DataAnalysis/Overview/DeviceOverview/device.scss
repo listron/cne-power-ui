@@ -1,7 +1,7 @@
 @import "../../../../../theme/theme.scss";
 
 .topSearch {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   .dateCheck {
     display: flex;
     height: 56px;
@@ -19,7 +19,7 @@
   }
 }
 .deviceRate {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   height: 150px;
   display: flex;
   .total {
@@ -34,10 +34,7 @@
     height: 60px;
     line-height: 60px;
   }
-  // .spinStyle{
-  //   position: absolute;
-  //   right: 20%;
-  // }
+
   .chart {
     flex: 0 0 80%;
     height: 150px;
@@ -86,6 +83,7 @@
   }
 }
 .devicePoints {
+  margin-bottom: 7px;
   .pointHandle {
     height: 60px;
     display: flex;
@@ -120,6 +118,10 @@
 }
 
 .device.light {
+  .topSearch{
+    border:1px solid #d4d4d4;
+    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  }
   .topSearch .dateCheck {
     background-color: #fff;
     :global {
@@ -130,6 +132,8 @@
     }
   }
   .deviceRate {
+    border:1px solid #d4d4d4;
+    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
     background-color: #fff;
     border: 1px solid #e1e2e2;
     .total,
@@ -152,7 +156,8 @@
   }
   .devicePoints {
     background-color: #fff;
-    border: 1px solid #e1e2e2;
+    border: 1px solid #d4d4d4;
+    box-shadow: 0 2px 4px 2px rgba(0,0,0,0.20);
     border-bottom: none;
     .eachType {
       :global {

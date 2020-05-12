@@ -1,7 +1,10 @@
 @import '../../../../theme/theme.scss';
 
 .historySearch {
-
+  background-color: #fff;
+  margin-bottom: 15px;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
   .typeCheck {
     display: flex;
 
@@ -36,7 +39,7 @@
 
   .searchPart,
   .timeType {
-    padding: 20px 40px 0 10px;
+    margin: 14px 20px;
     display: flex;
     flex-wrap: wrap;
 
@@ -177,9 +180,7 @@
       }
 
       .text {
-        flex: 0 0 84px;
-        text-align: right;
-        margin-right: 8px;
+        flex: 0 0 66px;
       }
     }
 
@@ -190,10 +191,6 @@
         }
       }
     }
-  }
-
-  .timeType {
-    padding: 10px 40px 14px 10px;
   }
 }
 

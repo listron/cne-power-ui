@@ -7,7 +7,6 @@
   .contentBox{
     @include contentBoxStyle();
     .dataContent{
-      background-color: #fff;
       display: flex;
       flex-direction: column;
       flex: 1;

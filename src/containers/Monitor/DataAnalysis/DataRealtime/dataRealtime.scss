@@ -8,13 +8,20 @@
     @include contentBoxStyle();
   }
   .realtimeContent{
-    background-color: #fff;
     display: flex;
     flex-direction: column;
     flex: 1;
   }
-  .dataCenter{
-    flex: 1;
+  .dataContent{
     display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    margin-bottom: 7px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.2);
+    .dataCenter {
+      flex: 1;
+      display: flex;
+    }
   }
 }

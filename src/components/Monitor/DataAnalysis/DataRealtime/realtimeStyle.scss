@@ -1,6 +1,10 @@
 @import '../../../../theme/theme.scss';
 
 .realtimeSearch{
+  background-color: #fff;
+  margin-bottom: 15px;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
   .typeCheck{
     display: flex;
     .typeNormal, .typeActive{
@@ -29,8 +33,11 @@
     }
   }
   .searchPart{
-    padding: 20px 0;
     display: flex;
+    align-items: center;
+    line-height: 60px;
+    height: 60px;
+    padding: 14px 20px;
     .stationSelect, .typeSelect{
       flex: 0 0 25%;
     }
@@ -43,9 +50,7 @@
       height: 40px;
       align-items: center;
       .text{
-        flex: 0 0 96px;
-        text-align: right;
-        margin-right: 8px;
+        flex: 0 0 66px;
       }
     }
   }

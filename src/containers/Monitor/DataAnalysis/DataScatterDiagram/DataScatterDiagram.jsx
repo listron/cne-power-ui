@@ -27,10 +27,12 @@ class DataScatterDiagram extends Component{
         <div className={styles.contentBox}>
           <div className={styles.scatterDiagramContent}>
             <ScatterDiagramSearch {...this.props} />
-            <ScatterDiagramDataType {...this.props} />
-            <div className={styles.dataCenter}>
-              {scatterDiagramType === 'chart' && <ScatterDiagramChart {...this.props} />}
-              {scatterDiagramType === 'list' && <ScatterDiagramList {...this.props} />}
+            <div className={styles.dataContent}>
+              <ScatterDiagramDataType {...this.props} />
+              <div className={styles.dataCenter}>
+                {scatterDiagramType === 'chart' && <ScatterDiagramChart {...this.props} />}
+                {scatterDiagramType === 'list' && <ScatterDiagramList {...this.props} />}
+              </div>
             </div>
           </div>
           <Footer />

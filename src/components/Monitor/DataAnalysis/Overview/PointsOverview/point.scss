@@ -1,7 +1,7 @@
 @import "../../../../../theme/theme.scss";
 
 .topSearch {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   .dateCheck {
     display: flex;
     height: 56px;
@@ -18,139 +18,147 @@
     }
   }
 }
-.middleSearch {
-  display: flex;
-  height: 56px;
-  align-items: center;
-  padding: 0 24px;
-  .deviceText {
-    margin-right: 8px;
-  }
-  .pointText {
-    margin-right: 8px;
-    margin-left: 40px;
-  }
-}
-.pointsList {
-  overflow-x: auto;
-  display: flex;
-  flex-wrap: nowrap;
-  padding: 0 24px;
-  height: 604px;
-  .pointColumn {
-    flex: 0 0 277px;
-    margin-right: 20px;
+.pointsContent{
+  margin-bottom: 6px;
+  .middleSearch {
     display: flex;
-    flex-direction: column;
-  }
-  .pointBase {
-    .baseTitle {
-      height: 38px;
-      width: 277px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      justify-content: space-between;
-      .titlePointType,
-      .titleUnit {
-        flex: 0 0 40px;
-      }
-      .titleUnit {
-        text-align: right;
-      }
-      .titlePointName {
-        flex: 0 0 180px;
-        text-align: center;
-        @include overflowText();
-      }
+    height: 56px;
+    align-items: center;
+    padding: 0 24px;
+    .deviceText {
+      margin-right: 8px;
     }
-    .baseRate {
-      display: flex;
-      height: 6px;
-      .valid,
-      .invalid,
-      .lost {
-        flex: 0 0 auto;
-      }
-    }
-    .baseBox {
-      margin-bottom: 12px;
-    }
-    .baseDetail {
-      display: flex;
-      padding: 0 8px;
-      justify-content: space-between;
+    .pointText {
+      margin-right: 8px;
+      margin-left: 40px;
     }
   }
-  .histogramChart {
-    height: 160px;
-    margin-bottom: 10px;
-    position: relative;
-    .chartTitle {
-      padding-left: 8px;
-      height: 30px;
-      line-height: 30px;
-      margin-bottom: 0px;
-    }
-    .chart,
-    .emptyData {
-      height: 130px;
-      width: 277px;
-    }
-    .emptyData {
-      position: absolute;
-      top: 30px;
-      text-align: center;
-      line-height: 130px;
-      .tipText {
-        border-radius: 2px;
-        display: inline-block;
-        width: 132px;
-        font-size: 12px;
-        line-height: 42px;
-        height: 42px;
-      }
-    }
-  }
-  .valueInfo {
-    .valuePart {
-      padding: 8px 0;
+  .pointsList {
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0 24px;
+    height: 604px;
+    .pointColumn {
+      flex: 0 0 277px;
+      margin-right: 20px;
       display: flex;
       flex-direction: column;
     }
-    .eachIndicate {
-      display: flex;
-      padding: 0 8px;
-      justify-content: space-between;
-      line-height: 24px;
-      height: 24px;
+    .pointBase {
+      .baseTitle {
+        height: 38px;
+        width: 277px;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        justify-content: space-between;
+        .titlePointType,
+        .titleUnit {
+          flex: 0 0 40px;
+        }
+        .titleUnit {
+          text-align: right;
+        }
+        .titlePointName {
+          flex: 0 0 180px;
+          text-align: center;
+          @include overflowText();
+        }
+      }
+      .baseRate {
+        display: flex;
+        height: 6px;
+        .valid,
+        .invalid,
+        .lost {
+          flex: 0 0 auto;
+        }
+      }
+      .baseBox {
+        margin-bottom: 12px;
+      }
+      .baseDetail {
+        display: flex;
+        padding: 0 8px;
+        justify-content: space-between;
+      }
     }
-  }
-  .tooltip {
-    min-width: 160px;
-    .title,
-    .info {
-      font-size: 12px;
-      padding: 0 8px;
-      margin-bottom: 0;
+    .histogramChart {
+      height: 160px;
+      margin-bottom: 10px;
+      position: relative;
+      .chartTitle {
+        padding-left: 8px;
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 0px;
+      }
+      .chart,
+      .emptyData {
+        height: 130px;
+        width: 277px;
+      }
+      .emptyData {
+        position: absolute;
+        top: 30px;
+        text-align: center;
+        line-height: 130px;
+        .tipText {
+          border-radius: 2px;
+          display: inline-block;
+          width: 132px;
+          font-size: 12px;
+          line-height: 42px;
+          height: 42px;
+        }
+      }
     }
-    .title {
-      height: 24px;
-      line-height: 24px;
+    .valueInfo {
+      .valuePart {
+        padding: 8px 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .eachIndicate {
+        display: flex;
+        padding: 0 8px;
+        justify-content: space-between;
+        line-height: 24px;
+        height: 24px;
+      }
     }
-    .info {
-      display: flex;
-      height: 36px;
-      align-items: center;
-    }
-    .infoText {
-      margin-right: 16px;
+    .tooltip {
+      min-width: 160px;
+      .title,
+      .info {
+        font-size: 12px;
+        padding: 0 8px;
+        margin-bottom: 0;
+      }
+      .title {
+        height: 24px;
+        line-height: 24px;
+      }
+      .info {
+        display: flex;
+        height: 36px;
+        align-items: center;
+      }
+      .infoText {
+        margin-right: 16px;
+      }
     }
   }
 }
 
 .point.light {
+  .topSearch{
+    border:1px solid #d4d4d4;
+    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+    margin-bottom: 15px;
+  }
   .topSearch .dateCheck {
     background-color: #fff;
     :global {
@@ -160,77 +168,81 @@
       }
     }
   }
-  .middleSearch {
-    background-color: #fff;
-    border: 1px solid #e1e2e2;
-    border-bottom: none;
-  }
-  .pointsList {
-    background-color: #fff;
-    border: 1px solid #e1e2e2;
-    border-top: none;
-    .pointBase {
-      .baseTitle {
-        background-color: #f4f4f4;
-        color: #000;
-      }
-      .baseDetail {
-        .theoryCount {
-          color: $darkColor;
-        }
-        .theoryCount {
-          color: $themeColor;
-        }
-        .invalidCount {
-          color: #f9b600;
-        }
-        .lostCount {
-          color: $lightColor;
-        }
-      }
-      .baseRate {
-        .valid {
-          background: #199475;
-        }
-        .invalid {
-          background: #f9b600;
-        }
-        .lost {
-          background: #d4d4d4;
-        }
-      }
-      .baseBox {
-        border: 1px solid #d4d4d4;
-      }
-    }
-    .histogramChart {
-      .chartTitle {
-        color: #000;
-      }
-      .chart {
-        border: 1px solid #d4d4d4;
-      }
-      .emptyData .tipText {
-        background: rgba(0, 0, 0, 0.5);
-        color: #f8f8f8;
-      }
-    }
-    .valueInfo {
-      border: 1px solid #d4d4d4;
+  .pointsContent{
+    border: 1px solid #d4d4d4;
+    box-shadow: 0 2px 4px 2px rgba(0,0,0,0.20);
+    .middleSearch {
+      background-color: #fff;
+      border: 1px solid #e1e2e2;
       border-bottom: none;
-      .valuePart {
+    }
+    .pointsList {
+      background-color: #fff;
+      border: 1px solid #e1e2e2;
+      border-top: none;
+      .pointBase {
+        .baseTitle {
+          background-color: #f4f4f4;
+          color: #000;
+        }
+        .baseDetail {
+          .theoryCount {
+            color: $darkColor;
+          }
+          .theoryCount {
+            color: $themeColor;
+          }
+          .invalidCount {
+            color: #f9b600;
+          }
+          .lostCount {
+            color: $lightColor;
+          }
+        }
+        .baseRate {
+          .valid {
+            background: #199475;
+          }
+          .invalid {
+            background: #f9b600;
+          }
+          .lost {
+            background: #d4d4d4;
+          }
+        }
+        .baseBox {
+          border: 1px solid #d4d4d4;
+        }
+      }
+      .histogramChart {
+        .chartTitle {
+          color: #000;
+        }
+        .chart {
+          border: 1px solid #d4d4d4;
+        }
+        .emptyData .tipText {
+          background: rgba(0, 0, 0, 0.5);
+          color: #f8f8f8;
+        }
+      }
+      .valueInfo {
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        .valuePart {
+          border-bottom: 1px solid #d4d4d4;
+        }
+      }
+    }
+    .tooltip {
+      // chart提示
+      background-color: #fff;
+      color: #353535;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+      .title {
+        color: #353535;
         border-bottom: 1px solid #d4d4d4;
       }
-    }
-  }
-  .tooltip {
-    // chart提示
-    background-color: #fff;
-    color: #353535;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
-    .title {
-      color: #353535;
-      border-bottom: 1px solid #d4d4d4;
     }
   }
 }

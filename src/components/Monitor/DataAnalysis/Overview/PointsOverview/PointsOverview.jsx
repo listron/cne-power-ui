@@ -268,14 +268,16 @@ class PointsOverview extends PureComponent{
             theme={theme}
           />
         </div>
-        <PointsSearch
-          {...this.props}
-          deviceChanged={this.deviceChanged}
-          pointsChanged={this.pointsChanged}
-        />
-        <Spin spinning={pointsLoading} size="large" delay={200}>
-          <PointsList {...this.props} />
-        </Spin>
+        <div className={styles.pointsContent}>
+          <PointsSearch
+            {...this.props}
+            deviceChanged={this.deviceChanged}
+            pointsChanged={this.pointsChanged}
+          />
+          <Spin spinning={pointsLoading} size="large" delay={200}>
+            <PointsList {...this.props} />
+          </Spin>
+        </div>
       </div>
     );
   }

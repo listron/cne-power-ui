@@ -1,68 +1,74 @@
 @import '../../../../theme/theme.scss';
 
-.searchPart{ // 搜索
-  padding: 20px 32px;
-  display: flex;
-  flex-wrap: wrap;
-  .stationSelect,.deviceSelect,.xPointSelect,.yPointSelect{
-    flex: 0 0 25%;
+.scatterDiagramSearch{ // 搜索
+  margin-bottom: 15px;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  background-color: #fff;
+  .searchPart{
+    padding: 14px 20px;
     display: flex;
-    line-height: 40px;
-    height: 40px;
-    align-items: center;
-    .text{
-      flex: 0 0 96px;
-      text-align: right;
-      margin-right: 8px;
-    }
-  }
-  .xPointSelect,.yPointSelect{
-    :global{
-      .ant-select{
-        width: 198px;
+    flex-wrap: wrap;
+    .stationSelect,.deviceSelect,.xPointSelect,.yPointSelect{
+      flex: 0 0 25%;
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+      .text{
+        flex: 0 0 66px;
+        // text-align: right;
+        // margin-right: 8px;
       }
     }
-    .text{
-      letter-spacing: 1px;
-    }
-  }
-  .timeSelect{
-    flex: 0 0 50%;
-    display: flex;
-    line-height: 40px;
-    height: 40px;
-    align-items: center;
-    margin-bottom: 11px;
-    .text{
-      flex: 0 0 96px;
-      text-align: right;
-      margin-right: 8px;
-    }
-    :global{
-      .ant-input{
-        width: 400px;
+    .xPointSelect,.yPointSelect{
+      :global{
+        .ant-select{
+          width: 198px;
+        }
+      }
+      .text{
+        letter-spacing: 1px;
       }
     }
-  }
-  .rightHandle{
-    margin-left: 67px;
-    padding-top: 4px;
-    :global{
-      .ant-btn-default:not([disabled]){
-        border: 1px solid $themeColor;
-        color: $themeColor
+    .timeSelect{
+      flex: 0 0 50%;
+      display: flex;
+      line-height: 40px;
+      height: 40px;
+      align-items: center;
+      margin-bottom: 11px;
+      .text{
+        flex: 0 0 96px;
+        text-align: right;
+        margin-right: 8px;
       }
-      .ant-btn-default:not([disabled]):hover{
-        text-decoration: none;
-        background: $themeColor;
-        color: #fff;
+      :global{
+        .ant-input{
+          width: 400px;
+        }
       }
     }
-    .exportPoint{
-       margin-left: 8px;
+    .rightHandle{
+      margin-left: 67px;
+      padding-top: 4px;
+      :global{
+        .ant-btn-default:not([disabled]){
+          border: 1px solid $themeColor;
+          color: $themeColor
+        }
+        .ant-btn-default:not([disabled]):hover{
+          text-decoration: none;
+          background: $themeColor;
+          color: #fff;
+        }
+      }
+      .exportPoint{
+         margin-left: 8px;
+      }
     }
-  }
-} 
+  } 
+}
 
 .scatterDiagramList{ // 列表
   display: flex;

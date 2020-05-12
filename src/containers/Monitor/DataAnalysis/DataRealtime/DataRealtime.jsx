@@ -41,11 +41,13 @@ class DataRealtime extends Component {
         <div className={styles.contentBox}>
           <div className={styles.realtimeContent} >
             <RealtimeSearch {...this.props} />
-            <RealtimeDataType {...this.props} />
-            <div className={styles.dataCenter}>
-              <PointTree {...this.props} />
-              {realtimeType === 'chart' && <RealtimeChart {...this.props} />}
-              {realtimeType === 'list' && <RealtimeList {...this.props} />}
+            <div className={styles.dataContent}>
+              <RealtimeDataType {...this.props} />
+              <div className={styles.dataCenter}>
+                <PointTree {...this.props} />
+                {realtimeType === 'chart' && <RealtimeChart {...this.props} />}
+                {realtimeType === 'list' && <RealtimeList {...this.props} />}
+              </div>
             </div>
           </div>
           <Footer />

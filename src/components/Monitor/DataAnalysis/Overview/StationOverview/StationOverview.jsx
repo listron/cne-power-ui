@@ -109,15 +109,17 @@ class StationOverview extends PureComponent{
         { !stationCode && !deviceTypeCode && <StationList {...this.props} />}
         {
           stationCode && <div>
-            <CommonSearch
-              stations={stations}
-              stationCode={stationCode}
-              topData={stationTopData}
-              deviceTypeCode={deviceTypeCode}
-              onStationChange={this.stationChanged}
-              onTypeChange={this.deviceTypeChanged}
-              theme={theme}
-            />
+            <div className={styles.topSearch}>
+              <CommonSearch
+                stations={stations}
+                stationCode={stationCode}
+                topData={stationTopData}
+                deviceTypeCode={deviceTypeCode}
+                onStationChange={this.stationChanged}
+                onTypeChange={this.deviceTypeChanged}
+                theme={theme}
+              />
+            </div>
             <StationDates {...this.props} />
           </div>
         }
