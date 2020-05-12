@@ -169,7 +169,7 @@ class DiagnoseList extends Component {
   }
 
   onSelectedHandle = (value) => {
-    const { selectedRows, getEamRegisterWaring, listParams, listPage, getDiagnoseList } = this.props;
+    const { selectedRows, getEamRegisterWaring, listParams, listPage, getDiagnoseList, changeStore } = this.props;
     const handleKeys = ['ignore', 'delete'];
     const enterpriseCode = Cookie.get('enterpriseCode');
     const diagWarningIds = selectedRows.map(e => e.diagWarningId);
@@ -192,6 +192,8 @@ class DiagnoseList extends Component {
             detectedTime: moment(beginTime).format('YYYY-MM-DD HH:mm:ss'),
             func: () => {
               // 清空已选
+              changeStore({selectedRows: []});
+              // 置灰操作按钮
               this.handleCreator([]);
               // 请求当前列表
               getDiagnoseList({...listParams, ...listPage});

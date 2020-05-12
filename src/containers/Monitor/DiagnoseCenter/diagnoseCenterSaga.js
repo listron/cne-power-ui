@@ -271,8 +271,9 @@ function * getEamRegisterWaring({payload = {}}){ // 诊断事件派发至缺陷�
     if (response.code === '10000') {
       payload.func();
       message.success('已派发');
-      console.log(11111);
-    } else { throw response.message; }
+    } else {
+      message.error(response.message);
+    }
   } catch(error){
     message.error(error.message);
   }
