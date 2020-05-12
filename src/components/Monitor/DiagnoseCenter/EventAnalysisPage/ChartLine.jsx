@@ -120,7 +120,6 @@ class ChartLine extends PureComponent {
     const lineChart = echarts.init(this.lineRef);
     const { time = [], pointData = [] } = data;
     lineChart.hideLoading();
-
     const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239', 'NB1035', 'NB1036', 'NB1037', 'NB1038'].includes(eventCode);
     // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
     const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
@@ -286,14 +285,12 @@ class ChartLine extends PureComponent {
         show: false,
       },
     };
-    const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => {
-      // const scaleAxisNumRange = (maxValue) => { // 将 电流/ 电压 线根据数量级(不大于整数)调整渲染大小区间
-      //   // 辐照度尽量布满 图高, 电流/电压 占据80%; 保证辐照线 展示高于 电流电压线
 
-      // };
+    const yAxis = unitsGroup.length > 0 ? unitsGroup.map((e, i) => {
       const diagnoseBrancnAxis = isDiagnoseBranch ? { // 诊断事件组串类: 只会返回电压(电流) + 辐照两个轴, 电压电流(左),辐照(右)
         name: e === 'W/m2' ? '瞬时辐照度(W/m2)' : (e === 'A' ? '电流(A)' : '电压(V)'),
-        // max: maxValue => { console.log(maxValue); return e === 'W/m2' ? maxValue.max : maxValue.max + 5; },
+        // 调研: 辐照度尽量布满 图高, 电流/电压 占据80%; 保证辐照线 展示上高于 电流电压线
+        // max: maxValue => this.getNumScaleBoostAxis(maxValue.max, e === 'W/m2' ? 1 : 0.8), // 9.65 1226,
         nameTextStyle: {
           color: '#353535',
           fontSize: 12,
@@ -597,5 +594,27 @@ class ChartLine extends PureComponent {
 export default ChartLine;
 
 
+  // getNumScaleBoostAxis = (maxValue, areaRate) => { //数值进行适当比例放大 => 满足echartsY轴的坐标化
+  //   const tmpEachPiece = maxValue / 5 / areaRate; // 每个临时分区的大小
+  //   const pieceMagnitudeOrder = this.getNumMagnitudeOrder(tmpEachPiece); // 每个临时分区的数量级
+  //   let eachPiece = tmpEachPiece;
+  //   if (pieceMagnitudeOrder === 1) {
+  //     eachPiece = Math.ceil(tmpEachPiece);
+  //   } else { // 此场景中, 不考虑负数
+  //     const tmpPieceNum = parseInt(tmpEachPiece / pieceMagnitudeOrder, 10); // 整数部分
+  //     const pieceDecimal = tmpEachPiece / pieceMagnitudeOrder - tmpPieceNum; // 小数部分
+  //     eachPiece = (tmpPieceNum + (pieceDecimal < 0.5 ? 0.5 : 1)) * pieceMagnitudeOrder;
+  //   }
+  //   return eachPiece * 5;
+  // };
 
-
+  // getNumMagnitudeOrder = (num, res = 1) => { // 获取数据数量级
+  //   if (!num || +num === 0) {
+  //     return res;
+  //   } else if (num >= 10 || num <= -10) {
+  //     return this.getNumMagnitudeOrder(num / 10, res * 10);
+  //   } else if (num < 1 && num > -1) {
+  //     return this.getNumMagnitudeOrder(num * 10, res / 10);
+  //   }
+  //   return res;
+  // }
