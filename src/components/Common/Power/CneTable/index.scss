@@ -283,6 +283,17 @@
     .ant-table-fixed-left{
       box-shadow: 2px 0 6px -2px #199475;
     }
+    
+    .ant-table-thead{
+      .ant-checkbox-checked .ant-checkbox-inner{
+        background: #fff;
+      }
+      .ant-checkbox-checked .ant-checkbox-inner::after{
+        border: 2px solid #199475;
+        border-top: 0;
+        border-left: 0;
+      }
+    }
   }
 }
 
