@@ -241,17 +241,19 @@ class StockList extends Component {
             onPaginationChange={this.onPaginationChange}
           />
         </div>
-        <CneTable
-          loading={tableLoading}
-          className={styles.inRecordList}
-          dataSource={dataSource}
-          columns={this.columns()}
-          onChange={this.tableChange}
-          pagination={false}
-          // dataError={diagnoseListError}
-          sortField={this.sortInfo[sortField]}
-          sortMethod={this.sortInfo[sortMethod]}
-        />
+        <div className={styles.tableBox}>
+          <CneTable
+            loading={tableLoading}
+            className={styles.inRecordList}
+            dataSource={dataSource}
+            columns={this.columns()}
+            onChange={this.tableChange}
+            pagination={false}
+            // dataError={diagnoseListError}
+            sortField={this.sortInfo[sortField]}
+            sortMethod={this.sortInfo[sortMethod]}
+          />
+        </div>
       </div>
     );
   }

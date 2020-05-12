@@ -7,7 +7,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 28px 20px 28px;
     .selectCondition {
       display: flex;
       justify-content: space-between;
@@ -28,31 +27,38 @@
       margin-right: 16px;
     }
   }
-  .workFlowTable{
-    table{
-      width: 100%;
-      table-layout: fixed;
-    }
-    .iconShow{
-      display: inline;
-    }
-    .iconHide{
-      display: none;
-    }
-    :global{
-      .iconfont{
-        font-size: 20px;
-        padding: 4px;
-        cursor: pointer;
-        margin-right: 4px;
-        &:last-child{
-          margin-right: 0;
+
+  .tableBox {
+    background-color: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+    flex: 1 auto;
+    margin: 0 2px 4px 2px;
+    .workFlowTable{
+      table{
+        width: 100%;
+        table-layout: fixed;
+      }
+      .iconShow{
+        display: inline;
+      }
+      .iconHide{
+        display: none;
+      }
+      :global{
+        .iconfont{
+          font-size: 20px;
+          padding: 4px;
+          cursor: pointer;
+          margin-right: 4px;
+          &:last-child{
+            margin-right: 0;
+          }
         }
       }
-    }
-    .docketCodeText, .docketTypeNameText, .stationNameText, .docketNameText, .createTimeText, .dealUserNamesText{
-      @include overflowText();
-      width: calc(100% - 5px);
+      .docketCodeText, .docketTypeNameText, .stationNameText, .docketNameText, .createTimeText, .dealUserNamesText{
+        @include overflowText();
+        width: calc(100% - 5px);
+      }
     }
   }
   :global {
@@ -88,6 +94,9 @@
 .condition {
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
   .statusGroup {
     display: flex;
     flex-direction: row;

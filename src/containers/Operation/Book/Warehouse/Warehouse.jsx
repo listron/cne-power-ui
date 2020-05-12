@@ -47,18 +47,18 @@ class Warehouse extends Component {
           <div className={styles.warehouseBox}>
             <div className={styles.warehouseDiv}>
               <div className={styles.warehouseTabs}>
-                <button
+                <p
                   onClick={() => { return this.warehouseFunc(); }}
                   className={type === 1 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   仓库
-                </button>
-                <button
+                </p>
+                <p
                   onClick={() => { return this.goodsFunc(); }}
                   className={type === 2 ? styles.checkBtn : styles.unCheckBtn}
                 >
                   物品
-                </button>
+                </p>
               </div>
               {type === 1 ? <WarehouseWrap {...this.props} /> : <WarehouseGoods {...this.props} />}
             </div>

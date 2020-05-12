@@ -519,6 +519,7 @@
 }
 
 .seacrchCont.light {
+  border-top: 1px solid #199475;
   :global {
     .ant-radio-button-wrapper-checked {
       background-color: $themeColor;

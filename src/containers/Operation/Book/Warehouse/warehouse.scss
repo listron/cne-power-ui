@@ -13,25 +13,38 @@
       background: $pageGround;
       .warehouseDiv{
         width: 100%;
+        flex: 1 auto;
+        display: flex;
+        flex-direction: column;
         .warehouseTabs{
+          display: flex;
           width: 100%;
-          height: 34px;
-          background-color: #f8f8f8;
-          button{
+          padding-left: 15px;
+          line-height: 40px;
+          background: #f8f8f8;
+          p{
             width: 120px;
-            border: none;
-            outline: none;
+            text-align: center;
             cursor: pointer;
-            @include lineheight(34px);
-            background-color: #f8f8f8;
-          }
-          .checkBtn{
-            border-bottom: 2px solid $themeColor;
+            margin-bottom: -2px;
             color: $themeColor;
           }
+          .checkBtn{
+            position: relative;
+            background: $pageGround;
+            border-right: 1px solid $themeColor;
+            border-left: 1px solid $themeColor;
+            &::before{
+              content: "";
+              position: absolute;
+              width: 120px;
+              height: 2px;
+              top: 0;
+              left: -1px;
+              background: $themeColor;
+            }
+          }
           .unCheckBtn{
-            border-bottom: 2px solid #f8f8f8;
-            color: $lightColor;
           }
         }
       }

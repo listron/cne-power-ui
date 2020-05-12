@@ -1,6 +1,11 @@
 @import '../../../../theme/theme.scss';
 
 .sparePage, .toolPage, .materialPage{ // 备品备件 工器具 物资主页面公用样式
+  border-top: 1px solid #199475;
+  flex: 1;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  margin: 0 2px 4px 2px;
+
   table{
     table-layout: fixed;
     .goodsName, .modeName, .warehouseName, .assetsPath, .goodsType, .warehouseName, .devManufactorName, .supplierName, .manufactorNamem{

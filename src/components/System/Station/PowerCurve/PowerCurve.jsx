@@ -292,17 +292,19 @@ class PowerCurve extends Component {
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                 onPaginationChange={this.onPaginationChange} />
             </div>
-            <CneTable
-              loading={loading}
-              dataSource={dataSource}
-              columns={columns}
-              pagination={false}
-              rowSelection={rowSelection}
-              onChange={this.tableChange}
-              sortField={this.uiSortMap[sortField]}
-              sortMethod={sortMethod === 'ASC' ? 'ascend' : 'descend'}
-              locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-            />
+            <div className={styles.tableBox}>
+              <CneTable
+                loading={loading}
+                dataSource={dataSource}
+                columns={columns}
+                pagination={false}
+                rowSelection={rowSelection}
+                onChange={this.tableChange}
+                sortField={this.uiSortMap[sortField]}
+                sortMethod={sortMethod === 'ASC' ? 'ascend' : 'descend'}
+                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+              />
+            </div>
           </div>
         </div>
         <TransitionContainer

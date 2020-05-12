@@ -1,7 +1,12 @@
 @import '../../../../theme/theme.scss';
 
 .workExaminer{
+  border-top: 1px solid #199475;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+  flex: 1 auto;
+  margin-bottom: 4px;
   .paginationRow{
+    border-top: 1px dashed #d4d4d4;
     display: flex;
     justify-content: flex-end;
     line-height: 60px;

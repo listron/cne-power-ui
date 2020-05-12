@@ -34,6 +34,8 @@
     }
   }
   .listsTable{
+    background-color: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
     .inspectContentText, .stationsText{
       @include overflowText();
     }
@@ -86,11 +88,11 @@
 
 
 .light.contentSearch{
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 
 .light.lists{
-  background-color: #fff;
+  background-color: transparent;
   .tableFoot{
     .selectedNum{
       color: #f9b600;

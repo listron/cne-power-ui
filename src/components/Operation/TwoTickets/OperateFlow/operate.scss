@@ -3,7 +3,10 @@
 
 .flowTable.light {
   padding-right: 1px;
+  display: flex;
+  flex-direction: column;
   .tableTop {
+    height: 60px;
     .commonButton {
       background-color: #fff;
       color: #199475;

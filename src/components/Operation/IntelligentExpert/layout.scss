@@ -38,6 +38,7 @@
 .intelligentSearch {
   display: flex;
   flex-direction: column;
+  border-top: 1px solid #199475;
   .topSearch {
     min-height: 80px;
     height: auto;
@@ -85,7 +86,8 @@
   .topHandler {
     display: flex;
     justify-content: space-between;
-    padding: 30px 0 20px 20px;
+    padding: 15px 0 10px 20px;
+    height: 60px;
     .leftPart {
       display: flex;
       .deleteHandler,

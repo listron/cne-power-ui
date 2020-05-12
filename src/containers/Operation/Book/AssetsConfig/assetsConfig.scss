@@ -20,31 +20,30 @@
   overflow: hidden;
   .allStationTitle{
     display: flex;
+    padding-left: 15px;
     line-height: 40px;
-    background:#f8f8f8;
-    border-bottom:  1px solid #d4d4d4;
+    background: #f8f8f8;
     p{
-        width:120px;
-        border-right: 1px solid #d4d4d4;
-        color:#999999;
-        margin-bottom: 0;
-        text-align: center;
-        cursor: pointer;
-        margin-bottom: -2px;
+      width: 120px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: -2px;
+      color: $themeColor;
     }
     .activeStation{
-        background: #fff;
-        position: relative;
-        color:#000000;
-        &::before{
-            content: "";
-            position: absolute;
-            width: 120px;
-            height: 2px;
-            top: 0;
-            left: -1px;
-            background: $themeColor;
-        }
+      position: relative;
+      background: $pageGround;
+      border-right: 1px solid $themeColor;
+      border-left: 1px solid $themeColor;
+      &::before{
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 2px;
+        top: 0;
+        left: -1px;
+        background: $themeColor;
+      }
     }
 
 }

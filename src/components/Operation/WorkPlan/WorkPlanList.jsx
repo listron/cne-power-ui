@@ -35,8 +35,10 @@ class WorkPlanList extends PureComponent {
           display: listShow ? 'flex' : 'none',
         }}
       >
-        <PlanFilter {...this.props} />
-        <ContentSearch {...this.props} />
+        <div className={styles.topContent}>
+          <PlanFilter {...this.props} />
+          <ContentSearch {...this.props} />
+        </div>
         <Lists {...this.props} />
       </div>
     );

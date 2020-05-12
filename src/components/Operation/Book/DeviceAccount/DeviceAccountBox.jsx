@@ -255,6 +255,7 @@ export default class DeviceAccountBox extends React.Component {
       <div className={styles.deviceAccountBox}>
         <div className={styles.deviceAccountSearch}>
           <span>筛选条件</span>
+          <div style={{display:'flex', marginTop:8, height:40}}>
           <Select
             placeholder="请选择区域"
             style={{ width: 140, paddingTop: '3px', margin: '0 10px' }}
@@ -266,7 +267,7 @@ export default class DeviceAccountBox extends React.Component {
           <StationSelect
             disabled={regionOption === ''}
             data={this.regionStationFilter()}
-            style={{ width: '200px' }}
+            style={{ width: '200px' , lineHeight:'40px' }}
             holderText="请输入电站名称"
             value={stations.filter(e => e.stationCode === Number(stationCodesOption))}
             onOK={this.selectStation}
@@ -291,6 +292,7 @@ export default class DeviceAccountBox extends React.Component {
             <Option key="全部" value="0">全部</Option>
             {deviceModeItem}
           </Select>
+          </div>
         </div>
         <div className={styles.deviceAccountPage}>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} />

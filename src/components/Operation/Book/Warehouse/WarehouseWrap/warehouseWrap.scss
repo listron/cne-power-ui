@@ -2,13 +2,17 @@
 
 .warehouseWrap {
   width: 100%;
+  border-top: 1px solid #199475;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  margin: 0 2px 4px 2px;
+  flex: 1 auto;
 
   .warehouseSearch {
     width: 100%;
     padding: 16px 25px 10px 27px;
-    background-color: #f0f2f5;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px dashed #d4d4d4;
 
     .rightSeach {
       margin-left: 28px;

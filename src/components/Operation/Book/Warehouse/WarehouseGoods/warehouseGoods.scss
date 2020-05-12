@@ -3,7 +3,11 @@
 .warehouseGoods {
   width: 100%;
   background-color: $pageGround;
-
+  border-top: 1px solid #199475;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  margin: 0 2px 4px 2px;
+  flex: 1 auto;
+  
   .warehouseGoodsCenter {
     width: 100%;
     border-top: 1px solid $promptColor;

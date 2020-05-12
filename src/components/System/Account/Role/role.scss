@@ -33,8 +33,6 @@
     flex: 1;
     // display: flex;
     // flex-direction: column;
-    background-color: #fff;
-    border: 1px solid #e1e2e2;
 
     // .tableBox {
     //   border: 1px solid #d4d4d4;
@@ -89,10 +87,9 @@
     margin-right: 4px;
   }
   .roleListTop {
-    background: #fff;
     display: flex;
-    min-height: 72px;
-    line-height: 72px;
+    min-height: 60px;
+    line-height: 60px;
     justify-content: space-between;
     .rolelistTopBox{
       display: flex;

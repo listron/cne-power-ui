@@ -66,8 +66,10 @@ class InterlligentExpertMain extends Component {
             <p className={`${stationType === '1' && styles.activeStation} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
           </div>
         }
-        <IntelligentSearch {...this.props} />
-        <IntelligentTable {...this.props} />
+        <div className={styles.cotentBox}>
+          <IntelligentSearch {...this.props} />
+          <IntelligentTable {...this.props} />
+        </div>
       </div>
     );
   }

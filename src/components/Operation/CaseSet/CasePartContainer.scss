@@ -3,10 +3,12 @@
 .caseSearch {
   display: flex;
   flex-direction: column;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  background-color: #fff;
 
   .partSearch {
     display: flex;
-    background-color: #f9f9f9;
     line-height: 50px;
     text-align: center;
     align-items: center;
@@ -58,7 +60,7 @@
   // 导出设备， 翻页器
   display: flex;
   justify-content: space-between;
-  height: 72px;
+  height: 60px;
   align-items: center;
   padding-left: 20px;
 
@@ -109,6 +111,10 @@
 }
 
 .caseList {
+  background-color: #fff;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  margin: 0 2px 4px 2px;
+  flex: 1 auto;
   .editPoint {
     cursor: pointer;
     color: $themeColor;

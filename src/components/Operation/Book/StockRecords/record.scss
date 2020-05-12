@@ -4,7 +4,13 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding:24px 35px;
+  padding: 0 35px;
+  background-color: #fff;
+  height: 50px;
+  line-height: 50px;
+  border:1px solid #d4d4d4;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+
   .searchLeft{
     .text,.warehouseName,.inventory{
       margin-right: 10px;
@@ -21,10 +27,16 @@
 }
 
 .stockList{
+  display: flex;
+  flex-direction: column;
+  flex: 1 auto;
+  
   .stockListTop{
     display: flex;
     justify-content: space-between;
-    margin:0 0 15px 34px;
+    margin:0 0 0 34px;
+    height: 60px;
+    line-height: 60px;
 
     :global {
       .ant-radio-group {
@@ -52,6 +64,13 @@
         }
       }
     }
+  }
+
+  .tableBox {
+    flex: 1;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+    margin: 0 2px 4px 2px;
+    background-color: #fff;
   }
   
 }

@@ -18,12 +18,12 @@
 
   .tabTitle {
     display: flex;
+    padding-left: 15px;
     line-height: 40px;
 
     // overflow: hidden;
     p {
       width: 120px;
-      margin-bottom: 0;
       text-align: center;
       cursor: pointer;
       margin-bottom: -2px;
@@ -52,14 +52,13 @@
     border-bottom: 1px solid $borderColor;
 
     p {
-      border-right: 1px solid $borderColor;
-      color: $lightColor;
+      color: $themeColor;
     }
 
     .activeKey {
       background: $pageGround;
-      color: $darkColor;
-
+      border-right: 1px solid $themeColor;
+      border-left: 1px solid $themeColor;
       &::before {
         background: $themeColor;
       }

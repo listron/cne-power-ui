@@ -375,18 +375,20 @@ class TableList extends Component {
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
                         onPaginationChange={this.onPaginationChange} theme={theme} />
                 </div>
-                <CneTable
-                    loading={loading}
-                    className={styles.workFlowTable}
-                    dataSource={dataSource}
-                    columns={this.initColumns()}
-                    sortField={this.tableSortMap[sortField]}
-                    sortMethod={this.sortMethodMap[sortMethod] || false}
-                    rowSelection={rowSelection}
-                    onChange={this.tableChange}
-                    locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-                    dataError={false}
-                />
+                <div className={styles.tableBox}>
+                    <CneTable
+                        loading={loading}
+                        className={styles.workFlowTable}
+                        dataSource={dataSource}
+                        columns={this.initColumns()}
+                        sortField={this.tableSortMap[sortField]}
+                        sortMethod={this.sortMethodMap[sortMethod] || false}
+                        rowSelection={rowSelection}
+                        onChange={this.tableChange}
+                        locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
+                        dataError={false}
+                    />
+                </div>
                 <ImgListModal
                     data={images}
                     imageListShow={showImgModal}
