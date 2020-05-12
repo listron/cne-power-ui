@@ -31,11 +31,10 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    z-index: 2;
     .title {
       display: flex;
       flex-direction: column;
-      padding-left: 28px;
-      padding-top: 10px;
       justify-content: space-between;
       .stationStatus {
         height: 40px;
@@ -44,11 +43,14 @@
         flex: 1;
         flex-direction: row;
         justify-content: space-between;
+        padding-left: 28px;
         .status {
           margin-right: 4px;
+          font-size: 18px;
           :global {
             .iconfont {
               margin-right: 4px;
+              font-size: 18px;
             }
           }
         }
@@ -81,8 +83,12 @@
           }
         }
       }
+      .yearWrap{
+        padding: 10px 23px;
+      }
       .graph {
         display: flex;
+        padding-left: 28px;
         .stationTargetData {
           display: flex;
           flex-direction: column;

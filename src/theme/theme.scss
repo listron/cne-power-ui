@@ -48,6 +48,7 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   padding: 15px 24px 0;
   background: #f0f2f5;
+  z-index: 1;
 }
 
 @mixin overflowText() {

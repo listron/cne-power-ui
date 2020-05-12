@@ -2,13 +2,21 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  :global {
-    .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
-      display: flex;
-      justify-content: space-between;
-    }
+  .tabWrap{
+    display: flex;
+    margin: 0 24px;
+    height: 27px;
   }
-
+  .normal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 90px;
+    padding: 0 10px;
+    height: 26px;
+    cursor: pointer;
+    margin-right:8px;
+  }
   .tabContainer {
     display: flex;
     flex: 1;
@@ -39,9 +47,24 @@
 }
 
 .light {
+  .tabWrap{
+    border-bottom: 1px solid #ceebe0;
+  }
+  .normal{
+    background:#ceebe0;
+    color: var(--themeColor);
+    &:hover{
+      background: var(--themeColor);
+      color: #fff;
+    }
+  }
+  .active{
+    background: var(--themeColor);
+    color: #fff;
+  }
   .dataGraph,
   .selectMonth {
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px dashed var(--themeColor);
   }
 }
 
@@ -53,19 +76,5 @@
   .dataGraph,
   .selectMonth {
     border-bottom: none;
-  }
-  :global {
-    .ant-tabs .ant-tabs-ink-bar {
-      background-color: $button-active;
-    }
-    .ant-tabs-nav .ant-tabs-tab {
-      color: $fontColor;
-      &:hover {
-        color: $fontColor;
-      }
-    }
-    .ant-tabs-nav .ant-tabs-tab-active {
-      color: $fontColor-invert;
-    }
   }
 }

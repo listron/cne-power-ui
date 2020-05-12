@@ -61,97 +61,81 @@ class TargetTabs extends React.Component {
       {
         tab: '发电量',
         key: 'EqpGen',
-        graphId: 'power',
         yAxisName: '发电量(万kWh)',
         xAxisName: '发电量',
-        pieGraphId: 'powerPie',
       },
       {
         tab: '辐射总量',
         key: 'PvRadi',
-        graphId: 'radiationBar',
         yAxisName: '辐射总量(MJ/㎡)',
         xAxisName: '辐射总量',
-        pieGraphId: 'radiationPie',
       },
       // {
       //   tab: '等效利用小时数',
       //   key: 'EqpWorkedHour',
-      //   graphId: 'userTime',
       //   yAxisName: '等效利用小时数(h)',
       //   xAxisName: '等效利用小时数',
-      //   pieGraphId: 'userTimePie',
       // },
       {
         tab: 'PR',
         key: 'pr',
-        graphId: 'PR',
         yAxisName: 'PR(%)',
         xAxisName: 'PR',
-        pieGraphId: 'PRPie',
       }, {
         tab: '损失电量',
         key: 'LostEqp',
-        graphId: 'lostPower',
         yAxisName: '损失电量(万kWh)',
         xAxisName: '损失电量',
-        pieGraphId: 'lostPowerPie',
       },
       {
         tab: '损失电量等效时',
         key: 'LostEqpHour',
-        graphId: 'lostPowertime',
         yAxisName: '发电量(h)',
         xAxisName: '损失电量等效时',
-        pieGraphId: 'lostPowertimePie',
       },
     ];
 
 
+    const selectKey = TabPaneData.filter(e => e.key === this.props.targetShowType);
+    const { yAxisName, xAxisName } = selectKey.length > 0 && selectKey[0] || {}
     return (
       <div className={`${styles.targetTabs} ${styles[theme]}`}>
-        <Tabs
-          activeKey={this.props.targetShowType}
-          animated={false}
-          onChange={this.queryTargetData}
-        >
-          {TabPaneData.map((item, index) => {
+        <div className={styles.tabWrap}>
+          {TabPaneData.map(e => {
             return (
-              <TabPane tab={item.tab} key={item.key}>
-                <div className={styles.tabContainer}>
-                  <div className={`${styles.dataGraph} ${dateType === 'month' && styles.selectMonth}`}>
-                    <BarGraph
-                      currentYear={currentYear}
-                      lastYear={lastYear}
-                      barGraphThatYear={barGraphThatYear}
-                      barGraphLastYear={barGraphLastYear}
-                      barGraphmonth={dateType === 'year' ? barGraphYear : barGraphmonth}
-                      barGraphYearOnYear={barGraphYearOnYear}
-                      barGraphRingRatio={barGraphRingRatio}
-                      graphId={item.graphId}
-                      yAxisName={item.yAxisName}
-                      xAxisName={item.xAxisName}
-                      dateType={dateType}
-                      hasData={hasData}
-                      theme={theme}
-                    />
-                    {
-                      dateType === 'month' &&
-                      <AllStationMonthPie
-                        allStationMonthpie={item.pieGraphId}
-                        yAxisName={item.yAxisName}
-                        xAxisName={item.xAxisName}
-                        pieTargetData={pieTargetData}
-                        barGraphYearOnYear={barGraphYearOnYear}
-                        theme={theme}
-                        hasData={pieHasData} />}
-
-                  </div>
-                </div>
-              </TabPane>
-            );
+              <p key={e.key}
+                onClick={() => this.queryTargetData(e.key)}
+                className={`${styles.normal} ${this.props.targetShowType === e.key && styles.active}`}
+              >{e.tab}</p>)
           })}
-        </Tabs>
+        </div>
+        <div className={styles.tabContainer}>
+          <div className={`${styles.dataGraph} ${dateType === 'month' && styles.selectMonth}`}>
+            <BarGraph
+              currentYear={currentYear}
+              lastYear={lastYear}
+              barGraphThatYear={barGraphThatYear}
+              barGraphLastYear={barGraphLastYear}
+              barGraphmonth={dateType === 'year' ? barGraphYear : barGraphmonth}
+              barGraphYearOnYear={barGraphYearOnYear}
+              barGraphRingRatio={barGraphRingRatio}
+              yAxisName={yAxisName}
+              xAxisName={xAxisName}
+              dateType={dateType}
+              hasData={hasData}
+              theme={theme}
+            />
+            {
+              dateType === 'month' &&
+              <AllStationMonthPie
+                yAxisName={yAxisName}
+                xAxisName={xAxisName}
+                pieTargetData={pieTargetData}
+                barGraphYearOnYear={barGraphYearOnYear}
+                theme={theme}
+                hasData={pieHasData} />}
+          </div>
+        </div>
       </div>
     );
   }

@@ -309,11 +309,11 @@ class OperateAnalysis extends React.Component {
               <div className={styles.status}>
                 <i className={`iconfont icon-pvlogo ${styles.stationIcon}`} />
                 {`${stationName}-${provinceName}`}
-                {dateType === 'year' && this.selectProductYear()}
+
               </div>
               <span className={styles.rightFont}>并网时间:{onGridTime && moment(onGridTime).format('YYYY年MM月DD日') || '--'}</span>
             </div>
-
+            {dateType === 'year' && <p className={styles.yearWrap}>{this.selectProductYear()}</p>}
             <div className={styles.graph}>
               {[
                 { name: 'PR', unit: '%', value: 'pr' },

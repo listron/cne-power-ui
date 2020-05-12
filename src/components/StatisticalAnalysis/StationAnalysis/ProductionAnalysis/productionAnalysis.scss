@@ -4,21 +4,16 @@
 .light {
   .stationTimeFilter {
     background: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
   .componentContainer {
     background: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
     .title {
-      border-bottom: 1px solid #f0f2f5;
+      border-bottom: 1px dashed var(--themeColor);
       .stationStatus {
-        color: $darkColor;
-        .stationIcon {
-          i {
-            color: $themeColor;
-          }
-        }
-        .rightFont {
-          color: $lightColor;
-        }
+        background:var(--themeColor) ;
+        color: #fff;
       }
       .stationTargetData {
         .stationTargetValue {
@@ -34,8 +29,14 @@
           color: #353535;
         }
       }
-      .tabContainer {
-        border-bottom: 1px solid #f0f2f5;
+      .tabContainer:not(:last-child) {
+        border-bottom: 1px dashed var(--themeColor);
+      }
+
+      .dataGraphs{
+         div:first-child{
+           border-right: 1px dashed var(--themeColor);
+         }
       }
     }
     .selectButton{
@@ -53,11 +54,15 @@
       pointer-events: none;
     }
 
-    :global{
-      .ant-radio-button-wrapper:not(:first-child)::before{
-        background-color:transparent
-      }
-    }   
+     :global{
+        .ant-radio-button-wrapper:not(:first-child)::before{
+          background-color:transparent
+        }
+        .ant-radio-button-wrapper-checked{
+          color:#fff;
+          background: var(--themeColor);
+        }
+      }  
   }
 }
 
