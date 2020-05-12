@@ -166,8 +166,10 @@
 
     .handlers{
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-start;
       .handleAnalysis, .toDefect, .handleDelete{
+        width: 20px;
+        margin: 0 5px;
         font-size: 20px;
         cursor: pointer;
       }
@@ -444,3 +446,22 @@
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
