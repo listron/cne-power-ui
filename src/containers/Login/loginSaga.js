@@ -1,7 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../constants/path';
-import { apiUrlReal } from '../../config/apiConfig';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { loginAction } from './loginAction';

@@ -5,7 +5,8 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import styles from './intelligentReport.scss';
 import Footer from '../../../../components/Common/Footer/index';
-import { apiUrlReal } from '../../../../config/apiConfig';
+import config from '../../../../config/apiConfig';
+const { apiUrlReal } = config;
 
 class IntelligentReport extends Component {
 

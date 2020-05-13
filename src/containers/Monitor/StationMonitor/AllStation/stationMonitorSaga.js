@@ -68,16 +68,6 @@ function* getRealMonitorData(action) {
 
 }
 
-function* stopRealMonitorData() { // 停止数据定时请求并清空数据
-  if (realtimeInterval) {
-    yield put({
-      type: allStationAction.changeMonitorstationStore,
-      payload: { loading: false },
-    });
-    yield cancel(realtimeInterval);
-  }
-}
-
 function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
   const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`;

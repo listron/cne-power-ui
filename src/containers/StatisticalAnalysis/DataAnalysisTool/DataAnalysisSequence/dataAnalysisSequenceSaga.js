@@ -1,6 +1,7 @@
-import { call, put, takeLatest, all, select, message } from 'redux-saga/effects';
+import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 import axios from 'axios';
 import Path from '../../../../constants/path';
+import { message } from 'antd';
 import { dataAnalysisSequenceAction } from './dataAnalysisSequenceAction';
 import moment from 'moment';
 

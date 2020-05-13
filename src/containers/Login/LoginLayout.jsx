@@ -10,7 +10,8 @@ import Login from './Login';
 import JoinIn from './JoinIn';
 import Forget from './Forget';
 import ReactPlayer from 'react-player';
-import {apiUrlReal} from '../../config/apiConfig';
+import config from '../../config/apiConfig';
+const { apiUrlReal } = config;
 
 class LoginLayout extends Component {
   static propTypes = {

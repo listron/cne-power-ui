@@ -14,8 +14,11 @@ import { dataFormats } from '../../../../../utils/utilFunc';
 import { OutputChart } from '../../WindCommon/OutputChart';
 import { PowerDiagram } from '../../WindCommon/PowerDiagram';
 import { PointScatter } from '../../WindCommon/PointScatter';
-import { apiUrlReal } from '../../../../../config/apiConfig';
+import config from '../../../../../config/apiConfig';
 import CneButton from '@components/Common/Power/CneButton';
+
+const { apiUrlReal } = config;
+
 class WindDevice extends Component {
   static propTypes = {
     loading: PropTypes.bool,

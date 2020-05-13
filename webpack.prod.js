@@ -27,11 +27,11 @@ module.exports = {
       '@theme': path.resolve(__dirname, 'src/theme'),
       '@utils': path.resolve(__dirname, 'src/utils'),
     },
-    extensions: [".js", ".json", ".jsx"]
+    extensions: [".js", ".json", ".jsx", '.ts', '.tsx']
   },
   module: {
     rules: [{
-      test: /\.(js|jsx)$/,
+      test: /\.(js|jsx|ts|tsx)$/,
       use: 'happypack/loader?id=happyBabel',
       exclude: /node_modules/
     }, {
