@@ -18,9 +18,7 @@
 
   module.exports = smp.wrap({
     mode: 'development',
-    entry: {
-      app: './src/app.js',
-    },
+    entry: ['@babel/polyfill', './src/app.js'],
     devtool: 'inline-source-map',
     devServer: {
       contentBase: './dist',

@@ -13,9 +13,7 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 module.exports = {
   mode:'production',
-  entry: {
-    index: './src/app.js', 
-  },
+  entry: ['@babel/polyfill', './src/app.js'],
   resolve:{
     alias: {
       '@common': path.resolve(__dirname, 'src/common'),

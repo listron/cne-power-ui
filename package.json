@@ -72,7 +72,7 @@
     "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "qs": "^6.5.2",
-    "react": "^16.2.0",
+    "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-loadable": "^5.3.1",
