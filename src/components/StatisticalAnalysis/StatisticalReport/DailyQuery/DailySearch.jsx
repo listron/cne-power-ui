@@ -40,7 +40,7 @@ class DailySearch extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { getQuota, getFault, stationType } = this.props;
     getQuota({ // 请求指标树
       stationType,
@@ -50,18 +50,18 @@ class DailySearch extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { quotaData, faultData, queryParam } = nextProps;
     const preQueryParam = this.props.queryParam;
 
     if (JSON.stringify(preQueryParam.stationCodes) !== JSON.stringify(queryParam.stationCodes)) { // 当选择的电站前后不一致时，‘类型’和‘指标’就需要重新全部选中
-      if(this.props.tableType === 'quotaList'){
+      if (this.props.tableType === 'quotaList') {
         const quotaInfoData = this.getAllQuotaCode(quotaData);
         this.setState({
           quotaInfoData,
         });
       }
-      if(this.props.tableType === 'faultList'){
+      if (this.props.tableType === 'faultList') {
         const faultIds = this.getAllfaultId(faultData);
         this.setState({
           faultIds,
@@ -70,10 +70,10 @@ class DailySearch extends Component {
     }
   }
 
-  getAllQuotaCode(quotas = []){ // 选中全部指标
+  getAllQuotaCode(quotas = []) { // 选中全部指标
     const codes = [];
     quotas.forEach(e => {
-      const {children = []} = e || {};
+      const { children = [] } = e || {};
       codes.push(e);
       children.forEach(m => {
         codes.push(m);
@@ -82,14 +82,14 @@ class DailySearch extends Component {
     return codes;
   }
 
-  getAllfaultId(faults = []){ // 选中全部故障信息类型
+  getAllfaultId(faults = []) { // 选中全部故障信息类型
     const codes = [];
     faults.forEach(e => {
-      const {children = []} = e || {};
+      const { children = [] } = e || {};
       codes.push(e);
       if (children) {
         children.forEach(m => {
-          const {children = []} = m || {};
+          const { children = [] } = m || {};
           codes.push(m);
           if (children) { // 故障类型的层级是三层
             children.forEach(n => {
@@ -136,9 +136,6 @@ class DailySearch extends Component {
       stationType,
     });
   }
-
-  checkWind = () => this.onStationTypeChange(0); // 选中风电站
-  checkPv = () => this.onStationTypeChange(1); // 选中光伏电站
 
   onCategory = (e) => { // 切换查询类别
     const { changeDailyQueryStore, queryParam, listParam } = this.props;
@@ -187,7 +184,8 @@ class DailySearch extends Component {
       queryParam: {
         ...queryParam,
         stationCodes,
-      }});
+      },
+    });
     getQuota({ // 请求指标树
       stationType,
     });
@@ -202,7 +200,7 @@ class DailySearch extends Component {
     });
   }
 
-  onfaultChange =(fault) => { // 故障信息 - 类型
+  onfaultChange = (fault) => { // 故障信息 - 类型
     // const faultIds = fault.map(e => {
     //   return e.value;
     // });
@@ -234,7 +232,7 @@ class DailySearch extends Component {
   timeChange = (time) => { // 选择时间
     const { changeDailyQueryStore, queryParam } = this.props;
     const timeLength = time.length > 0;
-    let startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
+    const startDate = timeLength ? moment(time[0]).startOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
     let endDate = timeLength ? moment(time[1]).endOf('day').format('YYYY-MM-DD HH:mm:ss') : null;
     const isToday = moment(endDate).isSame(moment(), 'd');
     isToday ? endDate = moment().format('YYYY-MM-DD HH:mm:ss') : endDate;
@@ -318,7 +316,7 @@ class DailySearch extends Component {
     });
   }
 
-  render(){
+  render() {
     const disabledDate = (current) => { // 不可选未来日期
       return current && current > moment().endOf('day');
     };
@@ -332,12 +330,11 @@ class DailySearch extends Component {
       return e.value;
     });
     const searchInfo = !!keyWord || !!powerInformation || faultIds.length !== 0 || quotaInfoData.length !== 0 || selectStations.length !== 0 || dateValue.length !== 0;
-    return(
+    return (
       <div className={styles.dailySearch}>
         {stationTypeCount === 'multiple' && <div className={styles.typeCheck}>
-          <div className={stationType === 0 ? styles.typeActive: styles.typeNormal} onClick={this.checkWind}>风电</div>
-          <div className={stationType === 1 ? styles.typeActive: styles.typeNormal} onClick={this.checkPv}>光伏</div>
-          <div className={styles.holder} />
+          <div className={stationType === 0 ? styles.typeActive : styles.typeNormal} onClick={() => this.onStationTypeChange(0)}>风电</div>
+          <div className={stationType === 1 ? styles.typeActive : styles.typeNormal} onClick={() => this.onStationTypeChange(1)}>光伏</div>
         </div>}
         <div className={styles.searchPart}>
           <div className={styles.category}>
@@ -353,7 +350,7 @@ class DailySearch extends Component {
             <div className={styles.stationSelect}>
               <span className={styles.text}>电站名称</span>
               <StationSelect
-                data={typeof(stationType) === 'number' ? stations.filter(e => e.stationType === stationType) : stations}
+                data={typeof (stationType) === 'number' ? stations.filter(e => e.stationType === stationType) : stations}
                 onOK={this.selectStation}
                 value={selectStations}
                 multiple={true}
@@ -366,7 +363,7 @@ class DailySearch extends Component {
               <div className={styles.quotaSelect}>
                 <span className={styles.text}>选择指标</span>
                 <AutoSelect
-                  style={{width: '150px'}}
+                  style={{ width: '150px' }}
                   holderText="请选择"
                   data={quotaData}
                   value={quotaCode}
@@ -383,7 +380,7 @@ class DailySearch extends Component {
                 <div className={styles.lossElectric}>
                   <span className={styles.text}>类型</span>
                   <AutoSelect
-                    style={{width: '150px'}}
+                    style={{ width: '150px' }}
                     holderText="请选择"
                     data={faultData}
                     value={faultId}
@@ -394,7 +391,7 @@ class DailySearch extends Component {
                 </div>
                 <div className={styles.keyWord}>
                   <span className={styles.text}>关键字</span>
-                  <Input className={styles.defectDescription} value={keyWord} placeholder="请输入故障原因和故障处理进展关键字" onChange= {this.onKeyword} />
+                  <Input className={styles.defectDescription} value={keyWord} placeholder="请输入故障原因和故障处理进展关键字" onChange={this.onKeyword} />
                 </div>
               </div>
             }
@@ -403,7 +400,7 @@ class DailySearch extends Component {
               tableType === 'limitList' &&
               <div className={styles.powerInformation}>
                 <span className={styles.text}>限电原因</span>
-                <Input className={styles.defectDescription} value={powerInformation} placeholder="请输入限电原因关键字" onChange= {this.onPowerInformation} />
+                <Input className={styles.defectDescription} value={powerInformation} placeholder="请输入限电原因关键字" onChange={this.onPowerInformation} />
               </div>
             }
 
@@ -412,8 +409,8 @@ class DailySearch extends Component {
               <RangePicker format="YYYY-MM-DD" onChange={this.timeChange} value={dateValue} disabledDate={disabledDate} />
             </div>
 
-            <CneButton lengthMode="short" className={styles.search} onClick={this.onSearch}>查询</CneButton>
-            {searchInfo && <CneButton lengthMode="short" className={styles.reset} onClick={this.onReset}>重置</CneButton>}
+            <CneButton className={styles.search} onClick={this.onSearch}>查询</CneButton>
+            {searchInfo && <CneButton className={styles.reset} onClick={this.onReset}>重置</CneButton>}
           </div>
         </div>
       </div>

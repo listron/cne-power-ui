@@ -3,6 +3,7 @@
 .allstationBox {
   padding: 24px 24px 24px 4px;
   background: #fff;
+  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -60,6 +61,7 @@
     height: 120px;
     display: flex;
     flex-direction: column;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
 
     .headTop {
       display: flex;
@@ -86,7 +88,7 @@
       .contrastValue {
         margin: 0 24px;
         display: flex;
-        width: 1000px;
+        width: 980px;
 
         :global {
           .ant-input-number {
@@ -98,6 +100,7 @@
           // width: 500px;
           display: flex;
           flex: 1;
+          align-items: center;
 
           :global {
             .ant-input-number {
@@ -108,6 +111,7 @@
 
         .defaultStyle {
           margin-left: 24px;
+          margin-right: 4px;
         }
 
         .nomalIcon {
@@ -129,25 +133,7 @@
       }
 
       .seachBtn {
-        border: 1px solid $themeColor;
-        color: $themeColor;
-        margin: 0 24px;
-
-        &:hover {
-          background: $themeColor;
-          color: #fff;
-        }
-      }
-
-      .disabledSeach {
-        border: none;
-        background: #f5f5f5;
-        color: #bfbfbf;
-
-        &:hover {
-          background: #f5f5f5;
-          color: #bfbfbf;
-        }
+        margin-right: 8px;
       }
     }
   }
@@ -158,6 +144,7 @@
     margin-top: 24px;
     background: #fff;
     flex-wrap: wrap;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
 
     // justify-content: space-around;
     .chartsContainer {

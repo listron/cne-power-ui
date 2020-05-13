@@ -4,6 +4,7 @@ import styles from './dataAnalysisStyle.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select, Spin } from 'antd';
 import moment from 'moment';
+import CneButton from '../../../Common/Power/CneButton';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -395,8 +396,8 @@ class HandleSeacher extends React.Component {
               ))}
             </Select>
           </div>}
-          <Button className={styles.seachBtn} onClick={this.getScatterData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!isClick} onClick={this.downPic}>{downLoading ? <span> <Icon type="loading" style={{ fontSize: 16 }} spin />图片下载</span> : '图片下载'}</Button>
+          <CneButton className={styles.seachBtn} onClick={this.getScatterData} lengthMode="short">查询</CneButton>
+          <CneButton disabled={!isClick} className={styles.seachBtn} onClick={this.downPic} antdIcon={downLoading && 'loading' || ''} lengthMode="short">图片下载</CneButton>
 
         </div>
       </div>

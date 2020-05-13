@@ -124,7 +124,7 @@ class Search extends Component {
     const treeProps = this.getTreeProps();
     return (
       <div className={styles.search}>
-        <div ref={'searchBox'} className={styles.searchBox} />
+        <span ref={'searchBox'} />
         <div className={styles.condition}>
           <span>条件查询</span>
           <Select defaultValue={deviceTypeNameLike} style={{ width: 200, marginLeft: 15 }}

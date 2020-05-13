@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StationSelect from '../../../Common/StationSelect';
-import {Button, DatePicker, Icon} from 'antd';
+import { Button, DatePicker, Icon } from 'antd';
 import moment from 'moment';
 import styles from './resources.scss';
+import CneButton from '../../../Common/Power/CneButton';
 
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY.MM';
 
 let startDate = '';
@@ -43,7 +44,7 @@ export default class HandleSearch extends Component {
   componentWillReceiveProps(nextProps) {
     const prevParamsFlag = startDate === '' && endDate === '' && modeCode === '';
     const currentParamsFlag = nextProps.startTime && nextProps.endTime && nextProps.deviceList !== 0;
-    if(prevParamsFlag && currentParamsFlag) {
+    if (prevParamsFlag && currentParamsFlag) {
       startDate = moment(nextProps.startTime).format('YYYY-MM');
       endDate = moment(nextProps.endTime).format('YYYY-MM');
       modeCode = nextProps.deviceList[0].deviceFullCode;
@@ -51,8 +52,8 @@ export default class HandleSearch extends Component {
   }
 
   selectStationCode = (stationCodeArr) => {//电站选择
-    const {stationCode} = stationCodeArr[0];
-    this.props.getStationDevice({stationCode});
+    const { stationCode } = stationCodeArr[0];
+    this.props.getStationDevice({ stationCode });
   };
 
   onCalendarChange = (dates) => {
@@ -93,22 +94,22 @@ export default class HandleSearch extends Component {
     // 时间差
     const timeDiff = moment(endValueTime).diff(moment(startValueTime), 'month');
     // 判断开始时间发生改变，结束时间没变
-    if(startValueTime !== propsStartTime && propsEndTime === endValueTime && timeDiff > 12) {
+    if (startValueTime !== propsStartTime && propsEndTime === endValueTime && timeDiff > 12) {
       return this.setStateFn();
     }
     // 判断结束时间发生改变，开始时间没变
-    if(startValueTime === propsStartTime && propsEndTime !== endValueTime && timeDiff > 12) {
+    if (startValueTime === propsStartTime && propsEndTime !== endValueTime && timeDiff > 12) {
       return this.setStateFn();
     }
     // 判断时间都发生改变
-    if(startValueTime !== propsStartTime && propsEndTime !== endValueTime && timeDiff > 12){
+    if (startValueTime !== propsStartTime && propsEndTime !== endValueTime && timeDiff > 12) {
       return this.setStateFn();
     }
     // 如果选择的时间大于当前时间
-    if(startValueTime > currentTime || endValueTime > currentTime) {
+    if (startValueTime > currentTime || endValueTime > currentTime) {
       return this.setStateFn(true, '当前月以后的月份不可以选择');
     }
-    this.setState({timeInfoFlag: false}, () => {
+    this.setState({ timeInfoFlag: false }, () => {
       changeWindResourcesStore({
         startTime: startValueTime,
         endTime: endValueTime,
@@ -117,7 +118,7 @@ export default class HandleSearch extends Component {
   };
 
   handleOpenChange = () => {
-    this.setState({timeInfoFlag: false});
+    this.setState({ timeInfoFlag: false });
   };
 
   onSearch = () => {
@@ -133,7 +134,7 @@ export default class HandleSearch extends Component {
     const firstDevice = deviceList[0];
     const deviceFullCode = firstDevice.deviceFullCode;
     // 判断有没有变化
-    if(moment(startTime).format('YYYY-MM') === startDate && moment(endTime).format('YYYY-MM') === endDate && deviceFullCode === modeCode) {
+    if (moment(startTime).format('YYYY-MM') === startDate && moment(endTime).format('YYYY-MM') === endDate && deviceFullCode === modeCode) {
       return false;
     }
     // 重新赋值变量
@@ -142,7 +143,7 @@ export default class HandleSearch extends Component {
     modeCode = deviceFullCode;
 
     // 风能玫瑰图
-    if(activeKey === 1) {
+    if (activeKey === 1) {
       return getDirections({
         startTime,
         endTime,
@@ -174,8 +175,8 @@ export default class HandleSearch extends Component {
   };
 
   render() {
-    const {stationCode, stations, startTime, endTime, isClick} = this.props;
-    const {disableDateFun, downLoadding, timeInfoFlag, timeInfoText} = this.state;
+    const { stationCode, stations, startTime, endTime, isClick } = this.props;
+    const { disableDateFun, downLoadding, timeInfoFlag, timeInfoText } = this.state;
     const selectStation = stations.filter(e => (e.stationType === 0 && e.isConnected === 1));
     return (
       <div className={styles.handleSeach}>
@@ -196,19 +197,16 @@ export default class HandleSearch extends Component {
             format={dateFormat}
             onOpenChange={this.handleOpenChange}
             onPanelChange={this.handlePanelChange}
-            style={{width: '240px'}}
+            style={{ width: '240px' }}
             renderExtraFooter={() => (
               <span className={styles.infoTip}>
                 {timeInfoFlag && timeInfoText}
               </span>
             )}
           />
-          <Button className={styles.seachBtn} onClick={this.onSearch}>查询</Button>
+          <CneButton className={styles.seachBtn} onClick={this.onSearch} lengthMode="short">查询</CneButton>
         </div>
-        <Button className={!isClick ? styles.disabledDownload : styles.download} disabled={!isClick}
-                onClick={this.downPic}>
-          {downLoadding ? <span><Icon type="loading" style={{fontSize: 16}} spin />图片下载</span> : '图片下载'}
-        </Button>
+        <CneButton disabled={!isClick} className={styles.download} onClick={this.downPic} antdIcon={downLoadding && 'loading' || ''} lengthMode="short">图片下载</CneButton>
       </div>
     );
   }

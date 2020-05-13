@@ -20,9 +20,9 @@ class DailyQuery extends Component {
     this.props.resetStore();
   }
 
-  render(){
+  render() {
     const { tableType } = this.props;
-    return(
+    return (
       <div className={styles.dailyQuery}>
         <div className={styles.dailyQueryBox}>
           <DailySearch {...this.props} />
@@ -45,17 +45,19 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeDailyQueryStore: payload => dispatch({ type: dailyQueryAction.changeDailyQueryStore, payload}),
-  resetStore: payload => dispatch({ type: dailyQueryAction.resetStore, payload}),
-  getQuota: payload => dispatch({ type: dailyQueryAction.getQuota, payload}),
-  getFault: payload => dispatch({ type: dailyQueryAction.getFault, payload}),
-  getQuotaList: payload => dispatch({ type: dailyQueryAction.getQuotaList, payload}),
-  getFaultList: payload => dispatch({ type: dailyQueryAction.getFaultList, payload}),
-  getLimitList: payload => dispatch({ type: dailyQueryAction.getLimitList, payload}),
-  downLoadFile: payload => dispatch({ type: commonAction.downLoadFile, payload: {
-    ...payload,
-    actionName: dailyQueryAction.changeDailyQueryStore,
-  }}),
+  changeDailyQueryStore: payload => dispatch({ type: dailyQueryAction.changeDailyQueryStore, payload }),
+  resetStore: payload => dispatch({ type: dailyQueryAction.resetStore, payload }),
+  getQuota: payload => dispatch({ type: dailyQueryAction.getQuota, payload }),
+  getFault: payload => dispatch({ type: dailyQueryAction.getFault, payload }),
+  getQuotaList: payload => dispatch({ type: dailyQueryAction.getQuotaList, payload }),
+  getFaultList: payload => dispatch({ type: dailyQueryAction.getFaultList, payload }),
+  getLimitList: payload => dispatch({ type: dailyQueryAction.getLimitList, payload }),
+  downLoadFile: payload => dispatch({
+    type: commonAction.downLoadFile, payload: {
+      ...payload,
+      actionName: dailyQueryAction.changeDailyQueryStore,
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DailyQuery);

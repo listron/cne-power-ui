@@ -4,7 +4,6 @@
   flex: 1;
   flex-direction: column;
   min-height: 100%;
-  background: #fff;
   .scoreContainer {
     @include contentBoxStyle();
     .scoreContent {
@@ -42,11 +41,11 @@
   }
 }
 .light {
-  background: #fff;
   .scoreContainer {
     @include contentBoxStyle();
     .scoreContent {
-      background: $pageGround;
+      box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+      background: #fff;
       :global {
         .ant-progress-bg {
           border-radius: 100px;
@@ -57,7 +56,6 @@
   }
   .allStationTitle {
     background: #f8f8f8;
-    border-bottom: 1px solid $borderColor;
     p {
       border-right: 1px solid $borderColor;
       color: $lightColor;
@@ -73,36 +71,4 @@
 }
 
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .scoreContainer {
-    @include contentBoxStyle();
-    background: $background;
-    .scoreContent {
-      background: $background;
-      .allStationTitle {
-        background: $background;
-        border-bottom: 1px solid $border-color;
-        height: 42px;
-        p {
-          border: 1px solid $tab-border-color;
-          color: #7088c3;
-          background: $tab-background;
-          margin-right: 4px;
-          border-radius: 8px 8px 0 0;
-          height: 40px;
-        }
-        .activeStation {
-          background: $light-background;
-          border: 1px solid $border-color;
-          color: $fontColor-invert;
-          border-bottom: 1px solid $tab-border-bottom;
-          height: 42px;
-          &::before {
-            display: none;
-          }
-        }
-      }
-    }
-  }
 }

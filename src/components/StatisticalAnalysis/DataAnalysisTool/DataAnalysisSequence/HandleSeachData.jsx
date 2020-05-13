@@ -4,6 +4,7 @@ import styles from './sequenceStyles.scss';
 import StationSelect from '../../../Common/StationSelect';
 import { Button, DatePicker, Cascader, Icon, Select, InputNumber, Spin } from 'antd';
 import moment from 'moment';
+import CneButton from '../../../Common/Power/CneButton';
 
 
 const { RangePicker } = DatePicker;
@@ -398,8 +399,8 @@ class HandleSeachData extends React.Component {
 
             </div>
           </div>}
-          <Button className={styles.seachBtn} onClick={this.getSequenceData}>查询</Button>
-          <Button className={!isClick ? styles.disabledSeach : styles.seachBtn} disabled={!this.props.isClick} onClick={this.downPic}>{downLoadding ? <span><Icon type="loading" style={{ fontSize: 16 }} spin />图片下载</span> : '图片下载'}</Button>
+          <CneButton className={styles.seachBtn} onClick={this.getSequenceData} lengthMode="short">查询</CneButton>
+          <CneButton disabled={!isClick} className={styles.seachBtn} onClick={this.downPic} antdIcon={downLoadding && 'loading' || ''} lengthMode="short">图片下载</CneButton>
         </div>
       </div>
     );

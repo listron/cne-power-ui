@@ -103,7 +103,7 @@
 
     .dailyBox {
       background-color: #ffffff;
-
+      box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
       .boxTop {
         .proOperation,
         .eleInfo,
@@ -150,42 +150,4 @@
 }
 
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  color: $fontColor;
-  background: $background;
-
-  .dailyBox {
-    background-color: $light-background;
-
-    .boxTop {
-      .dayReport {
-        background-color: #ffbf00;
-      }
-
-      .defaultReport {
-        background-color: #5bd171;
-      }
-
-      .eleInfo {
-        background-color: #719ee0;
-      }
-
-      .proOperation {
-        background-color: #72719c;
-      }
-    }
-
-    .dateSearch::before,
-    .stationSearchs::before {
-      color: #fd6e8f;
-    }
-
-    .downloadBtn {
-      border-top: 1px solid $border-color;
-
-      .line {
-        background-color: $border-color;
-      }
-    }
-  }
 }
