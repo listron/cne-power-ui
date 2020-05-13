@@ -52,10 +52,10 @@ class CleanWarningSide extends Component {
       stationCheckActive: false,
     });
     const totalEffectParam = {
-      stationCode, endDay: totalEndDay, startDay: totalStartDay,
+      stationCode, endDay: totalEndDay.format('YYYY-MM-DD'), startDay: totalStartDay.format('YYYY-MM-DD'),
     };
     const matrixEffectParam = {
-      stationCode, endDay: matrixEndDay, startDay: matrixStartDay,
+      stationCode, endDay: matrixEndDay.format('YYYY-MM-DD'), startDay: matrixStartDay.format('YYYY-MM-DD'),
     };
 
     getCleanWarningDetail({ stationCode });
