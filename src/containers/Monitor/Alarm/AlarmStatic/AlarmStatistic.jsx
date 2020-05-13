@@ -55,21 +55,8 @@ class ALarmStatistic extends Component {
     return (
       <div className={styles.alarmStatisticBox} >
         <div className={styles.alarmStatistic}>
-
           {showPage === 'multiple' && <AlarmAllStationStatistic {...this.props} />}
           {showPage === 'single' && <AlarmSingleStationStatistic {...this.props} />}
-          {/* <div className={styles.alarmStatisticMain}>
-          {showPage==='multiple'&&<AlarmAllStationStatistic {...this.props} />}
-        </div>
-        <TransitionContainer
-          show={showPage==='single'}
-          timeout={500}
-          effect="side"
-        >
-          <div className={styles.alarmStatisticSide}>
-            {showPage==='single'&&<AlarmSingleStationStatistic {...this.props} />}
-          </div>
-        </TransitionContainer> */}
           <Footer />
         </div>
       </div>

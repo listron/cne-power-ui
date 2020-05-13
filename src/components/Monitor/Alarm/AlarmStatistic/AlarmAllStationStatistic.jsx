@@ -72,7 +72,7 @@ class ALarmAllStationStatistic extends React.Component {
   }
   render() {
     const operations = (
-      <div className={styles.operation} style={{ marginRight: '50px', color: '#199475' }} onClick={this.showStationSelect}>
+      <div className={styles.operation} onClick={this.showStationSelect}>
         单电站告警统计
         <i className="iconfont icon-filter"></i>
       </div>
@@ -90,22 +90,29 @@ class ALarmAllStationStatistic extends React.Component {
               graphId="station" />
           </div>
           :
-          <Tabs type="card" activeKey={stationType} tabBarExtraContent={operations} onChange={this.queryTargetData} >
-            <TabPane tab="风电" key="0">
+          <div className={styles.alarmStatisticContent}>
+            <div className={styles.alarmStatisticTop}>
+              <div className={styles.typeTabs}>
+                <p className={`${stationType === '0' && styles.activeKey} `} onClick={() => { this.queryTargetData('0'); }}>风电</p>
+                <p className={`${stationType === '1' && styles.activeKey} `} onClick={() => { this.queryTargetData('1'); }}>光伏</p>
+              </div>
+              {operations}
+            </div>
+            {stationType === '0' && <div className={styles.dataCenter}>
               <AlarmStatisticByType
                 {...this.props}
                 graphId="windStation"
                 stations={this.props.stations.filter(item => item.get('stationType') === 0)}
               />
-            </TabPane>
-            <TabPane tab="光伏" key="1">
+            </div>}
+            {stationType === '1' && <div className={styles.dataCenter}>
               <AlarmStatisticByType
                 {...this.props}
                 graphId="pvStation"
                 stations={this.props.stations.filter(item => item.get('stationType') === 1)}
               />
-            </TabPane>
-          </Tabs>
+            </div>}
+          </div>
         }
         {showStationSelect &&
           <AlarmStationSelectModal
