@@ -7,24 +7,13 @@
 
   .transferColor {
     @include contentBoxStyle();
-    overflow: hidden;
+    // overflow: hidden;
   }
   .transferAlarmContainer {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    overflow: hidden;
-  }
-}
-.light {
-  .transferColor {
-    background-color: #f0f2f5;
-  }
-}
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  .transferColor {
-    background-color: $background;
+    // overflow: hidden;
   }
 }

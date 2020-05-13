@@ -2,13 +2,12 @@
 @import "./layout.scss";
 
 .light {
-  background: #fff;
   .realTimeWarningFilter {
     background-color: #fff;
   }
-  .deviceNameSearch {
-    background-color: #f9f9f9;
-    color: $darkColor;
+  .warnWrap{
+    background: #fff;
+    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
   }
   .realTimeWarningTable {
     background-color: #fff;
@@ -50,19 +49,7 @@
       max-width: calc((100vw - 230px) * 0.2 - 10px);
     }
 
-    .selected {
-      i {
-        background-color: #ceebe0;
-        color: $themeColor;
-
-        &:hover{
-          color: #ffffff;
-          background-color: $themeColor;
-        }
-      }
-    }
-
-    .hoverDiv{
+    .selected,.hoverDiv {
       i {
         background-color: #ceebe0;
         color: $themeColor;
@@ -97,65 +84,3 @@
   }
 }
 
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  .realTimeWarningFilter {
-    background-color: transparent;
-    margin-top: 10px;
-  }
-  .deviceNameSearch {
-    background-color: $light-background;
-    color: $fontColor;
-    margin-top: 10px;
-    border: 1px solid $border-color;
-  }
-
-  .realTimeWarningTable {
-    margin-top: 10px;
-    background: $light-background;
-    .deviceName {
-      a {
-        border-bottom: 1px solid $fontColor;
-        color: $fontColor;
-        text-decoration: none;
-        &:hover {
-          border-bottom: 1px solid $fontColor-hover;
-          color: $fontColor-hover;
-        }
-      }
-    }
-    .selected {
-      .icon-action {
-        background-color: $themeColor;
-        color: $fontColor-invert;
-      }
-    }
-  }
-
-  .tableFooter {
-    background-color: transparent;
-    .info {
-      color: $fontColor;
-      .totalNum {
-        color: #f8b14e;
-      }
-    }
-    .cancel {
-      color: #f8b14e;
-    }
-  }
-
-  .detailInfo {
-    color: $fontColor;
-  }
-
-  :global {
-    .icon-action {
-      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
-      color: $fontColor-invert;
-      &:hover {
-        background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
-      }
-    }
-  }
-}

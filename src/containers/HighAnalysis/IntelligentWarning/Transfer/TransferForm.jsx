@@ -44,10 +44,7 @@ class TransferForm extends Component {
     return (
       <div className={`${styles.transfer} ${styles[theme]}`}>
         <div className={styles.transferColor}>
-          <div className={styles.transferAlarmContainer}>
-            <TransferFormContainer {...this.props} />
-
-          </div>
+          <TransferFormContainer {...this.props} />
         </div>
         <Footer />
       </div>
@@ -77,5 +74,4 @@ const mapDispatchToProps = (dispatch) => ({
     },
   }),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(TransferForm)
-  ;
+export default connect(mapStateToProps, mapDispatchToProps)(TransferForm);

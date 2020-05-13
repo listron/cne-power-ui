@@ -59,8 +59,11 @@ class RealTimeWarningContainer extends Component {
     return (
       <div className={`${styles.realTimeWarningContainer} ${styles[theme]}`}>
         <WarningStatisticTop {...this.props} warningStatus={'1'} />
-        <RealTimeWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
-        <RealTimeWarningTable {...this.props} />
+        <div className={styles.warnWrap}>
+          <RealTimeWarningFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
+          <RealTimeWarningTable {...this.props} />
+        </div>
+
       </div>
     );
   }

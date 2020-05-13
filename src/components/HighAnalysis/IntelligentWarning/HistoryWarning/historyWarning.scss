@@ -1,17 +1,15 @@
 @import "../../../../theme/theme.scss";
 @import "./layout.scss";
 .light {
-  background: #fff;
   .realTimeWarningFilter {
     background-color: #fff;
-  }
-  .deviceNameSearch {
-    background-color: #f9f9f9;
-    color: $darkColor;
+    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+    border:1px solid #d4d4d4;
   }
   .realTimeWarningTable {
-    .tableHeader {
-      background-color: #fff;
+    .tableWrap{
+      box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+      background: #fff;
     }
     .deviceName {
       max-width: calc((100vw - 230px) * 0.15 - 10px);
@@ -38,19 +36,7 @@
       @include overflowText();
       max-width: calc((100vw - 230px) * 0.2 - 10px);
     }
-    .selected {
-      i {
-        background-color: #ceebe0;
-        color: $themeColor;
-
-        &:hover{
-          color: #ffffff;
-          background-color: $themeColor;
-        }
-      }
-    }
-
-    .hoverDiv{
+    .selected,.hoverDiv {
       i {
         background-color: #ceebe0;
         color: $themeColor;
@@ -74,55 +60,8 @@
       background-color: #ceebe0;
       color: $themeColor;
     }
-    .ant-table-placeholder {
-      border-bottom: none;
-    }
   }
 }
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
 
-  .deviceNameSearch {
-    background-color: $light-background;
-    color: $fontColor;
-    margin-top: 10px;
-    border: 1px solid $border-color;
-  }
-  .realTimeWarningTable {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-    .iconDetail {
-      i {
-        color: $themeColor;
-        cursor: pointer;
-      }
-    }
-    .deviceName {
-      a {
-        border-bottom: 1px solid $fontColor;
-        color: $fontColor;
-        text-decoration: none;
-        &:hover {
-          border-bottom: 1px solid $fontColor-hover;
-          color: $fontColor-hover;
-        }
-      }
-    }
-  }
-
-  .detailInfo {
-    color: $fontColor;
-  }
-
-  :global {
-    .icon-action {
-      background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
-      color: $fontColor-invert;
-      &:hover {
-        background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
-      }
-    }
-  }
 }
