@@ -50,13 +50,14 @@ class InverterSeriesTenMin extends Component {
     const { max = null, interval } = yAxisInterval;
     // 选中的支路下标, 高亮选中的那条线
     const selectPointIndex = pointNameArr && pointNameArr.length > 0 ? pointNameArr[0].pointIndex : '';
+    const temPonitIndex = hlArr.findIndex(e => e - 1 === selectPointIndex); //确定当前支路在数据中第几条
     const hlSeries = hlArr.map((e, i) => {
       return {
         name: `HL#${`${e}`.padStart(2, '0')}`,
         type: 'line',
         lineStyle: {
           type: 'solid',
-          width: selectPointIndex === i ? 2 : 1,
+          width: selectPointIndex === e - 1 ? 2 : 1,
         },
         label: {
           normal: {
@@ -67,7 +68,7 @@ class InverterSeriesTenMin extends Component {
           opacity: 0,
         },
         yAxisIndex: 0,
-        z: selectPointIndex === i ? 2 : 1,
+        z: selectPointIndex === e - 1 ? 2 : 1,
         data: branchTenMin[e],
       };
     });
@@ -75,7 +76,7 @@ class InverterSeriesTenMin extends Component {
     if (pointNameArr.length > 0) {
       this.HLColors = ['#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999', '#999999'];
       pointNameArr.forEach(item => {
-        this.HLColors[item.pointIndex] = item.bgcColor;
+        this.HLColors[temPonitIndex] = item.bgcColor;
       });
     }
     if (pointNameArr.length === 0) {
