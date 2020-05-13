@@ -228,6 +228,7 @@
 }
 
 .light {
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
   .CleanoutRecordDetail {
     .detailMain {
       background: #fff;
@@ -275,81 +276,6 @@
     :global {
       .ant-tabs-nav-container {
         background-color: #f8f8f8;
-      }
-    }
-  }
-}
-
-.dark {
-  @import "../../../../../theme/darkTheme.scss";
-  color: $fontColor;
-  .CleanoutRecordDetail {
-    background: $background;
-    .detailTop {
-      background: $light-background;
-      border: 1px solid $border-color;
-      .icon {
-        color: $themeColor;
-      }
-      h3 {
-        color: $fontColor-hover;
-      }
-    }
-    .statisticData {
-      background: $light-background;
-      border: 1px solid $border-color;
-      margin-top: 10px;
-      .statisticTarget {
-        border-right: 1px solid $border-color;
-        .numberColor {
-          color: $fontColor-hover;
-        }
-      }
-    }
-    .wrap {
-      background: $light-background;
-      border: 1px solid $border-color;
-      margin-top: 10px;
-    }
-  }
-  .handleArea {
-    .dirtEff {
-      color: $fontColor-invert;
-      background: $themeColor;
-    }
-    .backIcon {
-      color: $fontColor-hover;
-      border-left: solid 1px $border-color;
-    }
-  }
-  :global {
-    .ant-table .ant-table-tbody > tr > td {
-      padding: 0px 20px;
-    }
-  }
-
-  .effectCharts {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-    .title {
-      border-bottom: 1px solid $border-color;
-    }
-    .darkRect {
-      background-color: #00f8ff;
-    }
-    .lightRect {
-      background-color: #fd6e8f;
-    }
-    .round {
-      border: 1px solid #f8e71c;
-    }
-    :global {
-      .ant-tabs-nav-container {
-        background-color: transparent;
-      }
-      .ant-tabs-bar {
-        border: none;
       }
     }
   }
