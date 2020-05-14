@@ -35,6 +35,8 @@ class AlarmStatisticByType extends Component {
     pvEndTime: PropTypes.string,
     windStartTime: PropTypes.string,
     windEndTime: PropTypes.string,
+    pvDate: PropTypes.string,
+    windDate: PropTypes.string,
   };
 
   constructor(props) {
@@ -46,6 +48,7 @@ class AlarmStatisticByType extends Component {
   }
   //点击插入要显示内容
   onFilterShowChange = (filterText) => {
+    console.log('filterText: ', filterText);
     const { showFilter } = this.state;
     if (showFilter === filterText) {
       this.setState({
@@ -60,7 +63,7 @@ class AlarmStatisticByType extends Component {
 
   //改变时间的
   onChangeTime = (value, dateString) => {
-    const { changeAlarmStatisticStore, stationType} = this.props;
+    const { changeAlarmStatisticStore, stationType } = this.props;
     const startDate = dateString[0];
     const endDate = dateString[1];
     if (stationType === '1') {
@@ -125,12 +128,14 @@ class AlarmStatisticByType extends Component {
     // 保留原来时间参数
     const commonFunc = (startTime, endTime) => {
       stationType === '1' && changeAlarmStatisticStore({
+        pvDate: value,
         pvStartTime: startTime,
         pvEndTime: endTime,
         startTime,
         endTime,
       });
       stationType === '0' && changeAlarmStatisticStore({
+        windDate: value,
         windStartTime: startTime,
         windEndTime: endTime,
         startTime,
@@ -142,7 +147,13 @@ class AlarmStatisticByType extends Component {
     const paramsObj = {
       other: () => {
         this.onFilterShowChange('timeSelect');
-        changeAlarmStatisticStore({
+        stationType === '1' && changeAlarmStatisticStore({
+          pvDate: value,
+          startTime: '',
+          endTime: '',
+        });
+        stationType === '0' && changeAlarmStatisticStore({
+          windDate: value,
           startTime: '',
           endTime: '',
         });
@@ -218,15 +229,18 @@ class AlarmStatisticByType extends Component {
 
   render() {
     const { showFilter, key } = this.state;
-    const { stations, selectedStation, theme, startTime, endTime, allChartLoading } = this.props;
+    const { stations, selectedStation, theme, startTime, endTime, allChartLoading, pvDate, windDate, stationType } = this.props;
     const alarmStatisticOperation = handleRight('alarm_statistics_export');
+    const pvTime = !pvDate ? 'last7' : pvDate;
+    const windTime = !windDate ? 'last7' : windDate;
+    const changeDate = (stationType === '1') ? pvTime : windTime;
     //数据导出按钮
     const operations = (
       <div className={styles.exportData}>
         <CneButton
           lengthMode="short"
           className={(selectedStation.length !== 0 && startTime && endTime && !allChartLoading) ? styles.normalBtn : styles.disableBtn}
-          onClick={(selectedStation.length !== 0 && startTime && endTime && !allChartLoading) ? this.exportAlarm : () => {}}
+          onClick={(selectedStation.length !== 0 && startTime && endTime && !allChartLoading) ? this.exportAlarm : () => { }}
         >
           数据导出
         </CneButton>
@@ -236,10 +250,10 @@ class AlarmStatisticByType extends Component {
     return (
       <div className={styles.alarmStatisticType}>
         <div className={styles.filter}>
-          <span style={{marginRight: '16px'}}>筛选条件</span>
+          <span style={{ marginRight: '16px' }}>筛选条件</span>
           <StationSelect
             classNameStyle={`${styles.selectModalIcon}`}
-            style={{ width: '200px', marginRight: '16px'}}
+            style={{ width: '200px', marginRight: '16px' }}
             multiple={true}
             stationShowNumber={true}
             data={stations.toJS()}
@@ -248,14 +262,14 @@ class AlarmStatisticByType extends Component {
             holderText="请输入关键字快速查询"
             theme={theme}
           />
-          <Select placeholder="统计时间" style={{ width: 120, marginRight: '16px' }} onChange={this.onChangeDuration} defaultValue={'last7'}>
+          <Select placeholder="统计时间" style={{ width: 120, marginRight: '16px' }} onChange={this.onChangeDuration} defaultValue={changeDate}>
             <Option value="today">今天</Option>
             <Option value="yesterday">昨天</Option>
             <Option value="last7">最近7天</Option>
             <Option value="last30">最近30天</Option>
             <Option value="other">其他时间段</Option>
           </Select>
-          {showFilter === 'timeSelect' && <div style={{marginRight: '16px'}}>
+          {(showFilter === 'timeSelect' || changeDate === 'other') && <div style={{ marginRight: '16px' }}>
             <RangePicker
               showTime={false}
               disabledDate={this.disabledDate}
@@ -268,7 +282,7 @@ class AlarmStatisticByType extends Component {
           <CneButton
             lengthMode="short"
             className={(selectedStation.length !== 0 && startTime && endTime) ? styles.normalBtn : styles.disableBtn}
-            onClick={(selectedStation.length !== 0 && startTime && endTime) ? this.onQueryFunc : () => {}}
+            onClick={(selectedStation.length !== 0 && startTime && endTime) ? this.onQueryFunc : () => { }}
           >
             查询
           </CneButton>
