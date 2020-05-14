@@ -1,9 +1,20 @@
 {
   "plugins": [
     "react",
-    "redux-saga"
+    "redux-saga",
+    "@typescript-eslint"
   ],
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "globalReturn": true, // 允许在全局作用域下使用 return 语句
+      "impliedStrict": true, // impliedStric
+      "jsx": true, // 启用 JSX
+      "modules": true
+    }
+  },
   "ecmaFeatures": {
     "jsx": true,
     "modules": true,
