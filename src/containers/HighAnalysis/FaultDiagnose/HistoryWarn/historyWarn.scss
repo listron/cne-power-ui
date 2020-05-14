@@ -6,15 +6,14 @@
   flex-direction: column;
   .faultWarnListContainer{
     @include contentBoxStyle();
-    overflow: hidden;
+    // overflow: hidden;
   }
   .faultWarnListContent{
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    background: #fff;
-    overflow: hidden;
+    // overflow: hidden;
   }
 }
 

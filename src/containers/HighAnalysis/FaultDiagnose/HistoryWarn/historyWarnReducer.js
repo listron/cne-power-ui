@@ -13,8 +13,8 @@ const initState = Immutable.fromJS({
   faultWarnHistoryData: {}, // 获取历史预警列表
   pageSize: 10,
   pageNum: 1,
-  sortField: '',
-  sortMethod: '',
+  sortField: 'predictionDate',
+  sortMethod: 'asc',
 });
 
 
