@@ -4,7 +4,7 @@
 
 
 import React, { Component } from 'react';
-import { Button, Input, Form, Select } from 'antd'; 
+import { Button, Input, Form, Select } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './userSide.scss';
 const FormItem = Form.Item;
@@ -60,7 +60,7 @@ class EditForm extends Component {
       const roleId = roleInfo && roleInfo.roleId;
       return roleInfo ? roleId : roleInfo;
     })
-    
+
     const newSpecialRoleList = specialRoleList.toJS();
     let spcialRoleNames = tmpDetail.spcialRoleName && tmpDetail.spcialRoleName.split(',');
     const spcialRoleIds = spcialRoleNames && spcialRoleNames.map(e=>{
@@ -111,7 +111,7 @@ class EditForm extends Component {
             initialValue: userDetail && userDetail.get('phoneNum'),
             rules: [{
               message: '请输入正确的手机号',
-              pattern: /^1|9\d{10}$/,
+              //pattern: /^1|9\d{10}$/,
               required: true,
             }]
           })(
@@ -174,7 +174,7 @@ class EditForm extends Component {
         </FormItem> */}
         <FormItem label="所在企业" >
           {getFieldDecorator('enterpriseName', {
-            initialValue: userDetail.get('enterpriseData') && 
+            initialValue: userDetail.get('enterpriseData') &&
             userDetail.get('enterpriseData').toJS().map(item=>{
               return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                 {item.enterpriseName}
@@ -182,7 +182,7 @@ class EditForm extends Component {
               )
             }),
           })(
-            <div>{userDetail.get('enterpriseData') && 
+            <div>{userDetail.get('enterpriseData') &&
             userDetail.get('enterpriseData').toJS().map(item=>{
               return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                 {item.enterpriseName}
@@ -193,7 +193,7 @@ class EditForm extends Component {
         </FormItem>
         <FormItem label="所在部门" >
           {getFieldDecorator('departmentName', {
-            initialValue: userDetail.get('enterpriseData') && 
+            initialValue: userDetail.get('enterpriseData') &&
             userDetail.get('enterpriseData').toJS().map(item=>{
               return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                 {item.departmentData && item.departmentData.map(item2=>{
@@ -204,7 +204,7 @@ class EditForm extends Component {
               </div>)
             }),
           })(
-            <div>{userDetail.get('enterpriseData') && 
+            <div>{userDetail.get('enterpriseData') &&
               userDetail.get('enterpriseData').toJS().map(item=>{
                 return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                   {item.departmentData && item.departmentData.map(item2=>{
@@ -219,7 +219,7 @@ class EditForm extends Component {
         </FormItem>
         <FormItem label="负责电站" >
           {getFieldDecorator('stationName', {
-            initialValue: userDetail.get('enterpriseData') && 
+            initialValue: userDetail.get('enterpriseData') &&
             userDetail.get('enterpriseData').toJS().map(item=>{
               return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                 <div className={styles.enterpriseDetail}>
@@ -234,7 +234,7 @@ class EditForm extends Component {
               </div>)
             }),
           })(
-            <div>{userDetail.get('enterpriseData') && 
+            <div>{userDetail.get('enterpriseData') &&
               userDetail.get('enterpriseData').toJS().map(item=>{
                 return (<div className={styles.departmentDetail} key={item.enterpriseId} >
                   <div className={styles.enterpriseDetail}>
