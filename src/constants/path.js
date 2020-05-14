@@ -685,6 +685,7 @@ export default {
       genReport: 'v3/performance/generalreport/gen',
       indicatorReport: 'v3/performance/generalreport/indicator',
       performanceReport: 'v3/performance/report/month/download',
+      performanceGroup: 'v3/performance/report/month/group',
       preViewXlsx: '/onlinePreview',
       // 日报查询
       getQuotaList: '/v3/performance/report/index/list', // 关键指标列表

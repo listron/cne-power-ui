@@ -13,7 +13,7 @@ import { enterpriseKey } from '../../../../constants/enterpriseKey';
 import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath } = path.basePaths;
-const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx, performanceReport } = path.APISubPaths.statisticalAnalysis;
+const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx, performanceReport, performanceGroup } = path.APISubPaths.statisticalAnalysis;
 const { MonthPicker } = DatePicker;
 
 class GeneralReport extends Component {
@@ -31,10 +31,13 @@ class GeneralReport extends Component {
       proOperationDate: moment().subtract(1, 'month'),
       windPowerValue: moment().subtract(1, 'month'),
       pvPowerValue: moment().subtract(1, 'month'),
+      powerPlantValue: moment(),
       selectedStation: [],
       windPowerStation: [],
       pvPowerStation: [],
       typeDowning: '', // report  fault eleInfo proOperate
+      isOpen: false, // 控制选择年份
+      extraFooterFlag: false, // 是否显示页脚
     };
     this.authData = localStorage.getItem('authData');
   }
@@ -225,6 +228,27 @@ class GeneralReport extends Component {
     }
   };
 
+  // 电厂月报下载
+  downloadPowerPlant = () => {
+    const { powerPlantValue, typeDowning } = this.state;
+    const powerPlantYear = powerPlantValue.format('YYYY');
+    const downloadHref = `${APIBasePath}/${performanceGroup}/${powerPlantYear}`;
+    const fileName = `${powerPlantYear}年电厂月报.xlsx`;
+    this.setState({ typeDowning: 'powerPlantLoading' });
+    if (typeDowning !== 'powerPlantLoading') {
+      this.downLoadFun(downloadHref, fileName, powerPlantValue);
+    }
+  };
+
+  // 电厂月报预览
+  preViewPowerPlant = () => {
+    const { powerPlantValue } = this.state;
+    const powerPlantYear = powerPlantValue.format('YYYY');
+    const fileName = `${powerPlantYear}年电厂月报.xlsx`;
+    const url = `${APIBasePath}/${performanceGroup}/${powerPlantYear}`;
+    this.previewFunc(fileName, url);
+  };
+
   previewFunc = (fileName, resUrl) => {
     // 不需要/api的预览地址
     const prevBaseUrl = `${APIBasePath.split('/api')[0]}${preViewXlsx}`;
@@ -233,6 +257,31 @@ class GeneralReport extends Component {
     // 新页面打开
     window.open(`${prevBaseUrl}?url=${encodeURIComponent(baseUrl)}`, '_blank');
   };
+
+  // 关闭时间面板
+  onPanelChange = (date) => {
+    // 当前的年份
+    const currentTime = moment().format('YYYY');
+    // 选择的年份
+    const nowTime = moment(date).format('YYYY');
+    if(Number(nowTime) > Number(currentTime)) {
+      return this.setState({
+        isOpen: true,
+        extraFooterFlag: true, // 显示页脚
+      });
+    }
+    return this.setState({
+      isOpen: false,
+      powerPlantValue: date,
+      extraFooterFlag: false, // 隐藏页脚
+    });
+  };
+
+  // 判断开关时间选择框
+  handleOpenChange = (status) => this.setState({isOpen: !!status});
+
+  // 清空电厂下载时间框
+  clearPlantValueFunc = () => this.setState({powerPlantValue: null});
 
   downLoadFun = (url, fileName, date) => { // 根据路径，名称，日期，通用下载函数。
     axios.post(url, {}, { responseType: 'blob' }).then(response => {
@@ -268,8 +317,13 @@ class GeneralReport extends Component {
     });
   };
 
+  dateRenderDate = (currentDate, today) => {
+    // console.log(currentDate, today, '-----');
+    console.log(moment(currentDate).format('YYYY'), moment(today).format('YYYY'), '-----');
+  };
+
   render() {
-    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, windPowerValue, pvPowerValue, windPowerStation, pvPowerStation } = this.state;
+    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, windPowerValue, pvPowerValue, windPowerStation, pvPowerStation, powerPlantValue, isOpen, extraFooterFlag } = this.state;
     const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
@@ -473,6 +527,45 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
+            <div className={styles.dailyBox}>
+              <div className={styles.boxTop}>
+                <div className={styles.dayReport}>
+                  <Icon type="download" style={{ color: '#ffffff' }} />
+                </div>
+                <span className={styles.title}>电厂月报</span>
+              </div>
+              <div className={styles.dateSearch}>
+                <DatePicker
+                  open={isOpen}
+                  value={powerPlantValue}
+                  style={{width: 200}}
+                  dropdownClassName={styles.powerPlantBox}
+                  placeholder="选择年份"
+                  format="YYYY"
+                  onPanelChange={this.onPanelChange}
+                  onOpenChange={this.handleOpenChange}
+                  onChange={this.clearPlantValueFunc}
+                  mode="year"
+                  renderExtraFooter={() => (
+                    <span className={styles.infoTip}>{extraFooterFlag ? '*不可选择今年以后的年份' : ''}</span>
+                  )}
+                />
+              </div>
+              <div className={styles.downloadBtn}>
+                <CneButton
+                  disabled={!powerPlantValue}
+                  className={`${styles.text} ${styles.preview}`}
+                  onClick={this.preViewPowerPlant}
+                >预览</CneButton>
+                {/*<span className={styles.line} />*/}
+                <CneButton
+                  disabled={!powerPlantValue}
+                  className={styles.text}
+                  onClick={this.downloadPowerPlant}
+                  loading={typeDowning === 'powerPlantLoading'}
+                >下载</CneButton>
+              </div>
+            </div>
           </div>
           <Footer />
         </div>

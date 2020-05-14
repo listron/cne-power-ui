@@ -8,16 +8,21 @@
   .generalReportContainer {
     @include contentBoxStyle();
     .generalReportMain {
-      display: flex;
-      flex: 1;
-      flex-wrap: wrap;
-      // justify-content: space-around;
+      zoom: 1;
+      &:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden
+      }
       //日报
       .dailyBox {
         width: 25%;
         min-width: 280px;
         height: 186px;
         margin: 0 25px 25px 0;
+        float: left;
         display: flex;
         flex-direction: column;
         .boxTop {
@@ -95,6 +100,18 @@
       border: 1px solid $themeColor !important;
     }
   }
+}
+
+.powerPlantBox{
+  :global{
+    .ant-calendar-input-wrap{
+      display: none;
+    }
+  }
+}
+
+.infoTip{
+  color: $warnColor;
 }
 
 .light {
