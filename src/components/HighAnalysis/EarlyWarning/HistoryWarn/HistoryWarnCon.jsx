@@ -196,6 +196,7 @@ class HistoryWarnCon extends Component {
         <FilterCondition
           theme={theme}
           onChange={this.filterCondition}
+          className={styles.filterWrap}
           option={[
             {
               name: '预警时间',
@@ -218,20 +219,19 @@ class HistoryWarnCon extends Component {
 
           ]}
         />
-        <div className={styles.wrap}>
-          <div className={styles.selectCondition}>
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
-          </div>
-          <CneTable
-            columns={columns}
-            dataSource={dataSource}
-            pagination={false}
-            loading={loading}
-            sortField={this.tableSortMap[sortField]}
-            sortMethod={this.sortMethodMap[sortMethod]}
-            onChange={this.tableChange}
-          />
+        <div className={styles.selectCondition}>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
+        <CneTable
+          columns={columns}
+          dataSource={dataSource}
+          pagination={false}
+          className={styles.tableWrap}
+          loading={loading}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod]}
+          onChange={this.tableChange}
+        />
         <span ref="modal" />
         <Modal
           centered={true}

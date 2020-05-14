@@ -15,7 +15,10 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 26px 0 20px 28px;
+      padding: 15px 0 15px 28px;
+    }
+    .tableWrap{
+      flex: 1;
     }
     :global {
       .ant-table-selection-column{
@@ -44,24 +47,15 @@
 }
 
 .light {
-  background: #f0f2f5;
-  .ignoreMain {
-    border: 1px solid #e1e2e2;
+  .filterWrap{
+    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
     background: #fff;
-    .selectCondition {
-      border-top: 1px solid $promptColor;
-    }
+  }
+  .tableWrap{
+     box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+    background: #fff;
   }
 }
 
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .ignoreMain {
-    .wrap {
-      border: 1px solid $border-color;
-      background: $light-background;
-      margin-top: 10px;
-    }
-  }
 }

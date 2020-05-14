@@ -99,56 +99,60 @@ class UnhandleSide extends Component {
     const unhandleOperation = handleRight('inefficientDetect_remove');
     return (
       <div className={styles.unhandleSide} >
-        {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <div className={styles.top}>
-          <div>
-            <span>预警处理</span>
-            {
-              !dealSuccess && unhandleOperation &&
-              <React.Fragment>
-                <CneButton
-                  style={{margin: '0 20px'}}
-                  lengthMode="short"
-                  onClick={() => { this.selectChange('ignore'); }}
-                >
-                  忽略
+        <div className={styles.tempWrap}>
+          {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
+          <div className={styles.top}>
+            <div>
+              <span>预警处理</span>
+              {
+                !dealSuccess && unhandleOperation &&
+                <React.Fragment>
+                  <CneButton
+                    style={{ margin: '0 20px' }}
+                    lengthMode="short"
+                    onClick={() => { this.selectChange('ignore'); }}
+                  >
+                    忽略
                 </CneButton>
-                <CneButton
-                  lengthMode="short"
-                  onClick={() => { this.selectChange('transfer'); }}
-                >
-                  转工单
+                  <CneButton
+                    lengthMode="short"
+                    onClick={() => { this.selectChange('transfer'); }}
+                  >
+                    转工单
                 </CneButton>
-              </React.Fragment>
-            }
+                </React.Fragment>
+              }
+            </div>
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.handleClose} />
           </div>
-          <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.handleClose} />
+          <div className={styles.wrap}>
+            <div className={styles.detail}>
+              <p>电站名称：{warnDetail.stationName || '--'}</p>
+              <p>所属方阵：{warnDetail.belongMatrix || '--'}</p>
+              <p>设备名称：{warnDetail.parentDeviceName || '--'}</p>
+              <p>电流偏低支路：{warnDetail.deviceName || '--'}</p>
+              <p>预警时间：{warnDetail.happenTime || '--'}</p>
+              <p>电量损失比：{warnDetail.lostGenPercent || '--'}%</p>
+            </div>
+            <div className={styles.chartTop} ref="time">
+              <span className={styles.title}>电流时序图</span>
+              {happenTime &&
+                <RangePicker
+                  defaultValue={[moment(lastHappenTime, 'YYYY/MM/DD'), moment(happenTime, 'YYYY/MM/DD')]}
+                  format={'YYYY/MM/DD'}
+                  disabledDate={this.disabledDate}
+                  onChange={this.timeChange}
+                  getCalendarContainer={() => this.refs.time}
+                />}
+            </div>
+            <div className={styles.chartCont} >
+              <SequenceChart idName={'sequenceChart'} sequenceChartList={sequenceChartList} currentDeviceName={deviceName} theme={theme} />
+            </div>
+          </div>
+          <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} />
+
         </div>
-        <div className={styles.wrap}>
-          <div className={styles.detail}>
-            <p>电站名称：{warnDetail.stationName || '--'}</p>
-            <p>所属方阵：{warnDetail.belongMatrix || '--'}</p>
-            <p>设备名称：{warnDetail.parentDeviceName || '--'}</p>
-            <p>电流偏低支路：{warnDetail.deviceName || '--'}</p>
-            <p>预警时间：{warnDetail.happenTime || '--'}</p>
-            <p>电量损失比：{warnDetail.lostGenPercent || '--'}%</p>
-          </div>
-          <div className={styles.chartTop} ref="time">
-            <span className={styles.title}>电流时序图</span>
-            {happenTime &&
-              <RangePicker
-                defaultValue={[moment(lastHappenTime, 'YYYY/MM/DD'), moment(happenTime, 'YYYY/MM/DD')]}
-                format={'YYYY/MM/DD'}
-                disabledDate={this.disabledDate}
-                onChange={this.timeChange}
-                getCalendarContainer={() => this.refs.time}
-              />}
-          </div>
-          <div className={styles.chartCont} >
-            <SequenceChart idName={'sequenceChart'} sequenceChartList={sequenceChartList} currentDeviceName={deviceName} theme={theme} />
-          </div>
-        </div>
-        <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} />
+
       </div>
 
     );

@@ -12,28 +12,21 @@ import moment from 'moment';
 const Option = Select.Option;
 class Ignore extends Component {
   static propTypes = {
-    changeIgnoreStore: PropTypes.func,
     getIgnoreList: PropTypes.func,
-    toorder: PropTypes.func,
     ignoreList: PropTypes.array,
     getUnignore: PropTypes.func,
-    resetStore: PropTypes.func,
     getMatrixlist: PropTypes.func,
     stationCodes: PropTypes.array,
     belongMatrixs: PropTypes.array,
-    inefficiencyStatus: PropTypes.number,
     pageNum: PropTypes.number,
     pageSize: PropTypes.number,
     sortField: PropTypes.string,
     sortMethod: PropTypes.string,
-    unhandleList: PropTypes.array,
-    warnDetail: PropTypes.object,
-    Sequencechart: PropTypes.object,
     totalNum: PropTypes.number,
     stations: PropTypes.array,
     matrixList: PropTypes.array,
-    createTimeStart: PropTypes.string,
-    createTimeEnd: PropTypes.string,
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
     theme: PropTypes.string,
   }
 
@@ -212,6 +205,7 @@ class Ignore extends Component {
           <FilterCondition
             theme={theme}
             onChange={this.filterCondition}
+            className={styles.filterWrap}
             option={[
               {
                 name: '预警时间',
@@ -232,6 +226,7 @@ class Ignore extends Component {
               },
             ]}
           />
+
           <div className={styles.wrap}>
             <span ref={'select'} />
             <div className={styles.selectCondition}>
@@ -246,6 +241,7 @@ class Ignore extends Component {
               columns={columns}
               dataSource={dataSource}
               pagination={false}
+              className={styles.tableWrap}
               rowSelection={rowSelection}
               loading={loading}
               sortField={this.tableSortMap[sortField]}

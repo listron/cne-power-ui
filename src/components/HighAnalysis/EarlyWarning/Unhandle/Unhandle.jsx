@@ -32,8 +32,6 @@ class Unhandle extends Component {
     getMatrixlist({ stationCodes: stationCodes });
   }
 
-
-
   render() {
     const { pageName, theme } = this.props;
     return (

@@ -156,6 +156,7 @@ class Transfer extends Component {
     return (
       <div className={`${styles.transferMain} ${styles[theme]}`}>
         <FilterCondition
+          className={styles.filterWrap}
           theme={theme}
           onChange={this.filterCondition}
           option={[
@@ -178,21 +179,20 @@ class Transfer extends Component {
             },
           ]}
         />
-        <div className={styles.wrap}>
-          <div className={styles.selectCondition}>
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-              onPaginationChange={this.onPaginationChange} theme={theme} />
-          </div>
-          <CneTable
-            columns={columns}
-            dataSource={dataSource}
-            pagination={false}
-            loading={loading}
-            sortField={this.tableSortMap[sortField]}
-            sortMethod={this.sortMethodMap[sortMethod]}
-            onChange={this.tableChange}
-          />
+        <div className={styles.selectCondition}>
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+            onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
+        <CneTable
+          columns={columns}
+          dataSource={dataSource}
+          pagination={false}
+          className={styles.tableWrap}
+          loading={loading}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod]}
+          onChange={this.tableChange}
+        />
       </div>
     );
   }

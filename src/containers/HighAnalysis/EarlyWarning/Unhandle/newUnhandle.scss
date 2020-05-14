@@ -4,20 +4,4 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  .unhandleContainer {
-    @include contentBoxStyle();
-  }
-}
-
-.light {
-  .unhandleContainer {
-    background-color: #f0f2f5;
-  }
-}
-
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  .unhandleContainer {
-    background-color: $background;
-  }
 }

@@ -4,33 +4,5 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  .historyWarnContainer {
-    @include contentBoxStyle();
-    overflow: hidden;
-  }
-  .historyWarnContent {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    overflow: hidden;
-  }
 }
 
-.light {
-  .historyWarnContainer {
-    background-color: #f0f2f5;
-  }
-  .historyWarnContent {
-    background: #fff;
-  }
-}
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  .historyWarnContainer {
-    background: $background;
-  }
-  .historyWarnContent {
-    background: $background;
-  }
-}
