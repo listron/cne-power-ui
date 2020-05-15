@@ -82,7 +82,7 @@
 .topSearch{
   background-color: #fff;
   border:1px solid #e1e2e2;
-  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   .eachParts .text{
     color: $darkColor;
   }
@@ -110,7 +110,7 @@
 }
 
 .animationBox{
-  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   &::-webkit-scrollbar-thumb{
     background:rgba(0,0,0,0.5);
   }

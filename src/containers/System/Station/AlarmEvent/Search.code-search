@@ -1,0 +1,72 @@
+# Query:  box-shadow: 0 2px 5px 3px rgba(0,0,0, 0.20);
+# ContextLines: 2
+
+10 个结果 - 10 文件
+
+src/components/Monitor/StationMonitor/SingleStation/SingleStationCommon/singleStationCommon.scss:
+  284    background-color: #fff;
+  285    color: $darkColor;
+         box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  287    .titleIcon{
+  288      &:hover{
+
+src/components/Operation/Running/MeterReadSet/meterRead.scss:
+  1384    background-color: #fff;
+  1385    border: 1px solid #d4d4d4;
+          box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  1387    .title{
+  1388      background: url(/img/banner166-36.png) no-repeat;
+
+src/components/ReportManage/WindReport/DeviceStatus/deviceStatus.scss:
+  14      margin-bottom: 3px;
+  15      background-color: #fff;
+          box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  18      button{
+
+src/components/ReportManage/WindReport/PowerLost/powerLost.scss:
+  13    margin-bottom: 3px;
+  14    background-color: #fff;
+  16    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  17    button{
+
+src/components/ReportManage/WindReport/PowerReport/powerReport.scss:
+  14      margin-bottom: 3px;
+  15      background-color: #fff;
+  17      box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  18      button{
+
+src/components/System/Account/Role/role.scss:
+  45        border: 1px solid #d4d4d4;
+  46        border-top: none;
+            box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  48        height: 100%;
+  49        min-width: 1000px;
+
+src/components/System/Station/AlarmEvent/alarmEvent.scss:
+  400      background: #ffffff;
+  401      border: 1px solid #d4d4d4;
+           box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+
+  403      .tableHeader {
+  404        background: #199475;
+
+src/components/System/Station/PointManage/pointManage.scss:
+  7     background: #ffffff;
+  8    border: 1px solid #d4d4d4;
+        box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  10    margin-bottom: 8px;
+  11    // height: 141px;
+
+src/components/System/Station/StationManage/StationManageMain/stationMain.scss:
+  175          background: #ffffff;
+  176          border: 1px solid #d4d4d4;
+               box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  178          height: 100%;
+  179          table{
+
+src/containers/System/Station/AlarmEvent/alarmEvent.scss:
+  12      background: #ffffff;
+  13      border: 1px solid #d4d4d4;
+          box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+  15      z-index: 10;
+  16    }

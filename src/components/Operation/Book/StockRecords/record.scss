@@ -9,7 +9,7 @@
   height: 60px;
   line-height: 60px;
   border:1px solid #d4d4d4;
-  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
 
   .searchLeft{
     .text,.warehouseName,.inventory{
@@ -68,7 +68,7 @@
 
   .tableBox {
     flex: 1;
-    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
     margin: 0 2px 4px 2px;
     background-color: #fff;
   }

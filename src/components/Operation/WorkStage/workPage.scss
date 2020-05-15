@@ -168,7 +168,7 @@
 .light.stationLists{
   border:1px solid #e1e3e4;
   background-color: #fff;
-  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   // .stationHandler{
   //   color: #fff;
   //   background:var(--themeColor);
@@ -180,7 +180,7 @@
 
 .light.recordsList{
   background-color: #fff;
-  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
   .recordFilter{
     .todayWorkTitle{
       color: var(--themeColor);
@@ -203,7 +203,7 @@
 }
 .light.runningLog, .light.ticketsLog{
   background-color: #fff;
-  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   h3{
     color: var(--themeColor);
   }
@@ -222,7 +222,7 @@
 
 .light.planList { // 日历计划组件
   background-color: #fff;
-  box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
   .topPlanHandle{
     .monthText{
       color:#000000;

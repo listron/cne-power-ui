@@ -51,11 +51,11 @@
 .light {
   .search {
     background: $pageGround;
-    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
   .manuCont {
     background: $pageGround;
-    box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     > div:not(:last-child) {
       border-bottom: 1px dashed var(--themeColor);
     }

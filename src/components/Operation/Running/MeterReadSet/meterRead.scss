@@ -1081,7 +1081,7 @@
 .meterReadTable{ // 电表设置
   background-color: #fff;
   border: 1px solid #d4d4d4;
-  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+  box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
   :global{
     .ant-alert{
       background-color: rgba(0,0,0,0.70);
@@ -1383,7 +1383,7 @@
 .powerPrice{ // 电价设置
   background-color: #fff;
   border: 1px solid #d4d4d4;
-  box-shadow: 0 2px 5px 3px rgba(208, 208, 208, 0.6);
+  box-shadow: 0 2px 5px 3px rgba(0,0,0, 0.20);
   .title{
     background: url(/img/banner166-36.png) no-repeat;
     color: #fff;
