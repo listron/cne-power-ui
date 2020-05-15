@@ -326,6 +326,7 @@ class GeneralReport extends Component {
     const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, windPowerValue, pvPowerValue, windPowerStation, pvPowerStation, powerPlantValue, isOpen, extraFooterFlag } = this.state;
     const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
+    const enterpriseCode = Cookie.get('enterpriseCode');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
     const windStationArr = stations.filter(e => e.stationType === 0);
     const pvStationArr = stations.filter(e => e.stationType === 1);
@@ -445,7 +446,7 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
-            {windStationArr.length > 0 && <div className={styles.dailyBox}>
+            {(enterpriseCode === '1010' && windStationArr.length > 0) && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.dayReport}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -486,7 +487,7 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
-            {pvStationArr.length > 0 && <div className={styles.dailyBox}>
+            {(enterpriseCode === '1010' && pvStationArr.length > 0) && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.dayReport}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -527,45 +528,45 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
-            <div className={styles.dailyBox}>
-              <div className={styles.boxTop}>
-                <div className={styles.dayReport}>
-                  <Icon type="download" style={{ color: '#ffffff' }} />
-                </div>
-                <span className={styles.title}>电厂月报</span>
-              </div>
-              <div className={styles.dateSearch}>
-                <DatePicker
-                  open={isOpen}
-                  value={powerPlantValue}
-                  style={{width: 200}}
-                  dropdownClassName={styles.powerPlantBox}
-                  placeholder="选择年份"
-                  format="YYYY"
-                  onPanelChange={this.onPanelChange}
-                  onOpenChange={this.handleOpenChange}
-                  onChange={this.clearPlantValueFunc}
-                  mode="year"
-                  renderExtraFooter={() => (
-                    <span className={styles.infoTip}>{extraFooterFlag ? '*不可选择今年以后的年份' : ''}</span>
-                  )}
-                />
-              </div>
-              <div className={styles.downloadBtn}>
-                <CneButton
-                  disabled={!powerPlantValue}
-                  className={`${styles.text} ${styles.preview}`}
-                  onClick={this.preViewPowerPlant}
-                >预览</CneButton>
-                {/*<span className={styles.line} />*/}
-                <CneButton
-                  disabled={!powerPlantValue}
-                  className={styles.text}
-                  onClick={this.downloadPowerPlant}
-                  loading={typeDowning === 'powerPlantLoading'}
-                >下载</CneButton>
-              </div>
-            </div>
+            {/*<div className={styles.dailyBox}>*/}
+              {/*<div className={styles.boxTop}>*/}
+                {/*<div className={styles.dayReport}>*/}
+                  {/*<Icon type="download" style={{ color: '#ffffff' }} />*/}
+                {/*</div>*/}
+                {/*<span className={styles.title}>电厂月报</span>*/}
+              {/*</div>*/}
+              {/*<div className={styles.dateSearch}>*/}
+                {/*<DatePicker*/}
+                  {/*open={isOpen}*/}
+                  {/*value={powerPlantValue}*/}
+                  {/*style={{width: 200}}*/}
+                  {/*dropdownClassName={styles.powerPlantBox}*/}
+                  {/*placeholder="选择年份"*/}
+                  {/*format="YYYY"*/}
+                  {/*onPanelChange={this.onPanelChange}*/}
+                  {/*onOpenChange={this.handleOpenChange}*/}
+                  {/*onChange={this.clearPlantValueFunc}*/}
+                  {/*mode="year"*/}
+                  {/*renderExtraFooter={() => (*/}
+                    {/*<span className={styles.infoTip}>{extraFooterFlag ? '*不可选择今年以后的年份' : ''}</span>*/}
+                  {/*)}*/}
+                {/*/>*/}
+              {/*</div>*/}
+              {/*<div className={styles.downloadBtn}>*/}
+                {/*<CneButton*/}
+                  {/*disabled={!powerPlantValue}*/}
+                  {/*className={`${styles.text} ${styles.preview}`}*/}
+                  {/*onClick={this.preViewPowerPlant}*/}
+                {/*>预览</CneButton>*/}
+                {/*/!*<span className={styles.line} />*!/*/}
+                {/*<CneButton*/}
+                  {/*disabled={!powerPlantValue}*/}
+                  {/*className={styles.text}*/}
+                  {/*onClick={this.downloadPowerPlant}*/}
+                  {/*loading={typeDowning === 'powerPlantLoading'}*/}
+                {/*>下载</CneButton>*/}
+              {/*</div>*/}
+            {/*</div>*/}
           </div>
           <Footer />
         </div>
