@@ -8,7 +8,7 @@ const webpack = require('webpack');
 const HappyPack = require('happypack');
 const os = require('os');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
@@ -201,8 +201,6 @@ module.exports = {
       threadPool: happyThreadPool,
       verbose: true,
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 };
-
-// https://blog.csdn.net/kai_vin/article/details/89026077?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
