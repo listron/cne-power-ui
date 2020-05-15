@@ -166,7 +166,7 @@ const menuData = [
         name: 'EAM工单',
         path: 'eam',
         iconStyle: 'icon-eam',
-        rightKey: 'operation_locate',
+        rightKey: 'operation_eamworklist',
         defaultPath: true,
       },
       {
