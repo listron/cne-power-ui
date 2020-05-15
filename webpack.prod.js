@@ -8,7 +8,7 @@ const webpack = require('webpack');
 const HappyPack = require('happypack');
 const os = require('os');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
@@ -87,23 +87,23 @@ module.exports = {
     },
     splitChunks: {
       chunks: 'all',
-      minSize: 30000,
-      maxSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 6,
-      maxInitialRequests: 4,
-      automaticNameDelimiter: '~',
       cacheGroups: {
+        // libs: {
+        //   test: /[\\/]node_modules[\\/][@_]{0,2}(echarts|antd|moment|jquery|lodash)[a-zA-Z\-\.\@]{0,}[\\/]/,
+        //   name: 'libs',
+        //   priority: 10,
+        // },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          priority: -10,
+          priority: 1,
         },
-        common: {
-          name: 'common',
-          minSize: 0,
-          minChunks: 2,
-          priority: -20,
+        power: {
+          test: /[\\/]src[\\/]/,
+          name: 'power',
+          minChunks: 3,
+          priority: -10,
+          reuseExistingChunk: true,
         },
       },
     },
@@ -124,12 +124,6 @@ module.exports = {
       to: __dirname + '/dist',
     }]),
     new UglifyJSPlugin(),
-    ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
-      return new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require(`./assets/vendors/${name}-manifest.json`),
-      });
-    }),
     new HappyPack({
       id: 'happyBabel',
       use: [{
@@ -205,7 +199,7 @@ module.exports = {
       threadPool: happyThreadPool,
       verbose: true,
     }),
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
   ],
 };
 
