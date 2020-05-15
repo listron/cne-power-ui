@@ -141,6 +141,9 @@
       cursor: pointer;
     }
   }
+  table{
+    table-layout: fixed;
+  }
 
   .stationWidth, .tableTypeWidth, .questionType, .faultCode, .questionDes, .dealHandler{
     @include overflowText();

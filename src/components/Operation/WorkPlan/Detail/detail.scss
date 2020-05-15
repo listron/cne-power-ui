@@ -72,8 +72,10 @@
 }
 
 
+
 .light.planDetail{
   background-color: #fff;
+  box-shadow:0 2px 5px 3px rgba(208,208,208,0.60);
   .detailTop{
     color: var(--darkColor);
     border-bottom: 1px solid var(--promptColor);

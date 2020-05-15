@@ -41,7 +41,7 @@ class Lists extends PureComponent {
         className: styles.inspectContent,
         render: (text = '', record) => {
           const { inspectTypeCode, inspectContent, planName } = record;
-          const contentText = parseFloat(inspectTypeCode) === 100002 ? planName: inspectContent;
+          const contentText = parseFloat(inspectTypeCode) === 100002 ? planName : inspectContent;
           return (
             <div title={contentText} className={styles.inspectContentText}>{contentText || '--'}</div>
           );
@@ -207,9 +207,9 @@ class Lists extends PureComponent {
     const { orderField, orderMethod } = planListPageParams || {};
     let newField = orderField, newSort = 'desc';
     if (!field || (orderField === this.sortFieldMap[field])) { // 点击的是正在排序的列
-        newSort = orderMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
+      newSort = orderMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
     } else { // 切换列
-        newField = this.sortFieldMap[field];
+      newField = this.sortFieldMap[field];
     }
 
     const newPageParams = {
@@ -230,7 +230,7 @@ class Lists extends PureComponent {
 
   cancelSelects = () => this.setState({ selectedRowKeys: [] })
 
-  render(){
+  render() {
     const { column, selectedRowKeys } = this.state;
     const { planListPageParams, planCount, planList, planListLoading, theme } = this.props;
     const { pageNum, pageSize, orderField, orderMethod } = planListPageParams;
@@ -253,7 +253,7 @@ class Lists extends PureComponent {
                     <CneButton disabled={false}>批量删除</CneButton>
                   </Popconfirm>
                 )}
-          </span>
+            </span>
           ) : <span />}
           <CommonPagination
             pageSize={pageSize}
@@ -263,7 +263,8 @@ class Lists extends PureComponent {
             theme={theme}
           />
         </div>
-        <CneTable
+        <div className={styles.tableWrap}>
+          <CneTable
             dataSource={planList}
             columns={column}
             pagination={false}
@@ -280,10 +281,12 @@ class Lists extends PureComponent {
             pagination={false}
             locale={{ emptyText: <img src="/img/nodata.png" /> }}
           />
-        <div className={styles.tableFoot}>
-          当前选中<span className={styles.selectedNum}>{selectedRowKeys.length}</span>项
+          <div className={styles.tableFoot}>
+            当前选中<span className={styles.selectedNum}>{selectedRowKeys.length}</span>项
           <span onClick={this.cancelSelects} className={styles.cancelSelects}>取消选择</span>
+          </div>
         </div>
+
       </div>
     );
   }
