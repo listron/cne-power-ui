@@ -88,9 +88,11 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
-        // libs: {
-        //   test: /[\\/]node_modules[\\/][@_]{0,2}(echarts|antd|moment|jquery|lodash)[a-zA-Z\-\.\@]{0,}[\\/]/,
-        //   name: 'libs',
+        // echartsLib: {
+        //   test: /echarts/,
+        // /[\/]node_modules[\/][^\/]{0,}?echarts[^\/]{0,}?[\/]/.test('/node_modules/element-ui/')
+        // test: (module) => { return /react|redux|prop-types/.test(module.context); }, // 可直接使用 函数 做路径匹配
+        //   name: 'echartsLib',
         //   priority: 10,
         // },
         vendors: {
@@ -98,9 +100,9 @@ module.exports = {
           name: 'vendors',
           priority: 1,
         },
-        power: {
+        common: {
           test: /[\\/]src[\\/]/,
-          name: 'power',
+          name: 'common',
           minChunks: 3,
           priority: -10,
           reuseExistingChunk: true,
