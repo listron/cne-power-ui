@@ -577,6 +577,8 @@ function* getSingleScatter(action) { // 日等效利用小时散点数(风电站
 function* getWindCapabilityDiagram(action) { // 获取出力图数据(❤风电站)
   const { payload } = action;
   const { stationCode, startTime, endTime } = payload;
+  // const timeSubtract = (queryTime) => moment(queryTime).subtract(10, 'm').utc().format();
+  // const windUrl = `${APIBasePath}${monitor.getWindCapability}/${timeSubtract(startTime)}/${timeSubtract(endTime)}/${stationCode}`;
   const windUrl = `${APIBasePath}${monitor.getWindCapability}/${startTime}/${endTime}/${stationCode}`;
   try {
     yield put({
@@ -589,10 +591,14 @@ function* getWindCapabilityDiagram(action) { // 获取出力图数据(❤风电�
     });
     const response = yield call(axios.get, windUrl);
     if (response.data.code === '10000') {
+      // 因十分钟聚合数据计算展示区间问题, 出力图整体平移10min, 放弃掉最后一个时间点, 同时，展示时间调整为依次 + 10min
+      // const tmpWindCapabilityData = response.data.data || [];
+      // const windCapabilityData = tmpWindCapabilityData.map(e => ({ ...e, utc: moment(e.utc).add(10, 'm').format() }));
       yield put({
         type: singleStationAction.changeSingleStationStore,
         payload: {
           windCapabilityData: response.data.data || [],
+          // windCapabilityData,
           windCapabilityDataTime: moment().unix(),
           capabilityDataLoading: false,
         },

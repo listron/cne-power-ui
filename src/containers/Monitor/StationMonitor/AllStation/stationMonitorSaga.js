@@ -70,7 +70,9 @@ function* getRealMonitorData(action) {
 
 function* getCapabilityDiagram(action) { //获取出力图数据
   const { startTime, endTime } = action;
-  const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${startTime}/${endTime}/-1`;
+  // 因十分钟聚合数据计算展示区间问题, 出力图整体平移10min, 放弃掉最后一个时间点, 同时，展示时间调整为依次 + 10min
+  const timeSubtract = (queryTime) => moment(queryTime).subtract(10, 'm').utc().format();
+  const url = `${baseurl + Path.APISubPaths.monitor.getWindCapability}/${timeSubtract(startTime)}/${timeSubtract(endTime)}/-1`;
   try {
     yield put({
       type: allStationAction.changeMonitorstationStore,
@@ -81,10 +83,12 @@ function* getCapabilityDiagram(action) { //获取出力图数据
     });
     const response = yield call(axios.get, url);
     if (response.data.code === '10000') {
+      const tmpCapabilityData = response.data.data || [];
+      const capabilityData = tmpCapabilityData.map(e => ({ ...e, utc: moment(e.utc).add(10, 'm').format() }));
       yield put({
         type: allStationAction.changeMonitorstationStore,
         payload: {
-          capabilityData: response.data.data || [],
+          capabilityData,
           capabilityDataTime: moment().unix(),
           capabilityLoading: false,
         },
