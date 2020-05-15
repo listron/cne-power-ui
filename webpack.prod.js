@@ -8,13 +8,14 @@ const webpack = require('webpack');
 const HappyPack = require('happypack');
 const os = require('os');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = {
-  mode:'production',
+  mode: 'production',
   entry: ['@babel/polyfill', './src/app.js'],
-  resolve:{
+  resolve: {
     alias: {
       '@common': path.resolve(__dirname, 'src/common'),
       '@components': path.resolve(__dirname, 'src/components'),
@@ -25,43 +26,43 @@ module.exports = {
       '@theme': path.resolve(__dirname, 'src/theme'),
       '@utils': path.resolve(__dirname, 'src/utils'),
     },
-    extensions: [".js", ".json", ".jsx", '.ts', '.tsx']
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [{
       test: /\.(js|jsx|ts|tsx)$/,
       use: 'happypack/loader?id=happyBabel',
-      exclude: /node_modules/
+      exclude: /node_modules/,
     }, {
       test: /\.css$/,
       exclude: /node_modules/,
       use: ExtractTextPlugin.extract({
         fallback: [{
-          loader:'style-loader'
+          loader: 'style-loader',
         }, {
-          loader:'css-loader',
+          loader: 'css-loader',
           options: {
             modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
-          }
+            localIdentName: '[local]__[hash:base64:5]',
+          },
         }],
         use: 'happypack/loader?id=cssBabel',
-      })
+      }),
     }, {//antd样式处理
-      test:/\.css$/,
-      exclude:/src/,
+      test: /\.css$/,
+      exclude: /src/,
       use: ExtractTextPlugin.extract({
         fallback: [
-          { loader: "style-loader" },
+          { loader: 'style-loader' },
           {
-            loader: "css-loader",
-            options:{
-              importLoaders: 1
-            }
-          }
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
         ],
         use: 'happypack/loader?id=antdBabel',
-      })
+      }),
     }, {
       test: /\.less$/,
       exclude: /src/,
@@ -71,36 +72,63 @@ module.exports = {
       use: 'happypack/loader?id=scssBabel',
     }, {
       test: /\.(png|jpg|gif)$/,
-      use: 'file-loader?name=[name].[ext]'
+      use: 'file-loader?name=[name].[ext]',
     }, {
       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff'
+      use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff',
     }, {
       test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      use: 'file-loader?name=[name].[ext]'
-    }]
+      use: 'file-loader?name=[name].[ext]',
+    }],
+  },
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest',
+    },
+    splitChunks: {
+      chunks: 'all',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 6,
+      maxInitialRequests: 4,
+      automaticNameDelimiter: '~',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          priority: -10,
+        },
+        common: {
+          name: 'common',
+          minSize: 0,
+          minChunks: 2,
+          priority: -20,
+        },
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash].js',
-    chunkFilename:'[name].[hash].async.js',
+    chunkFilename: '[name].[chunkhash].async.js',
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'donut-PV3.0',
-      template : __dirname + '/index.ejs',
+      template: __dirname + '/index.ejs',
     }),
     new CopyWebpackPlugin([{
       from: __dirname + '/assets',
-      to:__dirname + '/dist'
+      to: __dirname + '/dist',
     }]),
     new UglifyJSPlugin(),
     ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
       return new webpack.DllReferencePlugin({
         context: __dirname,
         manifest: require(`./assets/vendors/${name}-manifest.json`),
-      })
+      });
     }),
     new HappyPack({
       id: 'happyBabel',
@@ -114,14 +142,14 @@ module.exports = {
       id: 'cssBabel',
       use: [
         {
-          loader: 'babel-loader', 
+          loader: 'babel-loader',
         }, {
-          loader:'css-loader',
+          loader: 'css-loader',
           options: {
             modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
-          }
-        }
+            localIdentName: '[local]__[hash:base64:5]',
+          },
+        },
       ],
       threadPool: happyThreadPool,
       verbose: true,
@@ -130,13 +158,13 @@ module.exports = {
       id: 'antdBabel',
       use: [
         {
-          loader: 'babel-loader?cacheDirectory=true', 
+          loader: 'babel-loader?cacheDirectory=true',
         }, {
-          loader:'css-loader?cacheDirectory=true',
-          options:{
-            importLoaders: 1
-          }
-        }
+          loader: 'css-loader?cacheDirectory=true',
+          options: {
+            importLoaders: 1,
+          },
+        },
       ],
       threadPool: happyThreadPool,
       verbose: true,
@@ -144,11 +172,11 @@ module.exports = {
     new HappyPack({
       id: 'lessBabel',
       use: [{
-        loader: "style-loader" 
+        loader: 'style-loader',
       }, {
-          loader: "css-loader",
+          loader: 'css-loader',
       }, {
-        loader: "less-loader",
+        loader: 'less-loader',
         options: {
           importLoaders: 1,
           modifyVars: {
@@ -164,18 +192,21 @@ module.exports = {
     new HappyPack({
       id: 'scssBabel',
       use: [{
-        loader: "style-loader" 
+        loader: 'style-loader',
       }, {
-          loader: "css-loader",
+          loader: 'css-loader',
           options: {
             modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
-          }
+            localIdentName: '[local]__[hash:base64:5]',
+          },
       }, {
-          loader: "sass-loader" 
+          loader: 'sass-loader',
       }],
       threadPool: happyThreadPool,
       verbose: true,
     }),
-  ]
+    // new BundleAnalyzerPlugin(),
+  ],
 };
+
+// https://blog.csdn.net/kai_vin/article/details/89026077?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase

@@ -10,7 +10,7 @@
   const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
   const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
-  const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+  const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
   const smp = new SpeedMeasurePlugin();
   const { mockConfig } = require('./mock.config.js');
 
@@ -84,12 +84,12 @@
             {
               loader: 'css-loader',
               options: {
-                importLoaders: 1
-              }
-            }
+                importLoaders: 1,
+              },
+            },
           ],
           use: 'happypack/loader?id=antdBabel',
-        })
+        }),
         // use:[
         //   { loader: "style-loader"},
         //   {
@@ -99,7 +99,7 @@
         //     }
         //   }
         // ]
-      },{
+      }, {
         test: /\.less$/,
         exclude: /src/,
         use: 'happypack/loader?id=lessBabel',
@@ -134,14 +134,14 @@
         // }]
       }, {
         test: /\.(png|jpg|gif)$/,
-        use: 'file-loader?name=[name].[ext]'
+        use: 'file-loader?name=[name].[ext]',
       }, {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff'
+        use: 'url-loader?name=[name].[ext]&limit=10000&minetype=application/font-woff',
       }, {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader?name=[name].[ext]'
-      }]
+        use: 'file-loader?name=[name].[ext]',
+      }],
     },
     plugins: [
       new ProgressBarPlugin(),
@@ -152,18 +152,18 @@
       // }),
       new CopyWebpackPlugin([{
         from: __dirname + '/assets',
-        to:__dirname + '/dist'
+        to: __dirname + '/dist',
       }]),
       new HtmlWebpackPlugin({
         title: 'Donut-UI',
-        template : __dirname + '/index.ejs',
+        template: __dirname + '/index.ejs',
       }),
       new webpack.HotModuleReplacementPlugin(),
       ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
         return new webpack.DllReferencePlugin({
           context: __dirname,
           manifest: require(`./assets/vendors/${name}-manifest.json`),
-        })
+        });
       }),
       new HappyPack({
         id: 'happyBabel',
@@ -179,12 +179,12 @@
           {
             loader: 'babel-loader',
           }, {
-            loader:'css-loader',
+            loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[local]__[hash:base64:5]'
-            }
-          }
+              localIdentName: '[local]__[hash:base64:5]',
+            },
+          },
         ],
         threadPool: happyThreadPool,
         verbose: true,
@@ -195,11 +195,11 @@
           {
             loader: 'babel-loader?cacheDirectory=true',
           }, {
-            loader:'css-loader?cacheDirectory=true',
-            options:{
-              importLoaders: 1
-            }
-          }
+            loader: 'css-loader?cacheDirectory=true',
+            options: {
+              importLoaders: 1,
+            },
+          },
         ],
         threadPool: happyThreadPool,
         verbose: true,
@@ -207,11 +207,11 @@
       new HappyPack({
         id: 'lessBabel',
         use: [{
-          loader: "style-loader"
+          loader: 'style-loader',
         }, {
-            loader: "css-loader",
+            loader: 'css-loader',
         }, {
-          loader: "less-loader",
+          loader: 'less-loader',
           options: {
             importLoaders: 1,
             modifyVars: {
@@ -227,15 +227,15 @@
       new HappyPack({
         id: 'scssBabel',
         use: [{
-          loader: "style-loader"
+          loader: 'style-loader',
         }, {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: true,
-              localIdentName: '[local]__[hash:base64:5]'
-            }
+              localIdentName: '[local]__[hash:base64:5]',
+            },
         }, {
-            loader: "sass-loader"
+            loader: 'sass-loader',
         }],
         threadPool: happyThreadPool,
         verbose: true,
@@ -244,8 +244,8 @@
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].[hash].js',
-      chunkFilename:'[name].[hash].async.js',
-    }
+      chunkFilename: '[name].[chunkhash].async.js',
+    },
   });
 
 
