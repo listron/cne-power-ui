@@ -8,7 +8,7 @@ import styles from './style.scss';
 const { Option } = Select;
 /*
   公用分页组件：
-  说明： 
+  说明：
     1. 要求组件必须传输属性：合计条数total合计条数(int),当前页码currentPage(当前页码int),每页条数pageSize(int);
     2. 选填属性： pageSizeArray,默认为[10,20,30,40];
     3. 输出为this.props.onPaginationChange调用，输入分页数组信息。this.props.onPaginationChange({
@@ -26,6 +26,7 @@ class CommonPagination extends Component {
     pageSizeArray: PropTypes.array,
     onPaginationChange: PropTypes.func,
     theme: PropTypes.string,
+    className: PropTypes.string,
   }
 
   static defaultProps = {
@@ -78,10 +79,10 @@ class CommonPagination extends Component {
   }
 
   render() {
-    const { total, pageSizeArray, theme } = this.props;
+    const { total, pageSizeArray, theme, className } = this.props;
     const { pageSize, currentPage } = this.state;
     return (
-      <div className={`${styles.commonPagination} ${styles[theme]}`}>
+      <div className={`${styles.commonPagination} ${className} ${styles[theme]} `}>
         <span>合计：{total}</span>
         <div className={styles.sizeSelector}>
           <span>每页：</span>

@@ -345,7 +345,8 @@ class HistoryWarningTable extends Component {
     return (
       <div className={styles.realTimeWarningTable}>
         <div className={styles.tableHeader}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total}
+            className={styles.pagination} theme={theme} />
         </div>
         <span ref={'popover'} />
         <div className={styles.tableWrap}>
