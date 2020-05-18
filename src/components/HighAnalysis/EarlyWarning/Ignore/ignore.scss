@@ -15,7 +15,10 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 15px 0 15px 28px;
+      padding: 15px 0 15px;
+      .pagination{
+        margin-right: 0;
+      }
     }
     .tableWrap{
       flex: 1;

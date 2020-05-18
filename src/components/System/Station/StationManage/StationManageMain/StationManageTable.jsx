@@ -239,7 +239,7 @@ class StationManageTable extends Component {
         dataIndex: 'eventYxStatus',
         key: 'eventYxStatus',
         textAlign: 'center',
-        width: '7.85%',
+        width: '7.5%',
         render: (text, record) => {
           const { eventYxStatus, stationType } = record;
           const title = eventYxStatus && '已设置' || '未设置';
@@ -253,7 +253,7 @@ class StationManageTable extends Component {
         dataIndex: 'eventYcStatus',
         key: 'eventYcStatus',
         textAlign: 'center',
-        width: '7.85%',
+        width: '7.5%',
         render: (text, record, index) => {
           const { eventYcStatus, stationType } = record;
           const title = eventYcStatus && '已设置' || '未设置';
@@ -281,7 +281,7 @@ class StationManageTable extends Component {
         dataIndex: 'departmentStatus',
         key: 'departmentStatus',
         textAlign: 'center',
-        width: '7.85%',
+        width: '7.5%',
         render: (text, record, index) => {
           const { stationDepartments } = record;
           if (stationDepartments && stationDepartments.length > 0) {
@@ -298,7 +298,7 @@ class StationManageTable extends Component {
         dataIndex: 'handler',
         key: 'handler',
         textAlign: 'center',
-        width: '7%',
+        width: '8%',
         render: (text, record, index) => { // 电站未接入且alarmStatus,departmentStatus,deviceStatus,pointStatus全部为0时，才能删除。
           const deletable = !record.alarmStatus && !record.departmentStatus && !record.pointStatus && !record.isConnected;
           return (
@@ -338,7 +338,10 @@ class StationManageTable extends Component {
     const authData = localStorage.getItem('authData') || '';
     const stationOperation = handleRight('station_export');
     const downloadHref = `${path.basePaths.originUri}${path.APISubPaths.system.downloadStationTemplet}`;
-    const initTableScroll = stationList.length > 0 && { y: 900 } || {};
+    const { clientHeight } = document.body;
+    // footer 60;  search 40;  menu 40 tHead:36;
+    const scrollY = clientHeight - 205;
+    const initTableScroll = stationList.length > 0 && { y: scrollY } || {};
     return (
       <div className={styles.stationList}>
         <div className={styles.topHandler}>
@@ -361,12 +364,12 @@ class StationManageTable extends Component {
               <CneButton href={downloadHref} download={downloadHref} target="_blank" className={styles.download}>
                 <span className={'iconfont icon-download'} />  下载模板
             </CneButton>}
-            <CneInputSearch 
+            <CneInputSearch
               placeholder="电站类型／区域／电站名称"
               onSearch={this.selectCondition}
               onChange={(e) => this.setState({ conditionInfo: e.target.value })}
               value={conditionInfo}
-            /> 
+            />
           </div>
           <div>合计：{totalNum}</div>
           {/* <CommonPagination currentPage={pageNum} pageSize={pageSize} total={totalNum} onPaginationChange={this.onPaginationChange} /> */}
@@ -375,7 +378,7 @@ class StationManageTable extends Component {
         <div className={styles.tableWrap}>
           <CneTable
             loading={stationListLoading}
-            dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
+            dataSource={stationList.slice(30, 50).map((e, i) => ({ ...e, key: i }))}
             columns={this.initColumn()}
             className={styles.stationTable}
             pagination={false}

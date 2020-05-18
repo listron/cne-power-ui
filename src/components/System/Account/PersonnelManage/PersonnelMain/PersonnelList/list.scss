@@ -69,7 +69,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px 0 24px;
+  padding: 0 0 0 2px;
   min-width: 800px;
   .leftHandle{
     height: 56px;
@@ -77,14 +77,26 @@
     display: flex;
     align-items: center;
   }
+  .pagination{
+    margin-right: 0;
+  }
 }
 .personnelMain {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .tableWrap{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 5px;
+    margin-right: 4px;
+  }
   .listMain{ // 表格部分
-    background: #ffffff;
-    border: 1px solid #d4d4d4;
     border-top: none;
     min-width: 840px;
-    box-shadow: 0 -2px 4px 2px rgba(208, 208, 208, 0.6);
     table{
       table-layout: fixed;
     }
@@ -100,18 +112,16 @@
       }
     }
     .handle{
+      display: flex;
+      justify-content: space-evenly;
       :global{
         .iconfont{
-          padding: 4px;
-          margin-right: 4px;
+          font-size: 20px;
           cursor: pointer;
-          &:last-child{
-            margin-right: 0;
-          }
         }
-        .icon-examine1, .icon-bumenx{
-          font-size: 14px;
-        }
+        // .icon-examine1, .icon-bumenx{
+        //   font-size: 14px;
+        // }
       }
     }
 
@@ -177,6 +187,7 @@
   .handle{
     :global{
       .iconfont{
+        color: var(--themeColor);
         &:hover{
           color: #ff9900;
         }

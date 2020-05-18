@@ -79,9 +79,7 @@ class CleanoutRecordMain extends Component { // 电站管理列表页
               ]}
             />
           </div>
-          <div className={styles.paginationStyle}>
-            <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={theme} />
-          </div>
+          <Pagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} className={styles.paginationStyle} theme={theme} />
           <div className={styles.wrap}>
             <CleanoutRecordTable {...this.props} />
           </div>

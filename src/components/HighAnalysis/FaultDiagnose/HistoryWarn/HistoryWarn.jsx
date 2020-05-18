@@ -188,9 +188,7 @@ export default class HistoryWarn extends React.Component {
             </div>
           </div>
         </div>
-        <div className={styles.topPage}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} />
-        </div>
+        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={count} onPaginationChange={this.onPaginationChange} className={styles.topPage} />
         <HistoryWarnTable {...this.props} />
       </div>
     );

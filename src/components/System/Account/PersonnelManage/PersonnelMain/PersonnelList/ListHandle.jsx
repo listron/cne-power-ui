@@ -120,6 +120,7 @@ class ListHandle extends Component {
         </span>
         <CommonPagination
           total={userListTotalNum}
+          className={styles.pagination}
           pageSize={pageSize}
           currentPage={pageNum}
           onPaginationChange={this.paginationChange}

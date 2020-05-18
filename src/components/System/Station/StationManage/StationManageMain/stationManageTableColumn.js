@@ -9,7 +9,7 @@ const stationManageTableColumn = [{
   key: 'regionName',
   sorter: true,
   textAlign: 'left',
-  width: '7.85%',
+  width: '8%',
   render: (text) => <div className={styles.regionNameText} title={text}>{text || '--'}</div>,
 },
 {
@@ -24,7 +24,7 @@ const stationManageTableColumn = [{
   dataIndex: 'stationUnitCount',
   key: 'stationUnitCount',
   textAlign: 'right',
-  width: '7.85%',
+  width: '8%',
   render: (text) => text || '--',
 }, {
   title: '是否接入',
@@ -32,14 +32,14 @@ const stationManageTableColumn = [{
   key: 'isConnected',
   sorter: true,
   textAlign: 'center',
-  width: '7.85%',
+  width: '7.5%',
   render: (text) => text ? '是' : '否',
 }, {
   title: '电站状态',
   dataIndex: 'stationStatus',
   key: 'stationStatus',
   textAlign: 'center',
-  width: '7.85%',
+  width: '8%',
   render: (text, record) => {
     const { stationStatus } = record;
     const statusInfo = stationStatusArray.find(e => e.statusCode === stationStatus);
@@ -52,7 +52,7 @@ const stationManageTableColumn = [{
   dataIndex: 'pointStatus',
   key: 'pointStatus',
   textAlign: 'center',
-  width: '7.85%',
+  width: '8%',
   render: (text) => text ? '已设置' : '未设置',
 },
 ];

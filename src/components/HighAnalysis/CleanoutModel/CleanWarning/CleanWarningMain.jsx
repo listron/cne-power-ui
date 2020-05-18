@@ -103,15 +103,14 @@ class CleanWarningMain extends Component { // 电站管理列表页
               ]}
             />
           </div>
-          <div className={styles.pagination}>
-            <CommonPagination
-              total={total}
-              pageSize={pageSize}
-              currentPage={pageNum}
-              onPaginationChange={this.paginationChange}
-              theme={theme}
-            />
-          </div>
+          <CommonPagination
+            total={total}
+            className={styles.pagination}
+            pageSize={pageSize}
+            currentPage={pageNum}
+            onPaginationChange={this.paginationChange}
+            theme={theme}
+          />
           <div className={styles.wrap}>
             <CneTable
               columns={[

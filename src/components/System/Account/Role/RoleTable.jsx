@@ -23,7 +23,7 @@ class RoleTable extends Component {
     onDeleteRole: PropTypes.func,
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showWarningTip: false, // 提示弹框
@@ -45,7 +45,7 @@ class RoleTable extends Component {
     });
   }
 
-  onRoleAdd = () =>{//进入添加角色页
+  onRoleAdd = () => {//进入添加角色页
     this.props.changeRoleStore({ showPage: 'create' });
   }
 
@@ -61,17 +61,17 @@ class RoleTable extends Component {
     });
   }
 
-  getRightArr(rightData, frontText='') { // 递归生成权限数组['一级-二级-三级...',...]
+  getRightArr(rightData, frontText = '') { // 递归生成权限数组['一级-二级-三级...',...]
     // const { defaultMenuData } = this.props;
     const dataInfoArr = [];
-    rightData && rightData.length > 0 && rightData.forEach(e=>{
+    rightData && rightData.length > 0 && rightData.forEach(e => {
       const hasChildRight = e && e.childRightData && e.childRightData.length > 0;
-      if(hasChildRight){
+      if (hasChildRight) {
         const innerData = this.getRightArr(e.childRightData, e.rightName);
         dataInfoArr.push(...innerData);
-      }else{
+      } else {
         // const isDefaultRight = defaultMenuData.includes(parseInt(e.rightId)); // 默认权限不显示
-        const rightText = `${frontText?`${frontText}-`:''}${e.rightName}`;
+        const rightText = `${frontText ? `${frontText}-` : ''}${e.rightName}`;
         e && e.rightName && dataInfoArr.push(rightText);
       }
     });
@@ -101,7 +101,7 @@ class RoleTable extends Component {
         width: '53%',
         textAlign: 'left',
         className: styles.rightData,
-        render: (rightData, record)=>{
+        render: (rightData, record) => {
           const rightArr = this.getRightArr(rightData, '');
           return (<div className={styles.menu} onClick={() => this.showModel(record)}>{rightArr.join(' | ')}</div>);
         },
@@ -118,15 +118,15 @@ class RoleTable extends Component {
         className: styles.handlerBox,
         textAlign: 'center',
         render: (text, record) => (<span>
-            {roleUpdateRight && <i
-              className={`${styles.editRole} iconfont icon-edit`}
-              onClick={() => this.columnEditRole(record)}
-            />}
-            {roleDeleteRight && <i
-              className={`${styles.deleteRole} iconfont icon-del`}
-              onClick={() => this.columnEditRole(record)}
-            />}
-          </span>
+          {roleUpdateRight && <i
+            className={`${styles.editRole} iconfont icon-edit`}
+            onClick={() => this.columnEditRole(record)}
+          />}
+          {roleDeleteRight && <i
+            className={`${styles.deleteRole} iconfont icon-del`}
+            onClick={() => this.columnEditRole(record)}
+          />}
+        </span>
         ),
       });
     }
@@ -141,17 +141,17 @@ class RoleTable extends Component {
 
   roleHandle = (value) => {//编辑,删除操作
     const { selectedRole, changeRoleStore } = this.props;
-    const isPreUser = selectedRole.some(item=>!item.isPre);
-    if(isPreUser){
-      const warningTipText = `不得${value === 'edit'?'编辑':'删除'}预设角色`;
+    const isPreUser = selectedRole.some(item => !item.isPre);
+    if (isPreUser) {
+      const warningTipText = `不得${value === 'edit' ? '编辑' : '删除'}预设角色`;
       this.setState({
         showWarningTip: true,
         warningTipText,
       });
-    }else{
-      value === 'edit'?changeRoleStore({ //编辑
+    } else {
+      value === 'edit' ? changeRoleStore({ //编辑
         showPage: 'edit',
-      }): this.setState({
+      }) : this.setState({
         showDeleteTip: true,
         warningTipText: '确认要删除么?',
       });
@@ -172,14 +172,14 @@ class RoleTable extends Component {
     });
   }
 
-  getRightTree (data) { // 递归筛选三级菜单
+  getRightTree(data) { // 递归筛选三级菜单
     // const { defaultMenuData } = this.props; // 默认权限ID
     return data.map(e => {
       const { rightId, rightName, childRightData = [] } = e || {};
       if (childRightData && childRightData.length > 0) {
         const tmpRighData = this.getRightTree(childRightData);
         if (tmpRighData.length > 0) {
-        return {
+          return {
             rightId,
             rightName,
             childRightData: tmpRighData,
@@ -194,7 +194,7 @@ class RoleTable extends Component {
       // else if (defaultMenuData.includes(+rightId)) {
       //   return false;
       // }
-        return { ...e };
+      return { ...e };
     }).filter(e => !!e);
   }
 
@@ -252,7 +252,7 @@ class RoleTable extends Component {
       });
     } else { // 选中行 后操作删除。
       onDeleteRole({
-        roleId: selectedRole.map(e=>e.roleId).join(','),
+        roleId: selectedRole.map(e => e.roleId).join(','),
       });
     }
     this.setState({
@@ -262,7 +262,7 @@ class RoleTable extends Component {
     });
   }
 
-  render(){
+  render() {
     const { selectedRole, roleData, showPage, roleTableLoading } = this.props;
     const { showWarningTip, warningTipText, showDeleteTip, recordData, modelName, tableLoading } = this.state;
     const rightHandler = localStorage.getItem('rightHandler') || '';
@@ -275,10 +275,10 @@ class RoleTable extends Component {
     const footer = (
       <div className={styles.tableFooter}>
         <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
-        {selectedRole.length > 0 &&<span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
+        {selectedRole.length > 0 && <span className={styles.cancel} onClick={this.cancelRowSelect}>取消选中</span>}
       </div>);
     return (
-      <div className={styles.roleList} style={{display: showPage==='list'?'flex':'none'}}>
+      <div className={styles.roleList} style={{ display: showPage === 'list' ? 'flex' : 'none' }}>
         {showWarningTip && <WarningTip onOK={this.onConfirmWarningTip} value={warningTipText} />}
         {showDeleteTip && <WarningTip onOK={this.deleteRole} value={warningTipText} onCancel={this.onCancelDelete} />}
         <div className={styles.roleContent}>
@@ -286,31 +286,29 @@ class RoleTable extends Component {
             <div className={styles.rolelistTopBox}>
               {roleCreateRight && <CneButton className={styles.addRole} onClick={this.onRoleAdd} lengthMode={'short'} iconname={'icon-newbuilt'}>角色  </CneButton>}
               <div className={styles.handleRole}>
-              {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName = {styles.roleTableHandleDropdown}>
-                {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}
-                {roleDeleteRight && <Option value="delete" disabled={selectedRole.length===0}>删除</Option>}
-              </Select>}
+                {roleConfigRight && <Select onChange={this.roleHandle} value="操作" placeholder="操作" dropdownMatchSelectWidth={false} dropdownClassName={styles.roleTableHandleDropdown}>
+                  {roleUpdateRight && <Option value="edit" disabled={selectedRole.length !== 1}>编辑</Option>}
+                  {roleDeleteRight && <Option value="delete" disabled={selectedRole.length === 0}>删除</Option>}
+                </Select>}
               </div>
             </div>
             <div className={styles.totalNum}>合计：{totalNum}</div>
           </div>
-          <div className={styles.tableBox}>
-            <CneTable
-              loading={roleTableLoading}
-              rowKey={(record)=>{return record.roleId;}}
-              rowSelection={{
-                selectedRowKeys: selectedRole.map(e=>e.roleId),
-                onChange: this.onRowSelect,
-              }}
-              dataSource={roleData}
-              columns={this.createRoloeColumn()}
-              onChange={this.tableChange}
-              pagination={false}
-              scroll={initTableScroll}
-              className={styles.tableStyle}
-              footer={()=> selectedRole.length > 0 && footer }
-            />
-          </div>
+          <CneTable
+            loading={roleTableLoading}
+            rowKey={(record) => { return record.roleId; }}
+            rowSelection={{
+              selectedRowKeys: selectedRole.map(e => e.roleId),
+              onChange: this.onRowSelect,
+            }}
+            dataSource={roleData}
+            columns={this.createRoloeColumn()}
+            onChange={this.tableChange}
+            pagination={false}
+            scroll={initTableScroll}
+            className={styles.tableStyle}
+            footer={() => selectedRole.length > 0 && footer}
+          />
         </div>
         {/* <div className={styles.tableFooter}>
           <span className={styles.info}>当前选中<span className={styles.totalNum}>{selectedRole.length}</span>项</span>
@@ -328,35 +326,35 @@ class RoleTable extends Component {
         >
           <Spin spinning={tableLoading}>
             {!tableLoading &&
-            <div className={styles.rightTable}>
-              <div className={styles.tableHeader}>
-                <div className={styles.secondColumn}>二级菜单</div>
-                <div className={styles.thirdColumn}>三级菜单</div>
-              </div>
-              {recordData && recordData.length > 0 && recordData.map(e => {
-                return (
-                  <div className={styles.tableContent}>
-                    {e.childRightData && e.childRightData.map(m => {
-                      return (
-                        <div className={styles.rows}>
-                          <div className={styles.secondMenu}>{m.rightName}</div>
-                          <div className={styles.thirdMenu}>
-                            {m.childRightData && m.childRightData.map(item => {
-                              return (
-                                <span className={styles.rightName}>
-                                  <span className={styles.text}>{item.rightName}</span>
-                                  <span className={styles.partition}>|</span>
-                                </span>
-                              );
-                            })}
+              <div className={styles.rightTable}>
+                <div className={styles.tableHeader}>
+                  <div className={styles.secondColumn}>二级菜单</div>
+                  <div className={styles.thirdColumn}>三级菜单</div>
+                </div>
+                {recordData && recordData.length > 0 && recordData.map(e => {
+                  return (
+                    <div className={styles.tableContent}>
+                      {e.childRightData && e.childRightData.map(m => {
+                        return (
+                          <div className={styles.rows}>
+                            <div className={styles.secondMenu}>{m.rightName}</div>
+                            <div className={styles.thirdMenu}>
+                              {m.childRightData && m.childRightData.map(item => {
+                                return (
+                                  <span className={styles.rightName}>
+                                    <span className={styles.text}>{item.rightName}</span>
+                                    <span className={styles.partition}>|</span>
+                                  </span>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>}
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>}
           </Spin>
         </Modal>
       </div>

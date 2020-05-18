@@ -71,7 +71,7 @@ class List extends Component {
     ],
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { logoutSuccess } = nextProps;
     const preLogout = this.props.logoutSuccess;
     if (logoutSuccess && !preLogout) { // 注销成功
@@ -191,7 +191,7 @@ class List extends Component {
     },
   })
 
-  render(){
+  render() {
     const { userList, userListLoading, selectedRowKeys, departmentTree, userListPageInfo } = this.props;
     const { column, showLogout, assignDepartUsers, assignDepartChecked } = this.state;
     const { sortMethod } = userListPageInfo;
@@ -205,20 +205,23 @@ class List extends Component {
     return (
       <div className={styles.personnelMain}>
         <ListHandle {...this.props} assignDeparts={this.assignDeparts} />
-        <CneTable
-          dataSource={userList}
-          columns={tableColumn}
-          pagination={false}
-          loading={userListLoading}
-          className={styles.listMain}
-          sortField="enterpriseStatus"
-          sortMethod={sortMethod === 'asc' ? 'ascend' : 'descend'}
-          rowSelection={{
-            onChange: this.rowSelect,
-            selectedRowKeys,
-          }}
-          onChange={this.sortList}
-        />
+        <div className={styles.tableWrap}>
+          <CneTable
+            dataSource={userList}
+            columns={tableColumn}
+            pagination={false}
+            loading={userListLoading}
+            className={styles.listMain}
+            sortField="enterpriseStatus"
+            sortMethod={sortMethod === 'asc' ? 'ascend' : 'descend'}
+            rowSelection={{
+              onChange: this.rowSelect,
+              selectedRowKeys,
+            }}
+            onChange={this.sortList}
+          />
+          {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
+        </div>
         <DepartmentAssignModal
           value={assignDepartChecked}
           onCheck={this.onDepartChecked}
@@ -234,7 +237,6 @@ class List extends Component {
           onCancel={this.cancelLogout}
           value="注销后用户不再属于任何部门，会被移出系统。您确定注销该人员吗？"
         />}
-        {userList.length > 0 && <ListFooter selectedLength={selectedRowKeys.length} cancel={this.cancelSelectRow} />}
       </div>
     );
   }

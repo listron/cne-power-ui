@@ -219,9 +219,7 @@ class HistoryWarnCon extends Component {
 
           ]}
         />
-        <div className={styles.selectCondition}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
-        </div>
+        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} className={styles.selectCondition} theme={theme} />
         <CneTable
           columns={columns}
           dataSource={dataSource}

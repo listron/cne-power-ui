@@ -26,20 +26,11 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
    background-color: #F0F2F5;
   min-width: 1100px;
   .roleContent{
     flex: 1;
-    // display: flex;
-    // flex-direction: column;
-
-    // .tableBox {
-    //   border: 1px solid #d4d4d4;
-    //   border-top: none;
-    //   box-shadow:0 2px 4px 2px rgba(0,0,0,0.30);
-    //   background-color: red;
-    // }
     .tableStyle {
       background: #ffffff;
       border: 1px solid #d4d4d4;
@@ -55,12 +46,6 @@
         .ant-table-footer {
           padding: 0 15px;
         }
-        .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-          overflow-y: scroll;
-          overflow-y: overlay;
-          overflow-x: hidden;
-          height: calc(100vh - 236px) !important;
-        }
         .ant-table:not(.ant-table-empty) {
           .ant-table-body:after {
             content: url("/img/notabdata.png");
@@ -70,15 +55,14 @@
             margin: 50px 10px 10px;
           }
         }
-        .ant-table-placeholder {
-          border-bottom: none;
-        }
       }
     }
   }
   .editRole, .deleteRole{
     cursor: pointer;
     padding: 4px;
+    color: var(--themeColor);
+    font-size: 20px;
     &:hover{
       color: #ff9900;
     }
@@ -88,15 +72,14 @@
   }
   .roleListTop {
     display: flex;
-    min-height: 60px;
-    line-height: 60px;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
     .rolelistTopBox{
       display: flex;
       align-items: center;
     }
     .addRole{
-      margin-left: 20px;
       margin-right: 12px;
     }
     .handleRole{
@@ -164,7 +147,7 @@
   display: flex;
   flex-direction: column;
   background-color: #f0f2f5;
-  padding: 24px 24px 0;
+  padding: 15px 24px 0;
   .roleEditContent{
     flex: 1;
     background-color: #fff;

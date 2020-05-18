@@ -244,7 +244,7 @@ class Unhandle extends Component {
               <i className="iconfont icon-neglect" />  忽略</Option>
           </Select> : <div></div>}
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-            onPaginationChange={this.onPaginationChange} theme={theme} />
+            onPaginationChange={this.onPaginationChange} theme={theme} className={styles.pagination} />
         </div>
         <CneTable
           columns={columns}

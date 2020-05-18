@@ -58,7 +58,7 @@ class Ignore extends Component {
   }
 
 
-  onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
+  onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
     this.getIgnoreList({ pageNum: currentPage, pageSize });
   }
 
@@ -235,7 +235,7 @@ class Ignore extends Component {
                 <Option value="ReRequest" >更新列表</Option>
               </Select>
               <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                onPaginationChange={this.onPaginationChange} theme={theme} />
+                onPaginationChange={this.onPaginationChange} theme={theme} className={styles.pagination} />
             </div>
             <CneTable
               columns={columns}

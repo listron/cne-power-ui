@@ -30,12 +30,16 @@
                 margin-top: 8px;
             }
         }
+        .filterCondition{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
         .Button {
             // line-height: 60px;
             display: flex;
             flex-direction: row;
-            height: 60px;
-            padding-top: 17px;
             .export{
                 margin-left: 20px;
             }
@@ -50,13 +54,14 @@
         .pagination {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 15px;
+            margin-right: 0;
+            flex: 1;
         }
-        .PowerCurveTable {
-            margin-top: -45px;
+         .tableBox {
             flex: 1 auto;
-            display: flex;
-            flex-direction: column;
+            background-color: #fff;
+            box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
+            margin: 0 2px 4px 2px;
             .deviceModeName, .airDensityType, .stationName{
                 @include overflowText();
                 width: calc(100% - 10px);
@@ -64,23 +69,13 @@
             .lookIcon{
                 cursor: pointer;
                 padding: 4px;
+                font-size: 20px;
+                color: var(--themeColor);
                 &:hover{
                     color: #ff9900;
                 }
             }
-            .tableBox {
-                flex: 1 auto;
-                background-color: #fff;
-                box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
-                margin: 0 2px 4px 2px;
-            }
-        }
-
-        :global {
-            .ant-table-placeholder {
-                border-bottom: none
-            }
-        }
+         }
     }
     .powerCurveChartBox {
         box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.20);

@@ -179,10 +179,8 @@ class Transfer extends Component {
             },
           ]}
         />
-        <div className={styles.selectCondition}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-            onPaginationChange={this.onPaginationChange} theme={theme} />
-        </div>
+        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+          onPaginationChange={this.onPaginationChange} theme={theme} className={styles.selectCondition} />
         <CneTable
           columns={columns}
           dataSource={dataSource}

@@ -9,6 +9,7 @@ import TransitionContainer from '../../../Common/TransitionContainer';
 import PowerCurveChart from './PowerCurveChart';
 import path from '../../../../constants/path';
 import { handleRight } from '@utils/utilFunc';
+import CneButton from '../../../Common/Power/CneButton';
 
 import SingleStationImportFileModel from '../../../Common/SingleStationImportFileModel';
 
@@ -99,15 +100,15 @@ class PowerCurve extends Component {
     });
   }
 
-  getUpdatePointList=(rest)=>{
-    const {file, selectedStation, WarningTipStatus}=rest;
-    if(WarningTipStatus){
-      const formData=new FormData();
+  getUpdatePointList = (rest) => {
+    const { file, selectedStation, WarningTipStatus } = rest;
+    if (WarningTipStatus) {
+      const formData = new FormData();
       formData.append('file', file.originFileObj);
-      formData.append('onImport', WarningTipStatus==='ok'?1:0);
+      formData.append('onImport', WarningTipStatus === 'ok' ? 1 : 0);
       formData.append('stationCode', selectedStation.stationCode);
-      this.props.importCurveExcel({formData});
-    }else{
+      this.props.importCurveExcel({ formData });
+    } else {
       const { stationCode, deviceModeCode, sortField, sortMethod, pageNum, pageSize } = this.props;
       const param = { stationCode, deviceModeCode, sortField, sortMethod, pageNum, pageSize };
       this.getPowerList(param);
@@ -235,10 +236,7 @@ class PowerCurve extends Component {
         dataIndex: 'look',
         width: '10%',
         textAlign: 'center',
-        render: (text, record) => (
-          <span className={styles.look}>
-            <i className={`${styles.lookIcon} iconfont icon-look`} onClick={() => { this.onShowDetail(record); }} />
-          </span>
+        render: (text, record) => (<i className={`${styles.lookIcon} iconfont icon-look`} onClick={() => { this.onShowDetail(record); }} />
         ),
       },
     ];
@@ -273,38 +271,36 @@ class PowerCurve extends Component {
             </Select>
 
           </div>
-          {powerCurveOperation ?
-          <div className={styles.Button}>
-            <Button href={downloadHref} target="_blank" className={styles.download} > 下载导入模板</Button>
-            <SingleStationImportFileModel
-              data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
-              uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPowercurve}`}
-              uploaderName={'功率曲线'}
-              uploadExtraData={['stationCode']}
-              upLoadOutExtraData={{'onImport': null}}
-              loadedCallback={this.getUpdatePointList}
-              hasExistedJudge={true}
+          <div className={styles.filterCondition}>
+            {powerCurveOperation ?
+              <div className={styles.Button}>
+                <CneButton lengthMode="long" href={downloadHref} target="_blank" > 下载导入模板</CneButton>
+                <SingleStationImportFileModel
+                  data={stations.length > 0 && stations.filter(e => e.stationType === 0) || []}
+                  uploadPath={`${path.basePaths.APIBasePath}${path.APISubPaths.system.importPowercurve}`}
+                  uploaderName={'功率曲线'}
+                  uploadExtraData={['stationCode']}
+                  upLoadOutExtraData={{ 'onImport': null }}
+                  loadedCallback={this.getUpdatePointList}
+                  hasExistedJudge={true}
+                />
+                <CneButton lengthMode="short" onClick={this.downloadPowerExcel} className={styles.export}> 导出</CneButton>
+              </div> : <div></div>}
+            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+              onPaginationChange={this.onPaginationChange} className={styles.pagination} />
+          </div>
+
+          <div className={styles.tableBox}>
+            <CneTable
+              loading={loading}
+              dataSource={dataSource}
+              columns={columns}
+              pagination={false}
+              rowSelection={rowSelection}
+              onChange={this.tableChange}
+              sortField={this.uiSortMap[sortField]}
+              sortMethod={sortMethod === 'ASC' ? 'ascend' : 'descend'}
             />
-            <Button type="default" onClick={this.downloadPowerExcel} className={styles.export} > 导出</Button>
-          </div> : <div></div>}
-          <div className={styles.PowerCurveTable}>
-            <div className={styles.pagination}>
-              <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                onPaginationChange={this.onPaginationChange} />
-            </div>
-            <div className={styles.tableBox}>
-              <CneTable
-                loading={loading}
-                dataSource={dataSource}
-                columns={columns}
-                pagination={false}
-                rowSelection={rowSelection}
-                onChange={this.tableChange}
-                sortField={this.uiSortMap[sortField]}
-                sortMethod={sortMethod === 'ASC' ? 'ascend' : 'descend'}
-                locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-              />
-            </div>
           </div>
         </div>
         <TransitionContainer

@@ -178,13 +178,11 @@
         height: 100%;
         table{
           table-layout: fixed;
-          width: 100%;
+          // width: 100%;
         }
         :global {
           .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-            overflow-y: scroll;
-            overflow-y: overlay;
-            height: calc(100vh - 205px) !important;
+            overflow-y: overlay !important;
           }
           .ant-table:not(.ant-table-empty) {
             .ant-table-body:after {
@@ -194,9 +192,6 @@
               transform: translate(-50%, -50%);
               margin: 50px 10px 10px;
             }
-          }
-          .ant-table-placeholder {
-            border-bottom: none;
           }
         }
         .active, .windDisabled{
@@ -243,40 +238,24 @@
         }
         .handlerText {
           color: #fff;
-          padding: 0 10px;
           display: flex;
           align-items: center;
-          justify-content: space-around;
-          span {
-            display: flex;
-            box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.5);
-            border-radius: 2px;
-            width: 26px;
-            height: 26px;
-            align-items: center;
-            justify-content: center;
-          }
-          .editStation {
-            color: #199475;
+          justify-content: space-evenly;
+          .editStation,.deleteStation {
+            color: var(--themeColor);
             cursor: pointer;
             font-size: 20px;
-            padding: 0 2px;
+            &:hover{
+              color: #f9b600;;
+            }
           }
-          .deleteStation {
-            cursor: pointer;
-            color: #ff9900;
-            font-size: 20px;
-          }
+         
           .deleteDisable {
-            color: $darkColor;
+            color: var(--lightColor);
             cursor: not-allowed;
             font-size: 20px;
             padding: 0 2px;
           }
-        }
-
-        .disabled {
-          color: #999999;
         }
 
         :global {
