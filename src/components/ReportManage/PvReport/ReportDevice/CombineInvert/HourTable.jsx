@@ -237,7 +237,7 @@ class ReportSearch extends React.PureComponent {
       <div className={`${styles.reporeTable} ${styles[theme]}`}>
         <div className={styles.top}>
           <CneButton onClick={this.exportFile} disabled={deviceFullcodes.length === 0} loading={downloading}> 导出</CneButton>
-          <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'theme'} />
+          <CommonPagination className={styles.pagination} total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} theme={'theme'} />
         </div>
         <div className={styles.tableBox}>
           <CneTable

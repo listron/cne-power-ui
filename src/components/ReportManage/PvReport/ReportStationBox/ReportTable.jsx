@@ -282,7 +282,7 @@ class ReportTable extends React.Component {
         <div className={styles.handlePage}>
           <div><CneButton onClick={this.exportReportStation} loading={downloading} disabled={disabledExport}>导出</CneButton></div>
           <div>
-            <CommonPagination total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.changePage} />
+            <CommonPagination className={styles.pagination} total={total} pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.changePage} />
           </div>
         </div>
         <div className={styles.tableBox}>

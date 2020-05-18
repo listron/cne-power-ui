@@ -334,7 +334,7 @@ class TableList extends Component {
                                                         <Radio.Button value="detail">明细</Radio.Button>
                                                 </Radio.Group>
                                         </div>
-                                        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+                                        <CommonPagination className={styles.pagination} pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
                                 </div>
                                 <div className={styles.list}>
                                         <CneTable

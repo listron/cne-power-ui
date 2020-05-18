@@ -194,7 +194,7 @@ class TableList extends Component {
                 return (
                         <React.Fragment>
                                 <div className={styles.tableHeader}>
-                                        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+                                        <CommonPagination className={styles.pagination} pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
                                 </div>
                                 <div className={styles.list}>
                                         <CneTable
