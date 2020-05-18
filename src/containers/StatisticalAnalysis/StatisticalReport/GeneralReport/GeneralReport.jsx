@@ -528,7 +528,7 @@ class GeneralReport extends Component {
                 >下载</CneButton>
               </div>
             </div>}
-            <div className={styles.dailyBox}>
+            {enterpriseCode === '1010' && <div className={styles.dailyBox}>
               <div className={styles.boxTop}>
                 <div className={styles.dayReport}>
                   <Icon type="download" style={{ color: '#ffffff' }} />
@@ -566,7 +566,7 @@ class GeneralReport extends Component {
                   loading={typeDowning === 'powerPlantLoading'}
                 >下载</CneButton>
               </div>
-            </div>
+            </div>}
           </div>
           <Footer />
         </div>
