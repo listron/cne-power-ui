@@ -2,18 +2,20 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  :global {
-    .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane {
-      //width: 0ch;
+
+  .tabWrap{
+     display: flex;
+     margin: 10px 24px;
+     height: 27px;
+    .normal{
       display: flex;
-      justify-content: space-between;
-    }
-    .ant-tabs-bar {
-      margin: 0;
-    }
-    .iconfont {
-      font-size: 14px;
-      margin-right: 4px;
+      justify-content: center;
+      align-items: center;
+      min-width: 90px;
+      padding: 0 10px;
+      height: 26px;
+      cursor: pointer;
+      margin-right:8px;
     }
   }
 
@@ -49,54 +51,34 @@
 
 .targetTabs.light {
   background-color: #fff;
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+  .tabWrap{
+    border-bottom: 1px solid #ceebe0;
+  }
+  .normal{
+    background:#ceebe0;
+    color: var(--themeColor);
+    &:hover{
+      background: var(--themeColor);
+      color: #fff;
+    }
+  }
+  .active{
+    background: var(--themeColor);
+    color: #fff;
+  }
   .fontColor {
     color: red;
-  }
-  :global {
-    .ant-tabs-nav-scroll {
-      background-color: #f8f8f8;
-    }
-    .iconfont {
-      color: #2d9e81;
-    }
   }
   .chartsContainer {
     .textStyle {
       background: #f8f8f8;
     }
-    .chart {
-      border-top: 1px solid #f0f2f5;
+    .chart:not(:first-child) {
+      border-top: 1px dashed var(--themeColor);
     }
   }
 }
 
 .targetTabs.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background-color: $light-background;
-  color: $fontColor;
-  border: 1px solid $border-color;
-  .fontColor {
-    color: $warnColor;
-  }
-  :global {
-    .ant-tabs-nav-scroll {
-      background-color: transparent;
-      border-bottom: 1px solid $border-color;
-    }
-    .ant-tabs-bar {
-      border: none;
-    }
-    .iconfont {
-      color: $themeColor;
-    }
-  }
-  .chartsContainer {
-    .textStyle {
-      color: $fontColor;
-      background: $slide-backgound;
-    }
-    .chart {
-      border-top: 1px solid $input-border;
-    }
-  }
 }

@@ -1,38 +1,45 @@
 @import "../../../../theme/theme";
 @import "./layout.scss";
 .light {
-  background: #fff;
   .unhandleMain {
-    border: 1px solid #e1e2e2;
-    background: #fff;
+    background: #f0f2f5;
+    .filterCondition{
+      background:#ffffff;
+      box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    }
     .wrap {
       background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     }
     .selectCondition {
-      border-top: 1px solid $promptColor;
+      border-top: 1px solid var(--promptColor);
     }
     .icon {
-       color: $themeColor;
+       color: var(--themeColor);
        &:hover{
           color: #ff9900;
       }
     }
   }
   .unhandleSide {
-    background: #fff;
+    .tempWrap{
+       box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+       background: #fff;
+    }
     .top {
-      border-bottom: 1px solid $promptColor;
+      border-bottom: 1px solid var(--promptColor);
+     
       .warnButton {
-        border-color: $themeColor;
-        color: $themeColor;
+        border-color: var(--themeColor);
+        color: var(--themeColor);
         &:hover {
-          background: $themeColor;
+          background: var(--themeColor);
           color: #fff;
         }
       }
     }
     .chartTop {
-      background: $promptColor;
+      background: var(--promptColor);
     }
   }
   .stationModal {
@@ -43,7 +50,7 @@
     }
     .reasonItem {
       .title {
-        border-bottom: 1px solid $promptColor;
+        border-bottom: 1px solid var(--promptColor);
       }
       .label {
         .labels {
@@ -56,45 +63,3 @@
   }
 }
 
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  .unhandleMain {
-    .wrap {
-      background: $light-background;
-      border: 1px solid $border-color;
-      margin-top: 10px;
-    }
-    .iconDetail {
-      span {
-        color: $themeColor;
-      }
-    }
-  }
-  .unhandleSide {
-    background: $background;
-    color: $fontColor;
-    .top {
-      background: $light-background;
-      border: 1px solid $border-color;
-      .warnButton {
-        border-color: $themeColor;
-        color: $themeColor;
-        &:hover {
-          background: $themeColor;
-          color: $fontColor-invert;
-        }
-      }
-      .backIcon {
-        border-left: 1px solid $border-color;
-      }
-    }
-    .wrap {
-      background: $light-background;
-      border: 1px solid $border-color;
-      margin-top: 10px;
-    }
-    .chartTop {
-      background: $background;
-    }
-  }
-}

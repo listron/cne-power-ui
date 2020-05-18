@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import CneTable from '@components/Common/Power/CneTable';
@@ -47,7 +47,7 @@ class FaultList extends Component {
   }
 
   onExport = () => { // 列表导出
-    const { downLoadFile, queryParam, listParam, keyWord, faultIds} = this.props;
+    const { downLoadFile, queryParam, listParam, keyWord, faultIds } = this.props;
     const url = `${APIBasePath}${statisticalAnalysis.getExportFault}`;
     const { startDate, endDate, stationCodes } = queryParam;
     const { pageNum, pageSize } = listParam;
@@ -71,7 +71,7 @@ class FaultList extends Component {
     });
   }
 
-  render(){
+  render() {
     const { listParam, faultListData, tableLoading, exportLoading } = this.props;
     const { pageNum, pageSize } = listParam;
     const { total = 0, dataList = [] } = faultListData;
@@ -178,14 +178,14 @@ class FaultList extends Component {
     return (
       <div className={styles.faultList}>
         <div className={styles.pagination}>
-        {dailyOperation ?
-          <CneButton
-            className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
-            onClick={this.onExport}
-            loading={exportLoading}
-            lengthMode="short"
-            disabled={dataList.length === 0}
-          >导出</CneButton> : <div></div>}
+          {dailyOperation ?
+            <CneButton
+              className={dataList.length === 0 ? styles.disabledExport : styles.listExport}
+              onClick={this.onExport}
+              loading={exportLoading}
+              lengthMode="short"
+              disabled={dataList.length === 0}
+            >导出</CneButton> : <div></div>}
           <CommonPagination
             currentPage={pageNum}
             pageSize={pageSize}
@@ -198,7 +198,7 @@ class FaultList extends Component {
           dataSource={dataList && dataList.map((e, i) => ({ ...e, key: i }))}
           columns={columns}
           pagination={false}
-          scroll={{x: 'max-content' }}
+          scroll={{ x: 'max-content' }}
           locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
       </div>

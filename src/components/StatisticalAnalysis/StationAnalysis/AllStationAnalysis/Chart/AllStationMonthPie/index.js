@@ -27,11 +27,11 @@ class AllStationMonthPie extends React.Component {
 
 
   drawChart = (param, themeChange) => {
-    const { allStationMonthpie, yAxisName, pieTargetData, hasData, xAxisName, theme } = param;
-    let targetPieChart = echarts.init(document.getElementById(allStationMonthpie), themeConfig[theme]);
+    const { yAxisName, pieTargetData, hasData, xAxisName, theme } = param;
+    let targetPieChart = echarts.init(this.chart, themeConfig[theme]);;
     if (themeChange) {
       targetPieChart.dispose();
-      targetPieChart = echarts.init(document.getElementById(allStationMonthpie), themeConfig[theme]);
+      targetPieChart = echarts.init(this.chart, themeConfig[theme]);
     }
     const reg = /\((.+)\)/g;
     const unit = reg.exec(yAxisName)[1] || '';
@@ -89,9 +89,9 @@ class AllStationMonthPie extends React.Component {
   };
 
   render() {
-    const { allStationMonthpie, theme } = this.props;
+    const { theme } = this.props;
     return (
-      <div id={allStationMonthpie} className={styles[theme]}> </div>
+      <div className={styles[theme]} ref={ref => (this.chart = ref)}> </div>
     );
   }
 }

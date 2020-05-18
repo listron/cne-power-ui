@@ -4,16 +4,14 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  .wrap {
-    display: flex;
+  .tableWrap{
     flex: 1;
-    flex-direction: column;
   }
   .selectCondition {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    padding: 26px 0 20px 28px;
+    padding: 15px 0 15px 28px;
   }
    .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
        @include overflowText();
@@ -49,10 +47,13 @@
 }
 
 .light {
-  border: 1px solid #e1e2e2;
-  background: #fff;
-  .selectCondition {
-    border-top: 1px solid $promptColor;
+  .filterWrap{
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    background: #fff;
+  }
+  .tableWrap{
+     box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    background: #fff;
   }
   .iconBox {
     background-color: #ceebe0;
@@ -69,19 +70,4 @@
 }
 
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .wrap {
-    border: 1px solid $border-color;
-    background: $light-background;
-    margin-top: 10px;
-  }
-
-  .iconBox {
-    background-image: linear-gradient(-180deg, #1cfcf4 5%, #009cff 98%);
-    color: #fff;
-    &:hover {
-      background-image: linear-gradient(-180deg, #b4ec51 0%, #429321 100%);
-    }
-  }
 }

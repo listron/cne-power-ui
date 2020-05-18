@@ -247,12 +247,12 @@ class ProductionAnalysis extends React.Component {
                 <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
                 {stationName}-{provinceName}    :
                 计划完成情况
-                {dateType === 'year' && this.selectProductYear()}
                 {dateType === 'month' && `(  ${year}年  ) `}
                 {dateType === 'day' && `( ${+(year)}年${month}月)`}
               </div>
               <span className={styles.rightFont}>并网时间{stationGridTime}</span>
             </div>
+            {dateType === 'year' && <div className={styles.yearWrap}>{this.selectProductYear()}</div>}
             <div className={styles.graph}>
               <WaterWave percent={completeRate} height={100} theme={theme} />
               <div className={styles.staticWrap}>

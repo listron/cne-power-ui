@@ -89,28 +89,30 @@ class CleanWarningMain extends Component { // 电站管理列表页
     return (
       <div className={`${styles.cleanWarningMain} ${styles[theme]}`}>
         <div className={styles.mainContent}>
-          <FilterCondition
-            theme={theme}
-            onChange={this.selectStation}
-            option={[
-              {
-                name: '电站名称',
-                type: 'stationName',
-                typeName: 'stationCodes',
-                data: stations.filter(e => e.stationType === 1),
-              },
-            ]}
-          />
+          <div className={styles.filterCondition}>
+            <FilterCondition
+              theme={theme}
+              onChange={this.selectStation}
+              option={[
+                {
+                  name: '电站名称',
+                  type: 'stationName',
+                  typeName: 'stationCodes',
+                  data: stations.filter(e => e.stationType === 1),
+                },
+              ]}
+            />
+          </div>
+          <div className={styles.pagination}>
+            <CommonPagination
+              total={total}
+              pageSize={pageSize}
+              currentPage={pageNum}
+              onPaginationChange={this.paginationChange}
+              theme={theme}
+            />
+          </div>
           <div className={styles.wrap}>
-            <div className={styles.pagination}>
-              <CommonPagination
-                total={total}
-                pageSize={pageSize}
-                currentPage={pageNum}
-                onPaginationChange={this.paginationChange}
-                theme={theme}
-              />
-            </div>
             <CneTable
               columns={[
                 {
@@ -143,7 +145,7 @@ class CleanWarningMain extends Component { // 电站管理列表页
                   dataIndex: 'handle',
                   className: styles.handle,
                   textAlign: 'center',
-                  render: (text, record) => <span onClick={() => this.toWarningDetail(record)} style={{cursor: 'pointer'}} className="iconfont icon-look" />,
+                  render: (text, record) => <span onClick={() => this.toWarningDetail(record)} style={{ cursor: 'pointer' }} className="iconfont icon-look" />,
                 },
               ]}
               sortField={sortField}
@@ -152,7 +154,6 @@ class CleanWarningMain extends Component { // 电站管理列表页
               pagination={false}
               dataSource={cleanWarningList.map((e, i) => ({ ...e, key: i }))}
               onChange={this.tableSort}
-              locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
             />
           </div>
 

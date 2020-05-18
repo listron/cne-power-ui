@@ -31,29 +31,23 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    :global {
-      .ant-radio-button-wrapper {
-        height: 19px;
-        line-height: 16px;
-        padding: 0 5px;
-      }
-    }
+    z-index: 2;
     .title {
       display: flex;
       flex-direction: column;
-      padding-left: 28px;
-      height: 160px;
       .stationStatus {
         color: $darkColor;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 10px 0;
+        padding: 10px 0 10px 28px;
         .status {
           margin-right: 4px;
+          font-size: 18px;
           :global {
             .iconfont {
               margin-right: 4px;
+              font-size: 18px;
             }
           }
         }
@@ -61,8 +55,12 @@
           margin-right: 30px;
         }
       }
+      .yearWrap{
+          padding: 10px 28px;
+      }
       .graph {
         display: flex;
+        padding-left: 23px;
         .staticWrap {
           display: flex;
           flex-wrap: wrap;

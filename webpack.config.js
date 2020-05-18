@@ -143,13 +143,35 @@
         use: 'file-loader?name=[name].[ext]',
       }],
     },
+    optimization: {
+      runtimeChunk: {
+        name: 'manifest',
+      },
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          // libs: {
+          //   test: /[\\/]node_modules[\\/][@_]{0,2}(echarts|antd|moment|jquery|lodash)[a-zA-Z\-\.\@]{0,}[\\/]/,
+          //   name: 'libs',
+          //   priority: 10,
+          // },
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            priority: 1,
+          },
+          power: {
+            test: /[\\/]src[\\/]/,
+            name: 'power',
+            minChunks: 3,
+            priority: -10,
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    },
     plugins: [
       new ProgressBarPlugin(),
-      // new webpack.DefinePlugin({
-      //   ENV: '"test"',
-      //   DEV: '"development"',
-      //   PRO: '"production"',
-      // }),
       new CopyWebpackPlugin([{
         from: __dirname + '/assets',
         to: __dirname + '/dist',
@@ -157,13 +179,6 @@
       new HtmlWebpackPlugin({
         title: 'Donut-UI',
         template: __dirname + '/index.ejs',
-      }),
-      new webpack.HotModuleReplacementPlugin(),
-      ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
-        return new webpack.DllReferencePlugin({
-          context: __dirname,
-          manifest: require(`./assets/vendors/${name}-manifest.json`),
-        });
       }),
       new HappyPack({
         id: 'happyBabel',

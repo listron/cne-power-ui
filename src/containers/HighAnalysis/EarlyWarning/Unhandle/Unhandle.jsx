@@ -30,9 +30,7 @@ class Unhandle extends Component {
     const { theme = 'light' } = this.props;
     return (
       <div className={`${styles.UnhandleBox} ${styles[theme]}`} >
-        <div className={styles.unhandleContainer}>
-          <UnhandleContainer {...this.props} />
-        </div>
+        <UnhandleContainer {...this.props} />
         <Footer />
       </div>
     );

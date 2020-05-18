@@ -18,7 +18,7 @@ import Cookie from 'js-cookie';
 const routers = [
   { // 主页
     path: '/homepage',
-    component: lazy(() => import('../containers/Home/Homepage')),
+    component: lazy(() => import(/* webpackChunkName: "homepage" */ '../containers/Home/Homepage')),
   },
   ...monitorRoute,
   ...operationRoute,

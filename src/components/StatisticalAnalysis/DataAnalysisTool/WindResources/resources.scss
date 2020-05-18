@@ -89,12 +89,12 @@
 
 .handleSeach {
   background: #fff;
-  height: 62px;
+  height: 60px;
   display: flex;
   align-items: center;
-  margin-bottom: 11px;
+  margin-bottom: 20px;
   justify-content: space-between;
-
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   .headTop {
     display: flex;
     flex: 1;
@@ -107,37 +107,11 @@
 
     .seachBtn {
       margin-left: 10px;
-      border: 1px solid $themeColor;
-      color: $themeColor;
-
-      &:hover {
-        background: $themeColor;
-        color: #fff;
-      }
     }
   }
 
   .download {
     margin-right: 31px;
-    border: 1px solid $themeColor;
-    color: $themeColor;
-
-    &:hover {
-      background: $themeColor;
-      color: #fff;
-    }
-  }
-
-  .disabledDownload {
-    margin-right: 31px;
-    border: none;
-    background: #f5f5f5;
-    color: #bfbfbf;
-
-    &:hover {
-      background: #f5f5f5;
-      color: #bfbfbf;
-    }
   }
 }
 
@@ -180,15 +154,16 @@
 
 .resourcesTabs {
   .tabsBox {
-    width: 100%;
-    @include lineheight(40px);
-
-    button {
-      padding: 0 5px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-    }
+    display: flex;
+    padding: 10px 10px 0;
+  }
+  .normal,.activeBtn{
+    height:30px;
+    margin-right: 10px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0 10px;
   }
 }
 
@@ -210,17 +185,21 @@
 }
 
 .resourcesTabs {
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   .tabsBox {
-    background-color: #f8f8f8;
-
-    button {
-      background-color: #f8f8f8;
-      margin-left: 20px;
+    border-bottom:1px solid #ceebe0;
+    background: #fff;
+    .normal{
+      background:#ceebe0;
+      color:var(--themeColor);
+      &:hover{
+        background:#199475;
+        color:#fff; 
+      }
     }
-
     .activeBtn {
-      color: $themeColor;
-      border-bottom: 1px solid $themeColor;
+      background:#199475;
+      color:#fff;
     }
   }
 }

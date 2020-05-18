@@ -2,12 +2,10 @@
 @import "./layout.scss";
 
 .light {
-  background: #fff;
-  .deviceNameSearch {
-    background-color: #f9f9f9;
-    color: $darkColor;
+  .warnWrap{
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
-
   .handlerBtn{
     display: flex;
     align-items: center;
@@ -78,56 +76,4 @@
 }
 
 .dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .realTimeWarningFilter {
-    margin-top: 10px;
-  }
-
-  .deviceNameSearch {
-    background-color: $light-background;
-    color: $fontColor;
-    margin-top: 10px;
-    border: 1px solid $border-color;
-  }
-
-  .realTimeWarningTable {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-    :global {
-      .ant-table-placeholder {
-      }
-    }
-    .iconDetail {
-      i {
-        color: $themeColor;
-        cursor: pointer;
-      }
-    }
-    .deviceName {
-      a {
-        border-bottom: 1px solid $fontColor;
-        color: $fontColor;
-        text-decoration: none;
-        &:hover {
-          border-bottom: 1px solid $fontColor-hover;
-          color: $fontColor-hover;
-        }
-      }
-    }
-  }
-
-  .tableFooter {
-    background-color: transparent;
-    .info {
-      color: $fontColor;
-      .totalNum {
-        color: #f8b14e;
-      }
-    }
-    .cancel {
-      color: #f8b14e;
-    }
-  }
 }

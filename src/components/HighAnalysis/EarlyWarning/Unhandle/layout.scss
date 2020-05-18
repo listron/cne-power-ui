@@ -2,24 +2,26 @@
   min-height: 100%;
   display: flex;
   flex: 1;
-  overflow: hidden;
   .wrap {
     display: flex;
     flex: 1;
     flex-direction: column;
   }
-  .unhandleMain {
+  .unhandleMain,.unhandleSide{
     position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
     width: 100%;
-
+    padding: 15px 24px 0;
+  }
+  .unhandleMain {
+    
     .selectCondition {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 26px 28px 20px;
+      padding: 15px 28px 15px;
     }
     :global {
       .ant-table-selection{
@@ -55,11 +57,11 @@
     }
   }
   .unhandleSide {
-    display: flex;
-    flex: 1 0 auto;
-    width: 100%;
-    z-index: 15;
-    flex-direction: column;
+    .tempWrap{
+      display: flex;
+      flex-direction: column;
+      flex:1;
+    }
     .top {
       display: flex;
       flex-direction: row;
@@ -170,7 +172,7 @@
         >span{
           cursor: pointer;
           margin-right: 10px;
-          color: $themeColor;
+          color: var(--themeColor);
 
           &:hover{
             color: #f9b600;
@@ -186,6 +188,14 @@
       margin-left: 68px;
       margin-top: 16px;
       margin-bottom: 20px;
+    }
+  }
+  :global{
+    .ant-radio-group .ant-radio-button-wrapper{
+      margin: 5px 2px;
+      &:not(:first-child)::before{
+         background: var(--themeColor);
+      }
     }
   }
 }

@@ -275,18 +275,20 @@ class AllStationStatistic extends React.Component {
               <TimeSelect showDayPick={false} onChange={this.onTimeChange} theme={theme} />
               {operations}
             </div>
-            <PlanCompletionRate
-              dateType={dateType}
-              theme={theme}
-              stationType={stationType}
-              allStationAvalibaData={allStationAvalibaData}
-              allStationStatisticData={planSummary.length > 0 && planSummary[0] || {}}
-              getAllStationStatisticData={getAllStationStatisticData}
-              year={year}
-              selectYear={selectYear}
-              changeAllStationStore={changeAllStationStore} />
-            <TargetTabs {...this.props} theme={theme} />
-            <StationStatisticList {...this.props} theme={theme} />
+            <div className={styles.contWrap}>
+              <PlanCompletionRate
+                dateType={dateType}
+                theme={theme}
+                stationType={stationType}
+                allStationAvalibaData={allStationAvalibaData}
+                allStationStatisticData={planSummary.length > 0 && planSummary[0] || {}}
+                getAllStationStatisticData={getAllStationStatisticData}
+                year={year}
+                selectYear={selectYear}
+                changeAllStationStore={changeAllStationStore} />
+              <TargetTabs {...this.props} theme={theme} />
+              <StationStatisticList {...this.props} theme={theme} />
+            </div>
           </div>
           //   </TabPane>
           // </Tabs>

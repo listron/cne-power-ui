@@ -204,7 +204,7 @@ class CleanoutRecordTable extends Component {
     };
     const sortMethod = sortType === 1 ? 'descend' : 'ascend';
     return (
-      <div>
+      <React.Fragment>
         <CneTable
           loading={loading}
           dataSource={mainListData.map((e, i) => ({ ...e, key: i }))}
@@ -292,7 +292,7 @@ class CleanoutRecordTable extends Component {
             </div>
           </div>
         </Modal>
-      </div>
+      </React.Fragment>
     );
   }
 }

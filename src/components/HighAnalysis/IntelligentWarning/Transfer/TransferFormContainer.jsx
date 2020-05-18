@@ -50,8 +50,10 @@ class TransferFormContaienr extends Component {
     return (
       <div className={`${styles.transferFormContaienr} ${styles[theme]}`}>
         <WarningStatisticTop {...this.props} warningStatus={'3'} />
-        <TransferFormFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
-        <TransferFormTable {...this.props} onChangeFilter={this.onChangeFilter} />
+        <div className={styles.warnWrap}>
+          <TransferFormFilter {...this.props} stations={stations} deviceTypes={deviceTypes} onSearch={this.onChangeFilter} />
+          <TransferFormTable {...this.props} onChangeFilter={this.onChangeFilter} />
+        </div>
       </div>
     );
   }

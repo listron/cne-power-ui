@@ -19,6 +19,8 @@
 
 .lists{
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
   .listPageRow{
     display: flex;
     height: 54px;
@@ -33,9 +35,13 @@
       margin-right: 12px;
     }
   }
+  .tableWrap{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
   .listsTable{
-    background-color: #fff;
-    box-shadow:0 2px 4px 2px rgba(0,0,0,0.20);  
+    
     .inspectContentText, .stationsText{
       @include overflowText();
     }
@@ -91,8 +97,12 @@
   background-color: #fff;
 }
 
+
 .light.lists{
-  background-color: transparent;
+  .tableWrap{
+    background-color: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20); 
+  }
   .tableFoot{
     .selectedNum{
       color: #f9b600;

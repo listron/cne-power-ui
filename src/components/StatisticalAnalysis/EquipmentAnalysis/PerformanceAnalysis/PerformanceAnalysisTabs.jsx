@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import styles from './performanceAnalysisTabs.scss';
 import { Tabs } from 'antd';
+import PropTypes from 'prop-types';
 import PerformanceCharts from './PerformanceCharts';
 class PerformanceAnalysisTabs extends Component {
+
+  static propTypes = {
+    getPerformanceContrast: PropTypes.func,
+    getFaultContrast: PropTypes.func,
+    getPerformance: PropTypes.func,
+    getFault: PropTypes.func,
+    changePerformanceAnalysisStore: PropTypes.func,
+  };
+
   constructor(props, context) {
     super(props, context);
   }
@@ -36,7 +46,7 @@ class PerformanceAnalysisTabs extends Component {
           <span className="iconfont icon-ha">
           </span>
           建议关注排名变化较大的:
-        <span className={styles.fontColor}>
+          <span className={styles.fontColor}>
             {data.slice(0, 5).map((e, i) => {
               if (i === 0) { return `${e}`; }
               return `,${e}`;
@@ -55,7 +65,7 @@ class PerformanceAnalysisTabs extends Component {
         <div>
           <span className="iconfont icon-ha" />
           建议检查无数据设备传输状态,无数据设备有:
-        <span className={styles.fontColor}>
+          <span className={styles.fontColor}>
             {data.slice(0, 5).map((e, i) => {
               if (i === 0) { return `${e}`; }
               return `,${e}`;
@@ -267,117 +277,118 @@ class PerformanceAnalysisTabs extends Component {
 
     return (
       <div className={`${styles.targetTabs} ${styles[theme]}`}>
-        <Tabs activeKey={targetTabs} onChange={this.queryData} animated={false} >
-          {deviceTypeCode === '201,206' && <TabPane tab="发电性能" key="1">
-            <div className={styles.chartsContainer}>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'conversioneff'}
-                  title={'转换效率'}
-                  data={conversionData}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderContrastCon : haveSliderConver}
-                  hasData={contrastSwitch && contrastEndDate ? contrastConversionHasData : conversionHasData}
-                  deviceNames={contrastSwitch && contrastEndDate ? conversDeviceNames : []}
-                  loading={loading}
-                  theme={theme}
-                />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
-                {this.showNullValue(conversionNullValue)}
-                {contrastSwitch && contrastEndDate ? this.showText(conversDeviceNames) : ''}
-              </div>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'hours'}
-                  title={'等效小时数'}
-                  data={hoursData}
-                  loading={loading}
-                  deviceNames={contrastSwitch && contrastEndDate ? hourDeviceNames : []}
-                  theme={theme}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastHour : haveSliderHour}
-                  hasData={contrastSwitch && contrastEndDate ? contrastHoursHasData : hoursHasData} />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
-
-                {this.showNullValue(hourNullValue)}
-                {contrastSwitch && contrastEndDate ? this.showText(hourDeviceNames) : ''}
-
-              </div>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'availability'}
-                  title={'可利用率'}
-                  loading={loading}
-                  data={availabilityAnalysis}
-                  theme={theme}
-                  deviceNames={contrastSwitch && contrastEndDate ? availabilityDeviceNames : []}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
-                  hasData={contrastSwitch && contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
-                {this.showText(availabilityDeviceNames)}
-
-              </div>
+        <div className={styles.tabWrap}>
+          <p key={'1'} onClick={() => this.queryData('1')} className={`${styles.normal} ${targetTabs === '1' && styles.active}`}>发电性能</p>
+          <p key={'2'} onClick={() => this.queryData('2')} className={`${styles.normal} ${targetTabs === '2' && styles.active}`}>故障情况</p>
+        </div>
+        {deviceTypeCode === '201,206' && targetTabs === '1' &&
+          <div className={styles.chartsContainer}>
+            <div className={styles.chart}>
+              <PerformanceCharts
+                graphId={'conversioneff'}
+                title={'转换效率'}
+                data={conversionData}
+                hasSlider={contrastSwitch && contrastEndDate ? haveSliderContrastCon : haveSliderConver}
+                hasData={contrastSwitch && contrastEndDate ? contrastConversionHasData : conversionHasData}
+                deviceNames={contrastSwitch && contrastEndDate ? conversDeviceNames : []}
+                loading={loading}
+                theme={theme}
+              />
             </div>
-          </TabPane>}
-          <TabPane tab="故障情况" key="2">
-            <div className={styles.chartsContainer}>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'lostPower'}
-                  title={'损失电量'}
-                  loading={loading}
-                  data={lossPowerAnalysis}
-                  theme={theme}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
-                  deviceNames={contrastSwitch && contrastEndDate ? lostPowerDeviceNames : []}
-                  hasData={contrastSwitch && contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查损失电量较多的设备是否故障</div>
-                {this.showText(lostPowerDeviceNames)}
-              </div>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'faultNum'}
-                  title={'设备故障次数'}
-                  loading={loading}
-                  data={faultNumAnalysis}
-                  theme={theme}
-                  deviceNames={contrastSwitch && contrastEndDate ? faultNumDeviceNames : []}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
-                  hasData={contrastSwitch && contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-
-                {this.showNullValue(faultNumNullvalue)}
-                {contrastSwitch && contrastEndDate ? this.showText(faultNumDeviceNames) : ''}
-
-              </div>
-              <div className={styles.chart}>
-                <PerformanceCharts
-                  graphId={'faultTime'}
-                  title={'设备故障时长'}
-                  loading={loading}
-                  data={faultTimeAnalysis}
-                  theme={theme}
-                  deviceNames={contrastSwitch && contrastEndDate ? faultTimeDeviceNames : []}
-                  hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
-                  hasData={contrastSwitch && contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
-              </div>
-              <div className={styles.textStyle}>
-                <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
-
-                {this.showNullValue(faultTimeNullValue)}
-                {contrastSwitch && contrastEndDate ? this.showText(faultTimeDeviceNames) : ''}
-              </div>
+            <div className={styles.textStyle}>
+              <div><span className="iconfont icon-ha"></span>建议排查转换效率低的设备是否故障</div>
+              {this.showNullValue(conversionNullValue)}
+              {contrastSwitch && contrastEndDate ? this.showText(conversDeviceNames) : ''}
             </div>
-          </TabPane>
-        </Tabs>
+            <div className={styles.chart}>
+              <PerformanceCharts
+                graphId={'hours'}
+                title={'等效小时数'}
+                data={hoursData}
+                loading={loading}
+                deviceNames={contrastSwitch && contrastEndDate ? hourDeviceNames : []}
+                theme={theme}
+                hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastHour : haveSliderHour}
+                hasData={contrastSwitch && contrastEndDate ? contrastHoursHasData : hoursHasData} />
+            </div>
+            <div className={styles.textStyle}>
+              <div><span className="iconfont icon-ha"></span>建议排查等效小时数较低的逆变器:1.排查逆变器下组串是否正常；2.排查逆变器是否故障；3.排查逆变器转换效率是否正常</div>
+
+              {this.showNullValue(hourNullValue)}
+              {contrastSwitch && contrastEndDate ? this.showText(hourDeviceNames) : ''}
+
+            </div>
+            <div className={styles.chart}>
+              <PerformanceCharts
+                graphId={'availability'}
+                title={'可利用率'}
+                loading={loading}
+                data={availabilityAnalysis}
+                theme={theme}
+                deviceNames={contrastSwitch && contrastEndDate ? availabilityDeviceNames : []}
+                hasSlider={contrastSwitch && contrastEndDate ? haveSliderConAvailability : haveSliderAvailability}
+                hasData={contrastSwitch && contrastEndDate ? contrastAvailabilityHasData : availabilityHasData} />
+            </div>
+            <div className={styles.textStyle}>
+              <div><span className="iconfont icon-ha"></span>建议排查可利用率较低的设备是否故障</div>
+              {this.showText(availabilityDeviceNames)}
+
+            </div>
+          </div>
+        }
+        {targetTabs === '2' && <div className={styles.chartsContainer}>
+          <div className={styles.chart}>
+            <PerformanceCharts
+              graphId={'lostPower'}
+              title={'损失电量'}
+              loading={loading}
+              data={lossPowerAnalysis}
+              theme={theme}
+              hasSlider={contrastSwitch && contrastEndDate ? haveSliderConLostPower : haveSliderLostPower}
+              deviceNames={contrastSwitch && contrastEndDate ? lostPowerDeviceNames : []}
+              hasData={contrastSwitch && contrastEndDate ? contrastLostPowerHasData : lostPowerHasData} />
+          </div>
+          <div className={styles.textStyle}>
+            <div><span className="iconfont icon-ha"></span>建议排查损失电量较多的设备是否故障</div>
+            {this.showText(lostPowerDeviceNames)}
+          </div>
+          <div className={styles.chart}>
+            <PerformanceCharts
+              graphId={'faultNum'}
+              title={'设备故障次数'}
+              loading={loading}
+              data={faultNumAnalysis}
+              theme={theme}
+              deviceNames={contrastSwitch && contrastEndDate ? faultNumDeviceNames : []}
+              hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastNum : haveSliderNum}
+              hasData={contrastSwitch && contrastEndDate ? contrastFaultNumHasData : faultNumHasData} />
+          </div>
+          <div className={styles.textStyle}>
+            <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
+
+            {this.showNullValue(faultNumNullvalue)}
+            {contrastSwitch && contrastEndDate ? this.showText(faultNumDeviceNames) : ''}
+
+          </div>
+          <div className={styles.chart}>
+            <PerformanceCharts
+              graphId={'faultTime'}
+              title={'设备故障时长'}
+              loading={loading}
+              data={faultTimeAnalysis}
+              theme={theme}
+              deviceNames={contrastSwitch && contrastEndDate ? faultTimeDeviceNames : []}
+              hasSlider={contrastSwitch && contrastEndDate ? haveSliderConTrastTime : haveSliderTime}
+              hasData={contrastSwitch && contrastEndDate ? contrastFaultTimeHasData : faultTimeHasData} />
+          </div>
+          <div className={styles.textStyle}>
+            <div><span className="iconfont icon-ha"></span>建议排查故障次数较多以及故障时长较长的设备</div>
+
+            {this.showNullValue(faultTimeNullValue)}
+            {contrastSwitch && contrastEndDate ? this.showText(faultTimeDeviceNames) : ''}
+          </div>
+        </div>
+        }
       </div>
     );
   }

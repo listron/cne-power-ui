@@ -24,11 +24,7 @@ class HistoryWarn extends Component {
     const { theme } = this.props;
     return (
       <div className={`${styles.historyWarnBox} ${styles[theme]}`}>
-        <div className={styles.historyWarnContainer}>
-          <div className={styles.historyWarnContent}>
-            <HistoryWarnCon {...this.props} />
-          </div>
-        </div>
+        <HistoryWarnCon {...this.props} />
         <Footer />
       </div>
     );

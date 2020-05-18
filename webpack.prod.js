@@ -87,23 +87,25 @@ module.exports = {
     },
     splitChunks: {
       chunks: 'all',
-      minSize: 30000,
-      maxSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 6,
-      maxInitialRequests: 4,
-      automaticNameDelimiter: '~',
       cacheGroups: {
+        // echartsLib: {
+        //   test: /echarts/,
+        // /[\/]node_modules[\/][^\/]{0,}?echarts[^\/]{0,}?[\/]/.test('/node_modules/element-ui/')
+        // test: (module) => { return /react|redux|prop-types/.test(module.context); }, // 可直接使用 函数 做路径匹配
+        //   name: 'echartsLib',
+        //   priority: 10,
+        // },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
-          priority: -10,
+          priority: 1,
         },
         common: {
+          test: /[\\/]src[\\/]/,
           name: 'common',
-          minSize: 0,
-          minChunks: 2,
-          priority: -20,
+          minChunks: 3,
+          priority: -10,
+          reuseExistingChunk: true,
         },
       },
     },
@@ -124,12 +126,6 @@ module.exports = {
       to: __dirname + '/dist',
     }]),
     new UglifyJSPlugin(),
-    ...['reacts', 'uiPlugin', 'chartPlugin', 'restPlugin'].map(name => {
-      return new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require(`./assets/vendors/${name}-manifest.json`),
-      });
-    }),
     new HappyPack({
       id: 'happyBabel',
       use: [{
@@ -208,5 +204,3 @@ module.exports = {
     // new BundleAnalyzerPlugin(),
   ],
 };
-
-// https://blog.csdn.net/kai_vin/article/details/89026077?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase

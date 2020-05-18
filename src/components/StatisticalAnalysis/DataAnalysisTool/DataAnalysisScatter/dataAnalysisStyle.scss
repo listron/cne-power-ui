@@ -3,6 +3,7 @@
 .allstationBox {
   padding: 24px 24px 24px 4px;
   background: #fff;
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -61,6 +62,7 @@
     height: 120px;
     display: flex;
     flex-direction: column;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
 
     .headTop {
       display: flex;
@@ -124,34 +126,17 @@
       }
 
       .seachBtn {
-        border: 1px solid $themeColor;
-        color: $themeColor;
-        margin: 0 24px;
-
-        &:hover {
-          background: $themeColor;
-          color: #fff;
-        }
-      }
-
-      .disabledSeach {
-        border: none;
-        background: #f5f5f5;
-        color: #BFBFBF;
-
-        &:hover {
-          background: #f5f5f5;
-          color: #BFBFBF;
-        }
+        margin: 0 12px;
       }
     }
   }
 
   .scatterBox {
     background: #f0f2f5;
-    padding-top: 24px;
+    margin-top: 24px;
     display: flex;
     flex: 1;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
 
     .chartsContainer {
       display: flex;

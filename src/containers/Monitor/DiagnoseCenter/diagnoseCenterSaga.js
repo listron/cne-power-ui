@@ -174,7 +174,7 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
    * fromPath: 从路径(消缺)跳转过来 => 无其他信息，需要基于分析的结果作为页面显示介质
    */
   try {
-    const { diagWarningId, deviceFullcode, eventCode, beginTime, interval, fromPath, analysisPageLoading } = payload;
+    const { diagWarningId, deviceFullcode, eventCode, interval, fromPath, analysisPageLoading } = payload;
     const { pageKey } = yield select(state => state.monitor.diagnoseCenter);
     const eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
     const url = `${APIBasePath}${monitor.getEventsAnalysis}`;
@@ -185,7 +185,8 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       params.eventCode = eventCode;
       params.eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
       params.interval = interval;
-      params.date = moment(beginTime).format('YYYY-MM-DD');
+      const timeKey = (pageKey === 'diagnose' && payload.updateTime) ? 'updateTime' : 'beginTime';
+      params.date = moment(payload[timeKey]).format('YYYY-MM-DD');
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {

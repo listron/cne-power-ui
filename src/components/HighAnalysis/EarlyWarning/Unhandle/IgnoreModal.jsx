@@ -108,7 +108,7 @@ class IgnoreModal extends Component {
                     centered={true}
                     footer={null}
                     wrapClassName={styles.stationModal}
-                    getContainer={() => this.refs.modal}
+                    // getContainer={() => this.refs.modal}
                     onCancel={this.handleIngoreCancel}
                 >
                     <div className={styles.reasonItem} >
@@ -142,12 +142,12 @@ class IgnoreModal extends Component {
                                 </div>
                             </div>
                             <div className={styles.handlerBtn}>
-                              <span onClick={this.handleIngoreCancel}>取消</span>
-                              <CneButton
-                                lengthMode="short"
-                                onClick={this.handleIngoreOk}
-                              >
-                                保存
+                                <span onClick={this.handleIngoreCancel}>取消</span>
+                                <CneButton
+                                    lengthMode="short"
+                                    onClick={this.handleIngoreOk}
+                                >
+                                    保存
                               </CneButton>
                             </div>
                         </div>

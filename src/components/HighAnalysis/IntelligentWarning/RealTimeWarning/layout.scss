@@ -4,11 +4,13 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-
   .realTimeWarningFilter {
     position: relative;
     display: flex;
     flex-direction: column; // flex: 1 0 auto;
+  }
+  .warnWrap{
+    flex: 1;
   }
   .deviceNameSearch {
     display: flex;

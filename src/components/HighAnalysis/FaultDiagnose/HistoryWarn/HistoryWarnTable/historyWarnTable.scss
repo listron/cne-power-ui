@@ -1,10 +1,24 @@
 .historyWarnTable{
-  width: 100%;
-  .noData {
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    background-color: #fff;
-    margin-top: 48px;
+  background: #fff;
+  flex: 1;
+  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+
+  table{
+    table-layout: fixed;
+  }
+  .stationNameText,.deviceNameText,.algorithmNameText{
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+
+  .look{
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--themeColor);
+    &:hover{
+      color:#f9b600
+    }
   }
 }

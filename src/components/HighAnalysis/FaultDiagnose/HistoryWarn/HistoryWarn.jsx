@@ -7,8 +7,9 @@ import HistoryWarnTable from './HistoryWarnTable/HistoryWarnTable';
 import styles from './historyWarn.scss';
 import StationSelect from '../../../Common/StationSelect/index';
 import DeviceSelect from '../../../Common/DeviceSelect/index';
-import {Button, Icon} from 'antd';
+import { Button, Icon } from 'antd';
 import CommonPagination from '../../../Common/CommonPagination/index';
+import CneButton from '../../../Common/Power/CneButton';
 
 export default class HistoryWarn extends React.Component {
   static propTypes = {
@@ -60,11 +61,11 @@ export default class HistoryWarn extends React.Component {
 
   onFilterShowChange = (filterText) => {
     const { showFilter } = this.state;
-    if(showFilter === filterText){
+    if (showFilter === filterText) {
       this.setState({
         showFilter: '',
       });
-    }else{
+    } else {
       this.setState({
         showFilter: filterText,
       });
@@ -138,51 +139,53 @@ export default class HistoryWarn extends React.Component {
     } = this.props;
     return (
       <div className={styles.historyWarn}>
-        <div className={styles.topSearch}>
-          <span>筛选条件</span>
-          <Button onClick={()=>this.onFilterShowChange('modal')}>
-            算法模型<Icon type={showFilter ==='modal' ? 'up' : 'down'} />
-          </Button>
-          <Button onClick={()=>this.onFilterShowChange('time')}>
-            检测日期<Icon type={showFilter ==='time' ? 'up' : 'down'} />
-          </Button>
-        </div>
-        <div className={styles.filterBox}>
-          {showFilter==='modal' && <ModalFilter {...this.props} />}
-          {showFilter==='time' && <DateFilter {...this.props} />}
-        </div>
-        <div className={styles.filterWrap}>
-          <FilteredItems {...this.props} />
-        </div>
-        <div className={styles.topQuery}>
-          <div>
-            <span>电站名称</span>
-            <StationSelect
-              data={stations.toJS().filter(e => e.stationType === 0)}
-              style={{ width: '200px' }}
-              onOK={this.selectStation}
-              value={stations.toJS().filter(e => e.stationCode === stationCode)}
-              disabledStation={stations.toJS().filter(e => e.isConnected === 0).map(e => e.stationCode)}
-            />
+        <div className={styles.serchWrap}>
+          <div className={styles.topSearch}>
+            <span>筛选条件</span>
+            <Button onClick={() => this.onFilterShowChange('modal')}>
+              算法模型<Icon type={showFilter === 'modal' ? 'up' : 'down'} />
+            </Button>
+            <Button onClick={() => this.onFilterShowChange('time')}>
+              检测日期<Icon type={showFilter === 'time' ? 'up' : 'down'} />
+            </Button>
           </div>
-          <div>
-            <span>风机名称</span>
-            <DeviceSelect
-              disabled={!+stationCode}
-              stationCode={+stationCode}
-              deviceTypeCode={101}
-              style={{ width: 'auto', minWidth: '198px' }}
-              onOK={this.onOk}
-              multiple={true}
-              deviceShowNumber={true}
-              holderText={'请选择'}
-              needAllCheck={true}
-              value={selectDeviceCode}
-            />
+          <div className={styles.filterBox}>
+            {showFilter === 'modal' && <ModalFilter {...this.props} />}
+            {showFilter === 'time' && <DateFilter {...this.props} />}
           </div>
-          <div className={styles.check}>
-            <Button onClick={this.searchFunc}>查询</Button>
-            {(!!+stationCode) && (<span onClick={this.resetSelectFunc}>重置</span>)}
+          <div className={styles.filterWrap}>
+            <FilteredItems {...this.props} />
+          </div>
+          <div className={styles.topQuery}>
+            <div>
+              <span>电站名称</span>
+              <StationSelect
+                data={stations.toJS().filter(e => e.stationType === 0)}
+                style={{ width: '200px' }}
+                onOK={this.selectStation}
+                value={stations.toJS().filter(e => e.stationCode === stationCode)}
+                disabledStation={stations.toJS().filter(e => e.isConnected === 0).map(e => e.stationCode)}
+              />
+            </div>
+            <div>
+              <span>风机名称</span>
+              <DeviceSelect
+                disabled={!+stationCode}
+                stationCode={+stationCode}
+                deviceTypeCode={101}
+                style={{ width: 'auto', minWidth: '198px' }}
+                onOK={this.onOk}
+                multiple={true}
+                deviceShowNumber={true}
+                holderText={'请选择'}
+                needAllCheck={true}
+                value={selectDeviceCode}
+              />
+            </div>
+            <div className={styles.check}>
+              <CneButton onClick={this.searchFunc} lengthMode="short">查询</CneButton>
+              {(!!+stationCode) && (<span onClick={this.resetSelectFunc}>重置</span>)}
+            </div>
           </div>
         </div>
         <div className={styles.topPage}>

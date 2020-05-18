@@ -3,44 +3,51 @@
 .light {
   .stationTimeFilter {
     background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     .rightContent {
       color: $lightColor;
     }
   }
   .componentContainer {
     background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     .title {
-      border-bottom: 1px solid #f0f2f5;
+      border-bottom: 1px dashed var(--themeColor);
       .stationStatus {
-        color: $darkColor;
+        color: #fff;
+        background: var(--themeColor);
         .stationIcon {
-           color: $themeColor;
            margin-right: 4px;
         }
-        .rightFont {
-          color: $lightColor;
-        }
-         .selectButton{
-          height: 19px;
-          line-height: 18px;
-          padding: 0 5px;
-          border-radius: 2px;
-          margin: 0 5px;
-        }
-        .disabled{
-            background: #f1f1f1;
-            color:var(--lightColor);
-            border:1px solid #d4d4d4;
-            cursor: pointer;
-            pointer-events: none;
-        } 
-        
       }
       .graph {
         .stationTargetValue {
           color: #199475;
         }
       }
+    }
+    .selectButton{
+      height: 19px;
+      line-height: 18px;
+      padding: 0 5px;
+      border-radius: 2px;
+      margin: 0 5px;
+    }
+     .disabled{
+        background: #f1f1f1;
+        color:var(--lightColor);
+        border:1px solid #d4d4d4;
+        cursor: pointer;
+        pointer-events: none;
+    }
+     :global{
+        .ant-radio-button-wrapper:not(:first-child)::before{
+          background-color:transparent
+        }
+        .ant-radio-button-wrapper-checked{
+          color:#fff;
+          background: var(--themeColor);
+        }
     }
     .targetGraphContainer {
       .bgStyle {
@@ -50,8 +57,8 @@
           color: #353535;
         }
       }
-      .tabContainer {
-        border-bottom: 1px solid #f0f2f5;
+      .tabContainer:not(:last-child) {
+        border-bottom: 1px dashed var(--themeColor);
       }
     }
   }

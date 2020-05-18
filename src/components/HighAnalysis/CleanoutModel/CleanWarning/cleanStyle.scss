@@ -2,7 +2,12 @@
 @import "./layout.scss";
 
 .cleanWarningMain.light {
-  .mainContent {
+  .filterCondition{
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    background-color: #fff;
+  }
+  .wrap{
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     background-color: #fff;
   }
   .stationName, .influencePercent, .cleanDays, .warningTime, .handle{
@@ -30,6 +35,7 @@
   color: $darkColor;
   .sideContent {
     background-color: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
   .topStations {
     border-bottom: 1px solid $promptColor;
@@ -105,86 +111,3 @@
   }
 }
 
-@import "../../../../theme/darkTheme.scss";
-.cleanWarningMain.dark {
-  background: $background;
-  .wrap {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-  }
-}
-
-.clearWarningSide.dark {
-  background: $background;
-  color: $fontColor;
-  .topStations {
-    border: 1px solid $border-color;
-    background: $light-background;
-    :global {
-      .anticon {
-        color: $fontColor-hover;
-      }
-    }
-    .leftPart {
-      .stationName {
-        color: $fontColor-hover;
-      }
-    }
-    .rightPart {
-      border-left: 1px solid $border-color;
-    }
-    .stationList {
-      background: $sideBar-background;
-      border: 1px solid $border-color;
-      box-shadow: 0 0 4px 0 $box-shadow-color;
-      color: $fontColor;
-      .title {
-        color: $fontColor-hover;
-      }
-      .provinceName {
-        color: $fontColor-hover;
-      }
-    }
-  }
-
-  .dustInfo {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-    .effectGen,
-    .effectDay {
-      border-right: 1px solid $border-color;
-      .dustEffectValue,
-      .lastCleanValue {
-        color: $fontColor-hover;
-      }
-    }
-  }
-
-  .effectCharts {
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-    .title {
-      border-bottom: 1px solid $border-color;
-    }
-    .darkRect {
-      background-color: #00f8ff;
-    }
-    .lightRect {
-      background-color: #fd6e8f;
-    }
-    .round {
-      border: 1px solid #f8e71c;
-    }
-    :global {
-      .ant-tabs-nav-container {
-        background-color: transparent;
-      }
-      .ant-tabs-bar {
-        border: none;
-      }
-    }
-  }
-}

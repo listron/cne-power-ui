@@ -214,48 +214,49 @@ class Unhandle extends Component {
     return (
       <div className={styles.unhandleMain}>
         {showWarningTip && <WarningTip onCancel={this.cancelWarningTip} onOK={this.confirmWarningTip} value={warningTipText} />}
-        <FilterCondition
-          theme={theme}
-          onChange={this.filterCondition}
-          option={[
-            {
-              name: '电站名称',
-              type: 'stationName',
-              typeName: 'stationCodes',
-              data: stations.filter(e => e.stationType === 1),
-            },
-            {
-              name: '所属方阵',
-              type: 'multipleType',
-              typeName: 'belongMatrixs',
-              data: initmatrixList,
-            },
-          ]}
-        />
-        <div className={styles.wrap}>
-          <span ref={'select'} />
-          <div className={styles.selectCondition}>
-            {unhandleOperation ? <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
-              getPopupContainer={() => this.refs.select}>
-              <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
-                <i className="iconfont icon-tranlist" />  转工单</Option>
-              <Option value="ignore" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
-                <i className="iconfont icon-neglect" />  忽略</Option>
-            </Select> : <div></div>}
-            <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-              onPaginationChange={this.onPaginationChange} theme={theme} />
-          </div>
-          <CneTable
-            columns={columns}
-            dataSource={dataSource}
-            pagination={false}
-            rowSelection={rowSelection}
-            loading={loading}
-            sortField={this.tableSortMap[sortField]}
-            sortMethod={this.sortMethodMap[sortMethod]}
-            onChange={this.tableChange}
+        <div className={styles.filterCondition}>
+          <FilterCondition
+            theme={theme}
+            onChange={this.filterCondition}
+            option={[
+              {
+                name: '电站名称',
+                type: 'stationName',
+                typeName: 'stationCodes',
+                data: stations.filter(e => e.stationType === 1),
+              },
+              {
+                name: '所属方阵',
+                type: 'multipleType',
+                typeName: 'belongMatrixs',
+                data: initmatrixList,
+              },
+            ]}
           />
         </div>
+        <span ref={'select'} />
+        <div className={styles.selectCondition}>
+          {unhandleOperation ? <Select onChange={this.selectChange} placeholder="操作" value={'操作'} dropdownMatchSelectWidth={false}
+            getPopupContainer={() => this.refs.select}>
+            <Option value="transfer" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
+              <i className="iconfont icon-tranlist" />  转工单</Option>
+            <Option value="ignore" disabled={selectedRowKeys.length > 0 ? false : true} className={styles.option}>
+              <i className="iconfont icon-neglect" />  忽略</Option>
+          </Select> : <div></div>}
+          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
+            onPaginationChange={this.onPaginationChange} theme={theme} />
+        </div>
+        <CneTable
+          columns={columns}
+          className={styles.wrap}
+          dataSource={dataSource}
+          pagination={false}
+          rowSelection={rowSelection}
+          loading={loading}
+          sortField={this.tableSortMap[sortField]}
+          sortMethod={this.sortMethodMap[sortMethod]}
+          onChange={this.tableChange}
+        />
         <IgnoreModal ignoreReason={ignoreReason} onChange={this.addReason} ingoreVisible={ingoreVisible} theme={theme} />
       </div>
 

@@ -1,17 +1,13 @@
 @import "../../../../theme/theme";
 .historyWarnMain {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  .wrap {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-  }
+   @include contentBoxStyle();
   .selectCondition {
     display: flex;
     justify-content: flex-end;
-    padding: 26px 0 20px 28px;
+    padding: 15px 0 15px 28px;
+  }
+  .tableWrap{
+    flex: 1;
   }
 
   .iconDetail{
@@ -23,11 +19,9 @@
       font-size: 20px;
     }
   }
-  
   .stationNameText,.belongMatrixText,.parentDeviceNameText,.deviceNameText{
-       @include overflowText();
+    @include overflowText();
   }   
-
   .stationName,.belongMatrix,.parentDeviceName,.deviceName,.happenTime,.lostGenPercent,.iconDetail{
     width:14%;
   }
@@ -73,11 +67,14 @@
 }
 
 .light {
-  border: 1px solid #e1e2e2;
-  .selectCondition {
-    border-top: 1px solid #d4d4d4;
+  .filterWrap{
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    background: #fff;
   }
-  
+  .tableWrap{
+     box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    background: #fff;
+  }
   .iconDetail{
     i{
       color: $themeColor;
@@ -87,21 +84,9 @@
     }
     
   }
-
   .chartCont {
     border-top: 1px solid $promptColor;
   }
 }
 
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .wrap {
-    border: 1px solid $border-color;
-    background: $light-background;
-    margin-top: 10px;
-  }
-  .chartCont {
-    border-top: 1px solid $border-color;
-  }
-}
+

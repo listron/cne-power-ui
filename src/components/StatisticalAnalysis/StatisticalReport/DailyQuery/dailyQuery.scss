@@ -3,35 +3,29 @@
 .dailySearch{
   .typeCheck{
     display: flex;
+    padding-left: 12px;
     .typeNormal, .typeActive{
-      height: 40px;
-      line-height: 40px;
-      flex-basis: 120px;
-      text-align: center;
-      font-size: 14px;
+      width: 98px;
       cursor: pointer;
-      border-left: none;
-    }
-    .typeActive{
-      border-bottom: none;
-    }
-    .holder{
-      flex: 1;
+      margin-bottom: -2px;
+      height: 33px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .searchPart{
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    padding-top: 10px;
     .text{
       margin-right: 4px;
     }
     .category{
-      margin: 0 0 18px 38px;
+      margin: 0 0 10px 38px;
     }
     .searchChange{
       display: flex;
-      background-color: #f8f8f8;
       padding-left: 38px;
       height: 50px;
       .stationSelect,.quotaSelect,.lossElectric,.keyWord,.powerInformation,.timeSelect{
@@ -51,7 +45,7 @@
         }
       }
       .stationSelect,.quotaSelect,.lossElectric,.keyWord,.powerInformation,.timeSelect,.search,.reset{
-        margin-right: 16px;
+        margin-right: 12px;
       }
       .search,.reset{
         margin-top: 8px;
@@ -76,18 +70,6 @@
 
 .quotaList,.limitList,.faultList{
   flex: 1;
-  :global{
-    .ant-table .ant-table-thead > tr > th.numberStyle, .ant-table table .ant-table-tbody > tr > td.numberStyle{
-      padding: 0 10px;
-    }
-    .ant-table-scroll{
-      table{
-        .ant-table-fixed-columns-in-body{
-          visibility: visible;
-        }
-      }
-    }
-  }
   .pagination{
     display: flex;
     justify-content: space-between;
@@ -137,23 +119,26 @@
 // 颜色
 .dailySearch{
   background-color: #fff;
+  .typeCheck{
+    background: #f0f2f5;
+    border-bottom: 1px solid var(--themeColor);
+  }
   .typeNormal, .typeActive{
-    border: 1px solid $promptColor;
-    color: $lightColor;
-    background-color: #f8f8f8;
+    color: var(--themeColor);
   }
   .typeActive{
-    background-color: #fff;
-    border-top: 2px solid $themeColor;
-    color: #000;
+    background: #fff;
+    border: 1px solid var(--themeColor);
+    border-top: 2px solid var(--themeColor);
+    border-bottom: none;
   }
-  .holder{
-    background-color: #f8f8f8;
-    border-top: 1px solid $promptColor;
-    border-bottom: 1px solid $promptColor;
+  .searchPart{
+    border-bottom:1px dashed #d4d4d4;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
 }
 
 .quotaList,.limitList,.faultList{
   background-color: #fff;
+  box-shadow:0 4px 5px 3px rgba(0,0,0,0.20);
 }

@@ -131,7 +131,7 @@ class CaseList extends React.Component {
         },
       }, {
         title: '机型',
-        width: '15%',
+        width: '13%',
         textAlign: 'left',
         dataIndex: 'deviceName',
         render: (text) => {
@@ -204,7 +204,7 @@ class CaseList extends React.Component {
       },
       {
         title: '操作',
-        width: '7%',
+        width: '9%',
         textAlign: 'center',
         dataIndex: 'caozuo',
         render: (text, record) => {
@@ -230,7 +230,6 @@ class CaseList extends React.Component {
           columns={columns}
           dataSource={casePartTableData.map((e, i) => ({ key: i, ...e }))}
           pagination={false}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
         />
         <div className={styles.selectKeyText}> 当前选中<span className={styles.num}>{selectedRowKeys.length}</span> 项 <span className={styles.cancelSelect} onClick={this.cancelSelect}>{selectedRowKeys.length ? '取消选择' : ''}</span></div>
       </div>

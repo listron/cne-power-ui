@@ -5,11 +5,13 @@
   .stationTimeFilter {
     background: #fff;
     border: 1px solid #e1e2e2;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
 
   .componentContainer {
     background: #fff;
     border: 1px solid #e1e2e2;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
 
   .stationContrastTable {
@@ -22,7 +24,7 @@
       }
       .stationnameBg {
         background: #199475;
-        color: #fff;
+        color: #fff;         
       }
 
       >div {

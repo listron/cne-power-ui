@@ -22,7 +22,7 @@ class FilterCondition extends Component {
 
   static defaultProps = {
     filterBoxType: 'items', // items只要触发筛选条件即展示筛选项; none隐藏筛选项
-    onFilterBoxTypeChange: () => {},
+    onFilterBoxTypeChange: () => { },
   }
 
   /**
@@ -208,7 +208,7 @@ class FilterCondition extends Component {
   }
 
   render() {
-    const { theme = 'light' } = this.props;
+    const { theme = 'light', className } = this.props;
     const { showFilter, optionItem, showFilterBox } = this.state;
     const { type } = showFilter;
     const selectData = optionItem.filter(e => e.type === showFilter.type && e.typeName === showFilter.typeName);
@@ -218,14 +218,14 @@ class FilterCondition extends Component {
     const radioArray = ['stationType', 'radioSelect'];
     const parentMultipArray = ['stationName', 'parentCheckBox'];
     return (
-      <div className={`${styles.filterCondition} ${styles[theme]}`}>
+      <div className={`${styles.filterCondition} ${styles[theme]}  ${className || ''}`}>
         <FilterConditionTitle
           options={optionItem}
           onChange={this.showFilterChange}
           onChangeFilter={this.onChangeFilter}
           showFilterBox={showFilterBox}
         />
-        <div style={{display: showFilterBox ? 'block' : 'none'}} className={styles.filterBox}>
+        <div style={{ display: showFilterBox ? 'block' : 'none' }} className={styles.filterBox}>
           {parentMultipArray.includes(type) && selectData.length > 0 &&
             <ParentFilter
               onChangeFilter={this.onChangeFilter}

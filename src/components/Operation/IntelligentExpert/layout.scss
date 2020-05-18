@@ -116,6 +116,9 @@
       cursor: pointer;
       color: $themeColor;
     }
+    table{
+      table-layout: fixed;
+    }
     .faultName,
     .checkItems,
     .processingMethod,
@@ -125,7 +128,7 @@
     }
     .faultTypeName{
       @include overflowText();
-      max-width: calc((100vw - 230px) * 0.08 - 10px);
+      max-width: calc((100vw - 230px) * 0.09 - 10px);
     }
     .handler {
       text-align: center;
@@ -143,12 +146,6 @@
     }
     .likeCount {
       text-align: right;
-    }
-    :global {
-      .ant-table .ant-table-thead > tr > th,
-      .ant-table .ant-table-tbody > tr > td {
-        padding: 0 8px;
-      }
     }
   }
 }

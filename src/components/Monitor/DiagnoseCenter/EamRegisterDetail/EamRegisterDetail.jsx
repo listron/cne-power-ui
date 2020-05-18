@@ -41,7 +41,64 @@ export default class EamRegisterDetail extends Component {
   }
 
   componentWillUnmount() { // 卸载的时候要注意
+    const { changeStore } = this.props;
     const main = document.getElementById('main');
+    // 恢复初始值
+    changeStore({
+      eamFaultData: { // 获取EAM故障详情
+        faultNo: '',
+        stationName1: '',
+        stationName2: '',
+        stopType: '',
+        assetNo1: '',
+        assetNo2: '',
+        location1: '',
+        location2: '',
+        faultCode1: '',
+        faultCode2: '',
+        manufacturer: '',
+        model: '',
+        faultLevel: '',
+        faultSysType1: '',
+        faultSysType2: '',
+        monitorSysFault: '',
+        status: '',
+        createName: '',
+        createTime: '',
+        faultStartTime: '',
+        faultEndTime: '',
+        reason: '',
+      },
+      eamDefectData: { // 获取EAM缺陷详情
+        defectNo: '',
+        stationName1: '',
+        stationName2: '',
+        defectType: '',
+        assetNo1: '',
+        assetNo2: '',
+        location1: '',
+        location2: '',
+        defectDetail: '',
+        status: '',
+        createName: '',
+        createTime: '',
+        projectSource: '',
+        phone: '',
+        faultStartTime: '',
+        woprofess: '',
+      },
+      eamDetailParams: { // EAM登记详情
+        eventName: '',
+        eventDesc: '',
+        deviceTypeName: '',
+        deviceName: '',
+        stationName: '',
+        type: 1,
+      },
+      workOrderList: [], // 子工单列表
+      eamDiagList: [], // 查询告警登记记录
+      bgcIndex: 0, // 黄色背景
+    });
     main && main.removeEventListener('scroll', this.bindScroll, false);
   }
 
@@ -176,7 +233,7 @@ export default class EamRegisterDetail extends Component {
       workOrderList,
       eamDiagList,
       bgcIndex,
-      eamDetailParams: { type }
+      eamDetailParams: { type },
     } = this.props;
     const listColumn = [
       {
@@ -268,7 +325,10 @@ export default class EamRegisterDetail extends Component {
             <div className={styles.eamTopTitle}>
               <div>
                 <i className="iconfont icon-gdxq" />
-                <span>EAM故障列表</span>
+                <span>
+                  EAM故障列表
+                  <span className={styles.infoWarning}>（数据同步延迟一天）</span>
+                </span>
               </div>
               <div>
                 {`合计：${eamDiagList ? eamDiagList.length : 0}`}

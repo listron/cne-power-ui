@@ -102,7 +102,7 @@ class HistoryWarningTable extends Component {
     }
     changeHistoryWarningStore({ orderField: newOrderField, orderCommand: newOrderCommand });
     onChangeFilter({
-      orderField: newOrderField, orderCommand: newOrderCommand
+      orderField: newOrderField, orderCommand: newOrderCommand,
     });
   }
 
@@ -142,7 +142,7 @@ class HistoryWarningTable extends Component {
         {/*<Button className={styles.ticketButton} ><Link to={`/operation/ticket/${ticketInfo.defectId}`}>查看工单详情</Link></Button>  */}
         <CneButton
           lengthMode="long"
-          style={{margin: '0 auto'}}
+          style={{ margin: '0 auto' }}
         >
           <Link to={`/operation/workProcess/view?page=defectDetail&defectId=${record.workOrderId}`} target="_blank">
             查看工单详情
@@ -310,7 +310,7 @@ class HistoryWarningTable extends Component {
                 getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onTransferChange(visible, record.workOrderId, index)}
               >
-                <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showTransferPopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-tranlist icon-action"></i></div>
+                <div style={{ display: 'flex', justifyContent: 'center' }} className={this.state.showTransferPopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-tranlist icon-action"></i></div>
               </Popover>
             );
           }
@@ -322,7 +322,7 @@ class HistoryWarningTable extends Component {
                 getPopupContainer={() => this.refs.popover}
                 onVisibleChange={(visible) => this.onRelieveChange(visible, record.operateId, index)}
               >
-                <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-manual icon-action"></i></div>
+                <div style={{ display: 'flex', justifyContent: 'center' }} className={this.state.showRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-manual icon-action"></i></div>
               </Popover>
             );
           }
@@ -333,7 +333,7 @@ class HistoryWarningTable extends Component {
               content={this.renderAutoRelievePopover(record, index)}
               getPopupContainer={() => this.refs.popover}
               trigger="click">
-              <div style={{display: 'flex', justifyContent: 'center'}} className={this.state.showAutoRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-lifted icon-action"></i></div>
+              <div style={{ display: 'flex', justifyContent: 'center' }} className={this.state.showAutoRelievePopover[index] ? styles.selected : styles.hoverDiv}><i className="iconfont icon-lifted icon-action"></i></div>
             </Popover>
           );
         },
@@ -348,16 +348,18 @@ class HistoryWarningTable extends Component {
           <CommonPagination pageSize={pageSize} currentPage={pageNum} onPaginationChange={this.onPaginationChange} total={total} theme={theme} />
         </div>
         <span ref={'popover'} />
-        <CneTable
-          dataSource={historyWarningList}
-          rowKey={record => record.warningLogId}
-          columns={columns}
-          pagination={false}
-          sortField={this.tableSortMap[orderField]}
-          sortMethod={this.sortMethodMap[orderCommand]}
-          onChange={this.tableChange}
-          locale={{ emptyText: <img width="223" height="164" src="/img/nodata.png" /> }}
-        />
+        <div className={styles.tableWrap}>
+          <CneTable
+            dataSource={historyWarningList}
+            rowKey={record => record.warningLogId}
+            columns={columns}
+            pagination={false}
+            sortField={this.tableSortMap[orderField]}
+            sortMethod={this.sortMethodMap[orderCommand]}
+            onChange={this.tableChange}
+          />
+        </div>
+
       </div>
     );
   }
