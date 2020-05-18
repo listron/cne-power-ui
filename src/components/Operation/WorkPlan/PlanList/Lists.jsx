@@ -256,6 +256,7 @@ class Lists extends PureComponent {
             </span>
           ) : <span />}
           <CommonPagination
+            className={styles.pagination}
             pageSize={pageSize}
             currentPage={pageNum}
             total={planCount}

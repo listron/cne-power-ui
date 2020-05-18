@@ -131,7 +131,7 @@ class CaseHandle extends React.Component {
           </CneButton>
 
         </div> : <div />}
-        <CommonPagination pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
+        <CommonPagination className={styles.pagination} pageSize={pageSize} currentPage={pageNum} total={total} onPaginationChange={this.onPaginationChange} />
 
       </div>
     );

@@ -331,7 +331,7 @@ class TableList extends Component {
                         {addRight && <CneButton lengthMode="short" className={styles.workflow} onClick={this.addWorkFlow}>
                             <div className={styles.icon}>
                                 <span className={'iconfont icon-newbuilt'} />
-                            </div> 工作票
+                            </div> 操作票
                         </CneButton>}
                         {handleRight && <CneButton lengthMode="short" className={styles.cbtn} disabled={!review}
                             onClick={() => { this.handleBatch('review'); }}>审核</CneButton>}
@@ -347,7 +347,7 @@ class TableList extends Component {
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                        onPaginationChange={this.onPaginationChange} theme={theme} />
+                        className={styles.pagination} onPaginationChange={this.onPaginationChange} theme={theme} />
                 </div>
                 <div className={styles.tableBox}>
                     <CneTable

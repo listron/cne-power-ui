@@ -373,7 +373,7 @@ class TableList extends Component {
                         })}
                     </div>
                     <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum}
-                        onPaginationChange={this.onPaginationChange} theme={theme} />
+                        className={styles.pagination} onPaginationChange={this.onPaginationChange} theme={theme} />
                 </div>
                 <div className={styles.tableBox}>
                     <CneTable

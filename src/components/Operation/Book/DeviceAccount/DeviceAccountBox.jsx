@@ -295,7 +295,7 @@ export default class DeviceAccountBox extends React.Component {
           </div>
         </div>
         <div className={styles.deviceAccountPage}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} />
+          <CommonPagination className={styles.pagination} pageSize={pageSize} currentPage={pageNum} total={pageCount} onPaginationChange={this.onPaginationChange} />
         </div>
         <DeviceAccountTable {...this.props} />
       </div>

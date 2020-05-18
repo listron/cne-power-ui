@@ -127,6 +127,7 @@ class DayReportListHandle extends Component {
 
         </span>
         <CommonPagination
+          className={styles.pagination}
           pageSize={pageSize}
           currentPage={pageNum}
           total={totalNum}

@@ -235,6 +235,7 @@ class StockList extends Component {
             </Radio.Group>
           </div>
           <CommonPagination
+            className={styles.pagination}
             currentPage={pageNum}
             pageSize={pageSize}
             total={pageCount}

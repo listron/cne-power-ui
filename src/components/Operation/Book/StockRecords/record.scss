@@ -34,10 +34,11 @@
   .stockListTop{
     display: flex;
     justify-content: space-between;
-    margin:0 0 0 34px;
     height: 60px;
     line-height: 60px;
-
+    .pagination {
+      margin-right: 0px;
+    }
     :global {
       .ant-radio-group {
         .ant-radio-button-wrapper {
