@@ -20,6 +20,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 5px 3px rgba(0,0,0,0.20);
+  margin: 0 3px 5px 0;
   .topTitle{
     flex-basis: 0 0 64px;
     display: flex;

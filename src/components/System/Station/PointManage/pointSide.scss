@@ -20,7 +20,6 @@
   z-index: 99;
 
   :global {
-
     .ant-select,
     .ant-cascader-picker {
       width: 198px;
@@ -68,12 +67,13 @@
         @include backIcon();
       }
     }
-
   }
 
   .pointEdit,
   .pointDetail,
   .pointAdd {
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin: 0 3px 5px 0;
     .pageContainer {
       display: flex;
       flex: 1;
@@ -94,7 +94,6 @@
           flex-direction: column;
 
           :global {
-
             .ant-select,
             .ant-cascader-picker {
               width: 198px;
@@ -111,7 +110,7 @@
               font-size: 14px;
               font-family: SimSun, sans-serif;
               line-height: 1;
-              content: '*';
+              content: "*";
             }
 
             .ant-form-item {
@@ -154,20 +153,15 @@
               overflow: hidden;
               cursor: pointer;
             }
-
           }
 
           .submitStyle {
             margin: 20px 0 50px 200px;
 
-
             .preStyles {
               margin-right: 40px;
             }
           }
-
-
-
         }
       }
 
@@ -183,7 +177,6 @@
           .infocontainer {
             display: flex;
             // margin-bottom: 20px;
-
 
             .name {
               width: 150px;
@@ -201,7 +194,6 @@
           }
         }
       }
-
     }
   }
 
@@ -214,7 +206,6 @@
         height: 60px;
         line-height: 40px;
 
-
         .titleText {
           text-align: center;
           color: #000;
@@ -226,7 +217,7 @@
             font-size: 14px;
             font-family: SimSun, sans-serif;
             line-height: 1;
-            content: '*';
+            content: "*";
           }
         }
 
@@ -242,10 +233,7 @@
           width: 198px;
           margin-left: 66px;
         }
-
-
       }
     }
   }
-
 }

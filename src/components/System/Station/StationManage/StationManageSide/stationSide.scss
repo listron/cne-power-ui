@@ -16,7 +16,8 @@
     flex: 1 0 auto;
     background-color: #fff;
     border: 1px solid #e1e2e2;
-
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin: 0 3px 5px 0;
     .detailTop {
       // 顶部详情及操作
       height: 60px;
@@ -50,7 +51,8 @@
         align-items: center;
 
         :global {
-          .icon-last,.icon-next {
+          .icon-last,
+          .icon-next {
             font-size: 20px;
             margin-right: 20px;
             cursor: pointer;
@@ -66,9 +68,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
-           width: 40px;
+          width: 40px;
         }
-        
+
         .backIcon {
           @include backIcon();
         }
@@ -78,7 +80,6 @@
 
   .stationManageDetail {
     .stationManageContent {
-
       // 各详情展示区
       .infoBox {
         margin: 0 16px;
@@ -178,7 +179,6 @@
 
   .stationManageEdit {
     .editPart {
-
       .title,
       .baseInfo,
       .stationBelong,
@@ -337,7 +337,6 @@
             }
 
             :local {
-
               .capacity,
               .designUtilizationHours,
               .floorArea {
