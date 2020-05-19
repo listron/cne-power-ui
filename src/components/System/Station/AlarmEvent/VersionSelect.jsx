@@ -243,7 +243,6 @@ class VersionSelect extends PureComponent {
         {
           addVersionModal &&
           <SetVersionModal
-            diagConfigData={diagConfigData}
             staticData={diagConfigData}
             stations={stations}
             closeModal={this.closeModal}
