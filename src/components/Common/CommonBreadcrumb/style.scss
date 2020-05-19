@@ -5,7 +5,6 @@
   line-height: 40px;
   display: flex;
   justify-content: space-between;
-  background-color: #fff;
   .leftText {
     .breadIcon {
       margin-left: 12px;
@@ -27,7 +26,7 @@
 }
 
 .light {
-  // background: #fff;
+  background: #fff;
   :global {
     .iconfont {
       color: $themeColor;
