@@ -8,6 +8,8 @@ import { Button, Input, Form } from 'antd';
 import InputLimit from '../../../Common/InputLimit'; 
 import PropTypes from 'prop-types';
 import styles from './enterprise.scss';
+import CneButton from '@components/Common/Power/CneButton';
+
 const FormItem = Form.Item;
 
 class EditForm extends Component {
@@ -120,7 +122,7 @@ class EditForm extends Component {
             <InputLimit size={400} height={102} width={736} placeholder="请输入..." />
           )}
         </FormItem>
-        <Button onClick={this.saveEnterprise} loading={loading} className={styles.saveInfo}>保存</Button>
+        <CneButton onClick={this.saveEnterprise} loading={loading} lengthMode="short" className={styles.saveInfo}>保存</CneButton>
       </Form>
     )
   }

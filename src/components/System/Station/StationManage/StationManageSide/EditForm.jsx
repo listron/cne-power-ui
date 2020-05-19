@@ -8,6 +8,7 @@ import EditBaseInfo from './EditBaseInfo';
 import EditStationBelong from './EditStationBelong';
 import EditConnectNetInfo from './EditConnectNetInfo';
 import EditOtherInfo from './EditOtherInfo';
+import CneButton from '@components/Common/Power/CneButton';
 const FormItem = Form.Item;
 const { Option } = Select; 
 
@@ -80,7 +81,7 @@ class EditForm extends Component {
           <span className={styles.titleText}>基本信息</span>
           <div className={styles.titleHandle}>
             <span className={styles.cancel} onClick={this.cancelEdit}>取消</span>
-            <Button className={styles.save} onClick={this.saveStationInfo} loading={loading}>保存</Button>
+            <CneButton className={styles.save} onClick={this.saveStationInfo} loading={loading} >保存</CneButton>
           </div>
         </div>
         <EditBaseInfo 

@@ -263,11 +263,13 @@ class HandlePersonnelInfo extends Component {
             <div className={styles.buttonRow}>
               <CneButton
                 onClick={this.saveUser}
+                // lengthMode="short"
                 loading={addMode === 'continue' && addUserLoading}
                 className={styles.saveUser}
               >保存</CneButton>
               <CneButton
                 onClick={this.saveContinue}
+                // lengthMode="long"
                 loading={pageKey === 'save' && addUserLoading}
               >保存并继续添加</CneButton>
             </div>

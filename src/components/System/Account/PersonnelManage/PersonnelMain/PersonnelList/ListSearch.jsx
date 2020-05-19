@@ -134,7 +134,7 @@ class ListSearch extends Component {
         <Input style={{width: '160px'}} value={phoneText} placeholder="请输入..." onChange={this.phoneChange} />
         <span className={styles.searchTitle}>负责电站</span>
         <Input style={{width: '200px'}} value={stationText} placeholder="请输入..." onChange={this.stationChange} />
-        <CneButton onClick={this.toSearchList}>查询</CneButton>
+        <CneButton lengthMode="short" onClick={this.toSearchList}>查询</CneButton>
         {hasSearchCondition && <span className={styles.reset} onClick={this.toResetList}>重置</span>}
       </div>
     );

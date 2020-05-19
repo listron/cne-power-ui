@@ -25,14 +25,14 @@
   margin: 0 3px 5px 0;
   .detailTop{
     @include top;
-    .editButton{
-      border-color: $themeColor;
-      color: $themeColor;
-      &:hover{
-        background-color: $themeColor;
-        color: #fff;
-      }
-    }
+    // .editButton{
+    //   border-color: $themeColor;
+    //   color: $themeColor;
+    //   &:hover{
+    //     background-color: $themeColor;
+    //     color: #fff;
+    //   }
+    // }
     .infoTip{
       height: 30px;
       width: 323px;
@@ -155,8 +155,8 @@
       }
       .saveInfo{
         margin-left: 94px;
-        color:#199475;
-        border: 1px solid #199475;
+        // color:#199475;
+        // border: 1px solid #199475;
       }
       .dealProposal {
         :global {
