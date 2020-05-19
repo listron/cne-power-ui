@@ -109,8 +109,9 @@
 
   .searchPage {
     display: flex;
-    justify-content: flex-end;
-    padding: 9px 0 11px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0 11px 20px;
   }
 
   .tableStyles {

@@ -189,7 +189,7 @@ export default class EamTable extends React.Component {
     return (
       <div className={styles.searchTable}>
         <div className={styles.searchPage}>
-          <CommonPagination pageSize={pageSize} currentPage={pageNum} total={Number(pageCount)} onPaginationChange={this.onPaginationChange} theme={theme} />
+          <span>数据同步延迟一天</span><CommonPagination pageSize={pageSize} currentPage={pageNum} total={Number(pageCount)} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>
         <div id="eamTable" style={{width: tableWidth, height: tableHeight, position: 'relative', overflow: 'auto'}}>
           <CneTable
