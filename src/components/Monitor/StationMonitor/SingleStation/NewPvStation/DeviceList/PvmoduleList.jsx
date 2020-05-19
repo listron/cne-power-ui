@@ -149,8 +149,8 @@ class PvmoduleList extends Component {
     const pvStatus = [
       {name: 'normal', text: '正常', useName: 'pvNormalNum', pointStatus: '400'},
       {name: 'abnormal', text: '异常', useName: 'pvAbnormalNum', pointStatus: '803'},
-      {name: 'small', text: '偏小', useName: 'pvSmallerNum', pointStatus: '801'},
-      {name: 'big', text: '偏大', useName: 'pvBiggerNum', pointStatus: '802'},
+      {name: 'small', text: '偏低', useName: 'pvSmallerNum', pointStatus: '801'},
+      {name: 'big', text: '偏高', useName: 'pvBiggerNum', pointStatus: '802'},
     ];
     const baseLinkPath = '/hidden/monitorDevice';
     const {stationCode} = this.props.match.params;
