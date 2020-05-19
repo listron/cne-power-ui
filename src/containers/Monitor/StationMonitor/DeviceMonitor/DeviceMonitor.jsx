@@ -23,9 +23,16 @@ class DeviceMonitor extends Component {
     theme: PropTypes.string,
   }
 
+  constructor(props){
+    super(props);
+    this.state = {
+      scroll: false,
+    };
+  }
+
   componentDidMount() {
     const main = document.getElementById('main');
-    main && main.scroll(0, 0);
+    main.addEventListener('scroll', this.bindScroll);
     const { stationCode, deviceTypeCode } = this.props.match.params;
     if (deviceTypeCode === '301') {
       this.props.getBoosterstation({ stationCode });
@@ -45,20 +52,35 @@ class DeviceMonitor extends Component {
   }
 
   componentWillUnmount() {
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
     this.props.resetDeviceStore();
   }
 
+  bindScroll = () =>{
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
+    const { scroll } = this.state;
+    if (scrollTop > 0 && !scroll) {
+      this.setState({ scroll: true});
+    }
+    if(scrollTop === 0){
+      this.setState({ scroll: false });
+    }
+  }
+
   render() {
+    const { scroll } = this.state;
     const { deviceTypeCode } = this.props.match.params;
     return (
       <div className={styles.monitorDevice}>
-        {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Inverter {...this.props} />}
-        {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} />}
-        {deviceTypeCode === '304' && <Boxtransformer {...this.props} />}
+        {(deviceTypeCode === '206' || deviceTypeCode === '201') && <Inverter {...this.props} scroll={scroll} />}
+        {(deviceTypeCode === '202' || deviceTypeCode === '207') && <Confluencebox {...this.props} scroll={scroll} />}
+        {deviceTypeCode === '304' && <Boxtransformer scroll={scroll} {...this.props} />}
         {/* {deviceTypeCode === '203' && <Weatherstation {...this.props} /> } */}
-        {deviceTypeCode === '101' && <WindDevice {...this.props} />}
-        {deviceTypeCode === '302' && <IntegrateLine {...this.props} />}
-        {deviceTypeCode === '301' && <BoosterStation {...this.props} />}
+        {deviceTypeCode === '101' && <WindDevice {...this.props} scroll={scroll} />}
+        {deviceTypeCode === '302' && <IntegrateLine {...this.props} scroll={scroll} />}
+        {deviceTypeCode === '301' && <BoosterStation {...this.props} scroll={scroll} />}
         <Footer theme={this.props.theme} />
       </div>
     );

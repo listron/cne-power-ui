@@ -15,6 +15,7 @@ class IntegrateLine extends Component {
     getDeviceInfoMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
     theme: PropTypes.string,
+    scroll: PropTypes.bool,
   }
 
   constructor(props) {
@@ -56,7 +57,7 @@ class IntegrateLine extends Component {
 
   render() {
     const { tabKey } = this.state;
-    const { stations, theme = 'light' } = this.props;
+    const { stations, theme = 'light', scroll } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const { stationName, stationType } = currentStation;
@@ -73,15 +74,17 @@ class IntegrateLine extends Component {
     };
     return (
       <div className={`${styles.integrateLine} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
           <IntegrateHeader
             {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
+        </div>
+        <div className={styles.deviceContent}>
           <div className={styles.contWrap}>
-            <div style={{marginTop: 20}}/>
+            {/* <div style={{marginTop: 20}}/> */}
             <div className={styles.integrateLineTabs}>
               <div className={tabKey === '1' ? styles.tabActive : styles.tabNormal} onClick={() => this.tabKeyFunc('1')}>
                 实时告警

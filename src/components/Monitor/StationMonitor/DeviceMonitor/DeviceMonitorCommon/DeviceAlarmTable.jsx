@@ -39,7 +39,7 @@ class DeviceAlarmTable extends Component {
 
   static defaultProps = {
     titleName: true,
-    style: { padding: '0px 68px 48px 68px' },
+    style: { padding: '0px 57px 48px 57px' },
   }
 
   constructor(props) {

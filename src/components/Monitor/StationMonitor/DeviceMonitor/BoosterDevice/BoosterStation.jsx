@@ -21,6 +21,7 @@ class BoosterStation extends Component {
     stopMonitor: PropTypes.func,
     theme: PropTypes.string,
     boosterList: PropTypes.array,
+    scroll: PropTypes.bool,
   }
 
   constructor(props) {
@@ -62,7 +63,7 @@ class BoosterStation extends Component {
   }
 
   render() {
-    const { stations, boosterList, deviceDetail, deviceAlarmList, subDeviceList, theme = 'light' } = this.props;
+    const { stations, boosterList, deviceDetail, deviceAlarmList, subDeviceList, theme = 'light', scroll } = this.props;
     const { activeIndex } = this.state;
     const boosterDetail = deviceDetail[activeIndex] || {};
     const pointData = boosterDetail.pointData || {}; // 测点数据集合
@@ -82,14 +83,16 @@ class BoosterStation extends Component {
     };
     return (
       <div className={`${styles.boosterStation} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
           <BoosterHeader
             deviceDetail={boosterDetail}
             devices={boosterList}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
+        </div>
+        <div className={styles.deviceContent}>
           <div className={styles.contWrap}>
             <div className={styles.deviceList}>
               {deviceDetail.length > 0 && deviceDetail.map((e, index) => (

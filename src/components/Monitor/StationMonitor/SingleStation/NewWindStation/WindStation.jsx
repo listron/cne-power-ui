@@ -225,8 +225,9 @@ class WindStation extends Component {
           operatorList={this.props.operatorList}
           operatorTime={this.props.operatorTime}
         />
-        <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
-        <div className={styles.windContainer}>
+        <div className={styles.windCenter}>
+          <WindStationHeader singleStationData={singleStationData} editData={editData} stationCode={stationCode} />
+          <div className={styles.windContainer}>
           <div className={styles.windList}>
             <div className={styles.threadAndDevice} id="deviceType" >
               <div className={styles.deviceTypeFlow}>
@@ -287,6 +288,7 @@ class WindStation extends Component {
               </div>
             </div>
           }
+        </div>
         </div>
       </div>
     );

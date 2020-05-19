@@ -21,6 +21,7 @@ class Confluencebox extends Component {
     getDeviceChartMonitor: PropTypes.func,
     stopMonitor: PropTypes.func,
     theme: PropTypes.string,
+    scroll: PropTypes.bool,
   };
 
   constructor(props) {
@@ -100,7 +101,7 @@ class Confluencebox extends Component {
 
   render() {
     const { pointNameArr, tabKey } = this.state;
-    const {match, stations, theme = 'light'} = this.props;
+    const {match, stations, theme = 'light', scroll} = this.props;
     const {stationCode, deviceTypeCode, deviceCode} = match.params;
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
     const backData = {path: `/monitor/singleStation/${stationCode}`, name: '返回电站'};
@@ -116,13 +117,15 @@ class Confluencebox extends Component {
     };
     return (
       <div className={`${styles.confluencebox} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} backData={{...backData}} theme={theme}/>
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{...backData}} theme={theme} />
           <ConfluenceHeader
             {...this.props}
             stationCode={stationCode}
             deviceTypeCode={deviceTypeCode}
           />
+        </div>
+        <div className={styles.deviceContent}>
           <ConfluenceStatistics pointNameFunc={this.pointNameFunc} pointNameArr={pointNameArr} {...this.props} />
           <div className={styles.contWrap}>
             <ConfluenceTenMin pointNameArr={pointNameArr} {...this.props} />

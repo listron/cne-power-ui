@@ -207,7 +207,7 @@ class InverterSeriesTenMin extends Component {
 
   render() {
     return (
-      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '10px' }} />
+      <div id="seriesInverter_monitor_tenMin" style={{ height: '335px', marginTop: '20px' }} />
     );
   }
 }

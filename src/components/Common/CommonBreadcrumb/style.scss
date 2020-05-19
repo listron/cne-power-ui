@@ -22,12 +22,12 @@
     }
   }
   .rightText {
-    margin-right: 38px;
+    margin-right: 24px;
   }
 }
 
 .light {
-  background: #fff;
+  // background: #fff;
   :global {
     .iconfont {
       color: $themeColor;
@@ -42,6 +42,9 @@
   .rightText {
     a {
       color: $themeColor;
+      &:hover{
+        color: #FF9900;
+      }
     }
   }
 }

@@ -172,21 +172,23 @@ class PvStation extends Component {
       <div className={`${styles.pvStationWrap} ${styles[theme]}`}>
         <div className={styles.pvStation} >
           <PvStationTop {...this.props} stationCode={stationCode} hiddenStationList={this.state.hiddenStationList} theme={theme} />
-          <PvStationHeader
-            singleStationData={singleStationData}
+          <div className={styles.pvCenter}>
+            <PvStationHeader
+              singleStationData={singleStationData}
             editData={editData}
             stationCode={stationCode}
             monitorPvUnit={monitorPvUnit}
-            theme={theme} />
-          <div className={styles.deviceListWrap}>
+              theme={theme} />
+            <div className={styles.deviceListWrap}>
             <PvDevice {...this.props} />
             <div className={styles.deviceList} > <DeviceList {...this.props} deviceTypeList={deviceTypeList} /> </div>
           </div>
-          <div onClick={this.detailShow} className={styles.detailShow}>
+            <div onClick={this.detailShow} className={styles.detailShow}>
             <i className={`iconfont icon-go2 ${styles.show}`} />
             <span className={styles.detailShowfont}>查看电站概况</span>
           </div>
-        </div>
+          </div>
+          </div>
         <TransitionContainer
           show={detailVisible}
           timeout={500}

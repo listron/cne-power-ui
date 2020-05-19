@@ -58,63 +58,92 @@
   }
 }
 
-.light {
-  background-color: $promptColor;
-
-  .deviceContent {
+.integrateLine, .boosterStation, .confluencebox, .seriesinverter, .boxtransformer, .integrateLine{
+  background-color: $pageBackground;
+  .deviceTop{
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
     background-color: #fff;
+  }
+}
+.boosterStation{
+  .deviceList{
+    .active{
+      &:after {
+        position: absolute;
+        display: inline-block;
+        border-top: 6px solid $themeColor;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 6px solid transparent;
+        left: 49px;
+        top: 33px;
+        content: '';
+      }
+    }
+  }
+}
 
-    .deviceMonitorHeader {
-      border-bottom: 1px solid #d4d4d4;
-      // 顶部
-      .deviceName {
-        color: $darkColor;
+.seriesinverter{ // 集中式逆变器详情页
+  background-color: $pageBackground;
+}
 
-        .swap {
-          color: $themeColor;
-          &:hover{
-            color: #f9b600;
-          }
-        }
+.light {
+  .deviceMonitorHeader {
+    border-top: 1px solid #d4d4d4;
+    // 顶部
+    .deviceName {
+      color: $darkColor;
 
-        .status {
-          :global {
-            .statusIcon {
-              // 天气
-              color: $darkColor;
-            }
-
-            .alarm {
-              color: #a42b2c;
-            }
-          }
+      .swap {
+        color: $themeColor;
+        &:hover{
+          color: #f9b600;
         }
       }
 
-      .linkTo {
-        .eachLink {
-          .linkName {
-            color: $themeColor;
+      .status {
+        :global {
+          .statusIcon {
+            // 天气
+            color: $darkColor;
           }
 
-          :global {
-            .linkIcon {
-              color: $promptColor;
-            }
-
-            .icon-upstream,
-            .icon-downstream {
-              color: #ceebe0;
-            }
+          .alarm {
+            color: #a42b2c;
           }
         }
       }
     }
 
+    .linkTo {
+      .eachLink {
+        .linkName {
+          color: $themeColor;
+        }
+
+        :global {
+          .linkIcon {
+            color: $promptColor;
+          }
+
+          .icon-upstream,
+          .icon-downstream {
+            color: #ceebe0;
+          }
+        }
+      }
+    }
+  }
+  .deviceContent {
+    background-color: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+
     .statisticsBox {
       // 设备信息统计区
-      // border-top: solid 1px $promptColor;
-      border-bottom: solid 1px $promptColor;
+      border-bottom: dashed 1px $themeColor;
 
       .deviceIcon {
         :global {
@@ -137,45 +166,50 @@
       }
     }
 
-    .points {
-      border-top: 1px solid $promptColor;
-    }
-
     .confluenceTabs,
     .inverterTabs,
     .boxtransformerTabs,
     .integrateLineTabs {
-      margin: 37px 48px 0;
-      display: flex;
-      background-color: #f8f8f8;
-      @include lineheight(40px);
-      border-top: 1px solid #e1e2e2;
+      background: rgba(206,235,224,0.50);
+      @include lineheight(34px);
 
       div {
         text-align: center;
-        width: 70px;
+        width: 110px;
         cursor: pointer;
+        position: relative;
       }
 
       div:nth-of-type(1) {
-        margin-left: 20px;
+        margin-left: 37px;
       }
 
       div:nth-of-type(2) {
-        margin-left: 80px;
+        margin-left: 30px;
       }
 
       div:nth-of-type(3) {
-        margin-left: 80px;
+        margin-left: 30px;
       }
 
       .tabActive {
-        color: $themeColor;
-        border-bottom: 1px solid $themeColor;
+        color: #fff;
+        background-color: $themeColor;
+        &:after {
+          position: absolute;
+          display: inline-block;
+          border-top: 6px solid $themeColor;
+          border-right: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-left: 6px solid transparent;
+          left: 49px;
+          top: 33px;
+          content: '';
+        }
       }
 
       .tabNormal {
-        color: $darkColor;
+        color: $themeColor;
         border-bottom: 1px solid transparent;
       }
     }
@@ -202,158 +236,32 @@
 
   .deviceList {
     // 升压站单独样式
-    background-color: #f8f8f8;
-    border-top: 1px solid $promptColor;
-
+    background-color: rgba(206,235,224,0.50);
     .eachDevice {
-      color: $darkColor;
+      color: $themeColor;
     }
 
     .active {
-      border-bottom: 2px solid #199475;
+      color: #fff;
+      background-color: $themeColor;
+      text-align: center;
+
+        /* 背景阴影*/
+        &:after {
+          position: absolute;
+          display: inline-block;
+          border-top: 6px solid $themeColor;
+          border-right: 6px solid transparent;
+          border-bottom: 6px solid transparent;
+          border-left: 6px solid transparent;
+          left: 49px;
+          top: 33px;
+          content: '';
+        }
     }
   }
 
   .tooltipBox {
     @include tooltipBox($promptColor);
-  }
-}
-
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background-color: $background;
-
-  .deviceContent {
-    background-color: $background;
-
-    .deviceMonitorHeader {
-      // 顶部
-      background: $light-background;
-      border: 1px solid $border-color;
-
-      .deviceName {
-        color: $fontColor;
-
-        .swap {
-          color: $fontColor-hover;
-        }
-
-        .status {
-          :global {
-            .statusIcon {
-              // 天气
-              color: $fontColor;
-            }
-
-            .alarm {
-              color: #fd6e8f;
-            }
-          }
-        }
-      }
-
-      .linkTo {
-        .eachLink {
-          .linkName {
-            color: $fontColor-hover;
-          }
-
-          :global {
-            .linkIcon {
-              color: $fontColor-hover;
-            }
-
-            .icon-upstream,
-            .icon-downstream {
-              color: $fontColor-hover;
-            }
-          }
-        }
-
-        .backIcon {
-          border-left: 1px solid $border-color;
-          color: $fontColor-hover;
-        }
-      }
-    }
-
-    .statisticsBox {
-      // 设备信息统计区
-      border: 1px solid $border-color;
-      margin-top: 10px;
-      background: $light-background;
-
-      .deviceIcon {
-        :global {
-          .iconfont {
-            color: $fontColor-hover;
-          }
-        }
-      }
-
-      .timerGen,
-      .timerDayGen,
-      .weatherEachData {
-        .genNum {
-          color: $fontColor-hover;
-        }
-
-        .genText {
-          color: $fontColor;
-        }
-      }
-    }
-
-    .points {
-      border-top: 1px solid $border-color;
-    }
-  }
-
-  .contWrap {
-    display: flex;
-    flex-direction: column;
-    background: $light-background;
-    border: 1px solid $border-color;
-    margin-top: 10px;
-  }
-
-  .seriesinverter,
-  .inverterChartTitle {
-    color: $fontColor-hover;
-
-    .tabs {
-      .inactive {
-        color: $fontColor;
-        border: 1px solid $button-border;
-      }
-
-      .active {
-        color: #fff;
-        border: 1px solid $button-border;
-        background-color: $button-active;
-      }
-    }
-  }
-
-  .subTitleConfig {
-    color: $fontColor-hover;
-  }
-
-  .tooltipBox {
-    @include tooltipBox($border-color);
-  }
-
-  .deviceList {
-    // 升压站单独样式
-    background-color: transparent;
-    border: none;
-
-    .eachDevice {
-      color: $fontColor;
-    }
-
-    .active {
-      border-bottom: 2px solid $themeColor;
-    }
   }
 }

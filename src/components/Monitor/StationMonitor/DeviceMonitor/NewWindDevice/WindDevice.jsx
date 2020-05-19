@@ -41,6 +41,7 @@ class WindDevice extends Component {
     sequencediagramTime: PropTypes.number,
     scatterpointLoading: PropTypes.bool,
     sequenceLoading: PropTypes.bool,
+    scroll: PropTypes.bool,
   }
 
   constructor(props) {
@@ -148,7 +149,7 @@ class WindDevice extends Component {
 
   render() {
     const { devices, sequencediagram = {}, deviceAlarmList, devicePointData, loading, singleStationData, deviceDetail, scatterpoint, stations } = this.props;
-    const { scatterpointTime, sequencediagramTime, scatterpointLoading = false, sequenceLoading = false } = this.props;
+    const { scatterpointTime, sequencediagramTime, scatterpointLoading = false, sequenceLoading = false, scroll } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const { deviceName, deviceModeCode } = deviceDetail
     const { sequenceChartList = [] } = sequencediagram; // 时序图
@@ -167,9 +168,11 @@ class WindDevice extends Component {
     };
     return (
       <div className={styles.newWindDevice}>
-        <CommonBreadcrumb {...breadCrumbData} style={{ backgroundColor: '#fff' }} backData={{ ...backData }} />
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} />
           <WindDeviceHeader deviceDetail={deviceDetail} devices={devices} stationCode={stationCode} />
+        </div>
+        <div className={styles.deviceContent}>
           <WindStatistics deviceDetail={deviceDetail} />
           <div className={styles.windDeviceContainer}>
             <div className={styles.windDeviceInfo}>

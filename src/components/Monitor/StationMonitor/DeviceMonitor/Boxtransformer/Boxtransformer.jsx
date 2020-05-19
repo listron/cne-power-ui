@@ -18,6 +18,7 @@ class Boxtransformer extends Component {
     resetDeviceStore: PropTypes.func,
     stopMonitor: PropTypes.func,
     theme: PropTypes.string,
+    scroll: PropTypes.bool,
   }
 
   constructor(props) {
@@ -79,7 +80,7 @@ class Boxtransformer extends Component {
 
   render() {
     const { tabKey } = this.state;
-    const { stations, theme } = this.props;
+    const { stations, theme, scroll } = this.props;
     const { stationCode, deviceTypeCode, deviceCode } = this.props.match.params;
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
@@ -95,9 +96,11 @@ class Boxtransformer extends Component {
     };
     return (
       <div className={`${styles.boxtransformer} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
           <BoxtransformerHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+        </div>
+        <div className={styles.deviceContent}>
           <div className={styles.contWrap}>
             <BoxtransformerTenMin {...this.props} />
             <div className={styles.boxtransformerTabs}>

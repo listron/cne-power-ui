@@ -2,8 +2,13 @@
 @import "./layout.scss";
 .light {
   .pvStation {
-    background: #fff;
-    .stationTop {
+    .pvCenter{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      background-color: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+      .stationTop {
       .stationListBox {
         :global {
           .ant-drawer {
@@ -114,8 +119,8 @@
         //   }
         // }
       }
-    }
-    .headStation {
+      }
+      .headStation {
       // border-bottom: 1px dashed #d4d4d4;
       color: $darkColor;
       .leftIcon {
@@ -227,8 +232,8 @@
           color: #f9b600;
         }
       }
-    }
-    .pvDeviceCont {
+      }
+      .pvDeviceCont {
       .top {
         margin-left: 24px;
         display: flex;
@@ -251,11 +256,11 @@
           background: #d4d4d4;
         }
       }
-    }
+      }
 
-    $normal_color: $themeColor;
-    $normal_hover_color: #ceebe0;
-    .pvDeviceContnormal {
+      $normal_color: $themeColor;
+      $normal_hover_color: #ceebe0;
+      .pvDeviceContnormal {
       .top {
         :global {
           .ant-select-open .ant-select-selection,
@@ -271,9 +276,9 @@
           }
         }
       }
-    }
+      }
 
-    .detailShow {
+      .detailShow {
       position: absolute;
       right: 0;
       top: 61px;
@@ -307,6 +312,7 @@
           color: #fff;
           font-size: 13px;
         }
+      }
       }
     }
   }

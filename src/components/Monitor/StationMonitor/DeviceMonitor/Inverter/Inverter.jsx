@@ -22,6 +22,7 @@ class Seriesinverter extends Component {
     getDeviceInfoMonitor: PropTypes.func,
     getDeviceChartMonitor: PropTypes.func,
     theme: PropTypes.string,
+    scroll: PropTypes.bool,
   }
 
   constructor(props) {
@@ -119,7 +120,8 @@ class Seriesinverter extends Component {
 
   render() {
     const { chartName, tabKey, pointNameArr } = this.state;
-    const { match, stations, theme } = this.props;
+    const { match, stations, theme, scroll } = this.props;
+    console.log('scroll: ', scroll);
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
@@ -135,9 +137,11 @@ class Seriesinverter extends Component {
     };
     return (
       <div className={`${styles.seriesinverter} ${styles[theme]}`}>
-        <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
-        <div className={styles.deviceContent}>
+        <div className={scroll ? styles.deviceTop : ''}>
+          <CommonBreadcrumb {...breadCrumbData} backData={{ ...backData }} theme={theme} />
           <InverterHeader {...this.props} stationCode={stationCode} deviceTypeCode={deviceTypeCode} />
+        </div>
+        <div className={styles.deviceContent}>
           <InverterStatistics
             onBranchFunc={this.onBranchFunc}
             pointNameFunc={this.pointNameFunc}

@@ -96,8 +96,7 @@
 }
 
 .confluenceStatistics.light {
-  // border-top: solid 1px $promptColor;
-  border-bottom: solid 1px $promptColor;
+  border-bottom: dashed 1px $themeColor;
 
   .deviceIcon {
     :global {
@@ -113,36 +112,6 @@
 
   .eachRecord {
     color: $darkColor;
-  }
-
-  .seriesCurrent {
-    .eachCurrent {
-      background: #ceebe0;
-      color: $themeColor;
-    }
-  }
-}
-
-.confluenceStatistics.dark {
-  @import "../../../../../theme/darkTheme.scss";
-  border: 1px solid $border-color;
-  background: $light-background;
-  margin-top: 10px;
-
-  .deviceIcon {
-    :global {
-      .iconfont {
-        color: $fontColor-hover;
-      }
-    }
-  }
-
-  .line {
-    background-color: $border-color;
-  }
-
-  .eachRecord {
-    color: $fontColor;
   }
 
   .seriesCurrent {

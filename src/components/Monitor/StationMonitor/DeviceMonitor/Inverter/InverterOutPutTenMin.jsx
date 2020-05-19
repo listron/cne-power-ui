@@ -179,7 +179,7 @@ class InverterOutPutTenMin extends Component {
 
   render() {
     return (
-      <div id="inverter_monitor_tenMin" style={{ height: '335px', width: '100%', flex: 1, marginTop: '10px' }}></div>
+      <div id="inverter_monitor_tenMin" style={{ height: '335px', width: '100%', flex: 1, marginTop: '20px' }}></div>
     );
   }
 }

@@ -184,7 +184,7 @@ class BoxtransformerTenMin extends Component {
         ${styles[theme]}`}
         style={{
           height: '335px',
-          marginTop: 10,
+          paddingTop: 20,
           backgroundColor: '#ffffff',
         }}
       />
