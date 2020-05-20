@@ -6,9 +6,6 @@ import { watchHomepage } from './Home/homepageSaga';
 
 import { watchWorkStage } from './Operation/WorkStage/workStageSaga';
 import { watchWorkPlan } from './Operation/WorkPlan/workPlanSaga';
-import { watchChangeShowContainer } from './Operation/Ticket/ticketSaga';
-import { watchDefect } from './Operation/Ticket/Defect/defectSaga';
-import { watchInspect } from './Operation/Ticket/Inspect/inspectSaga';
 import { watchPersonnelGps } from './Operation/PersonnelGps/personnelGpsSaga';
 import { watchDayReport } from './Operation/Running/DayReport/dayReportSaga';
 import { wacthMeterReadSet } from './Operation/Running/MeterReadSet/meterReadSetSaga';
@@ -121,7 +118,6 @@ import { watchRunAchieve } from './HighAnalysis/Achievement/RunAchieve/runAchiev
 import { watchStopAhieve } from './HighAnalysis/Achievement/StopStatus/stopStatusSaga'; // 高级分析 - 风电分析 - 停机状态分析
 import { watchActuatorAchieve } from './HighAnalysis/Achievement/Actuator/actuatorSaga'; // 高级分析 - 风电分析 - 执行机构
 
-import { watchWorkOrder } from './Operation/Ticket/WorkOrder/workOrderSaga';
 import { watchBookAssetsConfig } from './Operation/Book/AssetsConfig/assetsConfigSaga';
 import { watchBookDeviceManage } from './Operation/Book/DeviceManage/deviceManageSaga';
 import { watchBookPartsInfo } from './Operation/Book/DeviceManage/PartInfo/partInfoSaga';
@@ -153,12 +149,8 @@ export default function* rootSaga() {
     watchPublic(), // public
     watchLogin(), // 登录注册
     watchHomepage(), // 主页
-    //ticket
     watchWorkStage(), // 工作台
     watchWorkPlan(), // 工作计划管理
-    watchChangeShowContainer(),
-    watchDefect(), //Defect
-    watchInspect(), // 巡检
     watchPersonnelGps(), //员工定位
     watchDayReport(), // operation- 日报
     wacthMeterReadSet(), // 抄表设置
@@ -270,7 +262,6 @@ export default function* rootSaga() {
     watchRunAchieve(), // 高级分析 - 风电分析 - 运行
     watchActuatorAchieve(), // 高级分析 - 风电分析 - 执行机构
     // 工单
-    watchWorkOrder(),
     //operation_Book台账
     watchBookAssetsConfig(), //资产配置
     watchBookDeviceManage(), //设备管理

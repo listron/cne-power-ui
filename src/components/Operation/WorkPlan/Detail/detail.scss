@@ -12,10 +12,8 @@
     font-size: 18px;
     align-items: center;
     justify-content: space-between;
-    padding-left: 40px;
-    flex: 0 0 60px;
+    flex: 0 0 54px;
     .topHandle{
-      height: 60px;
       display: flex;
       flex: 0 0 150px;
       justify-content: flex-end;
@@ -74,13 +72,14 @@
 
 
 .light.planDetail{
-  background-color: #fff;
-  box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+  
   .detailTop{
-    color: var(--darkColor);
-    border-bottom: 1px solid var(--promptColor);
+    color: var(--themeColor);
+    background: #f0f2f5;
   }
   .detailContent{
+    background-color: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
     .detailTitle{
       color: #000;
     }

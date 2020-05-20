@@ -3,14 +3,10 @@ import { combineReducers } from 'redux';
 import { workStage } from './WorkStage/workStageReducer';
 import { workPlan } from './WorkPlan/workPlanReducer';
 
-import defect from './Ticket/Defect/defectReducer';
-import inspect from './Ticket/Inspect/inspectReducer';
-import ticket from './Ticket/ticketReducer';
 import personnelGps from './PersonnelGps/personnelGpsReducer';
 
 import dayReport from './Running/DayReport/dayReportReducer';
 import meterReadSet from './Running/MeterReadSet/meterReadSetReducer';
-import workOrder from './Ticket/WorkOrder/workOrderReducer';
 import assetsConfig from './Book/AssetsConfig/assetsConfigReducer';
 import deviceManage from './Book/DeviceManage/deviceManageReducer';
 import partInfo from './Book/DeviceManage/PartInfo/partInfoReducer';
@@ -41,14 +37,10 @@ import { newMeterDetail } from './NewWorkProcess/NewMeterDetail/meterDetailReduc
 const operationReducer = combineReducers({
   workStage, // 工作台
   workPlan, // 工作管理计划
-  defect,
-  inspect,
-  ticket,
   eamList,
   personnelGps,
   dayReport,
   meterReadSet,
-  workOrder,
   assetsConfig,
   deviceManage,
   partInfo,
@@ -77,3 +69,4 @@ const operationReducer = combineReducers({
 
 
 export default operationReducer;
+

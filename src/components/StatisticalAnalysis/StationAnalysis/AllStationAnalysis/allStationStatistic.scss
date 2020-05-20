@@ -125,6 +125,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
     .title {
       display: flex;
       position: relative;
@@ -190,15 +191,22 @@
 
     .targetGraphContainer {
       .bgStyle {
-        background: #f1f1f1;
-        height: 30px;
-        line-height: 30px;
+       background-image:linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);
+       position: relative;
+       &:before{
+         position: absolute;
+         left:0;
+         top:0;
+         background:var(--themeColor);;
+         width:4px;
+         height:30px;
+         content: '';
+       }
         .fontStyle {
-          border-top: 2px solid $themeColor;
-          width: 160px;
-          color: #353535;
-          padding-left: 30px;
-          // text-align: center;
+          height: 30px;
+          line-height: 30px;
+          margin-left: 12px;
+          color: var(--themeColor);
         }
       }
       .tabContainer {

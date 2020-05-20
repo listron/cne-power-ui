@@ -35,18 +35,7 @@ class SingleStationStatistic extends React.Component {
     singleStationPlanRateData: PropTypes.array,
     singleStationPvCompareData: PropTypes.array,
     changeAllStationStore: PropTypes.func,
-    getSingleStationTargetData: PropTypes.func,
-    getSingleStationStatisticData: PropTypes.func,
-    getSingleStationMonthPieData: PropTypes.func,
-    getSingleStationPlanRateData: PropTypes.func,
-    getSingleStationPvCompareData: PropTypes.func,
-    getSingleStationPowerEffectiveData: PropTypes.func,
-    getSingleStationDayCompleteRateData: PropTypes.func,
-    getAllStationAvalibaData: PropTypes.func,
-    getAllStationStatisticData: PropTypes.func,
-    history: PropTypes.object,
     match: PropTypes.object,
-    singleMonth: PropTypes.any,
     singleYear: PropTypes.any,
     singleRangYear: PropTypes.array,
   }
@@ -98,7 +87,6 @@ class SingleStationStatistic extends React.Component {
     main && main.removeEventListener('click', this.hiddenStationList, true);
   }
 
-
   onTimeChange = (timeObj) => { // 时间选择
     let singleYear = ' ';
     let singeleMonth = '';
@@ -113,9 +101,6 @@ class SingleStationStatistic extends React.Component {
       changeAllStationStore({ singleRangYear: [timeObj.startTime, timeObj.endTime], dateType: timeObj.timeStyle });
     }
   }
-
-
-
 
   onClose = () => {
     this.props.changeAllStationStore({
@@ -208,78 +193,54 @@ class SingleStationStatistic extends React.Component {
       showStationSelect: false,
     });
   }
+
   hideStationChange = () => {
     this.setState({
       showStationSelect: false,
     });
   }
 
+  hasData = (dataArray) => {
+    let flag = false;
+    if (dataArray.length > 0) {
+      const temp = [];
+      // 日期不做判断   date monthOrDay day
+      const typeArr = Object.keys(dataArray[0]).filter(e => e !== 'date' && e !== 'monthOrDay' && e !== 'day');
+      typeArr.forEach((e => {
+        temp.push(dataArray.map(list => list[e]));
+      }));
+
+      temp.forEach(list => {
+        if (list.some(e => e || e === 0)) {
+          flag = true;
+        }
+      });
+    }
+    return flag;
+  }
 
   render() {
-    const { stations, dateType, singleStationCode, singleStationStatisticData, showPage, singleStationPlanRateData, singleStationPvCompareData, singleStationPowerData, singleStationLostPowerData, singleStationMonthPieData, singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData, singleStationPowerEffectiveData, getSingleStationStatisticData, selectYear, changeAllStationStore, singleYear, singeleMonth } = this.props;
+    const { stations, dateType, singleStationCode, singleStationStatisticData, showPage, singleStationPlanRateData = [], singleStationPvCompareData = [], singleStationPowerData, singleStationLostPowerData = [], singleStationMonthPieData = [], singleStationPlanRate, allStationAvalibaData, singleStationDayCompleteRateData = [], singleStationPowerEffectiveData = [], getSingleStationStatisticData, selectYear, changeAllStationStore, singleYear, singeleMonth } = this.props;
     const { stationCode } = this.props.match.params;
     if (stationCode !== singleStationCode) {
       changeAllStationStore({ singleStationCode: stationCode });
     }
     const currentYear = `${singleYear}`;
     const lastYear = `${singleYear - 1}`;
-
-    //发电量数据
-    const barGraphThatYear = singleStationPowerData.map(e => e.thatYearData) || [];
-    const barGraphLastYear = singleStationPowerData.map(e => e.lastYearData) || [];
-    const barGraphmonth = singleStationPowerData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : ''}`));
-    const barGraphYearOnYear = singleStationPowerData.map(e => e.yearOnYear) || [];
-    const barGraphRingRatio = singleStationPowerData.map(e => e.ringRatio) || [];
-    const barGraphHasData = barGraphThatYear.some(e => e || e === 0) || barGraphLastYear.some(e => e || e === 0) || barGraphYearOnYear.some(e => e || e === 0) || barGraphRingRatio.some(e => e || e === 0);
-
-    //单电站累计完成率
-    const dayCompleteRateThatYearData = singleStationDayCompleteRateData.map(e => e.thatYearData) || [];
-    const dayCompleteRateLastYearData = singleStationDayCompleteRateData.map(e => e.lastYearData) || [];
-    const dayCompleteRateDateData = singleStationDayCompleteRateData.map((e, i) => (`${e.day}`));
-    const dayCompleteRate = singleStationDayCompleteRateData.map(e => e.yearOnYear) || [];
-    const dayCompleteRateHasData = dayCompleteRateThatYearData.some(e => e || e === 0) || dayCompleteRateLastYearData.some(e => e || e === 0) || dayCompleteRate.some(e => e || e === 0);
+    const initDateType = { 'month': '月', 'year': '', 'day': '日' };
 
     //发电量饼图
     const pieData = singleStationMonthPieData.map((e, i) => ({ value: +e.monthPower === 0 ? '' : e.monthPower, name: `${e.month}月` }));
-    const pieCompleteValue = Number(singleStationPlanRate);
-    const pieComplete = [{ value: pieCompleteValue, name: '已完成' }, { value: 100 - pieCompleteValue, name: '未完成' }];
-
-    //计划完成率
-    const xAxisData = singleStationPlanRateData.map((e, i) => (`${e.date}月`));
-    const planPowerData = singleStationPlanRateData.map(e => e.planPower) || [];
-    const actualPowerData = singleStationPlanRateData.map(e => e.actualPower) || [];
-    const planRateData = singleStationPlanRateData.map(e => e.per) || [];
-    const palnHasData = planPowerData.some(e => e || e === 0) || actualPowerData.some(e => e || e === 0) || planRateData.some(e => e || e === 0);
-
-    //光资源分析
-    const lightCompareDataThatYear = singleStationPvCompareData.map(e => e.thatYearData) || [];
-    const lightCompareDataLastYear = singleStationPvCompareData.map(e => e.lastYearData) || [];
-    const lightCompareDataDate = singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`));
-    const lightCompareDataLight = singleStationPvCompareData.map(e => e.lightYearOnYear) || [];
-    const lightCompareDataPower = singleStationPvCompareData.map(e => e.powerYearOnYear) || [];
-    const lightCompareHasData = lightCompareDataThatYear.some(e => e || e === 0) || lightCompareDataLastYear.some(e => e || e === 0) || lightCompareDataLight.some(e => e || e === 0) || lightCompareDataPower.some(e => e || e === 0);
+    const pieComplete = [{ value: +singleStationPlanRate, name: '已完成' }, { value: 100 - singleStationPlanRate, name: '未完成' }];
 
     //发电效率分析
-    const hours = singleStationPowerEffectiveData && singleStationPowerEffectiveData.map(e => e.hours) || [];
-    const light = singleStationPowerEffectiveData && singleStationPowerEffectiveData.map(e => e.light) || [];
-    const pr = singleStationPowerEffectiveData && singleStationPowerEffectiveData.map(e => e.pr) || [];
     const PowerEffectiveData = {
-      xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${dateType === 'month' ? '月' : ''}`)),
+      xData: singleStationPowerEffectiveData.map((e, i) => (`${e.date}${initDateType[dateType]}`)),
       yData: {
-        barData: { hours },
-        lineData: { light, pr },
+        barData: { hours: singleStationPowerEffectiveData.map(e => e.hours) },
+        lineData: { light: singleStationPowerEffectiveData.map(e => e.light), pr: singleStationPowerEffectiveData.map(e => e.pr) },
       },
     };
-    const LightHasData = hours.some(e => e || e === 0) || light.some(e => e || e === 0) || pr.some(e => e || e === 0);
-
-    //损失电量数据
-    const lostPowerThatYear = singleStationLostPowerData.map(e => e.thatYearData) || [];
-    const lostPowerLastYear = singleStationLostPowerData.map(e => e.lastYearData) || [];
-    const lostPowerRingRatio = singleStationLostPowerData.map(e => e.ringRatio) || [];
-    const lostPowermonth = singleStationLostPowerData.map(e => (`${e.date}${dateType === 'month' ? '月' : ''}`));
-    const lostPowerYearOnYear = singleStationLostPowerData.map(e => e.yearOnYear) || [];
-    const lostHasData = lostPowerThatYear.some(e => e || e === 0) || lostPowerLastYear.some(e => e || e === 0) || lostPowerRingRatio.some(e => e || e === 0) || lostPowerYearOnYear.some(e => e || e === 0);
-
     const { showStationSelect } = this.state;
     const stationItems = stations && stations.toJS();
     const stationItem = stationItems.filter(e => (e.stationCode === +singleStationCode))[0] || {};
@@ -333,10 +294,10 @@ class SingleStationStatistic extends React.Component {
                     xAxisName={'发电量'}
                     title={'发电量环比'}
                     dateType={dateType}
-                    barGraphmonth={barGraphmonth}
-                    barGraphThatYear={barGraphThatYear}
-                    barGraphRingRatio={barGraphRingRatio}
-                    hasData={barGraphHasData}
+                    barGraphmonth={singleStationPowerData.map((e, i) => (`${e.date}${initDateType[dateType]}`))}
+                    barGraphThatYear={singleStationPowerData.map(e => e.thatYearData)}
+                    barGraphRingRatio={singleStationPowerData.map(e => e.ringRatio)}
+                    hasData={this.hasData(singleStationPowerData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -353,7 +314,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'yearPowerEfficency'}
                     title="发电效率"
                     data={PowerEffectiveData}
-                    hasData={LightHasData}
+                    hasData={this.hasData(singleStationPowerEffectiveData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -369,10 +330,10 @@ class SingleStationStatistic extends React.Component {
                     xAxisName={'损失电量'}
                     title={'损失电量环比'}
                     dateType={dateType}
-                    barGraphRingRatio={lostPowerRingRatio}
-                    barGraphThatYear={lostPowerThatYear}
-                    barGraphmonth={lostPowermonth}
-                    hasData={lostHasData}
+                    barGraphRingRatio={singleStationLostPowerData.map(e => e.ringRatio)}
+                    barGraphThatYear={singleStationLostPowerData.map(e => e.thatYearData)}
+                    barGraphmonth={singleStationLostPowerData.map(e => (`${e.date}${initDateType[dateType]}`))}
+                    hasData={this.hasData(singleStationLostPowerData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -395,11 +356,11 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    barGraphThatYear={barGraphThatYear}
-                    barGraphLastYear={barGraphLastYear}
-                    barGraphmonth={barGraphmonth}
-                    barGraphYearOnYear={barGraphYearOnYear}
-                    hasData={barGraphHasData}
+                    barGraphThatYear={singleStationPowerData.map(e => e.thatYearData)}
+                    barGraphLastYear={singleStationPowerData.map(e => e.lastYearData)}
+                    barGraphmonth={singleStationPowerData.map((e, i) => (`${e.date}${initDateType[dateType]}`))}
+                    barGraphYearOnYear={singleStationPowerData.map(e => e.yearOnYear)}
+                    hasData={this.hasData(singleStationPowerData)}
                   />
                   <TargetStatisticPieGraph pieGraphId={'powerPie'} pieData={pieData} pieComplete={pieComplete}
                     hasData={false}
@@ -415,11 +376,11 @@ class SingleStationStatistic extends React.Component {
                     yAxisName={'发电量 (万kWh)'}
                     dateType={dateType}
                     title={'计划完成率'}
-                    xAxisData={xAxisData}
-                    planPowerData={planPowerData}
-                    actualPowerData={actualPowerData}
-                    planRateData={planRateData}
-                    hasData={palnHasData} />
+                    xAxisData={singleStationPlanRateData.map((e, i) => (`${e.date}月`))}
+                    planPowerData={singleStationPlanRateData.map(e => e.planPower)}
+                    actualPowerData={singleStationPlanRateData.map(e => e.actualPower)}
+                    planRateData={singleStationPlanRateData.map(e => e.per)}
+                    hasData={this.hasData(singleStationPlanRateData)} />
                   <TableGraph
                     dateType={dateType}
                     tableType={'plan'}
@@ -440,12 +401,12 @@ class SingleStationStatistic extends React.Component {
                     title="光资源同比"
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    lightCompareDataThatYear={lightCompareDataThatYear}
-                    lightCompareDataLastYear={lightCompareDataLastYear}
-                    lightCompareDataDate={lightCompareDataDate}
-                    lightCompareDataLight={lightCompareDataLight}
-                    lightCompareDataPower={lightCompareDataPower}
-                    hasData={lightCompareHasData}
+                    lightCompareDataThatYear={singleStationPvCompareData.map(e => e.thatYearData)}
+                    lightCompareDataLastYear={singleStationPvCompareData.map(e => e.lastYearData)}
+                    lightCompareDataDate={singleStationPvCompareData.map((e, i) => (`${e.monthOrDay}月`))}
+                    lightCompareDataLight={singleStationPvCompareData.map(e => e.lightYearOnYear)}
+                    lightCompareDataPower={singleStationPvCompareData.map(e => e.powerYearOnYear)}
+                    hasData={this.hasData(singleStationPvCompareData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -463,7 +424,7 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     title="发电效率"
                     data={PowerEffectiveData}
-                    hasData={LightHasData}
+                    hasData={this.hasData(singleStationPowerEffectiveData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -485,11 +446,11 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    barGraphThatYear={lostPowerThatYear}
-                    barGraphLastYear={lostPowerLastYear}
-                    barGraphmonth={lostPowermonth}
-                    barGraphYearOnYear={lostPowerYearOnYear}
-                    hasData={lostHasData}
+                    barGraphThatYear={singleStationLostPowerData.map(e => e.thatYearData)}
+                    barGraphLastYear={singleStationLostPowerData.map(e => e.lastYearData)}
+                    barGraphmonth={singleStationLostPowerData.map(e => (`${e.date}${initDateType[dateType]}`))}
+                    barGraphYearOnYear={singleStationLostPowerData.map(e => e.yearOnYear)}
+                    hasData={this.hasData(singleStationLostPowerData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -515,11 +476,11 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    barGraphThatYear={barGraphThatYear}
-                    barGraphLastYear={barGraphLastYear}
-                    barGraphmonth={barGraphmonth}
-                    barGraphYearOnYear={barGraphYearOnYear}
-                    hasData={barGraphHasData}
+                    barGraphThatYear={singleStationPowerData.map(e => e.thatYearData)}
+                    barGraphLastYear={singleStationPowerData.map(e => e.lastYearData)}
+                    barGraphmonth={singleStationPowerData.map((e, i) => (`${e.date}${initDateType[dateType]}`))}
+                    barGraphYearOnYear={singleStationPowerData.map(e => e.yearOnYear)}
+                    hasData={this.hasData(singleStationPowerData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -537,11 +498,11 @@ class SingleStationStatistic extends React.Component {
                   xAxisName={'累计完成率'}
                   lastYear={lastYear}
                   currentYear={currentYear}
-                  dayCompleteRate={dayCompleteRate}
-                  dayCompleteRateDateData={dayCompleteRateDateData}
-                  dayCompleteRateLastYearData={dayCompleteRateLastYearData}
-                  dayCompleteRateThatYearData={dayCompleteRateThatYearData}
-                  hasData={dayCompleteRateHasData}
+                  dayCompleteRate={singleStationDayCompleteRateData.map(e => e.yearOnYear)}
+                  dayCompleteRateDateData={singleStationDayCompleteRateData.map((e, i) => (`${e.day}`))}
+                  dayCompleteRateLastYearData={singleStationDayCompleteRateData.map(e => e.lastYearData)}
+                  dayCompleteRateThatYearData={singleStationDayCompleteRateData.map(e => e.thatYearData)}
+                  hasData={this.hasData(singleStationDayCompleteRateData)}
                 />
               </div>
               <div className={styles.bgStyle}>
@@ -553,7 +514,7 @@ class SingleStationStatistic extends React.Component {
                     graphId={'dayPowerEfficency'}
                     title="发电效率"
                     data={PowerEffectiveData}
-                    hasData={LightHasData}
+                    hasData={this.hasData(singleStationPowerEffectiveData)}
                   />
                   <TableGraph
                     dateType={dateType}
@@ -577,11 +538,11 @@ class SingleStationStatistic extends React.Component {
                     dateType={dateType}
                     currentYear={currentYear}
                     lastYear={lastYear}
-                    barGraphThatYear={lostPowerThatYear}
-                    barGraphLastYear={lostPowerLastYear}
-                    barGraphmonth={lostPowermonth}
-                    barGraphYearOnYear={lostPowerYearOnYear}
-                    hasData={lostHasData}
+                    barGraphThatYear={singleStationLostPowerData.map(e => e.thatYearData)}
+                    barGraphLastYear={singleStationLostPowerData.map(e => e.lastYearData)}
+                    barGraphmonth={singleStationLostPowerData.map(e => (`${e.date}${initDateType[dateType]}`))}
+                    barGraphYearOnYear={singleStationLostPowerData.map(e => e.yearOnYear)}
+                    hasData={this.hasData(singleStationLostPowerData)}
                   />
                   <TableGraph
                     dateType={dateType}

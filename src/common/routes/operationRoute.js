@@ -1,19 +1,5 @@
 import { lazy } from 'react';
 
-// const ticket = [
-//   {
-//     // 运维管理-工单-工单列表
-//     path: '/operation/ticket/list',
-//     component: lazy(() => import('../../containers/Operation/Ticket/Ticket')),
-//   },
-//    {
-//     // 运维管理-工单-工单统计
-//     path: '/operation/ticket/statistics',
-//     component: lazy(() => import('../../components/Common/Building/Building')),
-//   },
-// ];
-
-
 const ticket = [
   {
     // 运维管理-工单-工单列表
