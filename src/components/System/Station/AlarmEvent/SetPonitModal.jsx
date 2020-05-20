@@ -7,6 +7,10 @@ import styles from './alarmEvent.scss';
 const Option = Select.Option;
 import CneTable from '../../../Common/Power/CneTable/index';
 
+const createSourceKey = (info = {}) => { // key 结构 测点三个要素拼接才能保证唯一;
+  return `${info.devicePointType}_${info.devicePointStandardCode}_${info.devicePointIndex}`;
+};
+
 class SetPonitModal extends Component { //版本的设置
   static propTypes = {
     pointList: PropTypes.array,
@@ -25,7 +29,7 @@ class SetPonitModal extends Component { //版本的设置
     super();
     const { stationCode } = props;
     this.state = {
-      selectedRowKeys: [], // 选择测点
+      selectedRows: [], // 选择测点
       pointType: '', //测点类型
       selectStationCode: stationCode,
       sortField: 'devicePointType',
@@ -39,9 +43,10 @@ class SetPonitModal extends Component { //版本的设置
 
   confirmSetting = () => { //确定
     const { pointList } = this.props;
-    const { selectedRowKeys } = this.state;
-    if (selectedRowKeys.length > 0) {
-      const confirmList = pointList.filter(e => selectedRowKeys.includes(e.devicePointId));
+    const { selectedRows } = this.state;
+    if (selectedRows.length > 0) {
+      const selectKeys = selectedRows.map(e => createSourceKey(e));
+      const confirmList = pointList.filter(e => selectKeys.includes(createSourceKey(e)));
       this.props.setPointData(confirmList);
     }
     this.cancelSetting();
@@ -60,19 +65,32 @@ class SetPonitModal extends Component { //版本的设置
       'devicePointStandardCode': '', // 测点编号
       'devicePointName': '', // 测点名称
     });
-    this.setState({ selectedRowKeys: [], selectStationCode: value });
+    this.setState({ selectedRows: [], selectStationCode: value });
   }
 
-  getPointType = (pointList) => {
-    return [...new Set(pointList.map(e => e.devicePointType))];
+  getInitPointData = (pointList, pointType) => {
+    const pointTypeArr = []; // 测点类型集合
+    const pointTableSource = []; // 测点数据集合
+    let filterType = pointType; // 测点类型筛选关键字;
+    pointList.forEach((e, i) => {
+      pointTypeArr.push(e.devicePointType);
+      if (!pointType) { // 初始状态, 直接以第一个测点类型作为筛选依据
+        filterType = pointTypeArr[0];
+      }
+      (e.devicePointType === filterType) && pointTableSource.push({
+        ...e,
+        key: createSourceKey(e),
+      });
+    });
+    return { pointTypeArr: [...new Set(pointTypeArr)], pointTableSource, filterType };
   }
 
   changePointType = (e) => { // 改变测点类型
     this.setState({ pointType: e.target.value });
   }
 
-  onSelectChange = (value) => { // 改变状态
-    this.setState({ selectedRowKeys: value });
+  onSelectChange = (value, rows) => { // 改变状态
+    this.setState({ selectedRows: rows });
   }
 
   tableChange = (pagination, filter, sorter) => { // 排序触发重新请求设备列表
@@ -100,55 +118,75 @@ class SetPonitModal extends Component { //版本的设置
     });
   }
 
-  render() {
-    const { stationCodes, pointList = [], type = 'add', stationCode, pointListError } = this.props;
-    const { selectedRowKeys, pointType, selectStationCode, sortField, sortMethod } = this.state;
-    const pointListColumn = [
+  createPointColumn = (pointType) => {
+    const initColumn = [
       {
         title: '测点编号',
         dataIndex: 'devicePointStandardCode',
-        className: styles.pointCodeStyle,
-        render: (text, record) => (<div className={styles.pointCodeStyleText} title={text} >{text}</div>),
+        width: '14.5%',
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.descStyleText} title={text || '--'} >{text || '--'}</div>),
       }, {
         title: '测点描述',
         dataIndex: 'devicePointName',
-        className: styles.descStyle,
-        render: (text, record) => (<div className={styles.descStyleText} title={text} >{text}</div>),
+        width: '14.5%',
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.descStyleText} title={text || '--'} >{text || '--'}</div>),
         sorter: true,
       }, {
         title: '第三方测点名称',
         dataIndex: 'devicePointCode',
         sorter: true,
-        className: styles.descStyle,
-        render: (text, record) => (<div className={styles.descStyleText} title={text} >{text}</div>),
+        width: '14.5%',
+        textAlign: 'left',
+        render: (text, record) => (<div className={styles.descStyleText} title={text || '--'} >{text || '--'}</div>),
       }, {
         title: '英文名称',
         dataIndex: 'devicePointIecname',
         sorter: true,
-        className: styles.descStyle,
-        render: (text, record) => (<div className={styles.descStyleText} title={text}>{text}</div>),
+        textAlign: 'left',
+        width: '14.5%',
+        render: (text, record) => (<div className={styles.descStyleText} title={text || '--'}>{text || '--'}</div>),
       },
       {
         title: '数据类型',
         dataIndex: 'devicePointDatatype',
         sorter: true,
-        className: styles.descStyle,
-        render: (text, record) => (<div className={styles.descStyleText} title={text}>{text}</div>),
+        textAlign: 'left',
+        width: '13%',
+        render: (text) => text || '--',
       }, {
         title: '测点类型',
         dataIndex: 'devicePointType',
         sorter: true,
+        textAlign: 'left',
         defaultSortOrder: 'descend',
-        render: (text, record) => (<div title={text}>{text}</div>),
+        width: '13%',
+        render: (text) => text || '--',
       },
     ];
+    if (pointType === 'Warning') { // 单独的告警测点, 有 值码 列; 其余无值码列
+      initColumn.splice(1, 0, {
+        title: '值码',
+        textAlign: 'left',
+        dataIndex: 'devicePointIndex',
+        width: '13%',
+        render: (text, record) => (<div className={styles.descStyleText} title={text} >{text}</div>),
+      });
+    }
+    return initColumn;
+  }
+
+  render() {
+    const { stationCodes, pointList = [], type = 'add', stationCode, pointListError } = this.props;
+    const { selectedRows, pointType, selectStationCode, sortField, sortMethod } = this.state;
+    const pointListColumn = this.createPointColumn(pointType);
+    const { pointTypeArr, pointTableSource, filterType } = this.getInitPointData(pointList, pointType);
     const rowSelection = {
-      selectedRowKeys,
+      selectedRowKeys: selectedRows.map(e => e.key),
       onChange: this.onSelectChange,
       type: type === 'add' && 'checkbox' || 'radio', //checkbox radio
     };
-    const pointTypeArr = this.getPointType(pointList);
-    const initpointType = pointType && pointList.filter(e => e.devicePointType === pointType) || pointList;
     return (
       <Modal
         title={null}
@@ -176,22 +214,21 @@ class SetPonitModal extends Component { //版本的设置
                 })}
               </Select>
               <div className={styles.pointName}> 测点类型 </div>
-              <Radio.Group onChange={this.changePointType} defaultValue="">
-                <Radio.Button value="">全部</Radio.Button>
+              <Radio.Group onChange={this.changePointType} value={filterType}>
                 {pointTypeArr.map(e => {
                   return <Radio.Button value={e} key={e}>{e}</Radio.Button>;
                 })}
               </Radio.Group>
             </div>
-            <div> 合计: {initpointType.length}</div>
+            <div> 合计: {pointTableSource.length}</div>
           </div>
           <CneTable
             rowSelection={rowSelection}
             onChange={this.tableChange}
             columns={pointListColumn}
             scroll={{ y: 470 }}
-            dataSource={initpointType.map((e, i) => ({ key: e.devicePointId, ...e }))}
-            className={styles.tableStyles}
+            dataSource={pointTableSource}
+            className={styles.pointModalTable}
             pagination={false}
             sortField={sortField}
             sortMethod={sortMethod}

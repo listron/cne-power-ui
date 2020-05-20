@@ -582,18 +582,14 @@
         margin-right: 9px;
       }
     }
-    .pointCodeStyle {
-      width: 200px;
-      color: $themeColor;
-      @include overflowText();
-    }
-
-    .descStyle {
-      width: 191px;
-      @include overflowText();
+    .pointModalTable{
+      table{
+        table-layout: fixed;
+        width: 100%;
+      }
     }
     .descStyleText {
-      width: 170px;
+      width: calc(100% - 5px);
       @include overflowText();
     }
   }

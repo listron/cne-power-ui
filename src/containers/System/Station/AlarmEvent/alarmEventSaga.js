@@ -307,6 +307,7 @@ function* getPointList(action) { // 获取测点数据
     const response = yield call(axios.post, url, {
       ...payload,
       orderField: payload.orderField.replace(/[A-Z]/g, e => `_${e.toLowerCase()}`), //重组字符串
+      includeWarning: 1,
     });
     yield put({
       type: alarmEventAction.changeStore,
