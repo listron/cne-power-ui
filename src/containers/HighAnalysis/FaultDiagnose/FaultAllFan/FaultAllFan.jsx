@@ -96,12 +96,12 @@ class FaultAllFan extends React.Component {
           {(faultWarnNum) ? (
             <div className={styles.title}>
               <div>算法控制台</div>
-              <div onClick={this.callBackAlgorithmControlList}>返回算法控制台列表</div>
+              <div className={styles.backFont} onClick={this.callBackAlgorithmControlList}>返回算法控制台列表</div>
             </div>
           ) : (
             <div className={styles.title}>
               <div>故障预警</div>
-              <div onClick={this.callBackList}>返回算法模型视图</div>
+              <div className={styles.backFont} onClick={this.callBackList}>返回算法模型视图</div>
             </div>
           )}
         </div>

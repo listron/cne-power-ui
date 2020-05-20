@@ -2,8 +2,9 @@
 .faultAllFanTop{
   width: 100%;
   min-height: 110px;
-  padding-bottom: 10px;
   background-color: $pageBackground;
+  box-shadow: 0 2px 5px 3px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
   .allFanTopCenter{
     width: 100%;
     min-height: 110px;

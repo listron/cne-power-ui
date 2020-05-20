@@ -292,10 +292,10 @@ class AddNextStep extends React.Component {
             </FormItem>
             {showPage === 'add' && <div className={styles.submitStyle}>
               <CneButton onClick={this.gobackPre} className={styles.preStyles}>上一步</CneButton>
-              <CneButton onClick={this.addsubmitForm} className={styles.submitBtn} >保存</CneButton>
+              <CneButton onClick={this.addsubmitForm} className={styles.submitBtn} lengthMode="short">保存</CneButton>
             </div>}
             {showPage === 'edit' && <div className={styles.submitStyle}>
-              <CneButton onClick={this.editsubmitForm} className={styles.submitBtn} >保存</CneButton>
+              <CneButton onClick={this.editsubmitForm} className={styles.submitBtn} lengthMode="short">保存</CneButton>
             </div>}
 
 

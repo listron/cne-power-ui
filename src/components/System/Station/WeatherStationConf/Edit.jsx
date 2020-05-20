@@ -5,7 +5,7 @@ import styles from './weatherStation.scss';
 import WarningTip from '../../../Common/WarningTip';
 import StationSelect from '../../../Common/StationSelect';
 import { Icon } from 'antd';
-
+import CneButton from '@components/Common/Power/CneButton';
 
 class WeatherList extends Component {
     static propTypes = {
@@ -109,8 +109,8 @@ class WeatherList extends Component {
                         </div>
                         <div className={styles.column}>
                             <span className={styles.label} />
-                            <Button onClick={this.cancle} className={styles.cancle}> 取消</Button>
-                            <Button onClick={this.save} type={'primary'}> 保存</Button>
+                            <CneButton onClick={this.cancle} lengthMode="short"> 取消</CneButton>
+                            <CneButton onClick={this.save} lengthMode="short"> 保存</CneButton>
                         </div>
                     </div>
                 </div>

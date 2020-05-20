@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin: 0px 3px 5px;
     .topSelect {
         margin: 24px 0 0 24px;
     }
@@ -33,9 +35,9 @@
             }
         }
     }
-    .explanation{
+    .explanation {
         margin: 24px 22px;
-        background:#f8f8f8;
+        background: #f8f8f8;
         padding: 6px 16px;
     }
     .detailTable {
@@ -84,17 +86,20 @@
     }
     .tHead {
         background: #199475;
-        color: #FFFFFF;
+        color: #ffffff;
     }
 
     .tHead {
-        .classification ,
-        .type, .examContent,
-        .typeWeight, .judgeStandard,
-        .inOrDePoints, .inOrDeScore,
+        .classification,
+        .type,
+        .examContent,
+        .typeWeight,
+        .judgeStandard,
+        .inOrDePoints,
+        .inOrDeScore,
         .assessInstruct {
             border-right: 1px solid #fff;
-        }   
+        }
     }
 
     .tBody {
@@ -177,8 +182,7 @@
     .editTable {
         border: 1px solid #d4d4d4;
         .tBody {
-            .judgeStandard
-                {
+            .judgeStandard {
                 .twoColumn,
                 .threeColumn,
                 .oneColumn {
@@ -187,8 +191,7 @@
                     text-align: left;
                 }
             }
-            .inOrDePoints
-                {
+            .inOrDePoints {
                 .twoColumn,
                 .threeColumn,
                 .oneColumn {
@@ -200,32 +203,38 @@
 
             :global {
                 .ant-input {
-                    height: 30px;  
+                    height: 30px;
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 1679px) { // 1679以下屏幕，字号14px
+@media screen and (max-width: 1679px) {
+    // 1679以下屏幕，字号14px
     .scoreBox {
-        .tHead, .tBody{
-          font-size: 14px;
+        .tHead,
+        .tBody {
+            font-size: 14px;
         }
     }
 }
-  
-@media screen and (min-width: 1680px) and (max-width: 1919px) { // 1680 + 1919
+
+@media screen and (min-width: 1680px) and (max-width: 1919px) {
+    // 1680 + 1919
     .scoreBox {
-        .tHead, .tBody{
+        .tHead,
+        .tBody {
             font-size: 1.2em;
         }
     }
 }
-  
-@media screen and (min-width: 1920px){ // 1920及以上屏幕按1920px适配
+
+@media screen and (min-width: 1920px) {
+    // 1920及以上屏幕按1920px适配
     .scoreBox {
-        .tHead, .tBody{
+        .tHead,
+        .tBody {
             font-size: 1.3em;
         }
     }

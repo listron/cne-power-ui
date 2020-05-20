@@ -6,7 +6,7 @@ import FaultResetTask from './../FaultResetTask/FaualtResetTask';
 import styles from './faultAllFanTop.scss';
 import Path from '../../../../../constants/path';
 import moment from 'moment';
-
+import CneButton from '@components/Common/Power/CneButton';
 
 const {
   basePaths: {
@@ -129,8 +129,8 @@ export default class FaultAllFanTop extends React.Component {
             </div>
             <div className={styles.allFanTimeRight}>
               <div>
-                <Button style={{width: 90}} block onClick={this.resetTaskFunc}>重新执行</Button>
-                <Button style={{width: 120}} block onClick={this.historyFunc}>历史预警报告</Button>
+                <CneButton onClick={this.resetTaskFunc}>重新执行</CneButton>
+                <CneButton onClick={this.historyFunc}>历史预警报告</CneButton>
               </div>
               {(status && status !== 4) && (
                 <div>

@@ -1,26 +1,31 @@
-@import '../../../../theme/theme.scss';
-.faultSingleFan{
+@import "../../../../theme/theme.scss";
+.faultSingleFan {
   min-height: 100%;
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
-  .singleFanContent{
+  .singleFanContent {
     width: 100%;
-    .title{
+    .title {
       display: flex;
       background-color: $pageGround;
       @include lineheight(40px);
       justify-content: space-between;
-      div:nth-of-type(1){
+      div:nth-of-type(1) {
         width: 180px;
         padding-left: 18px;
         background-color: $pageGround;
         color: $darkColor;
       }
-      div:nth-of-type(2){
+      div:nth-of-type(2) {
         cursor: pointer;
         color: $themeColor;
         padding-right: 30px;
+      }
+      &:hover {
+        .backFont {
+          color: #ff9900;
+        }
       }
     }
   }

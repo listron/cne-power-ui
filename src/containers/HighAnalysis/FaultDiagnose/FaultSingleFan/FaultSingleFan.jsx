@@ -113,19 +113,19 @@ class FaultSingleFan extends React.Component {
           {(!faultHistory || faultHistory === '') && (
             <div className={styles.title}>
               <div>故障预警</div>
-              <div onClick={this.callBackList}>返回列表视图</div>
+              <div className={styles.backFont} onClick={this.callBackList}>返回列表视图</div>
             </div>
           )}
           {faultHistory === '1' && (
             <div className={styles.title}>
               <div>历史预警</div>
-              <div onClick={this.callBackHistory}>返回历史预警</div>
+              <div className={styles.backFont} onClick={this.callBackHistory}>返回历史预警</div>
             </div>
           )}
           {faultHistory === '2' && (
             <div className={styles.title}>
               <div>故障预警</div>
-              <div onClick={this.callBackFans}>返回风机视图</div>
+              <div className={styles.backFont} onClick={this.callBackFans}>返回风机视图</div>
             </div>
           )}
         </div>
