@@ -378,7 +378,7 @@ class StationManageTable extends Component {
         <div className={styles.tableWrap}>
           <CneTable
             loading={stationListLoading}
-            dataSource={stationList.slice(30, 50).map((e, i) => ({ ...e, key: i }))}
+            dataSource={stationList.map((e, i) => ({ ...e, key: i }))}
             columns={this.initColumn()}
             className={styles.stationTable}
             pagination={false}
