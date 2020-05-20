@@ -92,12 +92,11 @@ class DiagnoseList extends Component {
   }
 
   analysisEvent = (record) => { // √7. 分析点击 => 停止当前定时请求, 单独开启分析页面;
-    const eventCode = record.eventCode;
     const { pageKey } = this.props;
-    const interval = (pageKey === 'alarm' || eventCode === 'NB1035') ? 2 : 1;
+    const interval = pageKey === 'alarm' ? 2 : 1;
     const diagWarningId = record.diagWarningId;
     this.props.stopCircleQueryList(); // 停止当前页面定时请求
-    // 告警事件和诊断事件的零电流-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
+    // 告警事件-数据时间间隔5s interval = 2, 其他默认十分钟数据interval = 1;
     this.props.changeStore({
       oldAnalysisEvent: record,
       interval,
@@ -207,7 +206,7 @@ class DiagnoseList extends Component {
       }
     }
     const showIgoreModal = selectedRows.every(info => ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(info.eventCode));
-    if (showIgoreModal) {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
+    if (showIgoreModal && value === 'ignore') {// 诊断事件: 五种组串, 选中后忽略需要添加额外弹框信息;
       return this.setState({
         deleteRecords: selectedRows,
         needIgoreModal: true,
