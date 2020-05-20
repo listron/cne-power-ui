@@ -8,6 +8,7 @@ import BarGraph from '../CommonGraphs/BarGraph';
 import TableGraph from '../CommonGraphs/TableGraph';
 import WaterWave from '../AllStationAnalysis/Chart/PlanCompletionRate/WaterWave';
 import ThreeYaxis from '../CommonGraphs/ThreeYaxis';
+import { dataFormats } from '@utils/utilFunc';
 import moment from 'moment';
 
 
@@ -201,8 +202,8 @@ class ProductionAnalysis extends React.Component {
 
     const currentYear = `${year}`;
     const lastYear = `${year - 1}`;
-    const { planSummary = {} } = productionPlanCompleteData.length > 0 && productionPlanCompleteData[0];
-    const { actualPower = '--', planPower = '--', completeRate = '--', saledPower = '--', buyPower = '--' } = planSummary;
+    const planSummary = productionPlanCompleteData.length > 0 && productionPlanCompleteData[0];
+    const { actualPower, planPower, completeRate, saledPower, buyPower } = planSummary || {};
     const initDateType = { 'month': '月', 'year': '', 'day': '日' };
 
     //计划完成率
@@ -254,24 +255,24 @@ class ProductionAnalysis extends React.Component {
             </div>
             {dateType === 'year' && <div className={styles.yearWrap}>{this.selectProductYear()}</div>}
             <div className={styles.graph}>
-              <WaterWave percent={completeRate} height={100} theme={theme} />
+              <WaterWave percent={dataFormats(completeRate)} height={100} theme={theme} />
               <div className={styles.staticWrap}>
                 <div className={styles.stationTargetData}>
 
                   <div className={styles.stationTargetName}>{{ 'month': '年', 'year': '年', 'day': '月' }[dateType]}实际发电量 </div>
-                  <div className={styles.stationTargetValue}>{actualPower} <span className={styles.unit}> 万kWh </span></div>
+                  <div className={styles.stationTargetValue}>{dataFormats(actualPower)} <span className={styles.unit}> 万kWh </span></div>
                 </div>
                 <div className={styles.stationTargetData}>
                   <div className={styles.stationTargetName}>{{ 'month': '年', 'year': '年', 'day': '月' }[dateType]}计划发电量 </div>
-                  <div className={styles.stationTargetValue}>{planPower} <span className={styles.unit}> 万kWh </span></div>
+                  <div className={styles.stationTargetValue}>{dataFormats(planPower)} <span className={styles.unit}> 万kWh </span></div>
                 </div>
                 <div className={styles.stationTargetData}>
                   <div className={styles.stationTargetName}>上网电量 </div>
-                  <div className={styles.stationTargetValue}>{saledPower}  <span className={styles.unit}> 万kWh </span></div>
+                  <div className={styles.stationTargetValue}>{dataFormats(saledPower)}  <span className={styles.unit}> 万kWh </span></div>
                 </div>
                 <div className={styles.stationTargetData}>
                   <div className={styles.stationTargetName}>购网电量 </div>
-                  <div className={styles.stationTargetValue}>{buyPower}  <span className={styles.unit}> 万kWh </span></div>
+                  <div className={styles.stationTargetValue}>{dataFormats(buyPower)}  <span className={styles.unit}> 万kWh </span></div>
                 </div>
               </div>
             </div>
