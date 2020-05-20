@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import styles from './faultAllFan.scss';
 import Footer from '../../../../components/Common/Footer';
 import FaultAllFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultAllFan/FaultAllFan';
-import {faultAllFanAction} from './faultAllFanAction';
-import {connect} from 'react-redux';
-import {commonAction} from '../../../alphaRedux/commonAction';
-import {algorithmControlAction} from '../AlgorithmControl/algorithmControlAction';
+import { faultAllFanAction } from './faultAllFanAction';
+import { connect } from 'react-redux';
+import { commonAction } from '../../../alphaRedux/commonAction';
+import { algorithmControlAction } from '../AlgorithmControl/algorithmControlAction';
 
 class FaultAllFan extends React.Component {
   static propTypes = {
@@ -21,7 +21,12 @@ class FaultAllFan extends React.Component {
     getFaultInfo: PropTypes.func,
     changeAlgorithmControlStore: PropTypes.func,
   };
-
+  constructor() {
+    super();
+    this.state = {
+      scroll: false,
+    };
+  }
   componentDidMount() {
     const {
       getFaultInfo,
@@ -38,17 +43,21 @@ class FaultAllFan extends React.Component {
       stationCode,
       deviceFullcode: '',
     };
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', this.bindScroll);
     getFaultInfo(params);
   }
 
   componentWillUnmount() {
     const { resetStore } = this.props;
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
     resetStore();
   }
 
   onChangeFilter = (params) => {
     const { changeFaultAllFanStore } = this.props;
-    changeFaultAllFanStore({...params});
+    changeFaultAllFanStore({ ...params });
   };
 
   callBackList = () => {
@@ -87,27 +96,38 @@ class FaultAllFan extends React.Component {
     // 列表
     getListView(listParams);
   };
-
+  bindScroll = () => {
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
+    const { scroll } = this.state;
+    if (scrollTop > 0 && !scroll) {
+      this.setState({ scroll: !scroll });
+    }
+    if (scrollTop === 0) {
+      this.setState({ scroll: false });
+    }
+  }
   render() {
     const faultWarnNum = localStorage.getItem('faultWarnNum');
+    const { scroll } = this.state;
     return (
       <div className={styles.faultAllFan}>
-        <div className={styles.AllFanContent}>
+        <div className={`${styles.AllFanContent} ${scroll && styles.scroll}`}>
           {(faultWarnNum) ? (
             <div className={styles.title}>
               <div>算法控制台</div>
               <div className={styles.backFont} onClick={this.callBackAlgorithmControlList}>返回算法控制台列表</div>
             </div>
           ) : (
-            <div className={styles.title}>
-              <div>故障预警</div>
-              <div className={styles.backFont} onClick={this.callBackList}>返回算法模型视图</div>
-            </div>
-          )}
+              <div className={styles.title}>
+                <div>故障预警</div>
+                <div className={styles.backFont} onClick={this.callBackList}>返回算法模型视图</div>
+              </div>
+            )}
         </div>
         <FaultAllFanMain onChangeFilter={this.onChangeFilter} {...this.props} />
         <Footer />
-      </div>
+      </div >
     );
   }
 }

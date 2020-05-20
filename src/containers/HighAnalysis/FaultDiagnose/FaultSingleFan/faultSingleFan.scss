@@ -6,6 +6,10 @@
   flex-direction: column;
   .singleFanContent {
     width: 100%;
+    position: sticky;
+    top:0;
+    background-color: $pageGround;
+    z-index: 10;
     .title {
       display: flex;
       background-color: $pageGround;
@@ -29,4 +33,9 @@
       }
     }
   }
+}
+
+.scroll{
+  background:#ffffff;
+  box-shadow:0 2px 4px 0 rgba(0,0,0,0.50);
 }

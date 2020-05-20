@@ -5,7 +5,7 @@ import { Icon, Form, Row, Col, Button, DatePicker, Select } from 'antd';
 import CancelModal from './CancelModal/CancelModal';
 import SureModal from './SureModal/SureModal';
 import StationSelect from '../../../../Common/StationSelect/index';
-
+import CneButton from '@components/Common/Power/CneButton';
 import styles from './addAlgorithm.scss';
 
 const FormItem = Form.Item;
@@ -271,7 +271,7 @@ class AddAlgorithm extends React.Component {
                   </Col>
                 </Row>
                 <Row style={{ display: 'flex', paddingLeft: 110 }}>
-                  <Col>
+                  {/* <Col>
                     <Button style={{ width: '88px' }} onClick={this.handlerResetForm}>
                       重置
                     </Button>
@@ -280,6 +280,16 @@ class AddAlgorithm extends React.Component {
                     <Button style={{ width: '88px' }} htmlType="submit" type="primary">
                       下发
                     </Button>
+                  </Col> */}
+                  <Col>
+                    <CneButton onClick={this.handlerResetForm} lengthMode="short">
+                      重置
+                    </CneButton>
+                  </Col>
+                  <Col style={{ marginLeft: 24 }}>
+                    <CneButton htmlType="submit" lengthMode="short">
+                      下发
+                    </CneButton>
                   </Col>
                 </Row>
               </Form>

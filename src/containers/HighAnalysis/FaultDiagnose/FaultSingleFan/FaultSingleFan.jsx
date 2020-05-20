@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import styles from './faultSingleFan.scss';
 import Footer from '../../../../components/Common/Footer';
 import FaultSingleFanMain from '../../../../components/HighAnalysis/FaultDiagnose/FaultSingleFan/FaultSingleFan';
-import {faultSingleFanAction} from './faultSingleFanAction';
-import {connect} from 'react-redux';
-import {faultWarnListAction} from '../FaultWarnList/faultWarnListAction';
+import { faultSingleFanAction } from './faultSingleFanAction';
+import { connect } from 'react-redux';
+import { faultWarnListAction } from '../FaultWarnList/faultWarnListAction';
 
 class FaultSingleFan extends React.Component {
   static propTypes = {
@@ -21,7 +21,12 @@ class FaultSingleFan extends React.Component {
     getFaultInfo: PropTypes.func,
     faultInfo: PropTypes.object,
   };
-
+  constructor() {
+    super();
+    this.state = {
+      scroll: false,
+    };
+  }
   componentDidMount() {
     const {
       getFaultInfo,
@@ -36,11 +41,15 @@ class FaultSingleFan extends React.Component {
       stationCode,
       deviceFullcode,
     };
+    const main = document.getElementById('main');
+    main.addEventListener('scroll', this.bindScroll);
     getFaultInfo(params);
   }
 
   componentWillUnmount() {
     const { resetStore } = this.props;
+    const main = document.getElementById('main');
+    main && main.removeEventListener('scroll', this.bindScroll, false);
     resetStore();
     // 移除
     localStorage.removeItem('deviceFullName');
@@ -104,12 +113,23 @@ class FaultSingleFan extends React.Component {
     } = this.props;
     history.push('/analysis/faultDiagnose/historyWarn');
   };
-
+  bindScroll = () => {
+    const main = document.getElementById('main');
+    const scrollTop = main.scrollTop;
+    const { scroll } = this.state;
+    if (scrollTop > 0 && !scroll) {
+      this.setState({ scroll: !scroll });
+    }
+    if (scrollTop === 0) {
+      this.setState({ scroll: false });
+    }
+  }
   render() {
     const faultHistory = localStorage.getItem('faultHistory');
+    const { scroll } = this.state;
     return (
       <div className={styles.faultSingleFan}>
-        <div className={styles.singleFanContent}>
+        <div className={`${styles.singleFanContent} ${scroll && styles.scroll}`}>
           {(!faultHistory || faultHistory === '') && (
             <div className={styles.title}>
               <div>故障预警</div>

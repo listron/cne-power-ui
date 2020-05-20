@@ -3,7 +3,7 @@
   width: 100%;
   .title {
     padding-left: 48px;
-    @include lineheight(20px);
+    @include lineheight(40px);
     background-color: $pageBackground;
   }
   .allFanWrap {
