@@ -22,7 +22,7 @@ class VersionSelect extends PureComponent {
     getAlarmEvent: PropTypes.func,
     getVersionEvent: PropTypes.func,
     applyStations: PropTypes.array,
-    FilterConditionStations: PropTypes.func,
+    filterConditionStations: PropTypes.func,
     modifyStatus: PropTypes.bool,
   }
   constructor(props) {
@@ -252,7 +252,7 @@ class VersionSelect extends PureComponent {
             editVersionLoading={editVersionLoading}
             deviceTypes={deviceTypeArr}
             applyStations={applyStations}
-            FilterConditionStations={this.props.FilterConditionStations}
+            filterConditionStations={this.props.filterConditionStations}
             filterStations={this.props.filterStations}
             changeStore={this.props.changeStore}
           />

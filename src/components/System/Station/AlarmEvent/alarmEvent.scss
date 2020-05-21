@@ -261,7 +261,6 @@
         color: #199475;
       }
     }
-
     .ant-modal-footer {
       background: #efefef;
       height: 40px;
@@ -275,11 +274,19 @@
   .addVersionWrap {
     padding: 21px 18px;
     height: 500px;
-    overflow: scroll;
+    overflow: auto;
   }
   .addVersionForm {
     width: 270px;
     margin: 6px auto;
+    .autoVersionComplete{
+      :global{
+        .ant-select-selection:hover{
+          border: none;
+          box-shadow: none;
+        }
+      }
+    }
     :global {
       .ant-form-item {
         display: flex;
@@ -575,18 +582,14 @@
         margin-right: 9px;
       }
     }
-    .pointCodeStyle {
-      width: 200px;
-      color: $themeColor;
-      @include overflowText();
-    }
-
-    .descStyle {
-      width: 191px;
-      @include overflowText();
+    .pointModalTable{
+      table{
+        table-layout: fixed;
+        width: 100%;
+      }
     }
     .descStyleText {
-      width: 170px;
+      width: calc(100% - 5px);
       @include overflowText();
     }
   }

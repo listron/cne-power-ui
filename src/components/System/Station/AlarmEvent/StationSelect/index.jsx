@@ -163,7 +163,7 @@ class StationSelect extends Component {
   }
 
   render() {
-    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'dark', filterStations, filterSwitch } = this.props;
+    const { data, multiple, holderText, disabledStation, disabled, oneStyleOnly, stationShowNumber, theme = 'dark', filterStations } = this.props;
     const { checkedStationName, stationModalShow, filteredSelectedStation, checkedStations } = this.state;
     const deviceShow = checkedStations.length > 0 && stationShowNumber && {
       maxTagCount: 0,
@@ -209,7 +209,6 @@ class StationSelect extends Component {
           hideStationModal={this.hideStationModal}
           showStationModal={this.showStationModal}
           filterStations={filterStations}
-          filterSwitch={filterSwitch}
         />
       </div>
     );

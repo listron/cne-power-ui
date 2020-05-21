@@ -185,8 +185,8 @@ function* getEventsAnalysis({ payload = {} }) { // 诊断分析
       params.eventCode = eventCode;
       params.eventType = ['alarm', 'diagnose', 'data'].indexOf(pageKey) + 1;
       params.interval = interval;
-      const timeKey = (pageKey === 'diagnose' && payload.updateTime) ? 'updateTime' : 'beginTime';
-      params.date = moment(payload[timeKey]).format('YYYY-MM-DD');
+      // const timeKey = (pageKey === 'diagnose' && payload.updateTime) ? 'updateTime' : 'beginTime';
+      params.date = moment(payload.updateTime || payload.beginTime).format('YYYY-MM-DD');
     }
     const response = yield call(request.get, url, { params });
     if (response.code === '10000') {

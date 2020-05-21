@@ -307,6 +307,7 @@ function* getPointList(action) { // 获取测点数据
     const response = yield call(axios.post, url, {
       ...payload,
       orderField: payload.orderField.replace(/[A-Z]/g, e => `_${e.toLowerCase()}`), //重组字符串
+      includeWarning: 1,
     });
     yield put({
       type: alarmEventAction.changeStore,
@@ -352,7 +353,7 @@ function* getVersionStation(action) { // 获取型号制定版本的应用电站
   }
 }
 
-function* FilterConditionStations(action) { // 获取筛选条件的电站数据
+function* filterConditionStations(action) { // 获取筛选条件的电站数据
   // deviceTypeCode deviceModeCode
   const url = `${Path.basePaths.APIBasePath}${Path.commonPaths.getStations}`;
   const { payload } = action;
@@ -511,7 +512,7 @@ export function* watchAlarmEvent() {
   yield takeLatest(alarmEventAction.getAlarmEvent, getAlarmEvent);
   yield takeLatest(alarmEventAction.getPointList, getPointList);
   yield takeLatest(alarmEventAction.getVersionStation, getVersionStation);
-  yield takeLatest(alarmEventAction.FilterConditionStations, FilterConditionStations);
+  yield takeLatest(alarmEventAction.filterConditionStations, filterConditionStations);
   yield takeLatest(alarmEventAction.getEventDetail, getEventDetail);
   yield takeLatest(alarmEventAction.alarmEventDetialFlow, alarmEventDetialFlow);
 }

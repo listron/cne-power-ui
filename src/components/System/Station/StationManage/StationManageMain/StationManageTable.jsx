@@ -235,7 +235,7 @@ class StationManageTable extends Component {
       },
       ...stationManageTableColumn,
       {
-        title: '遥信诊断',
+        title: '诊断设置',
         dataIndex: 'eventYxStatus',
         key: 'eventYxStatus',
         textAlign: 'center',
@@ -248,34 +248,34 @@ class StationManageTable extends Component {
           </div>);
         },
       },
-      {
-        title: '遥测诊断',
-        dataIndex: 'eventYcStatus',
-        key: 'eventYcStatus',
-        textAlign: 'center',
-        width: '7.85%',
-        render: (text, record, index) => {
-          const { eventYcStatus, stationType } = record;
-          const title = eventYcStatus && '已设置' || '未设置';
-          return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
-            <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
-          </div>);
-        },
-      },
-      {
-        title: '数据质量诊断',
-        dataIndex: 'eventDataStatus',
-        key: 'eventDataStatus',
-        textAlign: 'center',
-        width: '9%',
-        render: (text, record, index) => {
-          const { eventDataStatus, stationType } = record;
-          const title = eventDataStatus && '已设置' || '未设置';
-          return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
-            <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
-          </div>);
-        },
-      },
+      // {
+      //   title: '遥测诊断',
+      //   dataIndex: 'eventYcStatus',
+      //   key: 'eventYcStatus',
+      //   textAlign: 'center',
+      //   width: '7.85%',
+      //   render: (text, record, index) => {
+      //     const { eventYcStatus, stationType } = record;
+      //     const title = eventYcStatus && '已设置' || '未设置';
+      //     return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
+      //       <i className={`iconfont ${eventYcStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'yc')} />
+      //     </div>);
+      //   },
+      // },
+      // {
+      //   title: '数据质量诊断',
+      //   dataIndex: 'eventDataStatus',
+      //   key: 'eventDataStatus',
+      //   textAlign: 'center',
+      //   width: '9%',
+      //   render: (text, record, index) => {
+      //     const { eventDataStatus, stationType } = record;
+      //     const title = eventDataStatus && '已设置' || '未设置';
+      //     return (<div className={`${stationType === 0 ? styles.windDisabled : styles.active}`}>
+      //       <i className={`iconfont ${eventDataStatus && 'icon-look' || 'icon-goset1'}`} title={title} onClick={() => this.setYcStatus(record, 'data')} />
+      //     </div>);
+      //   },
+      // },
       {
         title: '部门设置',
         dataIndex: 'departmentStatus',

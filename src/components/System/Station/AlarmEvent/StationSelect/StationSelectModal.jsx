@@ -28,7 +28,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
       selectedStation: props.checkedStations, //暂存选中的电站数组
       showWarningTip: false,
       warningTipText: '',
-      filterDeviceType: false,
+      filterDeviceType: true,
     };
   }
 
@@ -174,7 +174,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
 
 
   render() {
-    const { stationModalShow, hideStationModal, showStationModal, multiple, oneStyleOnly, disabledStation, filterSwitch, filterStations } = this.props;
+    const { stationModalShow, hideStationModal, showStationModal, multiple, oneStyleOnly, disabledStation, filterStations } = this.props;
     let { data } = this.props;
     const { filterStationType, stationType, showWarningTip, warningTipText, selectedStation, filterDeviceType } = this.state;
     if (filterDeviceType) {
@@ -208,7 +208,7 @@ class StationSelectModal extends Component { // todo, 模块的公用化还不�
               </RadioGroup>
             </div>}
             <div className={styles.filterDeviceType}>
-              <Switch onChange={this.filterDeviceType} disabled={!filterSwitch} style={{ marginRight: 4 }} /> 只看已有选中设备型号电站
+              <Switch onChange={this.filterDeviceType} checked={filterDeviceType} style={{ marginRight: 4 }} /> 只看已有选中设备型号电站
             </div>
             <div className={styles.provinceList}>
               {(multiple && !hasMultipleType) && <Checkbox
