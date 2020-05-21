@@ -140,7 +140,12 @@ class VersionEvent extends Component {
     const lastKey = addEventList.length > 0 && addEventList[addEventList.length - 1].key.split('add')[1] || 0;
     if (!editPoint.diagModeEventId) { // 新添加的
       const findIndex = addEventList.findIndex(e => e.key === editPoint.key); // 当前编辑进行修改
-      addEventList[findIndex] = { ...addEventList[findIndex], pointCode: value[0].devicePointStandardCode, pointValueDesc: value[0].devicePointName };
+      addEventList[findIndex] = {
+        ...addEventList[findIndex],
+        pointValue: (value[0].devicePointIndex || value[0].devicePointIndex === 0) ? value[0].devicePointIndex : 1,
+        pointCode: value[0].devicePointStandardCode,
+        pointValueDesc: value[0].devicePointName,
+      };
       const { eventLevel = null } = alarmEventType.find(e => e.eventCode === addEventList[findIndex].eventCode) || {};
       value.forEach((e, index) => { // 多条添加
         if (index > 0) {
@@ -149,7 +154,7 @@ class VersionEvent extends Component {
             switchType: 1,
             eventLevel,
             enabled: 1,
-            pointValue: 1,
+            pointValue: (e.devicePointIndex || e.devicePointIndex === 0) ? e.devicePointIndex : 1,
             pointCode: e.devicePointStandardCode,
             pointValueDesc: e.devicePointName,
             eventCode: editPoint.eventCode,
@@ -159,7 +164,12 @@ class VersionEvent extends Component {
     }
     if (editPoint.diagModeEventId) { // 编辑
       const index = currentEventList.findIndex(e => e.diagModeEventId === editPoint.diagModeEventId);
-      currentEventList[index] = { ...currentEventList[index], pointCode: value[0].devicePointStandardCode, pointValueDesc: value[0].devicePointName };
+      currentEventList[index] = {
+        ...currentEventList[index],
+        pointCode: value[0].devicePointStandardCode,
+        pointValueDesc: value[0].devicePointName,
+        pointValue: (value[0].devicePointIndex || value[0].devicePointIndex === 0) ? value[0].devicePointIndex : 1,
+      };
       this.setState({ currentEventList: currentEventList });
     }
   }
