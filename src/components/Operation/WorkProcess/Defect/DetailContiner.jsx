@@ -109,8 +109,6 @@ class DetailContiner extends Component {
     const hasRight = handleRights([
       'workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check',
     ])[defectStatus - 1];
-
-    // const hasRight = rightArr.includes(['workExamine_defect_review', 'workExamine_defect_excute', 'workExamine_defect_check'][defectStatus - 1]);
     return (
       <div className={`${styles.baseInfoCont} ${styles[theme]}`}>
         <BasicInfo {...this.props} />
@@ -126,8 +124,8 @@ class DetailContiner extends Component {
               {defectStatus === '3' && <DefectCheckForm form={form} />}
             </Form>
             <div className={styles.actionBar}>
-              <CneButton className={styles.cancelBtn} onClick={this.onReset} lengthMode='short'>重置</CneButton>
-              <CneButton onClick={this.handleSubmit} lengthMode='short'>提交</CneButton>
+              <CneButton className={styles.cancelBtn} onClick={this.onReset} lengthMode="short">重置</CneButton>
+              <CneButton onClick={this.handleSubmit} lengthMode="short">提交</CneButton>
             </div>
           </div>
           }

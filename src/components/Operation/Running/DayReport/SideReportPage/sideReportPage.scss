@@ -1,27 +1,23 @@
 @import '../../../../../theme/theme';
 
 .sideReportPage{
-  background: #fff;
   flex: 1;
-  border: 1px solid #e1e2e2;
+  display: flex;
+  flex-direction: column;
   .sideReportTitle{
-    height: 64px;
-    border-bottom: 1px solid $promptColor;
-    line-height: 64px;
+    height: 54px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .sideReportTitleTip{
-      margin-left: 30px;
       font-size: 18px;
+      color:var(--themeColor)
     }
     .sideReportTitleRight{
       display: flex;
       justify-content: flex-end;
-      .dayReportPrev{
-        margin-top: 15px;
-      }
       .saveDayReport{
-        margin: 15px 10px 0 22px;
+        margin: 0 20px 0 20px;
       }
       .backIcon{
         @include backIcon();
@@ -29,14 +25,18 @@
     }
   }
   .sideReportContent{
-    margin-top: 25px;
+    padding-top: 25px;
     display: flex;
     flex-direction: row;
     line-height: 40px;
-    align-items: center;
+    flex:1;
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 4px;
     .selectTime{
       margin-left: 50px;
       margin-right: 40px;
+      height: 40px;
       :global{
         .ant-input{
           width: 142px;
@@ -55,6 +55,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      height: 40px;
       :global{
         .ant-input{
           width: 200px;
@@ -96,6 +97,13 @@
 }
 
 .uploadReportList{
+    display: flex;
+    flex-direction: column;
+    line-height: 40px;
+    flex:1;
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 4px;
   .uploadReportTip{
     height: 40px;
     margin-top: 10px;
@@ -295,9 +303,9 @@
   :global{
     .ant-modal{
       margin: 0;
-      top: 83px;
+      top: 95px;
       left: 204px;
-      height: calc(100vh - 119px);
+      height: calc(100vh - 134px);
       .ant-modal-content{
         display: flex;
         height: 100%;
@@ -321,6 +329,7 @@
             display: flex;
             flex-direction: column;
             margin-top: 5px;
+            padding: 10px 0;
           }
         }
         .ant-modal-footer{

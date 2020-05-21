@@ -7,7 +7,6 @@ import CommonPagination from '../../../Common/CommonPagination';
 import WarningTip from '../../../Common/WarningTip';
 import IgnoreModal from './IgnoreModal';
 import moment from 'moment';
-import TableColumnTitle from '../../../Common/TableColumnTitle';
 import { numWithComma, handleRight } from '../../../../utils/utilFunc';
 import CneTable from '../../../Common/Power/CneTable';
 
@@ -147,7 +146,7 @@ class Unhandle extends Component {
     if (buttonStatus === 'sure') {
       ignoreList({ inefficiencyIds: this.state.selectedRowKeys, ignoreReason, ignoreReasonCode, deadline, ignoreTime });
     }
-    this.setState({ ingoreVisible: false });
+    this.setState({ ingoreVisible: false, selectedRowKeys: [] });
   }
 
   render() {

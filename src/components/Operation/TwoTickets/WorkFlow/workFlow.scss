@@ -3,19 +3,8 @@
 
 .flowTable.light {
   padding-right: 1px;
-  display: flex;
-  flex-direction: column;
   .tableTop {
     height: 60px;
-    .commonButton {
-      background-color: #fff;
-      color: #199475;
-      border: 1px solid #199475;
-      &:hover {
-        background-color: #199475;
-        color: #fff;
-      }
-    }
 
     .disabled {
       color: rgba(0, 0, 0, 0.25);
@@ -36,23 +25,10 @@
 }
 
 .workflowDeatil {
-  display: flex;
-  flex: 1 0 auto;
-  width: 100%;
-  z-index: 1;
-  flex-direction: column;
-  background: #fff;
+  background: #f0f2f5;
   .header {
-    line-height: 64px;
-    display: flex;
-    padding-left: 32px;
-    align-items: center;
-    border-bottom: solid 1px #d4d4d4;
-    justify-content: space-between;
     .text {
-      font-size: 18px;
-      color: #353535;
-      letter-spacing: 4px;
+      color: var(--themeColor);
     }
     .backIcon {
       @include backIcon()
@@ -60,48 +36,3 @@
   }
 }
 
-.condition.light {
-  color: $darkColor;
-  :global {
-    .ant-radio-button-wrapper-checked {
-      background-color: $themeColor;
-      border: 1px solid $themeColor;
-      color: #fff;
-    }
-  }
-}
-
-@import "../../../../theme/darkTheme.scss";
-.flowTable.dark {
-  margin-top: 10px;
-  background: $light-background;
-  border: 1px solid $border-color;
-  .tableTop {
-    padding-top: 10px;
-    .commonButton {
-      background-color: transparent;
-      color: $fontColor;
-      border: 1px solid $border-color;
-      &:hover {
-        background-color: $themeColor;
-        color: $fontColor-invert;
-      }
-    }
-
-    .disabled {
-      color: $fontColor-disabled;
-      background-color: $button-disabled;
-      border-color: $fontColor-disabled;
-    }
-  }
-}
-
-.condition.dark {
-  color: $fontColor;
-  .statusGroup {
-    margin-top: 10px;
-    background: $light-background;
-    border: 1px solid $border-color;
-    padding: 10px 28px;
-  }
-}

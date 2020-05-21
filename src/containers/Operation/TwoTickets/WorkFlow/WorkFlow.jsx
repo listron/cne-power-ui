@@ -43,20 +43,18 @@ class WorkFlow extends Component {
         return (
             <div className={`${styles.workflow} ${styles[theme]}`}>
                 {/* <Header breadData={[{ name: '工作票' }]} style={{ marginLeft: '38px' }} /> */}
-                <div className={styles.contentBox}>
-                    <div className={styles.container}>
-                        <div className={styles.workflowList}>
-                            <Condition {...this.props} />
-                            <TableList {...this.props} />
-                        </div>
-                        <TransitionContainer
-                            show={showPage !== 'list'}
-                            timeout={500}
-                            effect="side"
-                        >
-                            <WorkFlowSide {...this.props} />
-                        </TransitionContainer>
+                <div className={styles.container}>
+                    <div className={styles.workflowList}>
+                        <Condition {...this.props} />
+                        <TableList {...this.props} />
                     </div>
+                    <TransitionContainer
+                        show={showPage !== 'list'}
+                        timeout={500}
+                        effect="side"
+                    >
+                        <WorkFlowSide {...this.props} />
+                    </TransitionContainer>
                 </div>
                 <Footer />
             </div>

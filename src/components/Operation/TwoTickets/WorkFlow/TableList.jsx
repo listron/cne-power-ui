@@ -48,7 +48,7 @@ class TableList extends Component {
             downloadHref: '',
             showWarningTip: false,
             warningTipText: '确定要删除么',
-            batchVisible: false, //批量操作的按钮 
+            batchVisible: false, //批量操作的按钮
             operatType: '', // 操作的类型
             operateReasult: {}, // 操作的建议
             nodeCode: '', // 作废的节点
@@ -63,7 +63,7 @@ class TableList extends Component {
 
     }
 
-    onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变  
+    onPaginationChange = ({ currentPage, pageSize }) => { // 分页改变
         const { listQueryParams, commonQueryParams } = this.props;
         this.props.getFlowList({ listQueryParams: { ...listQueryParams, pageNum: currentPage, pageSize }, commonQueryParams });
     }
@@ -115,7 +115,7 @@ class TableList extends Component {
         const { operatType, operateReasult, selectedRows, nodeCode, delDocketId } = this.state;
         const taskIds = selectedRows.map(e => e.taskId);
         const docketIds = selectedRows.map(e => e.docketId);
-        if (operatType === 'review' || operatType === 'complete') { // 审核 消票 
+        if (operatType === 'review' || operatType === 'complete') { // 审核 消票
             this.props.handleBatch({ taskIds, ...operateReasult, func: this.resetStatus });
         }
         if (operatType === 'obsolete') { // 作废
@@ -352,11 +352,7 @@ class TableList extends Component {
                     value={warningTipText} />}
                 <div className={styles.tableTop}>
                     <div className={styles.selectCondition}>
-                        {addRight && <CneButton lengthMode="short" className={styles.workflow} onClick={this.addWorkFlow}>
-                            <div className={styles.icon}>
-                                <span className={'iconfont icon-newbuilt'} />
-                            </div> 工作票
-                        </CneButton>}
+                        {addRight && <CneButton lengthMode="short" className={styles.cbtn} onClick={this.addWorkFlow} iconname="icon-newbuilt"> 工作票 </CneButton>}
                         {handleRight && <CneButton lengthMode="short" className={styles.cbtn} disabled={!review}
                             onClick={() => { this.handleBatch('review'); }}>审核</CneButton>}
                         {handleRight && <CneButton lengthMode="short" className={styles.cbtn} disabled={!complete}

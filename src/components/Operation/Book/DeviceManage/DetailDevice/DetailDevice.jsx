@@ -151,7 +151,7 @@ class DetailDevice extends Component {
             {showWarningTip && <WarningTip onOK={this.confirmWarningTip} value={warningTipText} />}
             <div className={styles.detailTop}>
               {deviceHandleRight && <span className={styles.topInfoShow}>
-                <CneButton className={styles.title} onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</CneButton>
+                <CneButton lengthMode="short" onClick={this.onShowSideChange} disabled={deviceTypeCode === '509'}>编辑</CneButton>
               </span>}
               <span className={styles.handleArea} >
                 <i className="iconfont icon-last" title="上一个" onClick={deviceFullCodeStr ? () => { } : this.preStation} />
@@ -159,58 +159,63 @@ class DetailDevice extends Component {
                 <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
               </span>
             </div>
-            <div className={styles.detailPart}>
-              <div>
-                <DetailInfoPart infoArray={baseInfo} />
-                <DetailInfoPart infoArray={selcetbaseInfo} />
-              </div>
-              <div className={styles.rightPart}>
-                {deviceTypeCode === '501' && <DetailInfoPart infoArray={windTower} />}
-                {deviceTypeCode === '101' && <DetailInfoPart infoArray={windTime} />}
-                {(deviceTypeCode === '202' || deviceTypeCode === '206') && <div className={styles.infoBox}>
-                  <div className={styles.eachInfo}>
-                    <div className={styles.infoName}>组件型号</div>
-                    <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
-                      {(deviceDetailMap && (deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
-                    </div>
-                  </div>
-                  <div className={styles.eachInfo}>
-                    <div className={styles.infoName}>支路个数</div>
-                    <div className={styles.infoValue} title={stationDeviceDetail.componentCount}>
-                      {(deviceDetailMap && (deviceDetailMap.componentCount || deviceDetailMap.componentCount === 0)) ? deviceDetailMap.componentCount : '--'}
-                    </div>
-                  </div>
-                  <div className={styles.eachInfo}>
-                    <div className={styles.infoName}>所用支路</div>
-                    <div className={styles.checkGroup} >
-                      <div className={styles.checkItem}>
-                        {connectedBranches.map((e, i) => (
-                          <span className={styles.branchItem} key={i}>
-                            <span title={`第${i + 1}支路`} className={styles.itemName}>第{i + 1}支路</span>
-                            <span>[{e}]</span>
-                          </span>
-                        ))}
-                      </div>
-                      <div className={styles.brachTip}>
-                        (数值代表接入组串数, 0代表未接入)
-                  </div>
-                    </div>
-                  </div>
+
+            <div className={styles.contWrap}>
+              <div className={styles.detailPart}>
+                <div>
+                  <DetailInfoPart infoArray={baseInfo} />
+                  <DetailInfoPart infoArray={selcetbaseInfo} />
                 </div>
-                }
-                {deviceTypeCode === '304' && <div className={styles.infoBox}>
-                  <div className={styles.eachInfo}>
-                    <div className={styles.infoName}>所属方阵</div>
-                    <div className={styles.infoValue} title={deviceDetailMap.belongMatrix}>
-                      {(deviceDetailMap && (deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
+                <div className={styles.rightPart}>
+                  {deviceTypeCode === '501' && <DetailInfoPart infoArray={windTower} />}
+                  {deviceTypeCode === '101' && <DetailInfoPart infoArray={windTime} />}
+                  {(deviceTypeCode === '202' || deviceTypeCode === '206') && <div className={styles.infoBox}>
+                    <div className={styles.eachInfo}>
+                      <div className={styles.infoName}>组件型号</div>
+                      <div className={styles.infoValue} title={stationDeviceDetail.componentMode}>
+                        {(deviceDetailMap && (deviceDetailMap.componentMode || deviceDetailMap.componentMode === 0)) ? deviceDetailMap.componentMode : '--'}
+                      </div>
+                    </div>
+                    <div className={styles.eachInfo}>
+                      <div className={styles.infoName}>支路个数</div>
+                      <div className={styles.infoValue} title={stationDeviceDetail.componentCount}>
+                        {(deviceDetailMap && (deviceDetailMap.componentCount || deviceDetailMap.componentCount === 0)) ? deviceDetailMap.componentCount : '--'}
+                      </div>
+                    </div>
+                    <div className={styles.eachInfo}>
+                      <div className={styles.infoName}>所用支路</div>
+                      <div className={styles.checkGroup} >
+                        <div className={styles.checkItem}>
+                          {connectedBranches.map((e, i) => (
+                            <span className={styles.branchItem} key={i}>
+                              <span title={`第${i + 1}支路`} className={styles.itemName}>第{i + 1}支路</span>
+                              <span>[{e}]</span>
+                            </span>
+                          ))}
+                        </div>
+                        <div className={styles.brachTip}>
+                          (数值代表接入组串数, 0代表未接入)
+                  </div>
+                      </div>
                     </div>
                   </div>
-                </div>}
+                  }
+                  {deviceTypeCode === '304' && <div className={styles.infoBox}>
+                    <div className={styles.eachInfo}>
+                      <div className={styles.infoName}>所属方阵</div>
+                      <div className={styles.infoValue} title={deviceDetailMap.belongMatrix}>
+                        {(deviceDetailMap && (deviceDetailMap.belongMatrix || deviceDetailMap.belongMatrix === 0)) ? deviceDetailMap.belongMatrix : '--'}
+                      </div>
+                    </div>
+                  </div>}
+                </div>
               </div>
+              <div className={styles.tableFilter}>
+                <RecordTable {...this.props} tableFilter={tableFilter} changeTableFilter={this.changeTableFilter} />
+              </div>
+
             </div>
-            <div className={styles.tableFilter}>
-              <RecordTable {...this.props} tableFilter={tableFilter} changeTableFilter={this.changeTableFilter} />
-            </div>
+
           </div>
         }
       </div>

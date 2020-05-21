@@ -63,9 +63,9 @@ class IntelligentTable extends Component {
       updateTime: 'update_time',
     };
     let newField = sortField, newSort = 'desc';
-    if(!field || sortField === sortFieldMap[field]) {// 点击的是正在排序的列
+    if (!field || sortField === sortFieldMap[field]) {// 点击的是正在排序的列
       newSort = sortMethod === 'desc' ? 'asc' : 'desc'; // 交换排序方式
-    }else{
+    } else {
       newField = sortFieldMap[field];
     }
     this.setState({
@@ -228,7 +228,7 @@ class IntelligentTable extends Component {
         },
       }, {
         title: '故障原因',
-        width: '15%',
+        width: '14%',
         textAlign: 'left',
         dataIndex: 'checkItems',
         render: (text) => {
@@ -236,7 +236,7 @@ class IntelligentTable extends Component {
         },
       }, {
         title: '处理方法',
-        width: '15%',
+        width: '14%',
         textAlign: 'left',
         dataIndex: 'processingMethod',
         render: (text) => {
@@ -258,7 +258,7 @@ class IntelligentTable extends Component {
         className: styles.likeCount,
       }, {
         title: '操作',
-        width: '7%',
+        width: '9%',
         dataIndex: 'handler',
         className: styles.handler,
         render: (text, record, index) => (
@@ -285,7 +285,7 @@ class IntelligentTable extends Component {
               <React.Fragment>
                 <CneButton lengthMode="short" className={styles.addHandler} onClick={this.addIntelligent}>
                   <div className={styles.icon}>
-                      <span className={'iconfont icon-newbuilt'} />
+                    <span className={'iconfont icon-newbuilt'} />
                   </div> 添加
                 </CneButton>
                 <CneButton lengthMode="short" className={styles.deleteHandler} onClick={this.deleteIntelligent} disabled={selectedRowKeys.length === 0}>批量删除</CneButton>

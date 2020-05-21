@@ -306,7 +306,7 @@ class PartInfoBox extends React.Component {
       <div className={styles.partInfoBox}>
         <div className={styles.title}>
           <div className={styles.checkStation}>
-            电站选择
+            <span className={styles.stationName}>电站选择</span>
             <StationSelect
               data={allStationBaseInfo}
               onOK={this.selectStation}
@@ -357,10 +357,10 @@ class PartInfoBox extends React.Component {
                 onClick={this.addPartsInfo}
                 disabled={disableClick}
                 className={styles.plusButton}
-                >
-                  <div className={styles.icon}>
-                      <span className={'iconfont icon-newbuilt'} />
-                  </div>添加
+              >
+                <div className={styles.icon}>
+                  <span className={'iconfont icon-newbuilt'} />
+                </div>添加
               </CneButton>
               <CneButton
                 className={styles.copyCom}

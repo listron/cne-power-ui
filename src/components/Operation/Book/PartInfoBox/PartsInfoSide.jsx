@@ -11,24 +11,21 @@ import EditPartsInfo from './EditPartsInfo';
 class PartsInfoSide extends Component {
   static propTypes = {
     showSidePage: PropTypes.string,
-  
+
   }
 
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  render(){
-    const { showSidePage, } = this.props;
+  render() {
+    const { showSidePage } = this.props;
     return (
       <div className={styles.partsInfoSide}>
-     
-        { showSidePage === 'add' && <AddPartsInfo {...this.props} /> } 
-        { showSidePage === 'edit' && <EditPartsInfo {...this.props} /> }
-      
-       
+        {showSidePage === 'add' && <AddPartsInfo {...this.props} />}
+        {showSidePage === 'edit' && <EditPartsInfo {...this.props} />}
       </div>
-    )
+    );
   }
 }
 

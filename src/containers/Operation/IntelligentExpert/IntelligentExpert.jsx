@@ -52,19 +52,17 @@ class IntelligentExpert extends Component {
     const { showPage, theme } = this.props;
     return (
       <div className={`${styles.intelligentExpert} ${styles[theme]}`}>
-        <div className={styles.contentBox}>
-          <div className={styles.warp}>
-            <InterlligentExpertMain {...this.props} />
-            <TransitionContainer
-              show={showPage !== 'list'}
-              onEnter={this.onToggleSide}
-              onExited={this.onToggleSide}
-              timeout={500}
-              effect="side"
-            >
-              <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
-            </TransitionContainer>
-          </div>
+        <div className={styles.warp}>
+          <InterlligentExpertMain {...this.props} />
+          <TransitionContainer
+            show={showPage !== 'list'}
+            onEnter={this.onToggleSide}
+            onExited={this.onToggleSide}
+            timeout={500}
+            effect="side"
+          >
+            <IntelligentSide {...this.props} showPage={showPage} onShowSideChange={this.onShowSideChange} />
+          </TransitionContainer>
         </div>
         <Footer />
       </div>

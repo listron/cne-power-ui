@@ -1,11 +1,9 @@
 @import '../../../../theme/theme.scss';
 
 @mixin top {
-  @include lineheight(64px);
+  @include lineheight(54px);
   display: flex;
-  padding-left: 32px;
   align-items: center;
-  border-bottom: 1px solid $promptColor;
 }
 
 .partInfoBox {
@@ -24,6 +22,11 @@
     .checkStation {
       display: flex;
       align-items: center;
+      line-height: 40px;
+      .stationName{
+        margin-right: 8px;
+      }
+
     }
 
     .buttonBox{
@@ -112,7 +115,7 @@
   flex: 1 0 auto;
   width: 100%;
   background: #f0f2f5;
-  padding: 24px 24px 0;
+  padding: 0 24px;
   z-index: 99;
 
   .addDevice,
@@ -120,7 +123,7 @@
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    background: #fff;
+   
 
     .preFormStyle {
       margin-top: 20px;
@@ -160,10 +163,9 @@
     .editTop {
       @include top;
       justify-content: space-between;
-
       .text {
         font-size: 18px;
-        color: $darkColor;
+        color: var(--themeColor);
         letter-spacing: 4px;
       }
 
@@ -176,8 +178,10 @@
       display: flex;
       flex: 1;
       flex-direction: column;
-      // justify-content: center;
-      margin: 40px auto;
+      align-items: center;
+      padding: 40px;
+      background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
 
       .formItemStyle {
         display: flex;
@@ -218,7 +222,6 @@
       }
 
       .submitStyle {
-        margin-left: 160px;
         margin-top: 12px;
         display: flex;
 
@@ -234,7 +237,6 @@
         }
 
         .editSave {
-          margin-left: 64px;
           width: 90px;
         }
       }
@@ -295,8 +297,6 @@
     }
   }
 }
-
-
 
 .copyPartsStyle {
   :global {

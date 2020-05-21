@@ -182,140 +182,142 @@ class SpareInsert extends Component {
           <span className={styles.text}>备品备件 - 入库</span>
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
-        <Form className={styles.formPart}>
-          <FormItem label="仓库名称">
-            {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
-              <Select placeholder="请选择" style={{ width: 200 }} onChange={this.selectWarehouse} disabled={!!originInsertInfo}>
-                {warehouseList.map(e => (
-                  <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="物品名称">
-            {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
-              <AddGood
-                goodsType={101}
-                goodsList={goodsList}
-                addNewGood={addNewGood}
-                addGoodName={addGoodName}
-                addGoodStatus={addGoodStatus}
-                tabName={tabName}
-                disabled={!!originInsertInfo}
-              />
-            )}
-          </FormItem>
-          <FormItem label="对应生产资产">
-            {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
-              <AssetsSelectTree
-                mainDeviceEditCodes={mainDeviceEditCodes}
-                assetsTree={assetsTree}
-                originInsertInfo={originInsertInfo}
-                onChange={this.selectAssets}
-                changeManufactorRight={this.changeManufactorRight}
-              />
-            )}
-          </FormItem>
-          <FormItem label="厂家">
-            {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
-              !!originInsertInfo ? <Select placeholder="请选择"
-                onChange={this.selectManufacturer}
-                style={{ width: 200 }}
-                disabled
-              >
-                <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option>
-              </Select> : <AddManu
-                  addManufactorRight={addManufactorRight}
-                  assetsManufac={assetsManufac}
-                  addNewManu={addNewManu}
-                  addManufactorId={addManufactorId}
-                  addManuStatus={addManuStatus}
+        <div className={styles.contWrap}>
+          <Form className={styles.formPart}>
+            <FormItem label="仓库名称">
+              {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
+                <Select placeholder="请选择" style={{ width: 200 }} onChange={this.selectWarehouse} disabled={!!originInsertInfo}>
+                  {warehouseList.map(e => (
+                    <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="物品名称">
+              {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
+                <AddGood
+                  goodsType={101}
+                  goodsList={goodsList}
+                  addNewGood={addNewGood}
+                  addGoodName={addGoodName}
+                  addGoodStatus={addGoodStatus}
                   tabName={tabName}
-                  disabled={!assetsIds || assetsIds.length === 0}
-                  assetsIds={assetsIds}
-                  getManufactures={getManufactures}
-                  getModes={this.selectManufacturer}
+                  disabled={!!originInsertInfo}
                 />
-            )}
-          </FormItem>
-          <FormItem label="型号">
-            {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
-              !!originInsertInfo ? <Select placeholder="请选择" style={{ width: 200 }} disabled>
-                <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option>
-              </Select> : <AddType
-                  insertModes={insertModes}
-                  addNewType={addNewType}
-                  addTypeStatus={addTypeStatus}
-                  adddModeName={adddModeName}
-                  disabled={!manufactorId}
-                  assetsId={assetsIds}
-                  manufactorInfo={assetsManufac.find(e => e.manufactorId === manufactorId) || {}}
+              )}
+            </FormItem>
+            <FormItem label="对应生产资产">
+              {getFieldDecorator('assetsIds', requireInfoFun('请填写生产资产'))(
+                <AssetsSelectTree
+                  mainDeviceEditCodes={mainDeviceEditCodes}
+                  assetsTree={assetsTree}
+                  originInsertInfo={originInsertInfo}
+                  onChange={this.selectAssets}
+                  changeManufactorRight={this.changeManufactorRight}
                 />
-            )}
-          </FormItem>
-          <FormItem label="制造商">
-            {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label="供货商">
-            {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label="入库数量">
-            {getFieldDecorator('entryNum', {
-              rules: [{
-                required: true,
-                validator: (rule, value, callback) => {
-                  !value && callback('请填写入库数量');
-                  isNaN(value) && callback('请填写数字');
-                  value >= 1000 && callback('数据过大');
-                  value.includes('.') && callback('入库数量必须是整数');
-                  value < 0 && callback('不能为负数');
-                  callback();
-                },
-              }],
-            })(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-            {originInsertInfo && <span className={styles.prompt}>当前库存量为{spareNumber}</span>}
-          </FormItem>
-          <FormItem label="单价">
-            {getFieldDecorator('price', {
-              rules: [{
-                required: true,
-                validator: (rule, value, callback) => {
-                  !value && callback('请填写单价');
-                  isNaN(value) && callback('请填写数字');
-                  value >= 1000000000 && callback('数据过大');
-                  value.includes('.') && value.split('.')[1].length > 4 && callback('不可超出4位小数');
-                  value < 0 && callback('不能为负数');
-                  callback();
-                },
-              }],
-            })(
-              <Input placeholder="请输入..." style={{ width: 200 }} />
-            )}
-            <span className={styles.prompt}>元</span>
-          </FormItem>
-          <FormItem label="备注">
-            {getFieldDecorator('remarks')(
-              <InputLimit placeholder="请输入..." />
-            )}
-          </FormItem>
-        </Form>
-        <div className={styles.handlePart}>
-          <span className={styles.holder} />
-          <CneButton
-            className={styles.saveButon}
-            onClick={this.insertSave}
-            loading={saveMode === 'once' && insertStatus === 'loading'}
-          >保存</CneButton>
-          <CneButton
-            onClick={this.saveAndContinue}
-            loading={saveMode === 'more' && insertStatus === 'loading'}
-          >保存并继续添加</CneButton>
+              )}
+            </FormItem>
+            <FormItem label="厂家">
+              {getFieldDecorator('manufactorId', requireInfoFun('请选择厂家'))(
+                !!originInsertInfo ? <Select placeholder="请选择"
+                  onChange={this.selectManufacturer}
+                  style={{ width: 200 }}
+                  disabled
+                >
+                  <Option value={originInsertInfo.manufactorId}>{originInsertInfo.devManufactorName}</Option>
+                </Select> : <AddManu
+                    addManufactorRight={addManufactorRight}
+                    assetsManufac={assetsManufac}
+                    addNewManu={addNewManu}
+                    addManufactorId={addManufactorId}
+                    addManuStatus={addManuStatus}
+                    tabName={tabName}
+                    disabled={!assetsIds || assetsIds.length === 0}
+                    assetsIds={assetsIds}
+                    getManufactures={getManufactures}
+                    getModes={this.selectManufacturer}
+                  />
+              )}
+            </FormItem>
+            <FormItem label="型号">
+              {getFieldDecorator('modeId', requireInfoFun('请选择型号'))(
+                !!originInsertInfo ? <Select placeholder="请选择" style={{ width: 200 }} disabled>
+                  <Option value={originInsertInfo.modeId}>{originInsertInfo.modeName}</Option>
+                </Select> : <AddType
+                    insertModes={insertModes}
+                    addNewType={addNewType}
+                    addTypeStatus={addTypeStatus}
+                    adddModeName={adddModeName}
+                    disabled={!manufactorId}
+                    assetsId={assetsIds}
+                    manufactorInfo={assetsManufac.find(e => e.manufactorId === manufactorId) || {}}
+                  />
+              )}
+            </FormItem>
+            <FormItem label="制造商">
+              {getFieldDecorator('manufactorName')(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label="供货商">
+              {getFieldDecorator('supplierName')(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label="入库数量">
+              {getFieldDecorator('entryNum', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    !value && callback('请填写入库数量');
+                    isNaN(value) && callback('请填写数字');
+                    value >= 1000 && callback('数据过大');
+                    value.includes('.') && callback('入库数量必须是整数');
+                    value < 0 && callback('不能为负数');
+                    callback();
+                  },
+                }],
+              })(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+              {originInsertInfo && <span className={styles.prompt}>当前库存量为{spareNumber}</span>}
+            </FormItem>
+            <FormItem label="单价">
+              {getFieldDecorator('price', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    !value && callback('请填写单价');
+                    isNaN(value) && callback('请填写数字');
+                    value >= 1000000000 && callback('数据过大');
+                    value.includes('.') && value.split('.')[1].length > 4 && callback('不可超出4位小数');
+                    value < 0 && callback('不能为负数');
+                    callback();
+                  },
+                }],
+              })(
+                <Input placeholder="请输入..." style={{ width: 200 }} />
+              )}
+              <span className={styles.prompt}>元</span>
+            </FormItem>
+            <FormItem label="备注">
+              {getFieldDecorator('remarks')(
+                <InputLimit placeholder="请输入..." />
+              )}
+            </FormItem>
+          </Form>
+          <div className={styles.handlePart}>
+            <span className={styles.holder} />
+            <CneButton
+              className={styles.saveButon}
+              onClick={this.insertSave}
+              loading={saveMode === 'once' && insertStatus === 'loading'}
+            >保存</CneButton>
+            <CneButton
+              onClick={this.saveAndContinue}
+              loading={saveMode === 'more' && insertStatus === 'loading'}
+            >保存并继续添加</CneButton>
+          </div>
         </div>
       </section>
     );

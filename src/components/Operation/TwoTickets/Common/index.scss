@@ -1,5 +1,9 @@
 @import '../../../../theme/theme.scss';
 .workflow {
+  display: flex;
+  flex: 1;
+  background: #fff;
+  box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
   .flowForm{
     width:572px;
     margin: 18px auto;
@@ -8,7 +12,7 @@
     min-width: 514px;
     margin-left: -8px;
   }
-   .tipText {
+  .tipText {
       color: $promptColor;
       margin-left: 12px;
       display: flex;
@@ -21,8 +25,8 @@
           color: $promptColor;
         }
       }
-    }
-    .addImg {
+  }
+  .addImg {
       display: flex;
       flex-direction: row;
       align-items: flex-end;
@@ -32,8 +36,8 @@
         color: $promptColor;
         font-family: MicrosoftYaHei;
       }
-    }
-    .defectDetail{
+  }
+  .defectDetail{
       display: block;
       background:#fbfbfb;
       border-radius:2px;
@@ -68,16 +72,16 @@
         display: inline-block;
         width: 200px;
       }
-    }
-    .actionBar {
+  }
+  .actionBar {
       margin-left: 88px;
       .saveBtn {
         margin-right: 20px;
         width: 90px;
       }
 
-    }
-    .basicItem {
+  }
+  .basicItem {
       display: flex;
       flex-direction: row;
       line-height: 30px;
@@ -96,8 +100,8 @@
         padding-left: 24px;
          word-break: break-all;
       }
-    }
-    :global{
+  }
+  :global{
       .ant-form-item {
         display: flex;
         margin-bottom: 12px;
@@ -114,10 +118,14 @@
           border-color: $promptColor;
         }
       }
-    }
+  }
 }
 
 .detailFlow{
+  display: flex;
+  flex: 1;
+  background: #fff;
+  box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
   .content {
     display: flex;
     flex-direction: row;

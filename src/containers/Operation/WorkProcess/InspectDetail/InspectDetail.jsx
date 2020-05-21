@@ -51,7 +51,6 @@ class InspectDetail extends Component {
 
   render() {
     const { theme = 'light', loading } = this.props;
-
     return (
       <div className={`${styles.inspectDetailBox} ${theme}`}>
         <div className={styles.header}>
@@ -60,17 +59,17 @@ class InspectDetail extends Component {
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onCancelEdit} />
           </div>
         </div>
-        <Spin spinning={loading}>
-          <div className={styles.content}>
+        <div className={styles.content}>
+          <Spin spinning={loading} />
+          <React.Fragment>
             <div className={styles.leftContent}>
               <InspectBaseInfo {...this.props} />
             </div>
             <div className={styles.rightContent}>
               <InspectProcess {...this.props} />
             </div>
-          </div>
-        </Spin>
-
+          </React.Fragment>
+        </div>
       </div>
     );
   }

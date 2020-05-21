@@ -89,7 +89,7 @@ export default class MaterialReserve extends Component {
 
   reserveColumn = () => {
     const reserveBox = this.reserveBox;
-    const timeWidth = 160; // 
+    const timeWidth = 160; //
     const pricePersonWidth = 90;
     const statusWidth = 70;
     let codeWidth = 140, handleWidth = 90, textWidth = 120;
@@ -250,24 +250,26 @@ export default class MaterialReserve extends Component {
           <span className={styles.text}>物资 - 库存</span>
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
-        <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />
-        <div className={styles.pagination}>
-          <CommonPagination
-            total={pageCount}
-            pageSize={pageSize}
-            currentPage={pageNum}
-            onPaginationChange={this.onPaginationChange}
+        <div className={styles.contWrap}>
+          <ReserveDetail reserveDetail={reserveDetail} tabName={tabName} />
+          <div className={styles.pagination}>
+            <CommonPagination
+              total={pageCount}
+              pageSize={pageSize}
+              currentPage={pageNum}
+              onPaginationChange={this.onPaginationChange}
+            />
+          </div>
+          <CneTable
+            loading={reserveListLoading}
+            onChange={this.tableChange}
+            columns={this.reserveColumn()}
+            dataSource={dataList.map(e => ({ key: e.materialCode, ...e }))}
+            pagination={false}
+            sortField={this.sortTemplete[sortField]}
+            sortMethod={this.sortTemplete[sortMethod]}
           />
         </div>
-        <CneTable
-          loading={reserveListLoading}
-          onChange={this.tableChange}
-          columns={this.reserveColumn()}
-          dataSource={dataList.map(e => ({ key: e.materialCode, ...e }))}
-          pagination={false}
-          sortField={this.sortTemplete[sortField]}
-          sortMethod={this.sortTemplete[sortMethod]}
-        />
         {remindShow && <WarningTip onOK={confirmRemind} onCancel={this.hideRemindModal} value={remindText} />}
       </section>
     );

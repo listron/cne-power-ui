@@ -5,30 +5,9 @@
   flex: 1;
   min-height: 100%;
   flex-direction: column;
-  .contentBox {
-    @include contentBoxStyle();
-  }
   .warp {
     display: flex;
-    justify-content: space-between;
-    flex: 1 0 auto;
-    width: 100%;
-    overflow: hidden;
+    flex: 1;
+    flex-direction:row;
   }
-  .sidePage {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-    width: 100%;
-  }
-}
-
-.light {
-  .contentBox {
-    background-color: #f0f2f5;
-  }
-}
-
-.intelligentExpert.dark {
-  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
 }

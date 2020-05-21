@@ -1,17 +1,15 @@
 @import "../../../theme/theme";
 @mixin top {
-  @include lineheight(64px);
+  @include lineheight(54px);
   display: flex;
-  padding-left: 32px;
   align-items: center;
-  border-bottom: 1px solid $promptColor;
 }
 .intelligentContent {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   width: 100%;
-  // margin: 24px 24px 0;
+  padding: 15px 24px 0;
 }
 .stationType {
   display: flex;
@@ -170,6 +168,7 @@
   flex: 1 0 auto;
   width: 100%;
   z-index: 99;
+  padding: 0 24px;
   :global {
     .ant-select,
     .ant-cascader-picker {
@@ -228,7 +227,7 @@
   }
   .addIntelligent {
     .formBox {
-      margin-top: 24px;
+      padding-top: 24px;
     }
     .selctWrap {
       display: flex;
@@ -294,7 +293,10 @@
       width: 90px;
     }
     .detailContent {
-      margin: 20px 0 20px 88px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px 0 20px 88px;
       .detailText {
         line-height: 36px;
         width: 800px;

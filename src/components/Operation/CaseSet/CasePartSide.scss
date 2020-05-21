@@ -1,12 +1,9 @@
 @import "../../../theme/theme";
 
 @mixin top {
-  @include lineheight(64px);
-  // background: #fff;
+  @include lineheight(54px);
   display: flex;
-  padding-left: 32px;
   align-items: center;
-  border-bottom: 1px solid $promptColor;
 }
 
 .pointSide {
@@ -16,7 +13,7 @@
   flex: 1 0 auto;
   width: 100%;
   background: #f0f2f5;
-  padding: 24px 24px 0;
+  padding: 0 24px;
   z-index: 99;
 
   .caseAdd,
@@ -25,7 +22,6 @@
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
-    background: #fff;
 
     .pageTop {
       @include top;
@@ -82,6 +78,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
 
     .formPart {
       display: flex;
@@ -186,8 +184,12 @@
   .caseDetail {
     .detailBox {
       padding: 20px 0 40px 0;
-      width: 800px;
-      margin: 0 auto;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
 
       .eachInfo {
         display: flex;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Form, Select, Input} from 'antd';
+import { Icon, Form, Select, Input } from 'antd';
 import PropTypes from 'prop-types';
 import AddGood from './ManageCommon/AddGood';
 import InputLimit from '../../../Common/InputLimit';
@@ -137,111 +137,113 @@ class ToolInsert extends Component {
           <span className={styles.text}>工器具 - 入库</span>
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
-        <Form className={styles.formPart}>
-          <FormItem label="仓库名称">
-            {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
-              <Select placeholder="请选择" style={{ width: 200 }} disabled={!!originInsertInfo}>
-                {warehouseList.map(e => (
-                  <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="物品类型">
-            {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型'))(
-              <Select placeholder="请选择" style={{ width: 200 }} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
-                {goodsInfo.map(e => (
-                  <Option key={e.value} value={e.value}>{e.label}</Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="物品名称">
-            {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
-              <AddGood
-                goodsList={goodsList}
-                addNewGood={addNewGood}
-                goodsType={goodsType}
-                addGoodName={addGoodName}
-                addGoodStatus={addGoodStatus}
-                tabName={tabName}
-                disabled={!!originInsertInfo || !goodsType} // 未选物品类型不可添加物品
-              />
-            )}
-          </FormItem>
-          <FormItem label="厂家">
-            {getFieldDecorator('devManufactorName', requireInfoFun('请选择厂家'))(
-              <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
-            )}
-          </FormItem>
-          <FormItem label="型号">
-            {getFieldDecorator('modeName', requireInfoFun('请选择型号'))(
-              <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
-            )}
-          </FormItem>
-          <FormItem label="制造商">
-            {getFieldDecorator('manufactorName')(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label="供货商">
-            {getFieldDecorator('supplierName')(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label="入库数量">
-            {getFieldDecorator('entryNum', {
-              rules: [{
-                required: true,
-                validator: (rule, value, callback) => {
-                  !value && callback('请填写入库数量');
-                  isNaN(value) && callback('请填写数字');
-                  value >= 1000 && callback('数据过大');
-                  value.includes('.') && callback('入库数量必须是整数');
-                  value < 0 && callback('不能为负数');
-                  callback();
-                },
-              }],
-            })(
-              <Input placeholder="30字以内" style={{ width: 200 }} />
-            )}
-            {originInsertInfo && <span className={styles.prompt}>当前库存量为{toolNumber}</span>}
-          </FormItem>
-          <FormItem label="单价">
-            {getFieldDecorator('price', {
-              rules: [{
-                required: true,
-                validator: (rule, value, callback) => {
-                  !value && callback('请填写单价');
-                  isNaN(value) && callback('请填写数字');
-                  value >= 1000000000 && callback('数据过大');
-                  value.includes('.') && value.split('.')[1].length > 4 && callback('不可超出4位小数');
-                  value < 0 && callback('不能为负数');
-                  callback();
-                },
-              }],
-            })(
-              <Input placeholder="请输入..." style={{ width: 200 }} />
-            )}
-            <span className={styles.prompt}>元</span>
-          </FormItem>
-          <FormItem label="备注">
-            {getFieldDecorator('remarks')(
-              <InputLimit placeholder="请输入..." />
-            )}
-          </FormItem>
-        </Form>
-        <div className={styles.handlePart}>
-          <span className={styles.holder} />
-          <CneButton
-            className={styles.saveButon}
-            onClick={this.insertSave}
-            loading={saveMode === 'once' && insertStatus === 'loading'}
-          >保存</CneButton>
-          <CneButton
-            onClick={this.saveAndContinue}
-            loading={saveMode === 'more' && insertStatus === 'loading'}
-          >保存并继续添加</CneButton>
+        <div className={styles.contWrap}>
+          <Form className={styles.formPart}>
+            <FormItem label="仓库名称">
+              {getFieldDecorator('warehouseId', requireInfoFun('请选择仓库名称'))(
+                <Select placeholder="请选择" style={{ width: 200 }} disabled={!!originInsertInfo}>
+                  {warehouseList.map(e => (
+                    <Option key={e.warehouseId} value={e.warehouseId}>{e.warehouseName}</Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="物品类型">
+              {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型'))(
+                <Select placeholder="请选择" style={{ width: 200 }} onChange={this.refreshGoodList} disabled={!!originInsertInfo}>
+                  {goodsInfo.map(e => (
+                    <Option key={e.value} value={e.value}>{e.label}</Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="物品名称">
+              {getFieldDecorator('goodsName', requireInfoFun('请选择物品名称'))(
+                <AddGood
+                  goodsList={goodsList}
+                  addNewGood={addNewGood}
+                  goodsType={goodsType}
+                  addGoodName={addGoodName}
+                  addGoodStatus={addGoodStatus}
+                  tabName={tabName}
+                  disabled={!!originInsertInfo || !goodsType} // 未选物品类型不可添加物品
+                />
+              )}
+            </FormItem>
+            <FormItem label="厂家">
+              {getFieldDecorator('devManufactorName', requireInfoFun('请选择厂家'))(
+                <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
+              )}
+            </FormItem>
+            <FormItem label="型号">
+              {getFieldDecorator('modeName', requireInfoFun('请选择型号'))(
+                <Input placeholder="请输入..." style={{ width: 200 }} disabled={!!originInsertInfo} />
+              )}
+            </FormItem>
+            <FormItem label="制造商">
+              {getFieldDecorator('manufactorName')(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label="供货商">
+              {getFieldDecorator('supplierName')(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label="入库数量">
+              {getFieldDecorator('entryNum', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    !value && callback('请填写入库数量');
+                    isNaN(value) && callback('请填写数字');
+                    value >= 1000 && callback('数据过大');
+                    value.includes('.') && callback('入库数量必须是整数');
+                    value < 0 && callback('不能为负数');
+                    callback();
+                  },
+                }],
+              })(
+                <Input placeholder="30字以内" style={{ width: 200 }} />
+              )}
+              {originInsertInfo && <span className={styles.prompt}>当前库存量为{toolNumber}</span>}
+            </FormItem>
+            <FormItem label="单价">
+              {getFieldDecorator('price', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    !value && callback('请填写单价');
+                    isNaN(value) && callback('请填写数字');
+                    value >= 1000000000 && callback('数据过大');
+                    value.includes('.') && value.split('.')[1].length > 4 && callback('不可超出4位小数');
+                    value < 0 && callback('不能为负数');
+                    callback();
+                  },
+                }],
+              })(
+                <Input placeholder="请输入..." style={{ width: 200 }} />
+              )}
+              <span className={styles.prompt}>元</span>
+            </FormItem>
+            <FormItem label="备注">
+              {getFieldDecorator('remarks')(
+                <InputLimit placeholder="请输入..." />
+              )}
+            </FormItem>
+          </Form>
+          <div className={styles.handlePart}>
+            <span className={styles.holder} />
+            <CneButton
+              className={styles.saveButon}
+              onClick={this.insertSave}
+              loading={saveMode === 'once' && insertStatus === 'loading'}
+            >保存</CneButton>
+            <CneButton
+              onClick={this.saveAndContinue}
+              loading={saveMode === 'more' && insertStatus === 'loading'}
+            >保存并继续添加</CneButton>
+          </div>
         </div>
       </section>
     );

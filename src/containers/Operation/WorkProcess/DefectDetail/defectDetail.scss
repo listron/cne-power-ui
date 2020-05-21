@@ -1,23 +1,22 @@
 @import "../../../../theme/theme.scss";
 .detailWrap {
   display: flex;
-  flex: 1 0 auto; //background-color: #fff;
+  flex: 1 0 auto; 
   flex-direction: column;
-  justify-content: space-between; //padding: 24px 24px 0;
-  background-color: #fff;
+  justify-content: space-between; ;
+ 
   z-index: 30;
   width: 100%;
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid $promptColor;
-    height:60px;
+    color: #f0f2f5;
+    margin-bottom: 13px;
     .text {
       font-size: 18px;
-      color: $darkColor;
+      color: var(--themeColor);
       letter-spacing: 4px;
-      margin-left: 44px;
       width: calc(100% - 100px);
       @include overflowText();
     }
@@ -30,5 +29,7 @@
     display: flex;
     flex: 1;
     padding: 24px 36px;
+    background-color: #fff;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2)
   }
 }

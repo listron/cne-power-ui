@@ -10,24 +10,13 @@
     .selectCondition {
       display: flex;
       justify-content: space-between;
-      .workflow {
-        z-index: 0;
-        margin-left: 0px;
-        margin-right: 16px;
-        display: flex;
-        padding: 0 15px 0 6px;
-        .icon {
-          margin: 0 10px 0 0;
-        }
-      }
     }
     .pagination {
       margin-right: 0px;
     }
-
     .cbtn {
-      z-index: 0;
       margin-right: 16px;
+      z-index: 1;
     }
   }
 
@@ -64,11 +53,6 @@
       }
     }
   }
-  :global {
-    .ant-table-placeholder {
-      border: none;
-    }
-  }
 }
 
 .workflowDeatil {
@@ -77,20 +61,16 @@
   width: 100%;
   z-index: 1;
   flex-direction: column;
-  background: #fff;
+  padding: 0 24px;
   .header {
-    line-height: 64px;
     display: flex;
-    padding-left: 32px;
     align-items: center;
-    border-bottom: solid 1px #d4d4d4;
     justify-content: space-between;
+    height: 54px;
     .text {
       font-size: 18px;
-      color: #353535;
       letter-spacing: 4px;
-    }
-   
+    } 
   }
 }
 
@@ -110,33 +90,6 @@
       margin-right: 16px;
       > span:first-child {
         margin-right: 28px;
-      }
-    }
-
-    :global {
-      .ant-radio-group {
-        .ant-radio-button-wrapper {
-          &:not(:first-child)::before {
-            width: 0px;
-          }
-          color: #199475;
-          border: 1px solid #199475;
-          border-right: none;
-          &:first-child {
-              border-radius: 2px 0 0 2px;
-          }
-          &:last-child {
-            border-radius: 0 2px 2px 0;
-            border-right: 1px solid #199475;
-          }
-          &:hover {
-              background-color: #ceebe0;
-          }
-          &.ant-radio-button-wrapper-checked {
-              background-color: #199475;
-              color: #fff;
-          }
-        }
       }
     }
   }

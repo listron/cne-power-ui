@@ -96,24 +96,32 @@
 }
 
 .insert, .takeout, .reserve{
-  background-color: #fff;
-  height: 100%;
-  padding-bottom: 24px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   .title{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid $promptColor;
-    height: 60px;
+    height: 54px;
+    margin-bottom: 0;
     .text{
       font-size: 18px;
       font-weight: 550;
-      color: #000;
-      padding-left: 30px;
+      color: var(--themeColor);
     }
     .backIcon{
       @include backIcon();
     }
+  }
+  .contWrap{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #fff;
+    padding-top: 20px;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
   }
   .handlePart{
     display: flex;

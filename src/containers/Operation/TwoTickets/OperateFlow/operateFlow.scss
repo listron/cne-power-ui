@@ -3,41 +3,19 @@
   flex: 1;
   min-height: 100%;
   flex-direction: column;
-  .contentBox {
+  .container {
     display: flex;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
-    padding: 15px 24px 0 24px;
-    .container {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
-      justify-content: space-between;
-      overflow: hidden;
-    }
-    .workflowList {
+  }
+  .workflowList {
       display: flex;
       flex: 1 0 auto;
       width: 100%;
       flex-direction: column;
-    }
+      padding: 15px 24px 0;
+      background: #f0f2f5;
   }
 }
 
-.light {
-  .contentBox {
-    background-color: #f0f2f5;
-    .container {
-      background: transparent;
-    }
-    .workflowList {
-      background: transparent;
-    }
-  }
-}
-
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-}

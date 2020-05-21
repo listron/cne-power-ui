@@ -1,16 +1,8 @@
 @import "../../../theme/theme";
 @import "./layout.scss";
 
-@mixin top {
-  @include lineheight(64px);
-  display: flex;
-  padding-left: 32px;
-  align-items: center;
-  border-bottom: 1px solid $promptColor;
-}
-
-.light {
-  background-color: #fff;
+.intelligentContent.light {
+  background: #f0f2f5;
   .intelligentList {
     .icon {
       &:hover {
@@ -56,6 +48,7 @@
     flex: 1 auto;
     box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);  
     margin: 0 2px 4px 2px;
+    background: #fff;
   }
   .intelligentTable {
     padding-right: 1px;
@@ -82,14 +75,13 @@
   }
 }
 .intelligentSide.light {
-  background: #fff;
+  background: #f0f2f5;
   .addIntelligent,
   .showIntelligent,
   .editIntelligent {
     .titleTop {
-      @include top;
       .text {
-        color: $darkColor;
+        color: var(--themeColor);
       }
     }
     :global {
@@ -113,6 +105,10 @@
     }
   }
   .addIntelligent {
+    .formBox{
+      background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    }
     .selctWrap {
       i {
         color: $themeColor;
@@ -120,6 +116,10 @@
     }
   }
   .editIntelligent {
+    .editmiddle{
+      background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    }
     .formItem {
       .label {
         color: #000;
@@ -141,218 +141,14 @@
       border-color: $themeColor;
     }
     .detailContent {
+      background: #fff;
+      box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
       .link {
         color: $themeColor;
       }
       .required {
         color: #a42b2c;
       }
-    }
-  }
-}
-
-
-
-.dark.intelligentContent{
-  .stationType {
-    border-bottom: 1px solid rgba(83, 104, 241, 0.4);
-    height: 42px;
-    p {
-      border: 1px solid #202470;
-      color: #7088c3;
-      background: #13134f;
-      margin-right: 4px;
-      border-radius: 8px 8px 0 0;
-      height: 40px;
-    }
-    .activeStation {
-      background: rgba(83, 104, 241, 0.15);
-      border: 1px solid rgba(83, 104, 241, 0.4);
-      color: #fff;
-      border-bottom: 1px solid rgba(12, 10, 62, 0.6);
-      height: 42px;
-      &::before {
-        display: none;
-      }
-    }
-  }
-  :global {
-    .ant-upload {
-      color: #00baff;
-    }
-    a {
-      color: #00baff;
-    }
-    .ant-upload-list-item-info .anticon-paper-clip {
-      color: #00baff;
-    }
-  }
-}
-
-.dark.intelligentSearch {
-  color: #00baff;
-  .wrap {
-    background: rgba(83, 104, 241, 0.15);
-    border: 1px solid rgba(83, 104, 241, 0.4);
-  }
-  div[class*="filterCondition__"]{
-    background:rgba(20,33,101,0.40);
-  }
-  .partSearch {
-    background:rgba(20,33,101,0.40);
-    margin-top: 10px;
-    border: 1px solid rgba(83, 104, 241, 0.4);
-    .reset {
-      color: #00baff;
-    }
-  }
-}
-
-.dark.intelligentTable{
-  background:rgba(20,33,101,0.40);
-  margin-top: 10px;
-  border: 1px solid rgba(83, 104, 241, 0.4);
-  .importIntelligent{
-    :global{
-      .ant-modal-content{
-        background:#205bac;
-        border:1px solid #303a99;
-        box-shadow:inset 0 0 5px 2px #00baff;
-        border-radius:2px;
-      }
-      .ant-form-item {
-        color:#9cd1ff;
-        .ant-upload .ant-btn{
-          background-image:linear-gradient(-180deg, #b4ec51 0%, #74bb36 56%, #429321 100%);
-          color: #fff;
-        }
-        .ant-upload-list-item{
-          color:#00f0ff;
-          .anticon{
-            color: #00f0ff;
-          }
-          &:hover{
-            .ant-upload-list-item-info{
-              background-color: transparent;
-            }
-          }
-        }
-        .ant-upload-list-item-name{
-          color:#00f0ff;
-        }
-      }
-    }
-  }
-  .tableFooter {
-    .info {
-      .totalNum {
-        color: #f9b600;
-      }
-    }
-    .cancel {
-      color: #f9b600;
-    }
-  }
-}
-
-.dark.intelligentSide{
-  background-image:linear-gradient(-118deg, #3b55aa 0%, #132267 96%);
-  .addIntelligent,
-  .showIntelligent,
-  .editIntelligent {
-    background:rgba(20,33,101,0.40);
-    border:1px solid #4288b5;
-    color: #00baff;
-    .titleTop {
-      @include top;
-      border-bottom: 1px solid #4288b5;;
-      .text {
-        color: #00f0ff;
-      }
-      .backIcon {
-        color: #00f0ff;
-        border-left: 1px solid #4288b5;;
-      }
-    }
-  }
-  .addIntelligent, .editIntelligent{
-    .preFormStyle .formItem {
-      .label .name {
-        color:#00f0ff;
-      }
-      .label .required {
-        display: inline-block;
-        margin-right: 4px;
-        color: #f5222d;
-        font-size: 14px;
-        font-family: SimSun, sans-serif;
-        line-height: 1;
-      }
-      .uploaderBtn{
-        padding: 0 15px 0 10px;
-        .icon {
-          margin: 0 6px 0 0;
-        }
-      }
-      .extraSpan{
-        color:#9cd1ff;
-      }
-      :global{
-        .ant-form-item-label label{
-          color:#00f0ff;
-          &::after{
-            color: #f5222d;
-          }
-        }
-        .ant-form-item-control-wrapper{
-          input, textarea{
-            &::-webkit-input-placeholder{
-              color:#9cd1ff;
-            }
-          }
-          [class*=inputCount]{
-            color:#9cd1ff;
-          }
-        }
-        .ant-upload-list-item{
-          color:#00f0ff;
-          .anticon{
-            color: #00f0ff;
-          }
-          &:hover{
-            .ant-upload-list-item-info{
-              background-color: transparent;
-            }
-          }
-        }
-        .ant-upload-list-item-name{
-          color:#00f0ff;
-        }
-      }
-    }
-  }
-  .addIntelligent {
-    .selctWrap {
-      i {
-        color: #00f8ff;
-      }
-    }
-  }
-  .showIntelligent {
-    .detailText {
-      color:#9cd1ff;
-      .link{
-        color:#ff7878;
-      }
-      .title .required {
-        color: #fd6e8f;
-      }
-      .title .name {
-        color:#00f0ff;
-      }
-    }
-    .editBtn {
-      border-color: #00baff;
     }
   }
 }

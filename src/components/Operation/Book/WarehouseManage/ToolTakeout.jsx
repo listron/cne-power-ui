@@ -76,75 +76,77 @@ class ToolTakeout extends Component {
           <span className={styles.text}>工器具 - 损耗</span>
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backToList} />
         </h3>
-        <Form className={styles.formPart}>
-          <FormItem label="仓库名称">
-            {getFieldDecorator('warehouseId', requireInfoFun('无仓库名称', originTakeoutInfo.warehouseName))(
-              <Select style={{ width: 200 }} disabled>
-                <Option value={originTakeoutInfo.warehouseName}>{originTakeoutInfo.warehouseName}</Option>
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="物品类型">
-            {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型', originTakeoutInfo.goodsType))(
-              <Select placeholder="请选择" style={{ width: 200 }} disabled>
-                {goodsInfo.map(e => (
-                  <Option key={e.value} value={e.value}>{e.label}</Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="物品名称">
-            {getFieldDecorator('goodsName', requireInfoFun('无物品名称', originTakeoutInfo.goodsName))(
-              <Select style={{ width: 200 }} disabled>
-                <Option value={originTakeoutInfo.goodsName}>{originTakeoutInfo.goodsName}</Option>
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="厂家">
-            {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
-              <Input style={{ width: 200 }} disabled />
-            )}
-          </FormItem>
-          <FormItem label="型号">
-            {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
-              <Input style={{ width: 200 }} disabled />
-            )}
-          </FormItem>
-          <FormItem label="损耗类型">
-            {getFieldDecorator('entryType', requireInfoFun('请选择损耗类型'))(
-              <Select style={{ width: 200 }}>
-                <Option value={1}>丢失</Option>
-                <Option value={2}>损坏</Option>
-                <Option value={3}>报废</Option>
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label="损耗数量" className={styles.materialCodes}>
-            {getFieldDecorator('materialCodes', {
-              rules: [{
-                required: true,
-                validator: (rule, value, callback) => {
-                  (!value || value.length === 0) && callback('请选择物资');
-                  callback();
-                },
-              }],
-            })(
-              <MaterialDetailsList
-                {...this.props}
-                total={originTakeoutInfo.inventoryNum}
-                inventoryId={originTakeoutInfo.inventoryId}
-              />
-            )}
-          </FormItem>
-          <FormItem label="备注">
-            {getFieldDecorator('remarks')(
-              <InputLimit placeholder="请输入..." />
-            )}
-          </FormItem>
-        </Form>
-        <div className={styles.handlePart}>
-          <span className={styles.holder} />
-          <CneButton className={styles.saveButon} onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</CneButton>
+        <div className={styles.contWrap}>
+          <Form className={styles.formPart}>
+            <FormItem label="仓库名称">
+              {getFieldDecorator('warehouseId', requireInfoFun('无仓库名称', originTakeoutInfo.warehouseName))(
+                <Select style={{ width: 200 }} disabled>
+                  <Option value={originTakeoutInfo.warehouseName}>{originTakeoutInfo.warehouseName}</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="物品类型">
+              {getFieldDecorator('goodsType', requireInfoFun('请选择物品类型', originTakeoutInfo.goodsType))(
+                <Select placeholder="请选择" style={{ width: 200 }} disabled>
+                  {goodsInfo.map(e => (
+                    <Option key={e.value} value={e.value}>{e.label}</Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="物品名称">
+              {getFieldDecorator('goodsName', requireInfoFun('无物品名称', originTakeoutInfo.goodsName))(
+                <Select style={{ width: 200 }} disabled>
+                  <Option value={originTakeoutInfo.goodsName}>{originTakeoutInfo.goodsName}</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="厂家">
+              {getFieldDecorator('devManufactorName', requireInfoFun('无厂家名称', originTakeoutInfo.devManufactorName))(
+                <Input style={{ width: 200 }} disabled />
+              )}
+            </FormItem>
+            <FormItem label="型号">
+              {getFieldDecorator('modeName', requireInfoFun('无型号', originTakeoutInfo.modeName))(
+                <Input style={{ width: 200 }} disabled />
+              )}
+            </FormItem>
+            <FormItem label="损耗类型">
+              {getFieldDecorator('entryType', requireInfoFun('请选择损耗类型'))(
+                <Select style={{ width: 200 }}>
+                  <Option value={1}>丢失</Option>
+                  <Option value={2}>损坏</Option>
+                  <Option value={3}>报废</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label="损耗数量" className={styles.materialCodes}>
+              {getFieldDecorator('materialCodes', {
+                rules: [{
+                  required: true,
+                  validator: (rule, value, callback) => {
+                    (!value || value.length === 0) && callback('请选择物资');
+                    callback();
+                  },
+                }],
+              })(
+                <MaterialDetailsList
+                  {...this.props}
+                  total={originTakeoutInfo.inventoryNum}
+                  inventoryId={originTakeoutInfo.inventoryId}
+                />
+              )}
+            </FormItem>
+            <FormItem label="备注">
+              {getFieldDecorator('remarks')(
+                <InputLimit placeholder="请输入..." />
+              )}
+            </FormItem>
+          </Form>
+          <div className={styles.handlePart}>
+            <span className={styles.holder} />
+            <CneButton className={styles.saveButon} onClick={this.takeoutSave} loading={takeoutStatus === 'loading'}>保存</CneButton>
+          </div>
         </div>
       </section>
     );
