@@ -181,13 +181,15 @@ class DiagnoseList extends Component {
           return message.error('仅支持单条低效组串事件派发至EAM系统');
         }
         if(diagWarningIds.length <= 1){
-          const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime } = selectedRows[0];
+          const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime, branchNumber, deviceName } = selectedRows[0];
           // 派发
           return getEamRegisterWaring({
             deviceFullcode,
             level: warningLevel,
             waringId: diagWarningId,
             detail: pointValueDesc,
+            branchNumber,
+            deviceName,
             detectedTime: moment(beginTime).format('YYYY-MM-DD HH:mm:ss'),
             func: () => {
               // 清空已选
