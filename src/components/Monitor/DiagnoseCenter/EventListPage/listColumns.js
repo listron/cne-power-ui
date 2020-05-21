@@ -387,7 +387,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
     }, {
       dataIndex: 'warningFrequencyRate',
-      title: '频次',
+      title: '跳变频次',
       sorter: true,
       textAlign: 'right',
       width: '6%',
