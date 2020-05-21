@@ -118,6 +118,9 @@
             display: inline-block;
             margin: 0 15px 0 20px;
             font-size: 18px;
+            &:hover{
+              color: #f9b600;
+            }
           }
         }
         h3 {
