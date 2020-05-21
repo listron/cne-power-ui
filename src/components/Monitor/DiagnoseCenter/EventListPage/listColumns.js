@@ -379,10 +379,18 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       width: '10.5%',
       render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
     }, {
-      dataIndex: 'warningDuration',
-      title: '持续时长(h)',
+      dataIndex: 'updateTime',
+      title: '更新时间',
+      sorter: true,
+      width: '10.5%',
+      textAlign: 'center',
+      render: (text) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
+    }, {
+      dataIndex: 'warningFrequencyRate',
+      title: '频次',
+      sorter: true,
       textAlign: 'right',
-      width: '8%',
+      width: '6%',
       render: (text) => dataFormats(text, '--', 2, true),
     }, {
       dataIndex: 'statusName',

@@ -7,15 +7,15 @@ import moment from 'moment';
 class EventBarSearch extends PureComponent {
 
   static propTypes = {
-    pageKey: PropTypes.string,
     analysisEvent: PropTypes.object,
     getEventsAnalysis: PropTypes.func,
   };
 
   onDateChange = (momentTime, timeStr) => {
     // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
-    const { analysisEvent, pageKey } = this.props;
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { analysisEvent } = this.props;
+    const { updateTime } = analysisEvent;
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     this.props.getEventsAnalysis({
       ...analysisEvent,
       [timeKey]: timeStr,
@@ -28,8 +28,9 @@ class EventBarSearch extends PureComponent {
 
   onDayChange = (method) => {
     // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
-    const { analysisEvent, pageKey } = this.props;
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { analysisEvent } = this.props;
+    const { updateTime } = analysisEvent;
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     const newDayStr = moment(analysisEvent[timeKey])[method](1, 'day').format('YYYY-MM-DD');
     this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: newDayStr });
   }
@@ -37,9 +38,9 @@ class EventBarSearch extends PureComponent {
   disabledDateFunc = (cur) => moment().isBefore(cur, 'day')
 
   render(){
-    const { analysisEvent, pageKey } = this.props;
-    const { eventCode } = analysisEvent || {};
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { analysisEvent } = this.props;
+    const { eventCode, updateTime } = analysisEvent || {};
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     const conversionEfficiency = ['NB1039'].includes(eventCode); // 转换效率偏低事件
     const eventTime = analysisEvent[timeKey]; // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
     const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');

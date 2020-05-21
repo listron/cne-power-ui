@@ -15,7 +15,7 @@ const alarmEventAction = {
   getAlarmEvent: Symbol('getAlarmEvent'),
   getPointList: Symbol('getPointList'),
   getVersionStation: Symbol('getVersionStation'),
-  FilterConditionStations: Symbol('FilterConditionStations'),
+  filterConditionStations: Symbol('filterConditionStations'),
   getEventDetail: Symbol('getEventDetail'),
   alarmEventDetialFlow: Symbol('alarmEventDetialFlow'),
 };

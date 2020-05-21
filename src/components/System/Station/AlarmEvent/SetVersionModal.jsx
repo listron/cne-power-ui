@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Form, Select, Input, Icon } from 'antd';
+import { Modal, Button, Form, Select, Input, Icon, AutoComplete } from 'antd';
 import styles from './alarmEvent.scss';
 import StationSelect from './StationSelect';
 const FormItem = Form.Item;
@@ -10,6 +10,7 @@ const Option = Select.Option;
 
 class SetVersionModal extends Component { //版本的设置
   static propTypes = {
+    editVersionLoading: PropTypes.bool,
     staticData: PropTypes.array,
     stations: PropTypes.array,
     form: PropTypes.object,
@@ -18,8 +19,10 @@ class SetVersionModal extends Component { //版本的设置
     type: PropTypes.string,
     editVersion: PropTypes.func,
     deviceTypes: PropTypes.array,
-    FilterConditionStations: PropTypes.func,
+    filterConditionStations: PropTypes.func,
     changeStore: PropTypes.func,
+    applyStations: PropTypes.array,
+    filterStations: PropTypes.array,
   }
 
   constructor(props) {
@@ -27,6 +30,7 @@ class SetVersionModal extends Component { //版本的设置
     this.state = {
       manufactors: [], // 生产厂家
       deviceModes: [], // 设备型号
+      selectedModeCode: null, // 选中的设备型号
     };
   }
 
@@ -36,7 +40,7 @@ class SetVersionModal extends Component { //版本的设置
     if (deviceTypeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
       this.setState({ manufactors });
-      this.props.FilterConditionStations({ deviceTypeCode, deviceModeCode });
+      this.props.filterConditionStations({ deviceTypeCode, deviceModeCode });
     }
     if (deviceModeCode) {
       const manufactors = staticData.filter(list => list.deviceTypeCode === deviceTypeCode)[0].manufactors;
@@ -46,7 +50,7 @@ class SetVersionModal extends Component { //版本的设置
   }
 
   componentWillReceiveProps(nextProps) {
-    const { selectVersion, staticData, applayStations } = nextProps;
+    const { selectVersion, staticData } = nextProps;
     const { deviceTypeCode, manufactorCode, deviceModeCode } = selectVersion;
     const prevSelectVersion = this.props.selectVersion || {};
     if (deviceModeCode !== prevSelectVersion.deviceModeCode || deviceTypeCode !== prevSelectVersion.deviceTypeCode) {
@@ -55,7 +59,6 @@ class SetVersionModal extends Component { //版本的设置
       this.setState({ manufactors, deviceModes });
     }
   }
-
 
   onChangeDeviceType = (value) => { // 选择设备类型
     const { staticData } = this.props;
@@ -76,7 +79,8 @@ class SetVersionModal extends Component { //版本的设置
   onChangeDeviceModes = (value) => {
     const deviceTypeCode = this.props.form.getFieldValue('deviceTypeCode');
     const deviceModeCode = value;
-    this.props.FilterConditionStations({ deviceTypeCode, deviceModeCode });
+    this.setState({ selectedModeCode: value });
+    this.props.filterConditionStations({ deviceTypeCode, deviceModeCode });
   }
 
   cancelSetting = () => {
@@ -95,24 +99,30 @@ class SetVersionModal extends Component { //版本的设置
             diagModeVersionId: selectVersion.diagModeVersionId, version, stations: initStations,
             extraInfo: { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId: selectVersion.diagModeVersionId },
           };
+        } else { // 新增时候, 若version是从已有列表中选中的，需要额外传输对应的diagModeVersionId 生成copy版本
+          const { deviceModes, selectedModeCode } = this.state;
+          const modeInfo = deviceModes.find(e => e.deviceModeCode === selectedModeCode) || {};
+          const versionList = modeInfo.versions || [];
+          const copyVersionInfo = versionList.find(e => e.version === version);
+          copyVersionInfo && (params.diagModeVersionId = copyVersionInfo.diagModeVersionId);
         }
         this.props.editVersion({ ...params, func: this.props.closeModal, type });
       }
     });
   }
 
-
-
   render() {
-    const { staticData, stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [], filterStations } = this.props;
+    const { stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [], filterStations } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { manufactors, deviceModes } = this.state;
-    const { deviceTypeCode, manufactorCode, deviceModeCode, diagModeVersionId, version = '' } = selectVersion;
-    // const deviceTypes = [
-    //   { deviceTypeName: '集中式逆变器', deviceTypeCode: 201 },
-    //   { deviceTypeName: '组串式逆变器', deviceTypeCode: 206 },
-    //   { deviceTypeName: '箱变', deviceTypeCode: 304 },
-    // ];
+    const { manufactors, deviceModes, selectedModeCode } = this.state;
+    const { deviceTypeCode, manufactorCode, deviceModeCode, version = '' } = selectVersion;
+    let spareVersionList = []; // 编辑模式，不会出现可选软件版本替换copy情况;
+    if (type !== 'edit') { // 新增时, 可能进行直接复制版本, 需要输出可选软件版本;
+      const modeInfo = deviceModes.find(e => {
+        return e.deviceModeCode === type === 'edit' ? deviceModeCode : selectedModeCode;
+      }) || {}; // 可供选择的软件版本
+      spareVersionList = modeInfo.versions || [];
+    }
     return (
       <Modal
         title={<span>{type === 'edit' ? '编辑' : '添加'}</span>}
@@ -182,15 +192,19 @@ class SetVersionModal extends Component { //版本的设置
             </FormItem>
             <FormItem label="软件版本" colon={false}>
               {getFieldDecorator('version', {
-                rules: [{ required: true, message: '请选择设备型号' }],
+                rules: [{ required: true, message: '请选择软件版本' }],
                 initialValue: version || null,
               })(
-                <Input style={{ width: 198 }} />
+                <AutoComplete
+                  dataSource={spareVersionList.map(e => e.version)}
+                  className={styles.autoVersionComplete}
+                  style={{ width: 198 }}
+                />
               )}
             </FormItem>
             <FormItem label="电站名称" colon={false}>
               {getFieldDecorator('stations', {
-                rules: [{ required: false, message: '请选择电站' }],
+                rules: [{ required: true, message: '请选择电站' }],
                 initialValue: stations.filter(e => applyStations.map(e => e.stationCode).includes(e.stationCode)),
               })(
                 <StationSelect
@@ -198,7 +212,7 @@ class SetVersionModal extends Component { //版本的设置
                   multiple={true}
                   onOK={this.onStationSelected}
                   filterStations={filterStations.map(e => e.stationCode)}
-                  filterSwitch={!!getFieldValue('deviceModeCode')}
+                  disabled={!getFieldValue('deviceModeCode')}
                 />
               )}
             </FormItem>

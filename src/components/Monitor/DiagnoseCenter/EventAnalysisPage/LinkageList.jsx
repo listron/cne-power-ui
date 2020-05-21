@@ -100,26 +100,19 @@ class LinkageList extends Component {
     return [
         {
           title: '事件类型',
-          dataIndex: 'eventType',
-          key: 'eventType',
+          dataIndex: 'eventName',
           textAlign: 'left',
           width: '15%',
           render: (text) => {
-            const eventType = ['告警事件', '诊断事件', '数据事件'];
-            return (
-            <div className={styles.eventTypeText} title={eventType[text - 1]}>{eventType[text - 1] || '--'}</div>);
+            return <div className={styles.eventTypeText} title={text || '--'}>{text || '--'}</div>;
           },
-        },
-        {
+        }, {
           title: '事件描述',
           dataIndex: 'pointValueDesc',
-          key: 'pointValueDesc',
           textAlign: 'left',
           width: '21%',
-          render: (text, record) => {
-            const eventType = record.eventType;
-            const pointValueDesc = eventType !== 1 ? record.eventName : record.pointValueDesc; // 告警事件:pointValueDesc，诊断事件和数据事件:eventName;
-            return <div className={styles.pointValueDescText} title={pointValueDesc}>{pointValueDesc || '--'}</div>;
+          render: (text) => {
+            return <div className={styles.pointValueDescText} title={text || '--'}>{text || '--'}</div>;
           },
         }, {
           title: '设备类型',

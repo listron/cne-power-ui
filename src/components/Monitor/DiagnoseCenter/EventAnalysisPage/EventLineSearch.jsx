@@ -52,8 +52,9 @@ class EventLineSearch extends PureComponent {
 
   onDateChange = (momentTime, timeStr) => {
     // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
-    const { analysisEvent, pageKey } = this.props;
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { analysisEvent } = this.props;
+    const { updateTime } = analysisEvent;
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: timeStr });
   }
 
@@ -63,8 +64,9 @@ class EventLineSearch extends PureComponent {
 
   onDayChange = (method) => {
     // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
-    const { analysisEvent, pageKey } = this.props;
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { analysisEvent } = this.props;
+    const { updateTime } = analysisEvent;
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     const newDayStr = moment(analysisEvent[timeKey])[method](1, 'day').format('YYYY-MM-DD');
     this.props.getEventsAnalysis({ ...analysisEvent, [timeKey]: newDayStr });
   }
@@ -74,8 +76,8 @@ class EventLineSearch extends PureComponent {
   render(){
     const { analysisEvent, pageKey } = this.props;
     const { showTip } = this.state;
-    const { interval, eventCode } = analysisEvent || {};
-    const timeKey = (pageKey === 'diagnose' && analysisEvent.updateTime) ? 'updateTime' : 'beginTime';
+    const { interval, eventCode, updateTime } = analysisEvent || {};
+    const timeKey = updateTime ? 'updateTime' : 'beginTime';
     const noSecondEvent = ['NB1035', 'NB1036', 'NB1037', 'NB1038', 'NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239'].includes(eventCode) || pageKey === 'data'; //诊断事件(5组串事件) 没有5秒数据， 所有的数据事件pageKey = 'data'也没有5s数据。
     const eventTime = analysisEvent[timeKey]; // 告警事件,数据事件使用发生时间, 诊断事件优先使用更新日期其次使用发生日期
     const forbidNextDay = !moment().isAfter(moment(eventTime), 'day');
