@@ -355,7 +355,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '设备类型',
       sorter: true,
       textAlign: 'left',
-      width: '10%',
+      width: '9%',
       render: (text) => (<div title={text || '--'} className={styles.deviceTypeNameText}>{text || '--'}</div>),
     }, {
       dataIndex: 'deviceName',
@@ -390,7 +390,7 @@ export const createDataColumn = (finished, ...handlers) => { //数据事件表�
       title: '跳变频次',
       sorter: true,
       textAlign: 'right',
-      width: '6%',
+      width: '7%',
       render: (text) => dataFormats(text, '--', 2, true),
     }, {
       dataIndex: 'statusName',

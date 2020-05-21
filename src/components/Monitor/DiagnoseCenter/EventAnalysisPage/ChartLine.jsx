@@ -122,7 +122,7 @@ class ChartLine extends PureComponent {
     lineChart.hideLoading();
     const isDiagnoseBranch = ['NB1235', 'NB1236', 'NB1237', 'NB1238', 'NB1239', 'NB1035', 'NB1036', 'NB1037', 'NB1038'].includes(eventCode);
     // 诊断事件-奇偶组串、遮挡组串, 零值组串, 低效组串, 降压组串: 不展示告警时段, 8列展示, 不展示设备名称;
-    const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常展示标准线
+    const dataAnomaly = ['NB2035', 'NB2036'].includes(eventCode); // 数据事件的高值异常、低值异常需额外展示标准线
     let delPointIndex = -1;
     const pulseSignalInfo = pointData.find((e, index) => { // 找到脉冲信号的数据 及所在索引
       if (e.pointCode === pointCode) {
@@ -180,7 +180,7 @@ class ChartLine extends PureComponent {
       const pointName = `${isDiagnoseBranch ? '' : e.deviceName} ${e.pointName || ''}`; // 诊断事件的组串类不展示设备名称
       const pointFullName = `${pointName}${e.pointUnit ? `(${e.pointUnit})`: ''}`;
       let lineStyleColor;
-      if (e.pointName === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;  
+      if (e.pointName === '瞬时辐照度') { // 瞬时辐照度, 固定使用橙色;
         colors.push('#ff9900');
         lineStyleColor = '#ff9900';
       } else if (e.isConnected === 0 && isDiagnoseBranch) { // 诊断事件 - 未接组串为灰色
@@ -260,7 +260,8 @@ class ChartLine extends PureComponent {
       });
     });
     const { clientWidth } = document.body;
-    const legendNum = (delPointIndex !== -1 && pageKey === 'alarm') ? legends.length + 1 : legends.length; // 告警事件和有脉冲信号的情况下, 额外添加一个lengend；
+    const legendNum = ((delPointIndex !== -1 && pageKey === 'alarm') || dataAnomaly) ? legends.length + 1 : legends.length;
+    // 1. 告警事件有脉冲信号的情况下, 2. 高低值异常有标准线, 额外添加一个lengend；
     const legnedRows = Math.ceil(legendNum / lengendColType);
     const legendHeight = legnedRows * 30;
     let originGridHeight = (clientWidth > 1680 ? 300 : 200) + (3 - (legnedRows > 3 ? 3 : legnedRows)) * 30; // 大于1680屏幕分辨率的grid高度最小为300，小于1680屏幕分辨率的grid高度最小为200
@@ -441,26 +442,23 @@ class ChartLine extends PureComponent {
 
     if (dataAnomaly) { // 是数据事件的高值异常、低值异常的标准值，要追加到原测点组后面
       colors.push('#ffeb00');
-      const lastLegend = legends[legends.length - 1];
-      const pointInfo = pointData.filter(e => {
-        return e.standard || e.standard === 0;
-      });
-      const standard = pointInfo.length > 0 ? pointInfo[0].standard : ''; // 标准值
-      const standardData = (standard || standard === 0) ? `标准值(${pointInfo[0].pointUnit})` : '';
-      legends.push({
-        name: standardData,
-        show: (standard || standard === 0)? true : false,
+      const pointStandardInfo = pointData.find(e => e.standard || e.standard === 0);
+      const standard = pointStandardInfo ? pointStandardInfo.standard : null; // 标准值
+      const standardName = pointStandardInfo ? `标准值(${pointStandardInfo.pointUnit || ''})` : '';
+      pointStandardInfo && legends.push({
+        name: standardName,
+        show: true,
         height: 30,
-        left: `${parseFloat(lastLegend.left.replace('%', '')) + 21.5}%`,
-        top: `${Math.floor(legends.length / 4) * 30}%`,
+        left: `${(7 + (legendNum - 1) % 4 * 21.5)}%`,
+        top: `${Math.floor(legendNum / 4) * 30}`,
         selectedMode: false,
-        data: [standardData],
+        data: [standardName],
         textStyle: {
           color: '#353535',
         },
       });
-      series.push({ // 新增标准线数据
-        name: standardData,
+      pointStandardInfo && series.push({ // 新增标准线数据
+        name: standardName,
         type: 'line',
         symbol: 'circle',
         data: [],
@@ -470,7 +468,7 @@ class ChartLine extends PureComponent {
             color: '#ffeb00',
           },
         },
-        yAxisIndex: unitsGroup.length - 1,
+        yAxisIndex: unitsGroup.findIndex(e => e === pointStandardInfo.pointUnit),
         markLine: {
           silent: true,
           symbol: 'none',
@@ -483,7 +481,7 @@ class ChartLine extends PureComponent {
               name: 'Y轴水平线',
               lineStyle: {
                 type: 'solid',
-                width: (dataAnomaly && standard) ? 1 : 0,
+                width: 1,
                 color: '#ffeb00',
                 shadowColor: 'rgba(0, 0, 0, 0.3)',
                 shadowBlur: 2,
