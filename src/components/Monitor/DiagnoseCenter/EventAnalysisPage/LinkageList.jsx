@@ -102,7 +102,7 @@ class LinkageList extends Component {
           title: '事件类型',
           dataIndex: 'eventName',
           textAlign: 'left',
-          width: '15%',
+          width: '12%',
           render: (text) => {
             return <div className={styles.eventTypeText} title={text || '--'}>{text || '--'}</div>;
           },
@@ -110,7 +110,7 @@ class LinkageList extends Component {
           title: '事件描述',
           dataIndex: 'pointValueDesc',
           textAlign: 'left',
-          width: '21%',
+          width: '14%',
           render: (text) => {
             return <div className={styles.pointValueDescText} title={text || '--'}>{text || '--'}</div>;
           },
@@ -119,30 +119,66 @@ class LinkageList extends Component {
           dataIndex: 'deviceTypeName',
           key: 'deviceTypeName',
           textAlign: 'left',
-          width: '15%',
+          width: '12%',
           render: (text, record) => {
             return <div className={styles.deviceTypeNameText} title={text || '--'}>{text || '--'}</div>;
+          },
+        }, {
+          title: '设备名称',
+          dataIndex: 'deviceName',
+          textAlign: 'left',
+          width: '12.5%',
+          render: (text, record) => {
+            return <div className={styles.deviceNameText} title={text || '--'}>{text || '--'}</div>;
           },
         }, {
           title: '发生时间',
           dataIndex: 'beginTime',
           key: 'beginTime',
           textAlign: 'center',
-          width: '15%',
-          render: (text, record) => text ? moment(text).format('YYYY-MM-DD HH:mm') : '--',
+          width: '10.5%',
+          render: (text, record) => {
+            const { eventType } = record || {};
+            let formatRule = 'YYYY-MM-DD HH:mm';
+            if (parseFloat(eventType) === 2) { // 诊断事件, 展示日期即可
+              formatRule = 'YYYY-MM-DD';
+            }
+            return text ? moment(text).format(formatRule) : '--';
+          },
+        }, {
+          title: '更新时间',
+          dataIndex: 'updateTime',
+          textAlign: 'center',
+          width: '10.5%',
+          render: (text, record) => {
+            const { eventType } = record || {};
+            let formatRule = 'YYYY-MM-DD HH:mm';
+            if (parseFloat(eventType) === 2) { // 诊断事件, 展示日期即可
+              formatRule = 'YYYY-MM-DD';
+            }
+            return text ? moment(text).format(formatRule) : '--';
+          },
+        }, {
+          title: '频次',
+          dataIndex: 'warningFrequencyRate',
+          textAlign: 'right',
+          width: '6%',
+          render: (text) => {
+            return <div title={text || text === 0 ? text : '--'}>{text || text === 0 ? text : '--'}</div>;
+          },
         }, {
           title: '事件状态',
           dataIndex: 'statusName',
           key: 'statusName',
           textAlign: 'center',
-          width: '15%',
+          width: '9%',
           render: text => <div className={styles.statusNameText} >{text || '--'}</div>,
         }, {
           title: '操作',
           dataIndex: 'opreate',
           key: 'opreate',
           textAlign: 'center',
-          width: '15%',
+          width: '10%',
           render: (text, record) => {
             const { showIcon } = this.state;
             return(

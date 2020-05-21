@@ -405,13 +405,13 @@
         table-layout: fixed;
         width: 100%;
       }
-      .eventTypeText, .pointValueDescText, .deviceTypeNameText{
+      .eventTypeText, .pointValueDescText, .deviceTypeNameText, .deviceNameText{
         @include overflowText();
         width: calc(100% - 5px);
       }
       .opreateText{
         .suspendIcon{
-          margin: 0 38px;
+          margin: 0 18px;
         }
         .hideIcon{
           visibility: hidden;
