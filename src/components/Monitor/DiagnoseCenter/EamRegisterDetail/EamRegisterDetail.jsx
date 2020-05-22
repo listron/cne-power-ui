@@ -22,6 +22,7 @@ export default class EamRegisterDetail extends Component {
     eamDiagList: PropTypes.array,
     bgcIndex: PropTypes.number,
     changeStore: PropTypes.func,
+    changeEamListStore: PropTypes.func,
     eamDetailParams: PropTypes.object,
   };
 
@@ -159,8 +160,11 @@ export default class EamRegisterDetail extends Component {
   // 查看EAM工单详情
   lookEamDetailsFunc = (record) => {
     const { workOrderNo } = record;
-    const { history } = this.props;
-    workOrderNo && history.push(`/operation/eamDetails?workOrderNo=${workOrderNo}`);
+    const { changeEamListStore, history } = this.props;
+    if(workOrderNo) {
+      history.push('/operation/eam');
+      changeEamListStore({detailFlag: true, workOrderNo,})
+    }
   };
 
   // 查看EAM故障列表

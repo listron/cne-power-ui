@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './diagnoseCenter.scss';
 import { diagnoseCenterAction } from './diagnoseCenterReducer';
+import { eamListAction } from '../../Operation/EamWork/EamList/eamListAction';
 import { commonAction } from '@containers/alphaRedux/commonAction';
 import DiagnoseHeaderTabs from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseHeaderTabs';
 import DiagnoseLevelSummry from '../../../components/Monitor/DiagnoseCenter/EventListPage/DiagnoseLevelSummry';
@@ -118,6 +119,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   reset: () => dispatch({ type: diagnoseCenterAction.reset }),
   changeStore: payload => dispatch({ type: diagnoseCenterAction.changeStore, payload }),
+  changeEamListStore: payload => dispatch({ type: eamListAction.changeStore, payload }),
   getEventstatus: () => dispatch({ type: diagnoseCenterAction.getEventstatus }),
   getEventtypes: payload => dispatch({ type: diagnoseCenterAction.getEventtypes, payload }),
   getDiagnoseList: payload => dispatch({ type: diagnoseCenterAction.getDiagnoseList, payload }),
