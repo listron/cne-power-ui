@@ -241,6 +241,12 @@ export default class EamRegisterDetail extends Component {
     } = this.props;
     const listColumn = [
       {
+        title: '编号',
+        width: '6%',
+        dataIndex: 'workOrderId',
+        render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
+      },
+      {
         title: '工单编号',
         width: '14%',
         dataIndex: 'workOrderNo',
@@ -248,7 +254,7 @@ export default class EamRegisterDetail extends Component {
       }, {
         title: '工单描述',
         dataIndex: 'workOrderDesc',
-        width: '42%',
+        width: '36%',
         render: (text) => (<div title={text || ''} >{text || '- -'}</div>),
       }, {
         title: '设备名称',

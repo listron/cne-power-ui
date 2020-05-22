@@ -176,12 +176,11 @@ class DiagnoseList extends Component {
       // 判断是否是协和新能源
       if(enterpriseCode === '1010') {
         // 只能选择一个
-        // 不是低效组串的NB1238提示
-        if(diagWarningIds.length > 1 || selectedRows.every( item => item.eventCode !== 'NB1238')){
-          return message.error('仅支持单条低效组串事件派发至EAM系统');
+        if(diagWarningIds.length > 1){
+          return message.error('仅支持单条事件派发至EAM系统');
         }
         if(diagWarningIds.length <= 1){
-          const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime, branchNumber, deviceName } = selectedRows[0];
+          const { deviceFullcode, warningLevel, diagWarningId, pointValueDesc, beginTime, branchNumber, deviceName, eventName } = selectedRows[0];
           // 派发
           return getEamRegisterWaring({
             deviceFullcode,
@@ -190,6 +189,7 @@ class DiagnoseList extends Component {
             detail: pointValueDesc,
             branchNumber,
             deviceName,
+            eventName,
             detectedTime: moment(beginTime).format('YYYY-MM-DD HH:mm:ss'),
             func: () => {
               // 清空已选
