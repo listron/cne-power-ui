@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
-    "antd": "3.26.10",
+    "antd": "^3.19.2",
     "axios": "^0.16.2",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.0.8",

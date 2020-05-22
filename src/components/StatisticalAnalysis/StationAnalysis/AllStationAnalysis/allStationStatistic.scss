@@ -142,35 +142,36 @@
         align-items: center;
       }
       .stationName {
-        &:hover {
-          color: $themeColor;
-        }
         .icon {
           cursor: pointer;
           color: $themeColor;
           margin-right: 15px;
           font-size: 18px;
+          &:hover {
+          color:#ff9900;
+          }
         }
         > span {
           font-size: 18px;
         }
       }
       .stationStatus {
-        // margin-left: 50px;
-        color: $darkColor;
         display: flex;
         flex: 1;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         .stationIcon {
-          i {
-            color: $themeColor;
-            margin-right: 4px;
-          }
+           margin-right: 4px;
         }
         .status {
           cursor: pointer;
           margin-right: 4px;
+          color:var(--themeColor);
+          font-size: 18px;
+          &:hover{
+            color:#ff9900;
+          }
         }
         .time {
           .gridTime,
@@ -293,52 +294,5 @@
       text-decoration: none;
       width: 120px;
     }
-  }
-}
-
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .operation {
-    // 样式发生变化
-    color: $fontColor-invert;
-    background: $button-primary;
-    border-radius: 15px;
-    width: 119px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    margin-right: 0;
-  }
-  .timeSelect {
-    background: $light-background;
-    border: 1px solid $border-color;
-  }
-  :global {
-    .ant-tabs-nav-scroll {
-      background-color: transparent;
-    }
-    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
-      border: 1px solid $tab-border-color;
-      color: #7088c3;
-      background: $tab-background;
-      margin-right: 4px;
-    }
-    .ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
-      border: 1px solid $border-color;
-      color: $fontColor-invert;
-      border-bottom: none;
-    }
-    .ant-tabs .ant-tabs-ink-bar {
-      display: none;
-    }
-  }
-  .singleAlarmFilter {
-    background: $background;
-  }
-  .windContainer {
-    background-color: $light-background;
-    border: 1px solid $border-color;
-    border-bottom: none;
   }
 }
