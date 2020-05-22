@@ -181,9 +181,6 @@
           // width: 100%;
         }
         :global {
-          .ant-table-fixed-header > .ant-table-content > .ant-table-scroll > .ant-table-body {
-            overflow-y: overlay !important;
-          }
           .ant-table:not(.ant-table-empty) {
             .ant-table-body:after {
               content: url("/img/notabdata.png");

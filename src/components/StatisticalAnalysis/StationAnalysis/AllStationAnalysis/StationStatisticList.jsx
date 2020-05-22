@@ -359,7 +359,7 @@ class StationStatisticList extends React.Component {
           <div className={styles.leftTime}>
             <div className={styles.gradient}>综合指标统计表</div>
             {this.selectYear()}
-            <CneButton onClick={this.exportTable} className={styles.exportBtn}>导出</CneButton>
+            <CneButton onClick={this.exportTable} className={styles.exportBtn} lengthMode="short">导出</CneButton>
           </div>
           <CommonPagination pageSize={pageSize} currentPage={pageNum} total={totalNum} onPaginationChange={this.onPaginationChange} theme={theme} />
         </div>

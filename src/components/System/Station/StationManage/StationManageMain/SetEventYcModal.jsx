@@ -69,7 +69,6 @@ class SetEventYxModal extends Component { // 遥测诊断或者是数据质量�
   render() {
     const { eventData } = this.state;
     const { type, loading } = this.props;
-    console.log('eventData', eventData);
     return (
       <Modal
         title={<span>遥测诊断设置</span>}
