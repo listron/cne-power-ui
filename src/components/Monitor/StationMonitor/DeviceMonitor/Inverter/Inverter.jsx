@@ -121,7 +121,6 @@ class Seriesinverter extends Component {
   render() {
     const { chartName, tabKey, pointNameArr } = this.state;
     const { match, stations, theme, scroll } = this.props;
-    console.log('scroll: ', scroll);
     const { stationCode, deviceTypeCode, deviceCode } = match.params;
     const backData = { path: `/monitor/singleStation/${stationCode}`, name: '返回电站' };
     const currentStation = stations.find(e => `${e.stationCode}` === stationCode) || {};
