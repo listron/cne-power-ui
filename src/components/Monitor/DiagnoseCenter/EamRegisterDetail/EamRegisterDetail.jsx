@@ -145,11 +145,12 @@ export default class EamRegisterDetail extends Component {
       deviceTypeName,
       deviceName,
       stationName,
+      type,
     }} = this.props;
     return (
       <div className={styles.eamInfo}>
-        <b style={{marginLeft: '20px'}}>告警事件：</b><span>{eventName || '- -'}；</span>
-        <b>告警描述：</b><span>{eventDesc || '- -'}；</span>
+        <b style={{marginLeft: '20px'}}>{type === 1 ? '告警' : '缺陷'}事件：</b><span>{eventName || '- -'}；</span>
+        <b>{type === 1 ? '告警' : '缺陷'}描述：</b><span>{eventDesc || '- -'}；</span>
         <b>设备类型：</b><span>{deviceTypeName || '- -'}；</span>
         <b>设备名称：</b><span>{deviceName || '- -'}；</span>
         <b>电站名称：</b><span>{stationName || '- -'}；</span>
@@ -281,7 +282,7 @@ export default class EamRegisterDetail extends Component {
     ];
     const faultColumn = [
       {
-        title: '故障编号',
+        title: type === 1 ? '故障编号' : '缺陷编号',
         width: '25%',
         dataIndex: 'faultNo',
         render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
@@ -291,12 +292,12 @@ export default class EamRegisterDetail extends Component {
         width: '25%',
         render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
-        title: '故障类型',
+        title: type === 1 ? '故障类型' : '缺陷类型',
         dataIndex: 'faultType',
         width: '25%',
         render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text || '- -'}</div>),
       }, {
-        title: '故障开始时间',
+        title: type === 1 ? '故障开始时间' : '缺陷开始时间',
         dataIndex: 'faultStartTime',
         width: '15%',
         render: (text, record, index) => (<div className={bgcIndex === index ? styles.activeBgc : styles.normalBgc} title={text || ''} >{text ? moment(text).format('YYYY-MM-DD HH:mm:ss') : '- -'}</div>),
@@ -336,7 +337,7 @@ export default class EamRegisterDetail extends Component {
               <div>
                 <i className="iconfont icon-gdxq" />
                 <span>
-                  EAM故障列表
+                  {type === 1 ? 'EAM故障列表' : 'EAM缺陷列表'}
                   <span className={styles.infoWarning}>（数据同步延迟一天）</span>
                 </span>
               </div>
