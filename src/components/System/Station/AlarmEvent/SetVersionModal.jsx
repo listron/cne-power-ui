@@ -128,7 +128,6 @@ class SetVersionModal extends Component { //版本的设置
       }) || {}; // 可供选择的软件版本
       spareVersionList = modeInfo.versions || [];
     }
-    console.log(selectVersion)
     return (
       <Modal
         title={<span>{type === 'edit' ? '编辑' : '添加'}</span>}
