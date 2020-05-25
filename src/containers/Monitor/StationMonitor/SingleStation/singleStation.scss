@@ -8,6 +8,7 @@
 }
 .singleStationContainer {
   @include contentBoxStyle();
+  padding-top: 0;
   :global {
     a {
       cursor: pointer;

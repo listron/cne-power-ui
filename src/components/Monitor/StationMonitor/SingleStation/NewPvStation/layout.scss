@@ -101,8 +101,8 @@
       }
     }
     .stationTitle {
-      height: 60px;
-      line-height: 60px;
+      height: 54px;
+      line-height: 54px;
       display: flex;
       justify-content: space-between;
       .stationLeft {
@@ -116,7 +116,7 @@
         :global {
           .anticon-swap {
             display: inline-block;
-            margin: 0 15px 0 20px;
+            margin: 0 15px 0 0px;
             font-size: 18px;
             &:hover{
               color: #f9b600;
@@ -135,6 +135,7 @@
       .stationRight {
         display: flex;
         align-items: center;
+        margin-right: -15px;
         .backIcon {
           @include backIcon();
         }
