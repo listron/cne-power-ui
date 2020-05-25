@@ -248,30 +248,30 @@ class SingleStationStatistic extends React.Component {
     //拿到单电站的类型，弄个数组，把对应的iconfont加上，在下面调用
     return (
       <div className={styles.singleStationType}>
-        <div className={styles.componentContainer}>
-          <div className={styles.title}>
-            {showStationSelect &&
-              <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
-            }
-            <div className={styles.titleLeft}>
-              <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
-                <Icon className={styles.icon} type="swap" />
+        <div className={styles.title}>
+          {showStationSelect &&
+            <ChangeStation stations={stationItems.filter(e => e.stationType === 1)} stationName={stationItem.stationName} baseLinkPath="/statistical/stationaccount/allstation" hideStationChange={this.hideStationChange} />
+          }
+          <div className={styles.titleLeft}>
+            <div onClick={() => this.setState({ showStationSelect: true })} className={styles.stationName}>
+              <Icon className={styles.icon} type="swap" />
+            </div>
+            <div className={styles.stationStatus} onClick={() => this.setState({ showStationSelect: true })}>
+              <div className={styles.status}>
+                <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
+                {stationItem.stationName}--{stationItem.provinceName}
               </div>
-              <div className={styles.stationStatus} onClick={() => this.setState({ showStationSelect: true })}>
-                <div className={styles.status}>
-                  <span className={styles.stationIcon}><i className="iconfont icon-pvlogo"></i></span>
-                  {stationItem.stationName}--{stationItem.provinceName}
-                </div>
-                <div className={styles.time}>
-                  <span className={styles.gridTime}>并网时间：{stationGridTime}</span>
-                  <span className={styles.deadline}>数据统计截止时间{moment().subtract(1, 'days').format('YYYY年MM月DD日')}</span>
-                </div>
+              <div className={styles.time}>
+                <span className={styles.gridTime}>并网时间：{stationGridTime}</span>
+                <span className={styles.deadline}>数据统计截止时间{moment().subtract(1, 'days').format('YYYY年MM月DD日')}</span>
               </div>
             </div>
-            <Link to="/statistical/stationaccount/allstation">
-              <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onClose} />
-            </Link>
           </div>
+          <Link to="/statistical/stationaccount/allstation">
+            <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.onClose} />
+          </Link>
+        </div>
+        <div className={styles.componentContainer}>
           <TimeSelect onChange={this.onTimeChange} />
           <PlanCompletionRate
             dateType={dateType}

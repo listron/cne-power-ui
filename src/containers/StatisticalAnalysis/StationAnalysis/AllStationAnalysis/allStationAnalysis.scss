@@ -6,20 +6,12 @@
   flex-direction: column;
   .allStationStatistic {
     @include contentBoxStyle();
+    padding-top: 0;
   }
 }
 
 .light {
-  @import "../../../../theme/theme.scss";
   .allStationStatistic {
     background-color: $pageBackground;
-  }
-}
-
-.dark {
-  @import "../../../../theme/darkTheme.scss";
-  background: $background;
-  .allStationStatistic {
-    background-color: $background;
   }
 }

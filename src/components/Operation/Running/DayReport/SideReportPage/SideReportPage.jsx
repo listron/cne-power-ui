@@ -228,7 +228,7 @@ class SideReportPage extends Component {
         <div className={styles.sideReportTitle} >
           <span className={styles.sideReportTitleTip} >上报日报</span>
           <div className={styles.sideReportTitleRight} >
-            {showReportInputList && <CneButton onClick={this.toSelectCondition} className={styles.dayReportPrev} >上一步</CneButton>}
+            {showReportInputList && <CneButton onClick={this.toSelectCondition} className={styles.dayReportPrev} lengthMode="short">上一步</CneButton>}
             {showReportInputList && <Popconfirm
               placement="leftTop"
               overlayClassName={styles.confirmBox}
@@ -239,6 +239,7 @@ class SideReportPage extends Component {
               <CneButton
                 className={styles.saveDayReport}
                 loading={loading}
+                lengthMode="short"
               >提交</CneButton>
             </Popconfirm>}
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.backList} />
@@ -263,7 +264,7 @@ class SideReportPage extends Component {
               onChange={this.stationSelected}
               oneStyleOnly={true}
             />
-            <CneButton onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} >下一步</CneButton>
+            <CneButton onClick={this.toReportStations} disabled={!canReport} className={canReport ? styles.dayReportNext : styles.dayReportNextDisabled} lengthMode="short" >下一步</CneButton>
           </div>
         </div>}
         {showReportInputList && <UploadReportList

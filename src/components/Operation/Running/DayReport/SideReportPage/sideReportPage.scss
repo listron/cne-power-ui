@@ -267,9 +267,9 @@
   }
   .addPowerGenInfo{
     margin-bottom: 30px;
-    margin-top: 25px;
     display: flex;
     flex-direction: row;
+    margin-top: 30px;
     .addPowerGenInfoR{
       display: flex;
       flex-direction: column;
@@ -414,7 +414,7 @@
   padding: 10px 0 15px 80px;
   margin-top: 10px;
   .infoTip{
-    margin: 0 0 15px 30px;
+    margin: 10px 0 15px 30px;
     border-radius: 2px;
     line-height: 30px;
     height: 30px;

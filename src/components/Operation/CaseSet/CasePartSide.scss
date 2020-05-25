@@ -44,7 +44,7 @@
 
       .text {
         font-size: 18px;
-        color: $darkColor;
+        color: var(--themeColor);
         letter-spacing: 4px;
       }
 
