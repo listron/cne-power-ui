@@ -149,8 +149,8 @@ export default class EamRegisterDetail extends Component {
     }} = this.props;
     return (
       <div className={styles.eamInfo}>
-        <b style={{marginLeft: '20px'}}>{type === 1 ? '告警' : '缺陷'}事件：</b><span>{eventName || '- -'}；</span>
-        <b>{type === 1 ? '告警' : '缺陷'}描述：</b><span>{eventDesc || '- -'}；</span>
+        <b style={{marginLeft: '20px'}}>{type === 1 ? '告警' : '诊断'}事件：</b><span>{eventName || '- -'}；</span>
+        <b>告警描述：</b><span>{eventDesc || '- -'}；</span>
         <b>设备类型：</b><span>{deviceTypeName || '- -'}；</span>
         <b>设备名称：</b><span>{deviceName || '- -'}；</span>
         <b>电站名称：</b><span>{stationName || '- -'}；</span>
