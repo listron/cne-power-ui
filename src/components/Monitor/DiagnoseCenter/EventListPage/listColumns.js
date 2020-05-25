@@ -194,9 +194,7 @@ export const createAlarmColumn = (finished, ...handlers) => { // 生成告警事
     },
   ];
   // 是否归档, 生成两个表头: 归档需要状态图标, 不需要事件状态列; 非归档不需要状态图标列, 需要事件状态列;
-  // 判断是否是协和新能源，去掉事件状态列
-  const newTotalColumn = enterpriseCode === '1010' ? totalColumn.filter(cur => cur.title !== '事件状态') : totalColumn;
-  return columnFilter(newTotalColumn, finished);
+  return columnFilter(totalColumn, finished);
 };
 
 export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件表头 finishStatus 是否归档; handlers 交互事件
@@ -316,9 +314,7 @@ export const createDiagnoseColumn = (finished, ...handlers) => { // 诊断事件
       ),
     },
   ];
-  // 判断是否是协和新能源，去掉事件状态列
-  const newTotalColumn = enterpriseCode === '1010' ? totalColumn.filter(cur => cur.title !== '事件状态') : totalColumn;
-  return columnFilter(newTotalColumn, finished);
+  return columnFilter(totalColumn, finished);
 };
 
 export const createDataColumn = (finished, ...handlers) => { //数据事件表头 finishStatus 是否归档; handlers 交互事件

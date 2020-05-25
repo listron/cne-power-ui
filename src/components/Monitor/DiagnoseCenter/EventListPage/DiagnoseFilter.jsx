@@ -138,12 +138,11 @@ class DiagnoseFilter extends Component {
       { name: '事件状态', type: 'radioSelect', typeName: 'eventStatus', parentName: 'parentName', rules: ['statusName', 'statusCode'], data: statusArray },
       { name: '归档事件', type: 'switch', typeName: 'finished' },
     ];
-    const enterpriseCode = Cookie.get('enterpriseCode');
     return (
       <div className={styles.diagnoseFilter} >
         <FilterConditions
           onChange={this.filterConditionChange}
-          option={enterpriseCode === '1010' && pageKey !== 'data' ? options.filter(cur => cur.name !== '事件状态') : options}
+          option={options}
           filterBoxType={filterBoxType}
           onFilterBoxTypeChange={this.onFilterBoxTypeChange}
           value={{
