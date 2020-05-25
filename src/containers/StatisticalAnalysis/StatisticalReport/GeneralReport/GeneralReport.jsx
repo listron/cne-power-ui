@@ -13,7 +13,7 @@ import { enterpriseKey } from '../../../../constants/enterpriseKey';
 import CneButton from '@components/Common/Power/CneButton';
 
 const { APIBasePath } = path.basePaths;
-const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx, performanceReport, performanceGroup } = path.APISubPaths.statisticalAnalysis;
+const { dailyreport, faultReport, genReport, indicatorReport, preViewXlsx, performanceGroup } = path.APISubPaths.statisticalAnalysis;
 const { MonthPicker } = DatePicker;
 
 class GeneralReport extends Component {
@@ -29,12 +29,8 @@ class GeneralReport extends Component {
       faultDate: moment().subtract(1, 'day'),
       eleInfoDate: moment().subtract(1, 'day'),
       proOperationDate: moment().subtract(1, 'month'),
-      windPowerValue: moment().subtract(1, 'month'),
-      pvPowerValue: moment().subtract(1, 'month'),
       powerPlantValue: moment(),
       selectedStation: [],
-      windPowerStation: [],
-      pvPowerStation: [],
       typeDowning: '', // report  fault eleInfo proOperate
       isOpen: false, // 控制选择年份
       extraFooterFlag: false, // 是否显示页脚
@@ -66,33 +62,12 @@ class GeneralReport extends Component {
     });
   };
 
-  windPowerDateChange = value => { // 风电运维月报
-    this.setState({
-      windPowerValue: value,
-    });
-  };
-
-  pvPowerDateChange = value => { // 光伏运维月报
-    this.setState({
-      pvPowerValue: value,
-    });
-  };
-
-
   disabledDate = (current) => { //日期不可选
     return current && current > moment().startOf('day');
   };
 
   selectStation = selectedStation => {
     this.setState({ selectedStation });
-  };
-
-  selectWindStation = selectedStation => {
-    this.setState({ windPowerStation: selectedStation });
-  };
-
-  selectPvStation = selectedStation => {
-    this.setState({ pvPowerStation: selectedStation });
   };
 
   preViewReport = () => {
@@ -165,28 +140,6 @@ class GeneralReport extends Component {
     this.previewFunc(fileName, url);
   };
 
-  // 风电运维月报预览
-  preViewWind = () => {
-    const { windPowerValue, windPowerStation } = this.state;
-    const { stationCode } = windPowerStation[0];
-    const windYear = windPowerValue.format('YYYY');
-    const windMonth = windPowerValue.format('MM');
-    const fileName = `${windPowerValue}风电运维月报.xlsx`;
-    const url = `${APIBasePath}/${performanceReport}/${stationCode}/${windYear}/${windMonth}`;
-    this.previewFunc(fileName, url);
-  };
-
-  // 光伏运维月报预览
-  preViewPv = () => {
-    const { pvPowerValue, pvPowerStation } = this.state;
-    const { stationCode } = pvPowerStation[0];
-    const pvYear = pvPowerValue.format('YYYY');
-    const pvMonth = pvPowerValue.format('MM');
-    const fileName = `${pvPowerValue}光伏运维月报.xlsx`;
-    const url = `${APIBasePath}/${performanceReport}/${stationCode}/${pvYear}/${pvMonth}`;
-    this.previewFunc(fileName, url);
-  };
-
   downloadIndicator = () => { // 生产运营指标下载
     const { proOperationDate, selectedStation, typeDowning } = this.state;
     const { stationCode } = selectedStation[0];
@@ -197,34 +150,6 @@ class GeneralReport extends Component {
     this.setState({ typeDowning: 'proOperate' });
     if (typeDowning !== 'proOperate') {
       this.downLoadFun(downloadHref, fileName, proOperationDate);
-    }
-  };
-
-  // 风电运维月报下载
-  downloadWind = () => {
-    const { windPowerValue, windPowerStation, typeDowning } = this.state;
-    const { stationCode } = windPowerStation[0];
-    const windYear = windPowerValue.format('YYYY');
-    const windMonth = windPowerValue.format('MM');
-    const downloadHref = `${APIBasePath}/${performanceReport}/${stationCode}/${windYear}/${windMonth}`;
-    const fileName = `${windPowerValue}风电运维月报.xlsx`;
-    this.setState({ typeDowning: 'windLoading' });
-    if (typeDowning !== 'windLoading') {
-      this.downLoadFun(downloadHref, fileName, windPowerValue);
-    }
-  };
-
-  // 光伏运维月报下载
-  downloadPv = () => {
-    const { pvPowerValue, pvPowerStation, typeDowning } = this.state;
-    const { stationCode } = pvPowerStation[0];
-    const pvYear = pvPowerValue.format('YYYY');
-    const pvMonth = pvPowerValue.format('MM');
-    const downloadHref = `${APIBasePath}/${performanceReport}/${stationCode}/${pvYear}/${pvMonth}`;
-    const fileName = `${pvPowerValue}光伏运维月报.xlsx`;
-    this.setState({ typeDowning: 'pvLoading' });
-    if (typeDowning !== 'pvLoading') {
-      this.downLoadFun(downloadHref, fileName, pvPowerValue);
     }
   };
 
@@ -317,19 +242,12 @@ class GeneralReport extends Component {
     });
   };
 
-  dateRenderDate = (currentDate, today) => {
-    // console.log(currentDate, today, '-----');
-    console.log(moment(currentDate).format('YYYY'), moment(today).format('YYYY'), '-----');
-  };
-
   render() {
-    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, windPowerValue, pvPowerValue, windPowerStation, pvPowerStation, powerPlantValue, isOpen, extraFooterFlag } = this.state;
+    const { reportDate, faultDate, eleInfoDate, proOperationDate, selectedStation, typeDowning, powerPlantValue, isOpen, extraFooterFlag } = this.state;
     const { stations, theme } = this.props;
     const enterpriseName = Cookie.get('enterpriseName');
     const enterpriseCode = Cookie.get('enterpriseCode');
     const reportInfo = enterpriseKey.find(e => e.enterpriseName === enterpriseName);
-    const windStationArr = stations.filter(e => e.stationType === 0);
-    const pvStationArr = stations.filter(e => e.stationType === 1);
     return (
       <div className={`${styles.generalReportBox} ${styles[theme]}`}>
         <span ref={'wrap'} />
@@ -443,88 +361,6 @@ class GeneralReport extends Component {
                   className={styles.text}
                   onClick={this.downloadIndicator}
                   loading={typeDowning === 'proOperate'}
-                >下载</CneButton>
-              </div>
-            </div>}
-            {(enterpriseCode === '1010' && windStationArr.length > 0) && <div className={styles.dailyBox}>
-              <div className={styles.boxTop}>
-                <div className={styles.dayReport}>
-                  <Icon type="download" style={{ color: '#ffffff' }} />
-                </div>
-                <span className={styles.title}>风电运维月报</span>
-              </div>
-              <div className={styles.dateSearch}>
-                <MonthPicker
-                  style={{width: 200}}
-                  disabledDate={this.disabledDate}
-                  placeholder={'选择月份'}
-                  onChange={this.windPowerDateChange}
-                  value={windPowerValue}
-                  getCalendarContainer={() => this.refs.wrap}
-                />
-              </div>
-              <div className={styles.stationSearchs}>
-                <StationSelect
-                  data={windStationArr}
-                  onOK={this.selectWindStation}
-                  value={windPowerStation}
-                  holderText="请选择电站"
-                  theme={theme}
-                />
-              </div>
-              <div className={styles.downloadBtn}>
-                <CneButton
-                  disabled={windPowerStation.length === 0 || !windPowerValue}
-                  className={`${styles.text} ${styles.preview}`}
-                  onClick={this.preViewWind}
-                >预览</CneButton>
-                {/*<span className={styles.line} />*/}
-                <CneButton
-                  disabled={windPowerStation.length === 0 || !windPowerValue}
-                  className={styles.text}
-                  onClick={this.downloadWind}
-                  loading={typeDowning === 'windLoading'}
-                >下载</CneButton>
-              </div>
-            </div>}
-            {(enterpriseCode === '1010' && pvStationArr.length > 0) && <div className={styles.dailyBox}>
-              <div className={styles.boxTop}>
-                <div className={styles.dayReport}>
-                  <Icon type="download" style={{ color: '#ffffff' }} />
-                </div>
-                <span className={styles.title}>光伏运维月报</span>
-              </div>
-              <div className={styles.dateSearch}>
-                <MonthPicker
-                  style={{width: 200}}
-                  disabledDate={this.disabledDate}
-                  placeholder={'选择月份'}
-                  onChange={this.pvPowerDateChange}
-                  value={pvPowerValue}
-                  getCalendarContainer={() => this.refs.wrap}
-                />
-              </div>
-              <div className={styles.stationSearchs}>
-                <StationSelect
-                  data={pvStationArr}
-                  onOK={this.selectPvStation}
-                  value={pvPowerStation}
-                  holderText="请选择电站"
-                  theme={theme}
-                />
-              </div>
-              <div className={styles.downloadBtn}>
-                <CneButton
-                  disabled={pvPowerStation.length === 0 || !pvPowerValue}
-                  className={`${styles.text} ${styles.preview}`}
-                  onClick={this.preViewPv}
-                >预览</CneButton>
-                {/*<span className={styles.line} />*/}
-                <CneButton
-                  disabled={pvPowerStation.length === 0 || !pvPowerValue}
-                  className={styles.text}
-                  onClick={this.downloadPv}
-                  loading={typeDowning === 'pvLoading'}
                 >下载</CneButton>
               </div>
             </div>}
