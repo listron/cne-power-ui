@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Radio } from 'antd';
+import { dataFormats } from '@utils/utilFunc';
 import CneTable from '@components/Common/Power/CneTable';
 import CneTips from '@components/Common/Power/CneTips';
 import IgnoreModal from '../EventListPage/IgnoreModal';
@@ -163,9 +164,7 @@ class LinkageList extends Component {
           dataIndex: 'warningFrequencyRate',
           textAlign: 'right',
           width: '6%',
-          render: (text) => {
-            return <div title={text || text === 0 ? text : '--'}>{text || text === 0 ? text : '--'}</div>;
-          },
+          render: (text) => dataFormats(text, '--', 2, true),
         }, {
           title: '事件状态',
           dataIndex: 'statusName',

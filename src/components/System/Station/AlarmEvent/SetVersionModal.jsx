@@ -115,14 +115,20 @@ class SetVersionModal extends Component { //版本的设置
     const { stations, selectVersion, type, editVersionLoading, deviceTypes, applyStations = [], filterStations } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { manufactors, deviceModes, selectedModeCode } = this.state;
-    const { deviceTypeCode, manufactorCode, deviceModeCode, version = '' } = selectVersion;
+    const { deviceTypeCode, manufactorCode, deviceModeCode, version = '' } = selectVersion || {};
     let spareVersionList = []; // 编辑模式，不会出现可选软件版本替换copy情况;
     if (type !== 'edit') { // 新增时, 可能进行直接复制版本, 需要输出可选软件版本;
       const modeInfo = deviceModes.find(e => {
-        return e.deviceModeCode === type === 'edit' ? deviceModeCode : selectedModeCode;
+        // 直接点击 '添加软件版本' 按钮时: selectedModeCode必存在后更新;
+        // 在树形结构设备型号+进行添加时, selectedModeCode初始不存在, 自动读取selectVersion.deviceModeCode
+        if (selectedModeCode) {
+          return e.deviceModeCode === selectedModeCode;
+        }
+        return e.deviceModeCode === deviceModeCode;
       }) || {}; // 可供选择的软件版本
       spareVersionList = modeInfo.versions || [];
     }
+    console.log(selectVersion)
     return (
       <Modal
         title={<span>{type === 'edit' ? '编辑' : '添加'}</span>}
