@@ -145,11 +145,11 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, dayRepo
   //   // {name: '装机台数', value: 'machineCount', unit: '台'},
   //   {
   //     name: stationType>0? '日累计总量': '日均风速',
-  //     value: 'resourceValue', 
+  //     value: 'resourceValue',
   //     unit: stationType>0? radiationUnit: speedUnit,
   //   }, {
   //     name: `日发电量(${stationType>0?'逆变器':'风机机组'})`,
-  //     value: 'genInverter', 
+  //     value: 'genInverter',
   //     unit: genUnit
   //   },
   //   {name: '日发电量(集电线路)', value: 'genIntegrated', unit: genUnit},
@@ -205,109 +205,112 @@ const ReportDetail = ({ selectedDayReportDetail, toChangeDayReportStore, dayRepo
           <span className={styles.titleInfo}>温度 {selectedDayReportDetail.temperature || '--'}</span>
         </div>
         <div className={styles.reportDetailTitleRight}>
-          {reportRight && <CneButton onClick={toEditDetail} className={styles.reportEdit}>编辑</CneButton>}
+          {reportRight && <CneButton onClick={toEditDetail} className={styles.editButton} lengthMode="short">编辑</CneButton>}
           <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={toReportList} />
         </div>
       </div>
-      <div className={styles.totalInfo}>
-        <div className={styles.tooltip}>综合信息<Icon type="caret-right" theme="outlined" /></div>
-        <div className={styles.infoDetail}>
-          {totalInfo.map(e => (
-            <span className={styles.eachInfo} key={e.name}>
-              <span className={styles.name}>{e.name}</span>
-              <span className={styles.value}>{dataFormat(selectedDayReportDetail[e.value])}</span>
-              <span>{e.unit}</span>
+      <div className={styles.infoWrap}>
+        <div className={styles.totalInfo}>
+          <div className={styles.tooltip}>综合信息<Icon type="caret-right" theme="outlined" /></div>
+          <div className={styles.infoDetail}>
+            {totalInfo.map(e => (
+              <span className={styles.eachInfo} key={e.name}>
+                <span className={styles.name}>{e.name}</span>
+                <span className={styles.value}>{dataFormat(selectedDayReportDetail[e.value])}</span>
+                <span>{e.unit}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className={styles.totalInfo}>
+          <div className={styles.tooltip}>{stationType > 0 ? '逆变器' : '风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
+          <div className={styles.infoDetail}>
+            {inverterInfo.map(e => (
+              <span className={styles.eachInfo} key={e.name}>
+                <span className={styles.name}>{e.name}</span>
+                <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
+                <span>{e.unit}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className={styles.totalInfo}>
+          <div className={styles.tooltip}>集电线路信息<Icon type="caret-right" theme="outlined" /></div>
+          <div className={styles.infoDetail}>
+            {integrateInfo.map(e => (
+              <span className={styles.eachInfo} key={e.name}>
+                <span className={styles.name}>{e.name}</span>
+                <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
+                <span>{e.unit}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className={styles.totalInfo}>
+          <div className={styles.tooltip}>关口表信息<Icon type="caret-right" theme="outlined" /></div>
+          <div className={styles.infoDetail}>
+            {netInfo.map(e => (
+              <span className={styles.eachInfo} key={e.name}>
+                <span className={styles.name}>{e.name}</span>
+                <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
+                <span>{e.unit}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className={styles.lostInfo} >
+          <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
+          {faultList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
+            columns={loseColumn}
+            dataSource={faultList.map((e, i) => ({
+              ...e,
+              key: i,
+              startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
+              endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
+            }))}
+            pagination={false}
+            className={styles.lostInfoTable}
+          />}
+        </div>
+        <div className={styles.limitInfo} >
+          <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
+          {limitList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
+            columns={limitColumn}
+            dataSource={limitList.map((e, i) => ({
+              ...e,
+              key: i,
+              startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
+              endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
+            }))}
+            pagination={false}
+            className={styles.limitInfoTable}
+          />}
+        </div>
+        <div className={styles.powerGenInfo} >
+          <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
+          <div className={styles.powerGenInfoCon}>
+            {errorArray.length > 0 ? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
+          </div>
+        </div>
+        <div className={styles.operateInfo} >
+          <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>
+          <div className={styles.operateInfoCon}>
+            <span>
+              <span className={styles.operateInfoName}>上传人</span>
+              <span>{selectedDayReportDetail.userFullName || selectedDayReportDetail.userName || '--'}</span>
             </span>
-          ))}
-        </div>
-      </div>
-      <div className={styles.totalInfo}>
-        <div className={styles.tooltip}>{stationType > 0 ? '逆变器' : '风电机组'}信息<Icon type="caret-right" theme="outlined" /></div>
-        <div className={styles.infoDetail}>
-          {inverterInfo.map(e => (
-            <span className={styles.eachInfo} key={e.name}>
-              <span className={styles.name}>{e.name}</span>
-              <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
-              <span>{e.unit}</span>
+            <span>
+              <span className={styles.operateInfoName}>上传时间</span>
+              <span>{createTime}</span>
             </span>
-          ))}
-        </div>
-      </div>
-      <div className={styles.totalInfo}>
-        <div className={styles.tooltip}>集电线路信息<Icon type="caret-right" theme="outlined" /></div>
-        <div className={styles.infoDetail}>
-          {integrateInfo.map(e => (
-            <span className={styles.eachInfo} key={e.name}>
-              <span className={styles.name}>{e.name}</span>
-              <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
-              <span>{e.unit}</span>
+            <span>
+              <span className={styles.operateInfoName}>最新更新时间</span>
+              <span>{updateTime}</span>
             </span>
-          ))}
+          </div>
         </div>
       </div>
-      <div className={styles.totalInfo}>
-        <div className={styles.tooltip}>关口表信息<Icon type="caret-right" theme="outlined" /></div>
-        <div className={styles.infoDetail}>
-          {netInfo.map(e => (
-            <span className={styles.eachInfo} key={e.name}>
-              <span className={styles.name}>{e.name}</span>
-              <span>{dataFormat(selectedDayReportDetail[e.value])}</span>
-              <span>{e.unit}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-      <div className={styles.lostInfo} >
-        <h4 className={styles.reportSubTitle} >损失电量信息<Icon type="caret-right" theme="outlined" /></h4>
-        {faultList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
-          columns={loseColumn}
-          dataSource={faultList.map((e, i) => ({
-            ...e,
-            key: i,
-            startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
-            endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
-          }))}
-          pagination={false}
-          className={styles.lostInfoTable}
-        />}
-      </div>
-      <div className={styles.limitInfo} >
-        <h4 className={styles.reportSubTitle} >限电信息<Icon type="caret-right" theme="outlined" /></h4>
-        {limitList.length === 0 ? <span className={styles.noListData}>无</span> : <Table
-          columns={limitColumn}
-          dataSource={limitList.map((e, i) => ({
-            ...e,
-            key: i,
-            startTime: e.startTime ? moment(e.startTime).format('YYYY-MM-DD HH:mm') : '--',
-            endTime: e.endTime ? moment(e.endTime).format('YYYY-MM-DD HH:mm') : '--',
-          }))}
-          pagination={false}
-          className={styles.limitInfoTable}
-        />}
-      </div>
-      <div className={styles.powerGenInfo} >
-        <h4 className={styles.reportSubTitle} >发电信息<Icon type="caret-right" theme="outlined" /></h4>
-        <div className={styles.powerGenInfoCon}>
-          {errorArray.length > 0 ? errorArray.map((e, i) => <div key={i}>{e}</div>) : '正常'}
-        </div>
-      </div>
-      <div className={styles.operateInfo} >
-        <h4 className={styles.reportSubTitle} >操作信息<Icon type="caret-right" theme="outlined" /></h4>
-        <div className={styles.operateInfoCon}>
-          <span>
-            <span className={styles.operateInfoName}>上传人</span>
-            <span>{selectedDayReportDetail.userFullName || selectedDayReportDetail.userName || '--'}</span>
-          </span>
-          <span>
-            <span className={styles.operateInfoName}>上传时间</span>
-            <span>{createTime}</span>
-          </span>
-          <span>
-            <span className={styles.operateInfoName}>最新更新时间</span>
-            <span>{updateTime}</span>
-          </span>
-        </div>
-      </div>
+
     </div>
   );
 };

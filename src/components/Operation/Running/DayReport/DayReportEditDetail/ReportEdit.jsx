@@ -295,89 +295,88 @@ class ReportEdit extends Component {
               okText="确定"
               cancelText="取消">
               <CneButton
-                className={styles.reportEdit}
+                className={styles.editButton}
+                lengthMode="short"
               >保存</CneButton>
             </Popconfirm>
             <i className={`iconfont icon-fanhui ${styles.backIcon}`} title="返回" onClick={this.showDetaiTip} />
           </div>
         </div>
-        <ResourceElecInfo
-          changeReportDetail={this.changeReportDetail}
-          updateDayReportDetail={updateDayReportDetail}
-          dayReportConfig={dayReportConfig}
-        />
-        <div className={styles.lostElecInfo} >
-          <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
-          <CneButton onClick={this.toAddGenLost} disabled={addLostFormShow} className={styles.uploadGenLost}>
-              <div className={styles.icon}>
-                  <span className={'iconfont icon-newbuilt'} />
-              </div>添加
+        <div className={styles.editWrap}>
+          <ResourceElecInfo
+            changeReportDetail={this.changeReportDetail}
+            updateDayReportDetail={updateDayReportDetail}
+            dayReportConfig={dayReportConfig}
+          />
+          <div className={styles.lostElecInfo} >
+            <span className={styles.reportSubTitle}>损失电量信息<Icon type="caret-right" theme="outlined" /></span>
+            <CneButton onClick={this.toAddGenLost} disabled={addLostFormShow} className={styles.uploadGenLost} iconname="icon-newbuilt" lengthMode="short">
+              添加
           </CneButton>
-        </div>
-        {faultList.length > 0 ? <div className={styles.lostGenTableBox} >
-          <LostGenTable
-            faultGenList={faultList.map(
-              e => ({
-                ...e,
-                startTime: e.startTime ? moment(e.startTime) : null,
-                endTime: e.endTime ? moment(e.endTime) : null,
-              })
-            )}
-            stationDeviceTypes={stationDeviceTypes}
-            reportDate={reportDate}
-            rememberHandle={this.rememberHandle}
+          </div>
+          {faultList.length > 0 ? <div className={styles.lostGenTableBox} >
+            <LostGenTable
+              faultGenList={faultList.map(
+                e => ({
+                  ...e,
+                  startTime: e.startTime ? moment(e.startTime) : null,
+                  endTime: e.endTime ? moment(e.endTime) : null,
+                })
+              )}
+              stationDeviceTypes={stationDeviceTypes}
+              reportDate={reportDate}
+              rememberHandle={this.rememberHandle}
+              changeFaultList={this.faultListInfoChange}
+            />
+          </div> : null}
+          {addLostFormShow && <LostAddForm
+            findDeviceExist={findDeviceExist}
+            lostGenTypes={lostGenTypes}
+            faultGenList={faultList}
             changeFaultList={this.faultListInfoChange}
-          />
-        </div> : null}
-        {addLostFormShow && <LostAddForm
-          findDeviceExist={findDeviceExist}
-          lostGenTypes={lostGenTypes}
-          faultGenList={faultList}
-          changeFaultList={this.faultListInfoChange}
-          stationCode={stationCode}
-          deviceExistInfo={deviceExistInfo}
-          stationDeviceTypes={stationDeviceTypes}
-          getStationDeviceTypes={getStationDeviceTypes}
-          getLostGenType={getLostGenType}
-          stationType={stationType}
-        />}
-        <div className={styles.lostElecInfo} >
-          <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
-          <CneButton disabled={addLimitFormShow} onClick={this.toAddGenLimit} className={styles.uploadGenLost}>
-            <div className={styles.icon}>
-              <span className={'iconfont icon-newbuilt'} />
-            </div>添加
-          </CneButton>
-        </div>
-        {limitList.length > 0 ? <div className={styles.lostGenTableBox} >
-          <LimitGenTable
-            limitGenList={limitList.map(
-              e => ({
-                ...e,
-                startTime: e.startTime ? moment(e.startTime) : null,
-                endTime: e.endTime ? moment(e.endTime) : null,
-              })
-            )}
+            stationCode={stationCode}
+            deviceExistInfo={deviceExistInfo}
             stationDeviceTypes={stationDeviceTypes}
-            reportDate={reportDate}
-            rememberHandle={this.rememberHandle}
+            getStationDeviceTypes={getStationDeviceTypes}
+            getLostGenType={getLostGenType}
+            stationType={stationType}
+          />}
+          <div className={styles.lostElecInfo} >
+            <span className={styles.reportSubTitle}>限电信息<Icon type="caret-right" theme="outlined" /></span>
+            <CneButton disabled={addLimitFormShow} onClick={this.toAddGenLimit} className={styles.uploadGenLost} iconname="icon-newbuilt" lengthMode="short">
+              添加
+          </CneButton>
+          </div>
+          {limitList.length > 0 ? <div className={styles.lostGenTableBox} >
+            <LimitGenTable
+              limitGenList={limitList.map(
+                e => ({
+                  ...e,
+                  startTime: e.startTime ? moment(e.startTime) : null,
+                  endTime: e.endTime ? moment(e.endTime) : null,
+                })
+              )}
+              stationDeviceTypes={stationDeviceTypes}
+              reportDate={reportDate}
+              rememberHandle={this.rememberHandle}
+              changeLimitList={this.limitListInfoChange}
+            />
+          </div> : null}
+          {addLimitFormShow && <LimitAddForm
+            findDeviceExist={findDeviceExist}
+            limitGenList={limitList}
             changeLimitList={this.limitListInfoChange}
-          />
-        </div> : null}
-        {addLimitFormShow && <LimitAddForm
-          findDeviceExist={findDeviceExist}
-          limitGenList={limitList}
-          changeLimitList={this.limitListInfoChange}
-          stationCode={stationCode}
-          stationDeviceTypes={stationDeviceTypes}
-          getStationDeviceTypes={getStationDeviceTypes}
-          deviceExistInfo={deviceExistInfo}
-        />}
-        <div className={styles.addPowerGenInfo} >
-          <span className={styles.reportSubTitle}>发电信息<Icon type="caret-right" theme="outlined" /></span>
-          <div className={styles.addPowerGenInfoR} >
-            <Checkbox checked={abnormalTextShow} onChange={this.checkAbnormal}>存在异常</Checkbox>
-            {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={errorInfo} />}
+            stationCode={stationCode}
+            stationDeviceTypes={stationDeviceTypes}
+            getStationDeviceTypes={getStationDeviceTypes}
+            deviceExistInfo={deviceExistInfo}
+          />}
+          <div className={styles.addPowerGenInfo} >
+            <span className={styles.reportSubTitle}>发电信息<Icon type="caret-right" theme="outlined" /></span>
+            <div className={styles.addPowerGenInfoR} >
+              <Checkbox checked={abnormalTextShow} onChange={this.checkAbnormal}>存在异常</Checkbox>
+              {abnormalTextShow && <Input.TextArea className={styles.abnormalTextArea} onChange={this.reportAbnormalText} value={errorInfo} />}
+            </div>
           </div>
         </div>
         {showBackWarningTip && <WarningTip onOK={this.backToDetail} onCancel={this.cancelDetaiTip} value={warningTipText} />}

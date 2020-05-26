@@ -383,6 +383,12 @@ const menuData = [
             rightKey: 'statistics_report_general',
           },
           {
+            name: '报表查询',
+            path: 'search',
+            defaultPath: true,
+            rightKey: 'statistics_report_query',
+          },
+          {
             name: '日报查询',
             path: 'dailyQuery',
 	    defaultPath: true,

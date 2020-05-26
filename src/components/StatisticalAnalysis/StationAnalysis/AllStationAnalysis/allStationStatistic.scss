@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-top: 15px;
 
   .AlarmStatisticByTypeBox {
     display: flex;
@@ -120,21 +121,13 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: #fff;
-  .componentContainer {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
-    .title {
+   .title {
       display: flex;
       position: relative;
       flex-direction: row;
-      padding-left: 28px;
-      height: 60px;
+      height: 54px;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #f0f2f5;
       .titleLeft {
         display: flex;
         flex-direction: row;
@@ -182,14 +175,21 @@
         }
       }
       a{
-        display: flex;
+        display: block;
         height: 100%;
+        width:60px;
       }
       .backIcon {
         @include backIcon()
       }
     }
 
+  .componentContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-shadow:0 2px 5px 3px rgba(0, 0, 0, 0.2);
+    background: #fff;
     .targetGraphContainer {
       .bgStyle {
        background-image:linear-gradient(90deg, #ceebe0 0%, #ffffff 100%);

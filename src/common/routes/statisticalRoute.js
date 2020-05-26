@@ -42,6 +42,9 @@ const statement = [ // 统计分析 - 统计报表
   { // 统计报表
     path: '/statistical/statement/currency',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/GeneralReport/GeneralReport')),
+  }, { // 报表查询
+    path: '/statistical/statement/search',
+    component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/StatementSearch/StatementSearch')),
   }, { // 统计报表-智能分析报告
     path: '/statistical/statement/intelligentAnalysis',
     component: lazy(() => import('../../containers/StatisticalAnalysis/StatisticalReport/IntelligentAnalysis/IntelligentAnalysis')),

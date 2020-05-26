@@ -1,8 +1,6 @@
 @import '../../../../../theme/theme';
 
 .reportDetail{
-  background: #fff;
-  border:1px solid #e1e2e2;
   .reportSubTitle{
     svg{
       font-size: 10px;
@@ -10,17 +8,16 @@
     }
   }
   .reportDetailTitle{
-    height: 64px;
-    border-bottom: 1px solid #d4d4d4;
-    line-height: 64px;
+    height: 54px;
+    line-height: 54px;
     display: flex;
     justify-content: space-between;
     .reportDetailTitleTip{
-      margin-left: 30px;
       display: flex;
       align-items: center;
       .mainTitle {
         font-size: 18px;
+        color: var(--themeColor);
       }
       .titleInfo {
         margin-left: 24px;
@@ -32,8 +29,8 @@
     .reportDetailTitleRight{
       display: flex;
       justify-content: flex-end;
-      .reportEdit{
-        margin-top: 15px;
+      align-items: center;
+      .editButton{
         margin-right: 10px;
       }
       .backIcon{
@@ -41,9 +38,14 @@
       }
     }
   }
+
+  .infoWrap{
+     background: #fff;
+     box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+  }
   .totalInfo{
     display: flex;
-    margin-top: 24px;
+    padding-top: 24px;
     .tooltip{
       flex: 0 0 130px;
       text-align: right;
@@ -146,21 +148,21 @@
 }
 
 .reportEdit{
-  background: #fff;
-  border:1px solid #e1e2e2;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom:4px;
   .reportDetailTitle{
-    height: 64px;
-    border-bottom: 1px solid #d4d4d4;
-    line-height: 64px;
+    height: 54px;
+    line-height: 54px;
     display: flex;
     justify-content: space-between;
     .reportDetailTitleTip{
-      margin-left: 30px;
       display: flex;
       align-items: center;
       .mainTitle {
         font-size: 18px;
+        color:var(--themeColor)
       }
       .titleInfo {
         margin-left: 24px;
@@ -172,19 +174,22 @@
     .reportDetailTitleRight{
       display: flex;
       justify-content: flex-end;
-      .reportEdit{
-        margin-top: 15px;
-        border: 1px solid $themeColor;
-        color: $themeColor;
+      align-items: center;
+      .editButton{
         margin-right: 10px;
-        &:hover,&:focus{
-          box-shadow: 0 0 2px $themeColor;
-        }
       }
       .backIcon{
         @include backIcon();
       }
     }
+  }
+  .editWrap{
+    background: #fff;
+    box-shadow:0 2px 5px 3px rgba(0,0,0,0.20);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0 20px;
   }
 
   .editResourceInfo{
@@ -262,8 +267,7 @@
   }
 
   .lostElecInfo{
-    padding: 0 0 0 30px;
-    margin-bottom: 10px;
+    padding: 10px 0 10px 30px;
     display: flex;
     .reportSubTitle{
       width: 100px;
@@ -277,31 +281,6 @@
     }
     .uploadGenLost{
       margin-left: 20px;
-      display: flex;
-      padding: 0 15px 0 6px;
-      .icon {
-        margin: 0 10px 0 0;
-      }
-      // width: 70px;
-      // padding: 0;
-      // margin-left: 20px;
-      // span{
-      //   margin-left: 0px;
-      //   display: inline-block;
-      //   width: 44px;
-      //   text-align: center;
-      // }
-      // :global{
-      //   .anticon{
-      //     width: 28px;
-      //     height: 30px;
-      //     line-height: 32px;
-      //     background: $themeColor;
-      //     color: #fff;
-      //     border-top-left-radius: 4px;
-      //     border-bottom-left-radius: 4px;
-      //   }
-      // }
     }
   }
 
@@ -316,10 +295,10 @@
   }
 
   .addPowerGenInfo{
-    margin-bottom: 30px;
     display: flex;
     flex-direction: row;
     padding-left: 30px;
+    margin: 10px 0 30px;
     .reportSubTitle{
       width: 100px;
       text-align: right;

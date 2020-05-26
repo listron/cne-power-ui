@@ -90,12 +90,12 @@ $box-shadow-color: rgba(0, 0, 0, 0.2);
 @mixin backIcon() {
     display: flex;
     flex:0 0 60px;
-    width: 60px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 20px;
     color:#199475;
+    height: 100%;
     &:hover{
       background-image:linear-gradient(0deg, #00baff 1%, #5beda9 100%);
       -webkit-background-clip: text;
