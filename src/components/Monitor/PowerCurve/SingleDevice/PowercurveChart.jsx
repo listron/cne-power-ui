@@ -67,9 +67,7 @@ class PowercurveChart extends Component {
     //各种数据
     let scatter = [], actual = [], theory = [];
     let series = [];
-    const test1 = [];
-    const test = [];
-
+    const returnData = [];
     (params && params.length > 0) && params.forEach((e, i) => {
 
       const sortscatterPointData = e.scatterPointData.sort(this.compare('windSpeedAvg'));
@@ -81,12 +79,12 @@ class PowercurveChart extends Component {
         scatter[e.deviceName].push([item.windSpeedAvg, item.powerActual, item.time, item.windDirection, e.deviceName]);
       });
       sortactualPowerData.forEach((item, i) => {
-        actual[e.deviceName].push([item.windSpeedAvg, item.powerAvg, item.windSpeedInterval, e.deviceName], ...item, ...e);
+        actual[e.deviceName].push([item.windSpeedAvg, item.powerAvg, item.windSpeedInterval, e.deviceName]);
       });
       sorttheoryPowerData.forEach((item, i) => {
-        theory[e.deviceName].push([item.windSpeedCenter, item.powerTheory, item.windSpeedInterval], ...item);
+        theory[e.deviceName].push([item.windSpeedCenter, item.powerTheory, item.windSpeedInterval, e.deviceName]);
       });
-      test1.push(
+      returnData.push(
         {
           type: 'scatter',
           name: `${e.deviceName}散点`,
@@ -97,11 +95,16 @@ class PowercurveChart extends Component {
           },
           progressive: 1000,
         },
-        { type: 'line', name: `${e.deviceName}实际功率曲线`, data: actual[e.deviceName] },
+        { type: 'line',
+          name: `${e.deviceName}实际功率曲线`,
+          data: actual[e.deviceName]
+        },
+        { type: 'line',
+          name: `${e.deviceModelName}理论功率曲线${correct ? '(标准空气密度)' : '(现场空气密度)'}`,
+          data: theory[e.deviceName]
+        });
 
-      );
-      test.push({ type: 'line', name: `${e.deviceModelName}理论功率曲线${correct ? '(标准空气密度)' : '(现场空气密度)'}`, data: theory[e.deviceName] });
-      series = [...test1, ...test];
+      series = [...returnData];
 
     });
     const lineColor = '#353535';
