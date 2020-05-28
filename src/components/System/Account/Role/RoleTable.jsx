@@ -124,7 +124,7 @@ class RoleTable extends Component {
           />}
           {roleDeleteRight && <i
             className={`${styles.deleteRole} iconfont icon-del`}
-            onClick={() => this.columnEditRole(record)}
+            onClick={() => this.columnDeleteRole(record)}
           />}
         </span>
         ),
@@ -226,7 +226,7 @@ class RoleTable extends Component {
     }
   }
 
-  ColumnDeleteRole = (record) => { // 列操作中直接
+  columnDeleteRole = (record) => { // 列操作中直接
     const forbiddenEdit = record.isPre === 0; // 预设角色不可删除
     if (forbiddenEdit) {
       this.setState({
